@@ -1,6 +1,9 @@
+RC_DIR="$HOME/.wryn"
+
 # terminal colors
-source ./bashcolors
-source ./fun
+source $RC_DIR/bashcolors
+# scripts for fun (see file for dependencies)
+source $RC_DIR/fun
 
 # --- Welcome message -----------------------------------------
 exec artii "Welcome, beautiful" | lolcat; echo; cowsay -p -f small "damn u sexy" | lolcat; 
