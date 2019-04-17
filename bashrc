@@ -6,7 +6,7 @@ source $RC_DIR/bashcolors
 source $RC_DIR/fun
 
 # --- Welcome message -----------------------------------------
-exec artii "Welcome, beautiful" | lolcat; echo; cowsay -p -f small "damn u sexy" | lolcat; 
+exec figlet "Welcome, beautiful" | lolcat; echo; cowsay -p "damn u sexy" | lolcat; 
 
 # --- Utility Alias -------------------------------------------
 alias restart='clear; source ~/.bashrc; echo'
