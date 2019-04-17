@@ -89,4 +89,4 @@ parse_git_branch(){
 }
 
 # bash prompt
-PS1="☕ \[$txtblu\]\u\[$txtred\] :: \[$txtgrn\]\[$txtylw\]\w\[$bldcyn\]\$(parse_git_branch)\[$txtgrn\]$DEFAULT \n \$ "
+PS1="\[$bldylw\] ☕ \[$txtblu\]\u\[$txtred\] :: \[$txtgrn\]\[$txtylw\]\w\[$bldcyn\]\$(parse_git_branch)\[$txtgrn\]$DEFAULT \n \$ "
