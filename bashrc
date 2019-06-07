@@ -11,3 +11,6 @@ exec figlet "Welcome, beautiful" | lolcat; echo; cowsay -p "damn u sexy" | lolca
 # --- Utility Alias -------------------------------------------
 alias restart='clear; source ~/.bashrc; echo'
 alias datereadable='date +"%A %B %d, %Y"'
+
+# --- !@#$ Aliases --------------------------------------------
+alias clera='clear'
