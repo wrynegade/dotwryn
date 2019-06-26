@@ -1,0 +1,90 @@
+% -- Document body begins on line 80
+
+% ---------------------------------------------------------------------------------------------
+% ------ Document type and page margins -------------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+\documentclass[letterpaper]{article}
+\usepackage[margin=1in,bottom=.5in,includefoot]{geometry}
+
+\usepackage{lastpage} 		 % -- Package used for finding total page numbers
+\usepackage{amssymb}		 % -- Package used for typing "bold" math letters and symbols
+\usepackage{amsmath}		 % -- Package for various math symbols
+\usepackage{arydshln}		 % -- Package used for dashed lines in tables
+\usepackage{dashrule}		 % -- Package used for dashed lines on the page
+\usepackage{listings}		 % -- Package used for code snippets
+\usepackage[final]{pdfpages}	 % -- Package used for inserting pages of a PDF file
+\usepackage{tikz}		 % -- Package used for drawing graphs
+\usepackage{graphicx}       	 % -- Package used to insert graphics
+\graphicspath{ {./images/} }
+
+
+% ---------------------------------------------------------------------------------------------
+% Edit this section to create the title, headers, and footers for the document
+% ---------------------------------------------------------------------------------------------
+
+\newcommand{\homeworkTitle}		{Homework }
+\newcommand{\authorName}		{Wryn Wagner}
+\newcommand{\Anumber}			{A01995076}
+\newcommand{\assignmentDate}		{}
+\newcommand{\classId}			{}
+
+
+% ---------------------------------------------------------------------------------------------
+% ------ Header Code --------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+
+\newcommand{\headerLeft}	{\homeworkTitle : \assignmentDate}
+\newcommand{\headerCenter}	{\classId}
+\newcommand{\headerRight}	{\authorName\ (\Anumber)}
+\newcommand{\pageOfTotal}	{\thepage\ of \pageref{LastPage}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\headerLeft}
+\fancyhead[R]{\headerRight}
+\fancyhead[C]{\headerCenter}
+\fancyfoot[C]{\pageOfTotal}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[L]{\headerLeft}
+	\fancyhead[R]{\headerRight}
+	\fancyhead[C]{\headerCenter}
+	\fancyfoot[C]{\pageOfTotal}
+}
+
+\title{\homeworkTitle}
+\author{\authorName \\ \Anumber}
+\date{\assignmentDate}
+
+
+% ---------------------------------------------------------------------------------------------
+% ------ Theorems, Lemmas, and Corollaries ----------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+
+% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+\begin{document}
+\maketitle
+% ---------------------------------------------------------------------------------------------
+% Begin document here :)
+% ---------------------------------------------------------------------------------------------
+\section{} %Problem 1
+\subsection{Prompt}
+
+
+
+\noindent\rule{2in}{0.4pt}
+% ---------------------------------------------------------------------------------------------
+
+
+% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------
+\end{document}
+
