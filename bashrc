@@ -24,4 +24,12 @@ function notes() { NOTE="$NOTE_PATH/$1$NOTE_EXTENSION"; [ -f $NOTE ] && vim $NOT
 
 # --- Homework facilitated ------------------------------------
 HW_TEMPLATE="$RC_DIR/latex/homework_template.tex"
-function hw() { [ $# -ne 0 ] && cp $HW_TEMPLATE ./$1.tex || echo "Homework filename required"; }
+function hw() {
+	[ $# -ne 0 ] \
+		&& NEW_HW="./$1.tex" \
+		|| echo "Homework filename required" \
+			&& return;
+
+	[ ! -f $NEW_HW ] && cp $HW_TEMPLATE $NEW_HW;
+	vim $NEW_HW || echo "Something went wrong :c";
+}
