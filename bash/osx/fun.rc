@@ -1,0 +1,14 @@
+#!/bin/bash
+function planktimer() {
+	# dependencies: 'say' 'termdown'
+	while true;
+	do
+		termdown 1h30m;
+		clear;
+		figlet "Plank Time" | lolcat;
+		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "plank time";
+		read -n 1;
+		termdown 65;
+		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "done";
+	done
+}

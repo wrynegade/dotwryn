@@ -1,46 +1,4 @@
-# ------------------------------------------------------------
-# -- 'ls' colorscheme ------------------------------------------
-# ------------------------------------------------------------
-
-# Colors are organized into (Foreground)(Background) bits as seen below:
-# ========
-# 1 - Directory 
-# 2 - Symbolic link
-# 3 - Socket
-# 4 - Pipe
-# 5 - Executable
-# 6 - Block special
-# 7 - Character special
-# 8 - Executable with setgid bit set
-# 9 - Executable with setgid bit set
-# 10- Directory writable to others, with sticky bit
-# 11- Directory writable to others, without sticky bit
-# ========
-# a	black
-# b	red
-# c	green
-# d	brown
-# e	blue
-# f	magenta
-# g	cyan
-# h	light grey
-# CAPITAL	(BOLD)
-# x	default
-
-# actual colorscheme
-export LSCOLORS="ExxxxxDxBxxxxxxxxxxxxx"
-
-# for OSX, fixes spacing issues
-f_notabs=0
-
-# default ls to use defined colorscheme
-alias ls='ls -G'
-
-
-# ------------------------------------------------------------
-# -- BASH prompt colorscheme -----------------------------------
-# ------------------------------------------------------------
-
+#!/bin/bash
 # Regular
 txtblk="$(tput setaf 0 2>/dev/null || echo '\e[0;30m')"  # Black
 txtred="$(tput setaf 1 2>/dev/null || echo '\e[0;31m')"  # Red

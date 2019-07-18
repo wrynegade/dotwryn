@@ -1,0 +1,42 @@
+#!/bin/bash
+RD_PATH='/Users/w0ryn/Documents/RentDynamics';
+
+alias rdvmail='VMAIL_HOME=~/.vmail/business1 vmail';
+
+
+function rnt() {
+# filestructure needed:
+# RD_PATH/project-name
+#	> /code (git clone)
+#	> /env  (virtualenv)
+	deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
+	cd $RD_PATH;
+
+	local cont=0;
+	[ $1 ] \
+		&& [ -d $RD_PATH/$1 ] \
+			&& cd $1 >/dev/null 2>/dev/null \
+		|| cont=1;
+
+	if [ $cont -eq 0 ]; then
+		[ -f ./env/bin/activate ] \
+			&& source ./env/bin/activate \
+			|| echo No environment here, boss!;
+		[ -d ./code ] \
+			&& cd code \
+			|| echo No source folder here!;
+	fi
+}
+_rnt () { # autocompletion
+    # Set
+	local cur=${COMP_WORDS[COMP_CWORD]}
+	COMPREPLY=( $(compgen -W "$(ls $RD_PATH)" -- $cur) )
+}
+complete -F _rnt rnt;
+
+function refresh_rd_db() {
+	psql postgres -c "DROP DATABASE rentdynamics;"
+	psql postgres -c "CREATE DATABASE rentdynamics with owner rd;"
+	psql postgres -c "DROP DATABASE rdrentplus;"
+	psql postgres -c "CREATE DATABASE rdrentplus with owner rd;"
+}
