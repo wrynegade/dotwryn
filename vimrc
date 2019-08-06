@@ -72,6 +72,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 " }}}
+" (CTRL + n) for files
+nnoremap <C-n> :n<CR>
+nnoremap <C-b> :N<CR>
+
 
 " <SPACE> to execute macro on q
 nnoremap <Space> @q
@@ -96,6 +100,7 @@ nnoremap _ :m -2 <CR>
 
 " - (insert mode) set current word to upper-case
 inoremap <c-u> <esc>viwUea
+
 
 " }}}
 
