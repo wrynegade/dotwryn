@@ -8,7 +8,21 @@ function planktimer() {
 		figlet "Plank Time" | lolcat;
 		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "plank time";
 		read -n 1;
-		termdown 65;
-		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "done";
+		if [ $1 ]; then
+			termdown $1;
+			say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "done";
+		fi
 	done
+}
+
+function sayvoices() {
+	for voice in $(say -v ? | sed 's/   .*//' | sed 's/ News//');
+	do
+		say -v "$voice" $(say -v ? | grep $voice | sed 's/[^#]*# //');
+	done
+}
+
+function sayone() {
+	voice=$(say -v ? | sed 's/   .*//' | sed 's/ News//' | shuf -n 1);
+	say -v "$voice" $(say -v ? | grep $voice | sed 's/[^#]*# //');
 }
