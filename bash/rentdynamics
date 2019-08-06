@@ -40,3 +40,19 @@ function refresh_rd_db() {
 	psql postgres -c "DROP DATABASE rdrentplus;"
 	psql postgres -c "CREATE DATABASE rdrentplus with owner rd;"
 }
+
+function rntbranchcleanup() {
+	for dir in $(ls $RD_PATH); do 
+		rnt $dir >/dev/null 2>/dev/null; 
+		if [ -d .git ]; then
+			printf "clearing repository $dir...";
+			git branch -d $(git branch | sed -E "/develop|master|\*/d") >/dev/null 2>/dev/null; 
+			printf "done!\n"; 
+		else
+			echo $dir is not a git repository;
+		fi
+		rnt;
+	done;
+	echo && echo RentDynamics repository branches all clean!
+}
+
