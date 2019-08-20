@@ -1,12 +1,13 @@
 #!/bin/bash
 function planktimer() {
 	# dependencies: 'say' 'termdown'
+	message='Push-up Time'
 	while true;
 	do
 		termdown 1h30m;
 		clear;
-		figlet "Plank Time" | lolcat;
-		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "plank time";
+		figlet "$message" | lolcat;
+		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "$message";
 		read -n 1;
 		if [ $1 ]; then
 			termdown $1;

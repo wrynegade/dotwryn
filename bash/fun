@@ -17,4 +17,4 @@ function pika {
 	imgcat $IMAGE
 	echo;
 }
-alias pikabox='while true; do clear; pika; sleep 120; done'
+alias pikabox='while true; do reset; pika; sleep 120; done'

@@ -45,14 +45,14 @@ function rntbranchcleanup() {
 	for dir in $(ls $RD_PATH); do 
 		rnt $dir >/dev/null 2>/dev/null; 
 		if [ -d .git ]; then
-			printf "clearing repository $dir...";
+			printf " - %s\e[1;34m %s\e[0m..." "clearing repository" "$dir";
 			git branch -d $(git branch | sed -E "/develop|master|\*/d") >/dev/null 2>/dev/null; 
-			printf "done!\n"; 
+			printf "\e[1;32m%s\e[0m\n" " DONE"; 
 		else
-			echo $dir is not a git repository;
+			printf " - \e[1;34m%s\e[1;31m %s\e[0m" "$dir" "is not a git repository";
 		fi
 		rnt;
 	done;
-	echo && echo RentDynamics repository branches all clean!
+	printf "\n\n\e[1;36m%s\e[1;35m %s\e[0m\n\n" "RentDynamics" "repository branches all clean!";
 }
 

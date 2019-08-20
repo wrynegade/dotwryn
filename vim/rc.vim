@@ -1,6 +1,7 @@
 " -- Environment Variables --------------------------------------- {{{
 let $RC_DIR="/Users/w0ryn/.wryn"
-let $WRYNVIMRC="$RC_DIR/vimrc"
+let $VIM_DIR="$RC_DIR/vim"
+let $WRYNVIMRC="$VIM_DIR/rc.vim"
 let $WRYNBASH="$RC_DIR/bashrc"
 let $MYBASHRC="/Users/w0ryn/.bashrc"
 " }}}
@@ -21,7 +22,7 @@ syntax on " detect syntax
 set autoindent " match indentation with next line
 set smartindent " match indentation with syntax
 
-set spellfile=$RC_DIR/en.utf-8.add
+set spellfile=$VIM_DIR/en.utf-8.add
 set spelllang=en
 
 set showmatch   " -- emit 'beep' when no matching symbol,
@@ -33,7 +34,7 @@ set timeoutlen=200 " -- short timeout for multi-key functions
 " -- File Formatting ------------------------------------- {{{
 augroup filetype_specific_formatting
 	autocmd!
-	autocmd FileType python     setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
+	autocmd FileType python     setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab   foldmethod=indent foldlevel=99
 	autocmd FileType java       setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
 	autocmd FileType cs         setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
 	autocmd FileType html       setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab foldmethod=indent foldlevel=99
@@ -41,7 +42,7 @@ augroup filetype_specific_formatting
 	autocmd FileType vim        setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=marker foldlevel=1
 	autocmd FileType sh         setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
 	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
-augroup END
+augroup end
 " }}}
 
 " -- Key bindings ---------------------------------------- {{{
@@ -87,6 +88,9 @@ nnoremap Q !!$SHELL<CR>
 " \q for `q:`
 nnoremap <Leader>q q:
 
+" \t for rerun tests
+nnoremap <Leader>t q:?test<CR><CR>
+
 " \f for fold
 nnoremap <Leader>f z
 nnoremap <Leader>f z
@@ -102,6 +106,6 @@ nnoremap _ :m -2 <CR>
 inoremap <c-u> <esc>viwUea
 
 
+" - specialized formatting
+source $VIM_DIR/rd_formatting.vim
 " }}}
-
-
