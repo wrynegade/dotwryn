@@ -42,6 +42,7 @@ function refresh_rd_db() {
 }
 
 function rntbranchcleanup() {
+	printf "\nInitializing branch cleanup...\n\n"
 	for dir in $(ls $RD_PATH); do 
 		rnt $dir >/dev/null 2>/dev/null; 
 		if [ -d .git ]; then
