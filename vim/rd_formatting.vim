@@ -9,5 +9,5 @@ augroup rent_dynamics
 	autocmd BufRead,BufEnter,BufNewFile */lead-mgmt-api-v1/*.cs     setlocal tabstop=2 softtabstop=2 shiftwidth=2
 	autocmd BufRead,BufEnter,BufNewFile */lead-mgmt-api-v1/*.cshtml setlocal tabstop=2 softtabstop=2 shiftwidth=2 filetype=html
 
-	autocmd BufRead,BufNewFile */RentDynamics/* foldmethod=indent foldlevel=99
+	autocmd BufRead,BufNewFile */RentDynamics/* setlocal foldmethod=indent foldlevel=99
 augroup end
