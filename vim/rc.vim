@@ -105,7 +105,7 @@ nnoremap _ :m -2 <CR>
 " - (insert mode) set current word to upper-case
 inoremap <c-u> <esc>viwUea
 
-
-" - specialized formatting
+" - My Plugins
 source $VIM_DIR/rd_formatting.vim
+source $VIM_DIR/my_colors.vim
 " }}}
