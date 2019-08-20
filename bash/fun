@@ -17,4 +17,7 @@ function pika {
 	imgcat $IMAGE
 	echo;
 }
+
 alias pikabox='while true; do reset; pika; sleep 120; done'
+
+alias netrogue='nethack -u "w0ryn-rog-hum-cha-mal"'

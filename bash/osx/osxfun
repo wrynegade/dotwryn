@@ -1,18 +1,21 @@
 #!/bin/bash
 function planktimer() {
-	# dependencies: 'say' 'termdown'
+	# dependencies: 'say' 'termdown' '.wryn/bash/rentdynamics'
 	message='Plank Time'
 	while true;
 	do
 		termdown 1h30m;
 		clear;
 		figlet "$message" | lolcat;
+		# update slack status
+		rdplank;
 		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "$message";
 		read -n 1;
 		if [ $1 ]; then
 			termdown $1;
 			say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "done";
 		fi
+		rdstart;
 	done
 }
 
