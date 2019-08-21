@@ -1,32 +1,24 @@
 #!/bin/bash
-function planktimer() {
-	# dependencies: 'say' 'termdown' '.wryn/bash/rentdynamics'
-	message='Plank Time'
-	while true;
-	do
-		termdown 1h30m;
-		clear;
-		figlet "$message" | lolcat;
-		# update slack status
-		rdplank;
-		say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "$message";
-		read -n 1;
-		if [ $1 ]; then
-			termdown $1;
-			say -v $(say -v ? | sed -n "/en_/p" | sed "s/   .*//" | shuf -n 1) "done";
-		fi
-		rdstart;
-	done
+
+function voicesed() { sed 's/\([^ ]*\) .*/\1/;'; }
+function voicelist() { say -v ? | voicesed; }
+function voicelistenglish() { say -v ? | grep 'en_' | voicesed; }
+function voicerandom() { voicelistenglish | shuf -n 1; }
+
+function voicelistnormal() {
+	voicelistenglish |
+		sed '/Trinoids/d;/Zarvox/d;/Deranged/d;/Hysterical/d;/Bahh/d;/Bubbles/d'
 }
+function voicerandomnormal() { voicelistnormal | shuf -n 1; }
 
 function sayvoices() {
-	for voice in $(say -v ? | sed 's/   .*//' | sed 's/ News//');
-	do
+	for voice in $(voicelist); do
 		say -v "$voice" $(say -v ? | grep $voice | sed 's/[^#]*# //');
 	done
 }
 
 function sayone() {
-	voice=$(say -v ? | sed 's/   .*//' | sed 's/ News//' | shuf -n 1);
+	local voice=$(voicerandom);
 	say -v "$voice" $(say -v ? | grep $voice | sed 's/[^#]*# //');
 }
+
