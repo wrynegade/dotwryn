@@ -1,6 +1,6 @@
 " -- Environment Variables --------------------------------------- {{{
 let $RC_DIR="/Users/w0ryn/.wryn"
-let $VIM_DIR="$RC_DIR/vim"
+let $VIM_DIR="/Users/w0ryn/.wryn/vim"
 let $WRYNVIMRC="$VIM_DIR/rc.vim"
 let $WRYNBASH="$RC_DIR/bashrc"
 let $MYBASHRC="/Users/w0ryn/.bashrc"
@@ -42,6 +42,7 @@ augroup filetype_specific_formatting
 	autocmd FileType vim        setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=marker foldlevel=1
 	autocmd FileType sh         setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
 	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
+	autocmd FileType markdown   setlocal tabstop=2 noexpandtab foldmethod=indent foldlevel=99 spell
 augroup end
 " }}}
 
@@ -76,6 +77,9 @@ nnoremap <C-k> <C-w>k
 " (CTRL + n) for files
 nnoremap <C-n> :n<CR>
 nnoremap <C-b> :N<CR>
+
+" open (execute) file in chrome
+nnoremap <Leader>ec :!/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %:p<CR>
 
 
 " <SPACE> to execute macro on q
