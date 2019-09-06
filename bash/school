@@ -3,18 +3,21 @@
 SCHOOL_DIR="$HOME/Documents/School";
 
 # -------------------------------------
-# -- School (Spring 2019) -------------
+# -- School (Fall 2019) -------------
 # -------------------------------------
+
 alias school="cd $SCHOOL_DIR";
-alias classes='cat ~/Documents/School/.classes' #'echo \* \(cs2810\) comparch; echo \* \(cs3100\) opsys; echo \* \(cs3450\) softeng; echo \* \(cs5050\) advalgos; echo \* hackusu; echo \* gamenight; echo'
-alias comparch='school; cd cs2810-comparch;'
-alias cs2810='comparch'
-alias opsys='school; cd cs3100-opsys'
-alias cs3100='opsys'
-alias softeng='school; cd cs3450-softeng'
-alias cs3450='softeng'
-alias advalgos='school; cd cs5050-advalgos'
-alias cs5050='advalgos'
+
+alias classes='cat ~/Documents/School/.classes' 
+
+alias cs5680='school; cd cs5680__computer_vision';
+alias compvis='cs5680'
+alias cs5600='school; cd cs5600__intelligent_systems';
+alias intsys='cs5600'
+alias engr3080='school; cd engr3080__tech_writing';
+alias techwrit='engr3080'
+alias phil1120='school; cd phil1120__social_ethics';
+alias socioet='phil1120'
 
 
 HW_TEMPLATE="$DOTWRYN/latex/homework_template.tex"
