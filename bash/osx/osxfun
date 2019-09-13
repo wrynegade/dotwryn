@@ -22,3 +22,38 @@ function sayone() {
 	say -v "$voice" $(say -v ? | grep $voice | sed 's/[^#]*# //');
 }
 
+
+function meme {
+	local DIRECTORY="$HOME/Pictures/jest";
+
+	[ ! -d $DIRECTORY ] && echo "No meme directory found :c";
+
+	echo;
+	imgcat $DIRECTORY/$1
+	echo;
+}
+_meme () { # autocompletion
+    # Set
+	local cur=${COMP_WORDS[COMP_CWORD]}
+	COMPREPLY=( $(compgen -W "$(ls $HOME/Pictures/jest)" -- $cur) )
+}
+complete -F _meme meme;
+
+function pika {
+	local DIRECTORY="$HOME/Pictures/pika";
+
+	[ ! -d $DIRECTORY ] && echo "Pikachu directory required." && exit 1;
+
+	# count the pikas
+	IMAGE_COUNT=$(ls -l $DIRECTORY | wc -l);
+	let "IMAGE_COUNT=IMAGE_COUNT-1";
+
+	# pick a random gif from the pikachu directory
+	IMAGE="$DIRECTORY/$((RANDOM % $IMAGE_COUNT)).gif";
+
+	echo;
+	imgcat $IMAGE
+	echo;
+}
+
+alias pikabox='while true; do reset; pika; sleep 120; done'

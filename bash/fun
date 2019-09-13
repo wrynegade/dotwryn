@@ -1,23 +1,3 @@
 #!/bin/bash
 alias cheerup="clear; echo; fortune | cowsay -f stegosaurus | lolcat; echo;"
-
-function pika {
-	local DIRECTORY="$HOME/Pictures/pika";
-
-	[ ! -d $DIRECTORY ] && echo "Pikachu directory required." && exit 1;
-
-	# count the pikas
-	IMAGE_COUNT=$(ls -l $DIRECTORY | wc -l);
-	let "IMAGE_COUNT=IMAGE_COUNT-1";
-
-	# pick a random gif from the pikachu directory
-	IMAGE="$DIRECTORY/$((RANDOM % $IMAGE_COUNT)).gif";
-
-	echo;
-	imgcat $IMAGE
-	echo;
-}
-
-alias pikabox='while true; do reset; pika; sleep 120; done'
-
 alias netrogue='nethack -u "w0ryn-rog-hum-cha-mal"'
