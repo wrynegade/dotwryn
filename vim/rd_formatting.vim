@@ -1,6 +1,7 @@
 augroup rent_dynamics
 	autocmd!
 	autocmd BufRead,BufEnter,BufNewFile */RentDynamics/*      setlocal expandtab
+	autocmd BufRead,BufEnter,BufNewFile */RentDynamics/*      let g:ycm_auto_trigger=1
 	autocmd BufRead,BufEnter,BufNewFile */RentDynamics/*.cs   setlocal tabstop=2 softtabstop=2 shiftwidth=2
 	autocmd BufRead,BufEnter,BufNewFile */RentDynamics/*.ts*  setlocal tabstop=2 softtabstop=2 shiftwidth=2
 	autocmd BufRead,BufEnter,BufNewFile */RentDynamics/*.scss setlocal tabstop=2 softtabstop=2 shiftwidth=2
