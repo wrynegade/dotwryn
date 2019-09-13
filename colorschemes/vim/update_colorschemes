@@ -1,0 +1,2 @@
+#!/bin/bash
+for file in $(find ./ -name \*.vim); do cp $file ~/.vim/colors/; done
