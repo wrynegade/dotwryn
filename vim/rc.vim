@@ -1,9 +1,9 @@
 " -- Environment Variables --------------------------------------- {{{
-let $RC_DIR="/Users/w0ryn/.wryn"
-let $VIM_DIR="/Users/w0ryn/.wryn/vim"
+let $RC_DIR="/home/w0ryn/.wryn"
+let $VIM_DIR="/home/w0ryn/.wryn/vim"
 let $WRYNVIMRC="$VIM_DIR/rc.vim"
 let $WRYNBASH="$RC_DIR/bashrc"
-let $MYBASHRC="/Users/w0ryn/.bashrc"
+let $MYBASHRC="/home/w0ryn/.bashrc"
 " }}}
 
 " -- General Settings -------------------------------------------- {{{

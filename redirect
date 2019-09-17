@@ -1,4 +1,21 @@
 #!/bin/bash
 RC_DIR='$HOME/.wryn'
-echo source $RC_DIR/bash/rc >> $HOME/.bashrc
-echo source $RC_DIR/vim/rc.vim >> $HOME/.vimrc
+
+[ ! -f "$HOME/.bashrc" ] && touch "$HOME/.bashrc";
+[ ! -f "$HOME/.vimrc" ] && touch "$HOME/.vimrc";
+
+grep '.wryn' $HOME/.bashrc >/dev/null 2>/dev/null \
+	&& echo already set up bash rc \
+	|| echo source $RC_DIR/bash/rc >> $HOME/.bashrc;
+
+grep '.wryn' $HOME/.vimrc >/dev/null 2>/dev/null \
+	&& echo already set up vim rc \
+	|| echo source $RC_DIR/vim/rc.vim >> $HOME/.vimrc;
+
+LOCAL_DIR_SETUP="$HOME/.my_bash_dirs"
+if [ ! -f "$LOCAL_DIR_SETUP" ]; then
+	touch "$LOCAL_DIR_SETUP";
+	echo '#!/bin/bash' >> $LOCAL_DIR_SETUP
+	echo 'RD_PATH="";' >> $LOCAL_DIR_SETUP
+	echo 'SCHOOL_DIR="";' >> $LOCAL_DIR_SETUP
+fi

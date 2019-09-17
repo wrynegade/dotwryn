@@ -1,14 +1,10 @@
 #!/bin/bash
-
-SCHOOL_DIR="$HOME/Documents/School";
-
 # -------------------------------------
 # -- School (Fall 2019) -------------
 # -------------------------------------
 
 alias school="cd $SCHOOL_DIR";
-
-alias classes='cat ~/Documents/School/.classes' 
+alias classes="cat $SCHOOL_DIR/.classes";
 
 alias cs5680='school; cd cs5680__computer_vision';
 alias compvis='cs5680'
