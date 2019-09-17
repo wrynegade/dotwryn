@@ -2,7 +2,7 @@
 DOTWRYN="$HOME/.wryn"
 RC_DIR="$DOTWRYN/bash"
 
-source "$HOME/.my_bash_dirs"
+source "$HOME/.my_bash_env"
 
 # source .wryn/bash files
 for file in $(find $RC_DIR -maxdepth 1 -type f ! -name 'rc'); do source $file; done;
