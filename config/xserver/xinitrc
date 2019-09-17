@@ -1,0 +1,5 @@
+bindsym XF86MonBrightnessUp exec light -A 5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness
+
+/home/w0ryn/.screenlayout/default.sh
+exec i3
