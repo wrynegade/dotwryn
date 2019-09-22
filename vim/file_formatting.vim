@@ -1,4 +1,4 @@
-syntax on " detect syntax
+syntax on
 
 " -- File Formatting ------------------------------------- {{{
 augroup filetype_specific_formatting
@@ -22,4 +22,9 @@ augroup execute_file_shortcuts
 	" tex opens pdf in chrome
 	autocmd FileType tex	nnoremap <Leader>ec :! $WEBBROWSER %:r.pdf<CR>
 augroup end
+" }}}
+
+
+" Custom Formatting Layers {{{
+source $VIM_DIR/rd_formatting.vim
 " }}}

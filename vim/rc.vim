@@ -6,19 +6,15 @@ source $HOME/.my_vim_env
 let mapleader = "\\"
 "let localmapleader = ','
 
-" 1) Load Vundle first
+" Load Vundle first
 source $VIM_DIR/vundle.vim
 
-" 2) Order insensitive plugins
 source $VIM_DIR/global_sets.vim
 source $VIM_DIR/file_formatting.vim
 source $VIM_DIR/edit_rc.vim
 source $VIM_DIR/abbreviations.vim
 source $VIM_DIR/window_pane_navigation.vim
 source $VIM_DIR/my_colors.vim
-
-" 3) Order sensitive plugins
-source $VIM_DIR/rd_formatting.vim " Must load after file_formatting
 
 " <SPACE> to execute macro on q
 nnoremap <Space> @q
