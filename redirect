@@ -18,6 +18,7 @@ if [ ! -f "$LOCAL_DIR_SETUP" ]; then
 	echo '#!/bin/bash' >> $LOCAL_DIR_SETUP
 	echo 'RD_PATH="$HOME/RentDynamics";' >> $LOCAL_DIR_SETUP
 	echo 'SCHOOL_DIR="$HOME/School";' >> $LOCAL_DIR_SETUP
+	echo 'DOTWRYN="$HOME/.wryn";' >> $LOCAL_DIR_SETUP
 else
 	echo 'bash environment variables already set up'
 fi
