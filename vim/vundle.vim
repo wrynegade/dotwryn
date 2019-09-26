@@ -22,10 +22,10 @@ Plugin 'VundleVim/Vundle.vim'
 	Plugin 'git://github.com/Valloric/YouCompleteMe.git'
 " leafgarland -- typescript recognition
 "	Plugin 'https://github.com/leafgarland/typescript-vim'
-" ale -- asynchronus error checking
- 	Plugin 'https://github.com/w0rp/ale'
 " omnisharp (c#)
 	Plugin 'OmniSharp/omnisharp-vim'
+" ale -- asynchronus error checking
+ 	Plugin 'https://github.com/w0rp/ale'
 
 " example for local command:
 "	Plugin 'file:///home/gmarik/path/to/plugin'
