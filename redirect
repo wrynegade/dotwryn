@@ -31,6 +31,7 @@ if [ ! -f "$LOCAL_VIM_SETUP" ]; then
 	echo 'let $WRYNVIMRC=expand("$VIM_DIR/rc.vim")' >> $LOCAL_VIM_SETUP
 	echo 'let $WRYNBASH=expand("$RC_DIR/bashrc")' >> $LOCAL_VIM_SETUP
 	echo 'let $MYBASHRC=expand("$HOME/.bashrc")' >> $LOCAL_VIM_SETUP
+	echo 'let $WEBBROWSER="' $(which google-chrome-stable) '"' >> $LOCAL_VIM_SETUP
 else
 	echo 'vim environment variables already set up'
 fi
