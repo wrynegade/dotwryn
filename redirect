@@ -26,11 +26,11 @@ fi
 LOCAL_VIM_SETUP="$HOME/.my_vim_env"
 if [ ! -f "$LOCAL_VIM_SETUP" ]; then
 	touch "$LOCAL_VIM_SETUP";
-	echo 'let $RC_DIR="$HOME/.wryn"' >> $LOCAL_VIM_SETUP
-	echo 'let $VIM_DIR="$RC_DIR/vim"' >> $LOCAL_VIM_SETUP
-	echo 'let $WRYNVIMRC="$VIM_DIR/rc.vim"' >> $LOCAL_VIM_SETUP
-	echo 'let $WRYNBASH="$RC_DIR/bashrc"' >> $LOCAL_VIM_SETUP
-	echo 'let $MYBASHRC="$HOME/.bashrc"' >> $LOCAL_VIM_SETUP
+	echo 'let $RC_DIR=expand("$HOME/.wryn")' >> $LOCAL_VIM_SETUP
+	echo 'let $VIM_DIR=expand("$RC_DIR/vim")' >> $LOCAL_VIM_SETUP
+	echo 'let $WRYNVIMRC=expand("$VIM_DIR/rc.vim")' >> $LOCAL_VIM_SETUP
+	echo 'let $WRYNBASH=expand("$RC_DIR/bashrc")' >> $LOCAL_VIM_SETUP
+	echo 'let $MYBASHRC=expand("$HOME/.bashrc")' >> $LOCAL_VIM_SETUP
 else
 	echo 'vim environment variables already set up'
 fi

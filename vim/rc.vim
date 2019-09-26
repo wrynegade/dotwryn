@@ -1,10 +1,9 @@
 " -- Environment Variables --------------------------------------- {{{
 source $HOME/.my_vim_env
-"let $RC_DIR="/home/w0ryn/.wryn"
-"let $VIM_DIR="/home/w0ryn/.wryn/vim"
-"let $WRYNVIMRC="$VIM_DIR/rc.vim"
-"let $WRYNBASH="$RC_DIR/bashrc"
-"let $MYBASHRC="/home/w0ryn/.bashrc"
+"sets the following variables:
+"$RC_DIR $VIM_DIR $WRYNVIMRC $WRYNBASH $MYBASHRC
+" Load Vundle Plugins First
+source $VIM_DIR/vundle.vim
 " }}}
 
 " -- General Settings -------------------------------------------- {{{
