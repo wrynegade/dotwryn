@@ -31,6 +31,7 @@ blur-background-exclude = [
 
 # Duplicating the _NET_WM_STATE entries because compton cannot deal with atom arrays :-/
 opacity-rule = [
+  "100:name *= 'VIM'",
   "97:class_g = 'Termite' && !_NET_WM_STATE@:32a",
 
   "0:_NET_WM_STATE@[0]:32a = '_NET_WM_STATE_HIDDEN'",

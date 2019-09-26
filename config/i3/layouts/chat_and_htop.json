@@ -1,0 +1,129 @@
+{
+     tabbed split container with 3 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "percent": 0.7,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1080,
+               "width": 603,
+               "x": 817,
+               "y": 0
+            },
+            "name": "Slack | Sam Christensen | Rent Dynamics | 2 new items",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^Slack$",
+                "instance": "^slack$",
+                "title": "^Slack\\ \\|\\ Sam\\ Christensen\\ \\|\\ Rent\\ Dynamics\\ \\|\\ 2\\ new\\ items$",
+                "window_role": "^browser\\-window$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 800,
+               "width": 1100,
+               "x": 458,
+               "y": 230
+            },
+            "name": "Android Messages",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^Android\\ Messages$",
+                "instance": "^android\\ messages$",
+                "title": "^Android\\ Messages$",
+                "window_role": "^browser\\-window$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1080,
+               "width": 1371,
+               "x": 3869,
+               "y": 29
+            },
+            "name": "Activity - Discord",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^discord$",
+                "instance": "^discord$",
+                "title": "^Activity\\ \\-\\ Discord$",
+                "window_role": "^browser\\-window$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.3,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1165,
+               "width": 565,
+               "x": 0,
+               "y": 0
+            },
+            "name": "w0ryn@yage:~",
+            "percent": 0.7,
+            "swallows": [
+               {
+                "class": "^kitty$",
+                "instance": "^kitty$",
+                "title": "^w0ryn\\@yage\\:\\~$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1165,
+               "width": 565,
+               "x": 0,
+               "y": 0
+            },
+            "name": "w0ryn@yage:~",
+            "percent": 0.3,
+            "swallows": [
+               {
+                "class": "^kitty$",
+                "instance": "^kitty$",
+                "title": "^w0ryn\\@yage\\:\\~$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

@@ -1,0 +1,93 @@
+{
+    "border": "pixel",
+    "current_border_width": 5,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 1165,
+       "width": 565,
+       "x": 0,
+       "y": 0
+    },
+    "name": "w0ryn@yage:~",
+    "percent": 0.5,
+    "swallows": [
+       {
+        "class": "kitty"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1165,
+               "width": 565,
+               "x": 0,
+               "y": 0
+            },
+            "name": "w0ryn@yage:~",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^kitty$",
+                "instance": "^kitty$",
+                "title": "^w0ryn\\@yage\\:\\~$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1165,
+               "width": 565,
+               "x": 0,
+               "y": 0
+            },
+            "name": "w0ryn@yage:~",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^kitty$",
+                "instance": "^kitty$",
+                "title": "^w0ryn\\@yage\\:\\~$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "pixel",
+            "current_border_width": 5,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1165,
+               "width": 565,
+               "x": 0,
+               "y": 0
+            },
+            "name": "w0ryn@yage:~",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^kitty$",
+                "instance": "^kitty$",
+                "title": "^w0ryn\\@yage\\:\\~$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

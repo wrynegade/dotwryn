@@ -1,0 +1,5 @@
+#!/bin/bash
+source $HOME/.my_bash_env
+XSERVER_DIR="$DOTWRYN/config/xserver"
+
+"$XSERVER_DIR/screenlayout/three_monitor_work_setup.sh"
