@@ -71,6 +71,10 @@ let g:ale_linters = {
 \ 'cs' : ['OmniSharp']
 \}
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 'never'
+
+nnoremap <Leader>ae :ALENext<cr>
+nnoremap <Leader>ar :ALEPrevious<cr>
 
 " --- command t ---
 nnoremap T :CommandT<cr>

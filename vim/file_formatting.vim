@@ -12,7 +12,7 @@ augroup filetype_specific_formatting
 	autocmd FileType sh         setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
 	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
 	autocmd FileType markdown   setlocal tabstop=2 noexpandtab foldmethod=indent foldlevel=99 spell
-	autocmd FileType tex		setlocal tabstop=2 noexpandtab foldmethod=indent foldlevel=99 spell
+	autocmd FileType tex		setlocal           noexpandtab foldmethod=indent foldlevel=99 spell
 augroup end
 " }}}
 
