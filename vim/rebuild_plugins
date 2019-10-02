@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function updateCommandT() {
+	local COMMAND_T_DIR="$HOME/.vim/bundle/command-t/ruby/command-t/ext/command-t";
+	[ ! -d $COMMAND_T_DIR ] && echo "Unable to locate command t build files" && exit 1;
+
+	cd $COMMAND_T_DIR;
+	pwd;
+	ruby extconf.rb;
+	make;
+}
+
+updateCommandT;
