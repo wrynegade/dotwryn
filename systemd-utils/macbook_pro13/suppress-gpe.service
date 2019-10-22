@@ -1,0 +1,8 @@
+[Unit]
+Description=Disables GPE 66, an interrupt that is going crazy on Macs
+
+[Service]
+ExecStart=/usr/bin/bash -c 'echo "disable" > /sys/firmware/acpi/interrupts/gpe16; echo "disable" > /sys/firmware/acpi/interrupts/gpe17;'
+
+[Install]
+WantedBy=multi-user.target
