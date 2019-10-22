@@ -2,8 +2,5 @@
 source $HOME/.my_bash_env
 XSERVER_DIR="$DOTWRYN/config/xserver"
 
-#bindsym XF86MonBrightnessUp exec light -A 5 # increase screen brightness
-#bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness
-
 "$XSERVER_DIR/set_randr_layout" &
 exec i3
