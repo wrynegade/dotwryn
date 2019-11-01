@@ -7,7 +7,7 @@
 " colorscheme lanox            " BG-Terminal  , FONT-White        , SYNTAX-BrightOrangish
 " colorscheme nightsky         " BG-Black     , FONT-White        , SYNTAX-Orange&FadedColors
 " *colorscheme made_of_code    " BG-Black     , FONT-White        , SYNTAX-Green&HighlightedComments
-" colorscheme moss             " BG-Black     , FONT-BlueishWhite , SYNTAX-Light&DarkColorMix
+ colorscheme moss              " BG-Black     , FONT-BlueishWhite , SYNTAX-Light&DarkColorMix
 " colorscheme skittles_berry   " BG-Black     , FONT-FadedYellow  , SYNTAX-BrightColors
-colorscheme pf_earth           " BG-Black     , FONT-LightYellow  , SYNTAX-Bright&DarkColorMix
+" colorscheme pf_earth         " BG-Black     , FONT-LightYellow  , SYNTAX-Bright&DarkColorMix
 " colorscheme default
