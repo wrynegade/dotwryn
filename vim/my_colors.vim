@@ -11,3 +11,7 @@
 " colorscheme skittles_berry   " BG-Black     , FONT-FadedYellow  , SYNTAX-BrightColors
 " colorscheme pf_earth         " BG-Black     , FONT-LightYellow  , SYNTAX-Bright&DarkColorMix
 " colorscheme default
+" colorscheme snow
+
+" transparent background
+highlight Normal guibg=NONE ctermbg=NONE
