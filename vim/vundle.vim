@@ -64,7 +64,8 @@ function! ToggleYCM()
 	endif
 endfunction
 nnoremap <C-p> :call ToggleYCM()<CR>
-let g:ycm_auto_trigger=0
+" STARTS DEACTIVATED
+" let g:ycm_auto_trigger=0
 
 " --- ALE ---
 let g:ale_linters = {
