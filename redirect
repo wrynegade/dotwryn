@@ -12,6 +12,10 @@ grep '.wryn' $HOME/.vimrc >/dev/null 2>/dev/null \
 	&& echo already set up vim rc \
 	|| echo source $RC_DIR/vim/rc.vim >> $HOME/.vimrc;
 
+grep '.wryn' $HOME/.zshrc >/dev/null 2>/dev/null \
+	&& echo already set up zsh rc \
+	|| echo source $RC_DIR/zsh/rc >> $HOME/.zshrc;
+
 LOCAL_DIR_SETUP="$HOME/.my_bash_env"
 if [ ! -f "$LOCAL_DIR_SETUP" ]; then
 	touch "$LOCAL_DIR_SETUP";
@@ -22,6 +26,18 @@ if [ ! -f "$LOCAL_DIR_SETUP" ]; then
 else
 	echo 'bash environment variables already set up'
 fi
+
+LOCAL_ZSH_SETUP="$HOME/.my_zsh_env"
+if [ ! -f "$LOCAL_ZSH_SETUP" ]; then
+	touch "$LOCAL_ZSH_SETUP";
+	echo '#!/bin/zsh' >> $LOCAL_ZSH_SETUP
+	echo 'RD_PATH="$HOME/RentDynamics";' >> $LOCAL_ZSH_SETUP
+	echo 'SCHOOL_ZSH="$HOME/School";' >> $LOCAL_ZSH_SETUP
+	echo 'DOTWRYN="$HOME/.wryn";' >> $LOCAL_ZSH_SETUP
+else
+	echo 'zsh environment already set up';
+fi
+
 
 LOCAL_VIM_SETUP="$HOME/.my_vim_env"
 if [ ! -f "$LOCAL_VIM_SETUP" ]; then
@@ -35,3 +51,4 @@ if [ ! -f "$LOCAL_VIM_SETUP" ]; then
 else
 	echo 'vim environment variables already set up'
 fi
+

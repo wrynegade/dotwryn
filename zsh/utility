@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+# --- Note-taking facilitated ---------------------------------
+NOTE_PATH='/Users/w0ryn/Documents/notes';
+NOTE_EXTENSION='.txt';
+alias mynotes='cd $NOTE_PATH';
+function note() { vim $NOTE_PATH/$1$NOTE_EXTENSION; }
+function notes() { NOTE="$NOTE_PATH/$1$NOTE_EXTENSION"; [ $1 ] && [ -f $NOTE ] && vim $NOTE || vim $NOTE_PATH; }
+
+# --- GIT -----------------------------------------------------
+alias gitbranchcleanup='git branch -d $(git branch | sed -E "/develop|master|\*/d")'
+
+
+alias pd='pushd';
+alias qd='popd';
+alias ds='dirs';
