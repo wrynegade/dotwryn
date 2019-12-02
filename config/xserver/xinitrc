@@ -1,11 +1,15 @@
 #!/bin/bash
 source $HOME/.my_bash_env
 
-XSERVER_DIR="$DOTWRYN/config/xserver"
 
 CUSTOM_DMENU_COMMANDS="$HOME/.local/custom_dmenu"
-[ -d $CUSTOM_DMENU_COMMANDS]
+[ ! -d $CUSTOM_DMENU_COMMANDS] && mkdir $CUSTOM_DMENU_COMMANDS
+
 export PATH="$CUSTOM_DMENU_COMMANDS:$PATH"
 
+XSERVER_DIR="$DOTWRYN/config/xserver"
+
 "$XSERVER_DIR/set_randr_layout" &
+
+
 exec i3
