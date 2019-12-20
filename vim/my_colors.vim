@@ -13,5 +13,6 @@ colorscheme moss               " BG-Black     , FONT-BlueishWhite , SYNTAX-Light
 " colorscheme default
 " colorscheme snow
 
+set t_Co=256
 " transparent background
 highlight Normal guibg=NONE ctermbg=NONE
