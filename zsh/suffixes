@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+PYTHON="py"
+ CLISP="clisp lisp"
+ SHELL="sh bash zsh"
+  TEXT="txt md js";
+   WEB="css scss less html php cshtml json"
+    JS="ts tsx js"
+     C="cpp h c cs"
+
+FILES_TO_EDIT="$PYTHON $CLISP $SHELL $TEXT $WEB $JS $C";
+
+for filetype in ${(s/ /)FILES_TO_EDIT}; do
+	alias -s $filetype="$EDITOR";
+done;
