@@ -20,32 +20,35 @@ else
 fi
 
 
-
-
-ROLL=$(($RANDOM%4));
+ROLL=$(($RANDOM%5));
 
 if   [ $ROLL -eq 0 ]; then
 	feh --bg-fill\
 		$HOME/Pictures/bg/midoriya.jpg\
 		$HOME/Pictures/bg/altaria.jpg\
 		$HOME/Pictures/bg/captainfalcon.jpg\
-		>/dev/null 2>&1
+		>/dev/null 2>&1;
 elif [ $ROLL -eq 1 ]; then
 	feh --bg-fill\
 		$HOME/Pictures/bg/dimitri.jpg\
 		$HOME/Pictures/bg/claude.jpg\
 		$HOME/Pictures/bg/edelgard.jpg\
-		>/dev/null 2>&1
+		>/dev/null 2>&1;
 elif [ $ROLL -eq 2 ]; then
 	feh --bg-fill\
 		$HOME/Pictures/bg/fe8.jpg\
 		$HOME/Pictures/bg/micaiah.jpg\
 		$HOME/Pictures/bg/roy.jpg\
-		>/dev/null 2>&1
+		>/dev/null 2>&1;
 elif [ $ROLL -eq 3 ]; then
 	feh --bg-fill\
 		$HOME/Pictures/bg/chrom.png\
 		$HOME/Pictures/bg/byleth.jpg\
 		$HOME/Pictures/bg/link.jpg\
-		>/dev/null 2>&1
+		>/dev/null 2>&1;
+elif [ $ROLL -eq 4 ]; then
+	random_image="$(find $HOME/Pictures/bg -type f | shuf -n 1)";
+	feh --bg-fill\
+		$random_image\
+		>/dev/null 2>&1;
 fi

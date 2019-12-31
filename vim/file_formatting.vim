@@ -13,6 +13,11 @@ augroup filetype_specific_formatting
 	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
 	autocmd FileType markdown   setlocal tabstop=2 noexpandtab foldmethod=indent foldlevel=99 spell
 	autocmd FileType tex		setlocal           noexpandtab foldmethod=indent foldlevel=99 spell
+
+augroup end
+
+augroup forced_filetype_recognition
+	autocmd BufRead,BufNewFile *.tmux setfiletype tmux
 augroup end
 " }}}
 
