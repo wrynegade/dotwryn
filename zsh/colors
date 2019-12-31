@@ -1,9 +1,8 @@
 #!/bin/zsh
 
-# get the branch :)
-parse_git_branch(){
-    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
-}
+# ls colors
+alias ls='ls --color=auto';
+
 
 # zsh prompt
 COFFEE="☕";
@@ -15,6 +14,9 @@ SEPARATOR='%b%F{red}::';
 
 DIRECTORY='%B%F{yellow}%6~';
 
+function parse_git_branch(){
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
+}
 GIT_BRANCH='%B%F{cyan}$(parse_git_branch)';
 
 PROMPT=$'\n'' %B%F{128}%# %b%f'
