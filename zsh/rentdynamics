@@ -25,11 +25,9 @@ function rnt() {
 	fi
 }
 _rnt () { # autocompletion
-    # Set
-	local cur=${COMP_WORDS[COMP_CWORD]}
-	COMPREPLY=( $(compgen -W "$(ls $RD_PATH)" -- $cur) )
+	compadd $(ls $RD_PATH)
 }
-complete -F _rnt rnt;
+compdef _rnt rnt;
 
 function refresh_rd_db() {
 	psql postgres -c "DROP DATABASE rentdynamics;"
