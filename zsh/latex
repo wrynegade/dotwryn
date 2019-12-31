@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+alias tekclean='rm *.aux *.log *.pdf'

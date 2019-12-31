@@ -44,7 +44,7 @@ function rntbranchcleanup() {
 		rnt $dir >/dev/null 2>/dev/null; 
 		if [ -d .git ]; then
 			printf " - %s\e[1;34m %s\e[0m..." "clearing repository" "$dir";
-			git branch -d $(git branch | sed -E "/master|\*/d") >/dev/null 2>/dev/null; 
+			git branch -d $(git branch | sed -E "/master|\*|epic-*/d") >/dev/null 2>/dev/null; 
 			printf "\e[1;32m%s\e[0m\n" " DONE"; 
 		else
 			printf " - \e[1;34m%s\e[1;31m %s\e[0m" "$dir" "is not a git repository";
