@@ -4,16 +4,16 @@
 # -------------------------------------
 
 alias school="cd $SCHOOL_DIR";
-alias classes="cat $SCHOOL_DIR/.classes";
+alias classes="echo; cat $SCHOOL_DIR/.classes | lolcat; echo";
 
-alias cs5680='school; cd cs5680__computer_vision';
-alias compvis='cs5680'
+#alias cs5680='school; cd cs5680__computer_vision';
+#alias compvis='cs5680'
 alias cs5600='school; cd cs5600__intelligent_systems';
 alias intsys='cs5600'
-alias engr3080='school; cd engr3080__tech_writing';
-alias techwrit='engr3080'
-alias phil1120='school; cd phil1120__social_ethics';
-alias socioet='phil1120'
+#alias engr3080='school; cd engr3080__tech_writing';
+#alias techwrit='engr3080'
+#alias phil1120='school; cd phil1120__social_ethics';
+#alias socioet='phil1120'
 
 
 HW_TEMPLATE="$DOTWRYN/latex/homework_template.tex"

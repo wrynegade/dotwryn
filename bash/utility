@@ -2,8 +2,9 @@
 
 # --- Shortcuts for quick ARANDR switch -----------------------
 alias undock="$DOTWRYN/config/xserver/screenlayout/undock.sh";
-alias workdock="$DOTWRYN $HOME/.wryn/config/xserver/screenlayout/workdock.sh";
+alias workdock="$DOTWRYN/config/xserver/screenlayout/workdock.sh";
 alias homedock="$DOTWRYN/config/xserver/screenlayout/homedock_hdmionly.sh";
+alias hdmidock="$DOTWRYN/config/xserver/screenlayout/hdmidock.sh";
 
 # --- Note-taking facilitated ---------------------------------
 NOTE_PATH='/Users/w0ryn/Documents/notes';

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Make a new dmenu shortcut
+DMENU_CUSTOM_BIN="$HOME/.local/custom_dmenu";
+
+[ ! -d $DMENU_CUSTOM_BIN ] && mkdir $DMENU_CUSTOM_BIN;
+
+function new_dmenu_command() {
+	local DMENU_BIN="$HOME/.local/custom_dmenu";
+
+	# fail withouut both arguments
+	[ ! $2 ] && exit 1;
+
+	echo "${@:2}" 
+	echo "${@:2}" > $DMENU_BIN/$1 2>/dev/null
+	chmod +x $DMENU_BIN/$1
+}
