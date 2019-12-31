@@ -1,5 +1,22 @@
-#!/bin/bash
-source $HOME/.my_bash_env
+#!/bin/zsh
+source $HOME/.my_zsh_env
 XSERVER_DIR="$DOTWRYN/config/xserver"
 
-"$XSERVER_DIR/screenlayout/workdock.sh"
+AT_HOME="$(xrandr | grep -q 'HDMI-0 connected')";
+AT_RENT="$(xrandr | grep -q 'DP-0 connected' || xrandr | grep -q 'DP-1 connected')";
+
+echo at home >> /home/w0ryn/test
+echo $AT_HOME >> /home/w0ryn/test
+
+echo >> /home/w0ryn/test
+
+echo at rent >> /home/w0ryn/test
+echo $AT_RENT >> /home/w0ryn/test
+
+if $AT_HOME ; then
+	"$XSERVER_DIR/screenlayout/homedock_hdmionly.sh";
+elif $AT_RENT; then
+	"$XSERVER_DIR/screenlayout/workdock.sh"
+else;
+	"$XSERVER_DIR/screenlayout/undock.sh";
+fi

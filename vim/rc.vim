@@ -3,6 +3,8 @@ source $HOME/.my_vim_env
 "sets the following variables:
 "$RC_DIR $VIM_DIR $WRYNVIMRC $WRYNBASH $MYBASHRC $WEBBROWSER
 
+set encoding=utf-8
+
 let mapleader = "\\"
 "let localmapleader = ','
 
