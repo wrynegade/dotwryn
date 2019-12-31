@@ -6,7 +6,7 @@ alias ls='ls --color=auto';
 
 # zsh prompt
 COFFEE="☕";
-PREVIOUS_COMMAND_CONDITION="%B%(?.%F{magenta}.%F{210}) $COFFEE";
+PREVIOUS_COMMAND_CONDITION="%B%(?.%F{yellow}.%F{210}) $COFFEE";
 
 USER='%B%F{green}%n';
 
