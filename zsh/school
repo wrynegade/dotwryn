@@ -19,7 +19,7 @@ alias classes="echo; cat $SCHOOL_DIR/.classes | lolcat; echo";
 HW_TEMPLATE="$DOTWRYN/latex/homework_template.tex"
 function hw() {
 	# Make new homework .tex from default template
-	[ ! $1 ] && echo "Homework filename required" && exit 1;
+	[ ! $1 ] && echo "Homework filename required" && return 1;
 
 	NEW_HW="./$1.tex";
 	[ ! -f $NEW_HW ] && cp $HW_TEMPLATE $NEW_HW;
