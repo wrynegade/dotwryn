@@ -1,5 +1,5 @@
 #!/bin/sh
-source $HOME/.my_zsh_env
+source $HOME/.wryn/env/env.sh
 
 
 CUSTOM_DMENU_COMMANDS="$HOME/.local/custom_dmenu"
