@@ -52,3 +52,5 @@ function SYMLINK_CONFIG() {
 
 SYMLINK_CONFIG "compton" "compton.conf";
 SYMLINK_CONFIG "i3" "config";
+SYMLINK_CONFIG "kitty" "kitty.conf";
+SYMLINK_CONFIG "kitty" "theme.conf";

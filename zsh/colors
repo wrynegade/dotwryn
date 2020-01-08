@@ -24,3 +24,20 @@ PROMPT=$'\n'' %B%F{128}%# %b%f'
 setopt PROMPT_SUBST
 PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT"
 #RPROMPT="$(\e[1A) $GIT_BRANCH";
+
+
+######################################################################################
+#
+function kittyChangeTheme () {
+	[ ! $1 ] && echo no filename given :c && return 1;
+	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$1" ] \
+		&& echo colorscheme not supported && return 2;
+
+	rm $DOTWRYN/config/kitty/theme.conf
+	ln -s "$DOTWRYN/config/colorschemes/kitty/$1" "$DOTWRYN/config/kitty/theme.conf"\
+		&& echo 'theme changed successfully! (effective on new terminal session)'
+}
+_kittyChangeTheme () {
+	compadd $(ls $DOTWRYN/config/colorschemes/kitty)
+}
+compdef _kittyChangeTheme kittyChangeTheme;
