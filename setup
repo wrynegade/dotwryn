@@ -33,6 +33,22 @@ LOCAL_VIM_ENV="$HOME/.config/wryn/env.vim"
 			|| echo 'let $WEBBROWSER=""' >> $LOCAL_VIM_ENV;
 
 	} || {
-		echo 'vim environment variables already set up'
+		echo 'vim environment variables already set up';
 	}
 
+
+# setup config symlinks
+xfce4-panel --version >/dev/null 2>&1 \
+	&& [ ! -f "$HOME/.xinitrc" ] \
+	&& ln -s "$HOME/.wryn/config/xserver/xinitrc" "$HOME/.xinitrc";
+
+function SYMLINK_CONFIG() {
+	# $1 = config directory name
+	# $2 = filename
+	[ ! -d "$HOME/.config/$1" ] && mkdir "$HOME/.config/$1";
+	[ -f "$HOME/.config/$1/$2" ] && mv "$HOME/.config/$1/$2" "$HOME/.config/$1/$2.bak";
+	ln -s "$HOME/.wryn/config/$1/$2" "$HOME/.config/$1/$2";
+}
+
+SYMLINK_CONFIG "compton" "compton.conf";
+SYMLINK_CONFIG "i3" "config";
