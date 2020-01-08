@@ -1,5 +1,5 @@
 " -- Environment Variables --------------------------------------- {{{
-source $HOME/.my_vim_env
+source $HOME/.wryn/env/env.vim
 "sets the following variables:
 "$RC_DIR $VIM_DIR $WRYNVIMRC $WRYNBASH $MYBASHRC $WEBBROWSER
 
