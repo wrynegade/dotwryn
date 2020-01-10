@@ -38,6 +38,9 @@ LOCAL_VIM_ENV="$HOME/.config/wryn/env.vim"
 
 
 # setup config symlinks
+[ -f "$HOME/.tmux.conf" ] && mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak";
+ln -s "$HOME/.wryn/tmux/tmux.conf" "$HOME/.tmux.conf";
+
 xfce4-panel --version >/dev/null 2>&1 \
 	&& [ ! -f "$HOME/.xinitrc" ] \
 	&& ln -s "$HOME/.wryn/config/xserver/xinitrc" "$HOME/.xinitrc";
