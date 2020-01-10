@@ -31,5 +31,5 @@ bind-key -n M-v split-window -v
 bind-key -n M-b split-window -h
 bind-key -n M-q killp
 
-# nested session with ctrl-a
-bind-key -n C-a send-prefix
+# nested session with meta-a
+bind-key -n M-a send-prefix
