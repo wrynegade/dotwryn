@@ -48,3 +48,5 @@ inoremap <c-u> <esc>viwUea
 " set italics characters
 set t_ZH=[3m
 set t_ZR=[23m
+
+" insert the current date
