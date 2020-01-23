@@ -57,3 +57,10 @@ SYMLINK_CONFIG "compton" "compton.conf";
 SYMLINK_CONFIG "i3" "config";
 SYMLINK_CONFIG "kitty" "kitty.conf";
 SYMLINK_CONFIG "kitty" "theme.conf";
+
+function terminfo_setup() {
+	for file in $(find "$HOME/.wryn/config/terminfo" -type f); do
+		tic -x $file;
+	done
+}
+terminfo_setup;
