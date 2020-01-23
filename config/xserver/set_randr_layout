@@ -2,7 +2,12 @@
 source $HOME/.wryn/env/env.zsh
 XSERVER_DIR="$DOTWRYN/config/xserver"
 
+
 AT_HOME(){
+	xrandr -q | grep -q 'HDMI-0 connected' && xrandr -q | grep -q '3840';
+}
+
+CONNECTED_TO_MONITOR() {
 	xrandr -q | grep -q 'HDMI-0 connected';
 }
 
@@ -12,6 +17,12 @@ AT_RENT() {
 
 if AT_HOME; then
 	"$XSERVER_DIR/screenlayout/homedock_hdmionly.sh";
+elif CONNECTED_TO_MONITOR; then
+	if AT_RENT; then
+		"$XSERVER_DIR/screenlayout/workplus.sh";
+	else
+		"$XSERVER_DIR/screenlayout/hdmidock.sh";
+	fi
 elif AT_RENT; then
 	"$XSERVER_DIR/screenlayout/workdock.sh";
 else;
