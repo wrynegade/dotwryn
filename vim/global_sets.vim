@@ -9,6 +9,8 @@ set formatoptions=lj
 let &t_co=256 " use 256-color
 
 set number " show line numbers
+set relativenumber
+
 set autoindent " match indentation with next line
 set smartindent " match indentation with syntax
 

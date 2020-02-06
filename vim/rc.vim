@@ -5,6 +5,10 @@ source $HOME/.wryn/env/env.vim
 
 set encoding=utf-8
 
+" set italics characters
+set t_ZH=[3m
+set t_ZR=[23m
+
 let mapleader = "\\"
 "let localmapleader = ','
 
@@ -45,8 +49,4 @@ nnoremap _ :m -2 <CR>
 " - (insert mode) set current word to upper-case
 inoremap <c-u> <esc>viwUea
 
-" set italics characters
-set t_ZH=[3m
-set t_ZR=[23m
-
-" insert the current date
+set relativenumber
