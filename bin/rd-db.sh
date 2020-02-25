@@ -1,6 +1,10 @@
 #!/bin/sh
 
 #
+# Not my script; big thanks to Sam Christensen (https://github.com/samachr)
+#
+
+#
 # Requires one-time signin to onepassword:
 # `op signin rent-dynamics.1password.com <your-email-address>`
 #
