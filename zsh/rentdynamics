@@ -29,6 +29,8 @@ _rnt () { # autocompletion
 }
 compdef _rnt rnt;
 
+alias rntdb='$DOTWRYN/bin/rd-db.sh'
+
 function refresh_rd_db() {
 	psql postgres -c "DROP DATABASE rentdynamics;"
 	psql postgres -c "CREATE DATABASE rentdynamics with owner rd;"
