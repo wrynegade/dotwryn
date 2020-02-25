@@ -48,5 +48,3 @@ nnoremap _ :m -2 <CR>
 
 " - (insert mode) set current word to upper-case
 inoremap <c-u> <esc>viwUea
-
-set relativenumber
