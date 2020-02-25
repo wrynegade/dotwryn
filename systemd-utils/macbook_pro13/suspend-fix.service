@@ -1,0 +1,7 @@
+[Unit]
+Description=Disables magnetic sensor wakeup, allowing arch to sleep
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo XHC! > /proc/acpi/wakeup && echo LID0 > /proc/acpi/wakeup"
+[Install]
+WantedBy=multi-user.target
