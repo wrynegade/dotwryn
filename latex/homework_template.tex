@@ -1,45 +1,52 @@
-% -- Document body begins on line 80
+%
+%
 
-% ---------------------------------------------------------------------------------------------
-% ------ Document type and page margins -------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+\newcommand{\documentTitle} {Homework }
+\newcommand{\documentDate}  {}
+\newcommand{\documentId}    {}
+
+\newcommand{\authorName}    {Wryn Wagner}
+\newcommand{\authorId}      {A01995076}
+
+%
+%
+
+% ----------------------------------------------------------
+% ------ Header Code ---------------------------------------
+% ----------------------------------------------------------
+
 \documentclass[letterpaper]{article}
 \usepackage[margin=1in,bottom=.5in,includefoot]{geometry}
 
-\usepackage{lastpage} 		 % -- Package used for finding total page numbers
-\usepackage{amssymb}		 % -- Package used for typing "bold" math letters and symbols
-\usepackage{amsmath}		 % -- Package for various math symbols
-\usepackage{arydshln}		 % -- Package used for dashed lines in tables
-\usepackage{dashrule}		 % -- Package used for dashed lines on the page
-\usepackage{listings}		 % -- Package used for code snippets
-\usepackage[final]{pdfpages}	 % -- Package used for inserting pages of a PDF file
-\usepackage{tikz}		 % -- Package used for drawing graphs
-\usepackage{graphicx}       	 % -- Package used to insert graphics
-\usepackage{lipsum}              % -- Package for lorem ipsum
-\usepackage{kantlipsum}          % -- Package for Kant style lorem ipsum
-\usepackage[english]{babel}      % -- Package for English grammar
-\graphicspath{ {./images/} }
+\usepackage{lastpage} 	 % -- finds total page numbers
+
+\usepackage{amssymb}	     % -- "bold" math letters (e.g. set of all integers Z)
+\usepackage{amsmath}	     % -- advanced math symbols
+
+\usepackage{arydshln}	     % -- dashed lines within tables
+\usepackage{dashrule}	     % -- dashed lines outside tables
+
+\usepackage{listings}	     % -- code snippet styling block
+
+\usepackage{tikz}            % -- generates graphs and other graphics
+\usepackage[final]{pdfpages} % -- inserts external pdf excerpts
+\usepackage{graphicx}        % -- inserts standard image graphics
+\graphicspath{{./graphics/}}
+
+\usepackage{lipsum}       % -- generates lorem ipsum
+\usepackage{kantlipsum}   % -- generates Kantian lorem ipsum
+
+\usepackage[english]{babel} % -- corrects English grammar?
 
 
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
 % Edit this section to create the title, headers, and footers for the document
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
 
-\newcommand{\homeworkTitle}		{Homework }
-\newcommand{\authorName}		{Wryn Wagner}
-\newcommand{\Anumber}			{A01995076}
-\newcommand{\assignmentDate}		{}
-\newcommand{\classId}			{}
-
-
-% ---------------------------------------------------------------------------------------------
-% ------ Header Code --------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
-
-\newcommand{\headerLeft}	{\homeworkTitle : \assignmentDate}
+\newcommand{\headerLeft}	{\documentTitle: \assignmentDate}
 \newcommand{\headerCenter}	{\classId}
-\newcommand{\headerRight}	{\authorName\ (\Anumber)}
-\newcommand{\pageOfTotal}	{\thepage\ of \pageref{LastPage}}
+\newcommand{\headerRight}	{\authorName\ (\authorId)}
+\newcommand{\pageOfTotal}	{\thepage\~of~\pageref{LastPage}}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -48,7 +55,7 @@
 \fancyhead[R]{\headerRight}
 \fancyhead[C]{\headerCenter}
 \fancyfoot[C]{\pageOfTotal}
-\fancypagestyle{plain}{
+\fancypagestyle{plain}{%
 	\fancyhf{}
 	\fancyhead[L]{\headerLeft}
 	\fancyhead[R]{\headerRight}
@@ -56,38 +63,38 @@
 	\fancyfoot[C]{\pageOfTotal}
 }
 
-\title{\homeworkTitle}
-\author{\authorName \\ \Anumber}
+\title{\documentTitle}
+\author{\authorName\ \\ \authorId}
 \date{\assignmentDate}
 
 
-% ---------------------------------------------------------------------------------------------
-% ------ Theorems, Lemmas, and Corollaries ----------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
+% ------ Theorems, Lemmas, and Corollaries -----------------
+% ----------------------------------------------------------
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 
 
-% ---------------------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
+% ----------------------------------------------------------
+% ----------------------------------------------------------
 \begin{document}
 \maketitle
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
 % Begin document here :)
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
 \section{} %Problem 1
 \subsection{Prompt}
 
 
 
 \noindent\rule{2in}{0.4pt}
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
 
 
-% ---------------------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------
+% ----------------------------------------------------------
 \end{document}
 
