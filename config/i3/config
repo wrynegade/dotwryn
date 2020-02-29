@@ -150,6 +150,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+p exec feh --randomize --bg-fill /home/w0ryn/.wallpaper/* /home/w0ryn/.wallpaper/* /home/w0ryn/.wallpaper/*
+
 # Set parent container to full screen
 bindsym $mod+Shift+f focus parent; fullscreen; focus child
 
