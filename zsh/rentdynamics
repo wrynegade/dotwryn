@@ -1,79 +1,180 @@
 #!/bin/zsh
-alias rdvmail='VMAIL_HOME=~/.vmail/business1 vmail';
+
+#
+# rnt() = RentDynamics God Function
+#
+# Performs one of the following actions based on first argument:
+# 	- (arg = NO ARGUMENT)  Deactivate current virtual environment and return to $RD_PATH
+# 	- (arg = project-name) Activate (and step into) project by name
+# 	- (arg = 'db')         Connect to databases available to the 1password api
+# 	- (arg = 'refresh_db') Drops and recreates local POSTGRES databases
+# 	- (arg = 'cleanup')    Performs safe-deletions on all projects' inactive branches
+# 	- (arg = 'status')     Uses 'rockymadden/slack-cli' to update slack status
+# 	- (arg = 'mail')       BROKEN : Uses a VMAIL client to connect to email
+#
+# The (arg = project-name) case requires the following project file-structure:
+#	$RD_PATH/project-name
+#	  | /code (created by git clone PROJECT_URL code)
+#	  | /env  (created by virtualenv or nodeenv)
+#	
 
 function rnt() {
-# filestructure needed:
-# RD_PATH/project-name
-#	> /code (git clone)
-#	> /env  (virtualenv)
-	deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
-	cd $RD_PATH;
+	case $1 in
+		db | DB)
+			RENT_DYNAMICS_CONNECT_TO_DATABASE "${@:2}";
+			;;
+		refresh_db | REFRESH_DB)
+			RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES "${@:2}";
+			;;
+		cleanup | CLEANUP)
+			RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP "${@:2}";
+			;;
+		status | slack-status)
+			RENT_DYANAMICS_UPDATE_SLACK_STATUS "${@:2}";
+			;;
+		mail | MAIL | email | EMAIL)
+			# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
+			echo "Email not currently supported :c"
+			;;
+		*)
+			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
+			cd "$RD_PATH"
 
-	local cont=0;
-	[ $1 ] \
-		&& [ -d $RD_PATH/$1 ] \
-			&& cd $1 >/dev/null 2>/dev/null \
-		|| cont=1;
-
-	if [ $cont -eq 0 ]; then
-		[ -f ./env/bin/activate ] \
-			&& source ./env/bin/activate \
-			|| echo No environment here, boss!;
-		[ -d ./code ] \
-			&& cd code \
-			|| echo No source folder here!;
-	fi
+			[ -d "$1" ] && {
+				cd "$1" >/dev/null 2>/dev/null;
+				[ -f "./env/bin/activate" ] \
+					&& source "./env/bin/activate" \
+					|| echo No environment here, boss!;
+				[ -d "./code" ] && cd "./code";
+			}
+	esac
 }
 _rnt () { # autocompletion
-	compadd $(ls $RD_PATH)
+	local state
+
+	_arguments \
+		'1: :->project_or_command'\
+		':: :->command_args'\
+		;
+	case "$state" in
+		project_or_command)
+			compadd $(ls "$RD_PATH");
+			compadd db refresh_db cleanup mail status;
+			;;
+		command_args)
+			[ $words[2] == 'status' ] && _RENT_DYANAMICS_UPDATE_SLACK_STATUS;
+			;;
+	esac
 }
 compdef _rnt rnt;
 
-alias rntdb='$DOTWRYN/bin/rd-db.sh'
+###############################################################################
+### HELPERS ###################################################################
+###############################################################################
 
-function refresh_rd_db() {
+export function RENT_DYNAMICS_CONNECT_TO_DATABASE() {
+	"$DOTWRYN/bin/rd-db.sh" "$@";
+}
+
+function RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES() {
 	psql postgres -c "DROP DATABASE rentdynamics;"
 	psql postgres -c "CREATE DATABASE rentdynamics with owner rd;"
 	psql postgres -c "DROP DATABASE rdrentplus;"
 	psql postgres -c "CREATE DATABASE rdrentplus with owner rd;"
 }
 
-function rntbranchcleanup() {
+function RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP() {
 	printf "\nInitializing branch cleanup...\n\n"
-	for dir in $(ls $RD_PATH); do 
-		rnt $dir >/dev/null 2>/dev/null; 
+	for dir in $(ls $RD_PATH); do
+		rnt $dir >/dev/null 2>/dev/null;
 		if [ -d .git ]; then
 			printf " - %s\e[1;34m %s\e[0m..." "clearing repository" "$dir";
-			git branch -d $(git branch | sed -E "/master|\*|epic-*/d") >/dev/null 2>/dev/null; 
-			printf "\e[1;32m%s\e[0m\n" " DONE"; 
+			git branch -d $(git branch | sed -E "/master|\*|epic-*/d") >/dev/null 2>/dev/null;
+			printf "\e[1;32m%s\e[0m\n" " DONE";
 		else
-			printf " - \e[1;34m%s\e[1;31m %s\e[0m" "$dir" "is not a git repository";
+			printf " - \e[1;34m%s\e[1;31m %s\e[0m\n" "$dir" "is not a git repository";
 		fi
 		rnt;
 	done;
 	printf "\n\n\e[1;36m%s\e[1;35m %s\e[0m\n\n" "RentDynamics" "repository branches all clean!";
 }
 
-
-function rdstatus() {
-	slack status edit "$1" $2 >/dev/null 2>&1;
+function RENT_DYNAMICS_CONNECT_TO_EMAIL() {
+	'VMAIL_HOME=~/.vmail/business1 vmail';
 }
 
-alias rdclearstatus='slack status clear >/dev/null 2>&1'
+function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
+	slack-cli --version >/dev/null 2>&1 || {
+		echo 'I require the slack-cli. For installation and setup, see https://github.com/rockymadden/slack-cli';
+	}
 
-alias   rdstart='rdboost'
-alias  rdstart2='rdpanic'
-alias   rdplank='rdstatus "plank time!" :evergreen_tree:'
-alias    rdstop='rdstatus "not making money" :sunglasses:'
-alias   rdstop2='rdride'
-alias    rdmeal='rdstatus "so hungry..." :hamburger:'
-alias   rdturbo='rdstatus "ZOOOM" :turbo:'
-alias   rdsuper='rdstatus "AAAAAAAAAAAAHHHHHHHHH" :gohan:'
-alias rdmeeting='rdstatus "afk" :necktie:'
-alias  rdbudget='rdstatus "did somebody say skee-ball??" :scales:'
-alias  rdcheese='rdstatus "only the most important things on my mind" :cheese_wedge:'
-alias    rdfoos='rdstatus "I will defeat Mike... someday..." :soccer:'
-alias     rdlax='rdstatus "BELAAAAAAAX" :exploding_head:'
-alias   rdpanic='rdstatus "dont panic!" :exclamation:'
-alias   rdboost='rdstatus "Use your heart, and boost fire!" :boost_fire:'
-alias    rdride='rdstatus "probably riding" :man-biking:'
+	local STATUS_ARG;
+	case $1 in
+		start)
+			STATUS_ARG='boost';
+			;;
+		stop)
+			STATUS_ARG='ride';
+			;;
+		*)
+			STATUS_ARG="$1";
+			;;
+	esac
+
+	local MESSAGE;
+	local EMOJI;
+	case $STATUS_ARG in
+		boost | boost-fire | f-zero)
+			MESSAGE="Use your heart, and boost fire!"; EMOJI=':boost_fire:';
+			;;
+		ride | bike-ride | bike)
+			MESSAGE="probably riding"; EMOJI=':man-biking:';
+			;;
+		plank)
+			MESSAGE="plank time!"; EMOJI=':evergreen_tree:';
+			;;
+		meal | eat | food)
+			MESSAGE="so hungry..."; EMOJI=':hamburger:';
+			;;
+		turbo)
+			MESSAGE="ZOOOM"; EMOJI=':turbo:';
+			;;
+		super)
+			MESSAGE="AAAAAAAAAAAAHHHHHHHHH"; EMOJI=':gohan:';
+			;;
+		meeting)
+			MESSAGE="afk"; EMOJI=':necktie:';
+			;;
+		budget)
+			MESSAGE="did somebody say skee-ball??"; EMOJI=':scales:';
+			;;
+		cheese)
+			MESSAGE="only the most important things on my mind"; EMOJI=':cheese_wedge:';
+			;;
+		foos)
+			MESSAGE="I will defeat Mike... someday..."; EMOJI=':soccer:';
+			;;
+		lax | belax | belax8 )
+			MESSAGE="BELAAAAAAAX"; EMOJI=':exploding_head:';
+			;;
+		panic)
+			MESSAGE="dont panic!"; EMOJI=':exclamation:';
+			;;
+		off | not-working | no-money)
+			MESSAGE="not making money"; EMOJI=':sunglasses:';
+			;;
+		clear | clear-status | no-status | please-turn-off-my-status-mr-slack-robot)
+			slack status clear >/dev/null 2>&1
+			;;
+	esac
+
+	[ "$MESSAGE" ] \
+		&& slack-cli status edit "$MESSAGE" "$EMOJI" >/dev/null 2>&1 \
+		&& echo "Slack status successfully updated! : ($STATUS_ARG)";
+}
+_RENT_DYANAMICS_UPDATE_SLACK_STATUS() { # autocompletion
+	compadd \
+		boost-fire bike-ride plank meal turbo super meeting budget cheese foos belax \
+		panic not-working clear-status \
+		;
+}
