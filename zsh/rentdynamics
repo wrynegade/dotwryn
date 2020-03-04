@@ -107,6 +107,7 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 	slack-cli --version >/dev/null 2>&1 || {
 		echo 'I require the slack-cli. For installation and setup, see https://github.com/rockymadden/slack-cli';
 	}
+	ERROR_MESSAGE="Slack CLI Error"
 
 	local STATUS_ARG;
 	case $1 in
@@ -127,6 +128,10 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 		boost | boost-fire | f-zero)
 			MESSAGE="Use your heart, and boost fire!"; EMOJI=':boost_fire:';
 			;;
+		monkas)
+			MESSAGE=" "; EMOJI=':monkas:';
+			;;
+
 		ride | bike-ride | bike)
 			MESSAGE="probably riding"; EMOJI=':man-biking:';
 			;;
@@ -166,15 +171,24 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 		clear | clear-status | no-status | please-turn-off-my-status-mr-slack-robot)
 			slack status clear >/dev/null 2>&1
 			;;
+		:*:)
+			MESSAGE=" "; EMOJI="$1";
+			;;
+		*)
+			ERROR_MESSAGE="Unrecognized preset or emoji";
+			;;
 	esac
 
-	[ "$MESSAGE" ] \
+	[ $2 ] && MESSAGE="$2";
+
+	[ $EMOJI ] \
 		&& slack-cli status edit "$MESSAGE" "$EMOJI" >/dev/null 2>&1 \
-		&& echo "Slack status successfully updated! : ($STATUS_ARG)";
+		&& echo "Slack status successfully updated! : ($STATUS_ARG)" \
+		|| echo "ERROR:::Failed to update slack status :c ($ERROR_MESSAGE)";
 }
 _RENT_DYANAMICS_UPDATE_SLACK_STATUS() { # autocompletion
 	compadd \
-		boost-fire bike-ride plank meal turbo super meeting budget cheese foos belax \
+		boost-fire bike-ride monkas surprised plank meal turbo super meeting budget cheese foos belax \
 		panic not-working clear-status \
 		;
 }
