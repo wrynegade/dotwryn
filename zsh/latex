@@ -1,3 +1,156 @@
 #!/bin/zsh
 
-alias tekclean='rm *.aux *.log *.pdf'
+function tek() {
+	case $1 in
+		clean)
+			LATEX_CLEANUP "${@:2}";
+			;;
+		new)
+			LATEX_NEW_DOCUMENT "${@:2}";
+			;;
+		compile)
+			LATEX_COMPILE "${@:2}";
+			;;
+		*)
+			LATEX_COMPILE "${@:1}";
+			;;
+	esac
+}
+_tek () { # autocompletion
+	local state;
+
+	_arguments \
+		'1: :->primary_command'\
+		':: :->command_args'\
+		;
+	case "$state" in
+		primary_command)
+			compadd clean new compile;
+			;;
+		command_args)
+			[ $words[2] == 'clean' ] && _LATEX_NEW_DOCUMENT;
+			[ $words[2] == 'new' ] && _LATEX_NEW_DOCUMENT;
+			[ $words[2] == 'compile' ] && _LATEX_COMPILE;
+			;;
+	esac
+}
+compdef _tek tek;
+
+
+###############################################################################
+### HELPERS ###################################################################
+###############################################################################
+
+function LATEX_CLEANUP() {
+	rm *.aux *.log *.pdf *.dvi >/dev/null 2>&1;
+	echo 'All clean!';
+	return 0;
+}
+
+function LATEX_NEW_DOCUMENT() {
+	local PARENT_TEMPLATE_DIR="$DOTWRYN/latex";
+	local FILE_NAME;
+
+	[ $2 ] && FILE_NAME="$2" || {
+		printf '\nInput document title : '
+		read FILE_NAME; echo;
+	}
+
+	[ ! "$FILE_NAME" ] && { echo "ERROR :: File name required!"; return 1; }
+
+	local NEW_FILE="$FILE_NAME.tex";
+	[ -f "./$NEW_FILE" ] && { echo "ERROR :: File already already exists : $FILE_NAME.tex"; return 2; }
+
+	[[ $1 && -d "$PARENT_TEMPLATE_DIR/$1" ]] \
+		&& local TEMPLATE_DIR="$PARENT_TEMPLATE_DIR/$1" \
+		|| local TEMPLATE_DIR="$PARENT_TEMPLATE_DIR/default";
+
+	cp "$PARENT_TEMPLATE_DIR/template.tex" "./$FILE_NAME.tex";
+
+	[ ! -f "./body.tex" ] \
+		&& cp "$TEMPLATE_DIR/body.tex" "./body.tex" \
+		|| echo 'WARNING :: `./body.tex` already exists. Template body not copied.' ;
+
+	[ ! -f "./imports.sty" ] \
+		&& cp "$TEMPLATE_DIR/imports.sty" "./imports.sty" \
+		|| echo 'WARNING :: `./imports.sty` already exists. Template imports not copied.';
+
+	[ ! -f "./formatting.sty" ] \
+		&& cp "$TEMPLATE_DIR/formatting.sty" "./formatting.sty" \
+		|| echo 'WARNING :: `./formatting.sty` already exists. Template formatting not copied.';
+}
+_LATEX_NEW_DOCUMENT () {
+	compadd $(ls $DOTWRYN/latex | grep -v .tex);
+}
+
+function LATEX_COMPILE() {
+	local COMPILE_TYPE='pdf';
+
+	[ $1 ] && COMPILE_TYPE="$1";
+
+	local COMPILE_ME="$(find -mindepth 0 -maxdepth 1 -name \*.tex | grep -v body.tex)";
+	[ $(echo "$COMPILE_ME" | wc -l) -gt 1 ] && { echo 'ERROR :: Multiple compatible files detected. Please compile manually.'; return 1; }
+	[[ ! $COMPILE_ME || $(echo "$COMPILE_ME" | wc -l) -lt 1 ]] && { echo 'ERROR :: No compatible files detected. Please ensure .tex file exists in current direcotory'; return 2;}
+
+	case $COMPILE_TYPE in
+		pdf)
+			pdflatex --version >/dev/null 2>&1 && {
+				echo 'Beginning initial compile...';
+				timeout 3 pdflatex $COMPILE_ME >/dev/null && {
+					echo 'Beginning secondary compile...';
+					timeout 3 pdflatex $COMPILE_ME >/dev/null && LATEX_SUCCESS;
+				} || {
+					echo 'ERROR :: Failed to compile. Check local log files';
+					return 1;
+				}
+			} || {
+				echo 'ERROR :: Compiling LaTeX to pdf requires pdflatex: (https://www.tug.org/applications/pdftex)';
+				return 2;
+			}
+			;;
+		dvi)
+			latex --version >/dev/null 2>&1 && {
+				echo 'Beginnint initial compile...';
+				timeout 3 latex $COMPILE_ME >/dev/null && {
+					echo 'Beginning secondary compile...';
+					timeout 3 latex $COMPILE_ME >/dev/null && LATEX_SUCCESS;
+				} || {
+					echo 'ERROR :: Failed to compile. Check local log files';
+					return 1;
+				}
+			} || {
+				echo 'ERROR :: Compiling LaTeX to dvi requires latex: (https://www.latex-project.org/get/)';
+				return 2;
+			}
+			;;
+		*)
+			echo "ERROR :: Unsupported LaTeX compile format : $COMPILE_TYPE";
+			return 2;
+			;;
+	esac
+}
+_LATEX_COMPILE () {
+	compadd pdf dvi default;
+}
+
+function LATEX_SUCCESS() {
+	local MSG='success';
+	local MSG_LONG='LaTeX compile successful!';
+
+	local FIGLET_SUPPORT=0;
+	local LOLCAT_SUPPORT=0;
+
+	figlet -v >/dev/null 2>&1 && FIGLET_SUPPORT=1;
+	lolcat -v >/dev/null 2>&1 && LOLCAT_SUPPORT=1;
+
+	[ $FIGLET_SUPPORT -ne 0 ] && {
+		[ $LOLCAT_SUPPORT -ne 0 ] \
+		&& figlet $MSG | lolcat \
+		|| figlet $MSG;
+	} || {
+		[ $LOLCAT_SUPPORT -ne 0 ] \
+		&& echo $MSG | lolcat \
+		|| echo $MSG_LONG;
+	}
+	echo;
+}
