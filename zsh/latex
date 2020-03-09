@@ -1,5 +1,15 @@
 #!/bin/zsh
 
+#
+# tek() = Local LaTeX Utility
+#
+# Performs one of the following actions based on first argument:
+# 	- (arg = NO ARGUMENT)  Attempt to compile the latex project in the current directory
+# 	- (arg = clean)        Clears out LaTeX log files and build files (pdf and dvi)
+# 	- (arg = new)          Copy a template to the current directory (prompts for document name)
+# 	- (arg = compile)      Attempt to compile the latex project in the current directory
+#
+
 function tek() {
 	case $1 in
 		clean)
