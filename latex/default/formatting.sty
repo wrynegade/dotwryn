@@ -1,0 +1,40 @@
+\ProvidesPackage{formatting}
+
+%
+% 
+
+\newcommand{\headerLeft}	{\documentTitle: \documentDate}
+\newcommand{\headerCenter}	{\documentId}
+\newcommand{\headerRight}	{\authorName\ (\authorId)}
+\newcommand{\pageOfTotal}	{\thepage\ of~\pageref{LastPage}}
+
+%
+%
+
+% margins
+\RequirePackage[margin=1in,bottom=.5in,includefoot]{geometry}
+
+\RequirePackage{lastpage}
+\RequirePackage{fancyhdr} \pagestyle{fancy}
+
+% Page 1
+\fancypagestyle{plain}{%
+	\fancyhf{}
+	\fancyhead[L]{\headerLeft}
+	\fancyhead[R]{\headerRight}
+	\fancyhead[C]{\headerCenter}
+	\fancyfoot[C]{\pageOfTotal}
+}
+
+% Subsequent Pages
+\fancyhf{}
+\fancyhead[L]{\headerLeft}
+\fancyhead[R]{\headerRight}
+\fancyhead[C]{\headerCenter}
+\fancyfoot[C]{\pageOfTotal}
+
+
+\title{\documentTitle}
+\author{\authorName\ \\ \authorId}
+\date{\documentDate}
+
