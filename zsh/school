@@ -1,27 +1,30 @@
 #!/bin/zsh
-# -------------------------------------
-# -- School (Fall 2019) -------------
-# -------------------------------------
+#
+# school() = School Navigation Utility
+#
 
-alias school="cd $SCHOOL_DIR";
-alias classes="echo; cat $SCHOOL_DIR/.classes | lolcat; echo";
+function school() {
+	cd "$SCHOOL_DIR";
 
-#alias cs5680='school; cd cs5680__computer_vision';
-#alias compvis='cs5680'
-#alias cs5600='school; cd cs5600__intelligent_systems';
-#alias intsys='cs5600'
-#alias engr3080='school; cd engr3080__tech_writing';
-#alias techwrit='engr3080'
-#alias phil1120='school; cd phil1120__social_ethics';
-#alias socioet='phil1120'
+	[ -d "$1" ] && cd "$1";
+	[ -d "$2" ] && cd "$2";
 
-
-HW_TEMPLATE="$DOTWRYN/latex/homework_template.tex"
-function hw() {
-	# Make new homework .tex from default template
-	[ ! $1 ] && echo "Homework filename required" && return 1;
-
-	NEW_HW="./$1.tex";
-	[ ! -f $NEW_HW ] && cp $HW_TEMPLATE $NEW_HW;
-	vim $NEW_HW;
+	return 0;
 }
+_school () { # autocompletion
+	local state
+
+	_arguments \
+		'1: :->class_title'\
+		':: :->class_child'\
+		;
+	case "$state" in
+		class_title)
+			compadd $(ls "$SCHOOL_DIR" | grep -v GITIGNORE);
+			;;
+		class_child)
+			compadd $(ls -F "$SCHOOL_DIR/$words[2]" | grep \/);
+			;;
+	esac
+}
+compdef _school school;
