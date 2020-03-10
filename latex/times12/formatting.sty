@@ -3,38 +3,36 @@
 %
 %
 
-\newcommand{\headerLeft}	{\documentTitle: \documentDate}
-\newcommand{\headerCenter}	{\documentId}
-\newcommand{\headerRight}	{\authorName\ (\authorId)}
-\newcommand{\pageOfTotal}	{\thepage\ of~\pageref{LastPage}}
+\newcommand{\horizontalHeader} {%
+	\authorName\hfill
+	\authorId\hfill
+	\documentId\hfill
+	\documentDate%
+}
 
 %
 %
 
 % margins
-\RequirePackage[margin=1in,bottom=.5in,includefoot]{geometry}
+\RequirePackage[margin=1in]{geometry}
 
-\RequirePackage{lastpage}
+
+% page header / page footer
 \RequirePackage{fancyhdr} \pagestyle{fancy}
 
-% Page 1
-\fancypagestyle{plain}{%
-	\fancyhf{}
-	\fancyhead[L]{\headerLeft}
-	\fancyhead[R]{\headerRight}
-	\fancyhead[C]{\headerCenter}
-	\fancyfoot[C]{\pageOfTotal}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{\horizontalHeader}
+\fancyfoot[C]{\thepage}
+
+% paragraph spacing / line indent
+\renewcommand{\baselinestretch}{1}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0em}
+\raggedright%
+
+
+% title format
+\newcommand{\insertTitle} {%
+	\centerline{\begin{large}\textbf{\documentTitle}\end{large}}
 }
-
-% Subsequent Pages
-\fancyhf{}
-\fancyhead[L]{\headerLeft}
-\fancyhead[R]{\headerRight}
-\fancyhead[C]{\headerCenter}
-\fancyfoot[C]{\pageOfTotal}
-
-
-\title{\documentTitle}
-\author{\authorName\ \\ \authorId}
-\date{\documentDate}
 
