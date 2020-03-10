@@ -17,10 +17,10 @@ Here's a little breakdown of what each directory may contain (in no particular o
 It contains `bash` aliases and functions which might be placed in a `~/.bashrc` to be called from the command line.
 I have found it personally useful to break these out into topical groupings or modules.
 
-All modules which are found directly within `.wryn/bash` will be loaded across all operating systems, while specific operating systems architectures will each have their own specified modules (e.g. [`~/.wryn/bash/linux`](./bash/linux) or [`~/.wryn/bash/osx`](./bash/osx)).
+All modules which are found directly within `~/.wryn/bash` will be loaded across all operating systems, while specific operating systems architectures will each have their own specified modules (e.g. [`~/.wryn/bash/linux`](./bash/linux) or [`~/.wryn/bash/osx`](./bash/osx)).
 
 ### [zsh](./zsh)
-Just like [`.wryn/bash`](./bash) but for ZSH.
+Just like [`~/.wryn/bash`](./bash) but for ZSH.
 Currently, I'm using ZSH, so these utilities may be more up-to-date than those found in `~/.wryn/bash`
 
 ### [config](./config)
@@ -29,8 +29,16 @@ In fact, the [`~/.wryn/setup`](./setup) script is designed to symlink relevant f
 
 ### [latex](./latex)
 This directory contains my TeX templates.
-There are shell utilities which facilitate their copying for general use.
+Each template is composed of four files: `template.tex`, `body.tex`, `imports.sty`, and `formatting.sty`.
 
+The `template.tex` file is the parent of the document, and thus the target of the latex compiler.
+This can be renamed to match the document title, but typically does not contain the document body.
+Every template will use the same parent `template.tex` file, so this is found at the [`~/.wryn/latex`](./latex) directory root.
+
+The remaining three files will vary from template to template, but should be copied to the same directory as `template.tex` when creating a working document.
+The two style files, `imports.sty` and `formatting.sty` manage external imports and document styling (respectively), while the `body.tex` should contain the document's text and text-specific commands.
+
+There are [shell utilities](./zsh/latex) which facilitate their copying for general use.
 
 ### [systemd-utils](./systemd-utils)
 I started this directory when I installed Arch Linux on a late 2013 macbook pro.
@@ -41,11 +49,10 @@ This contains all my custom keybindings and vim-scripts.
 There is also an installer which pulls down and builds (or rebuilds) the few external plugins which I use with VI.
 
 ### [bin](./bin)
-I try to keep [`.wryn/bin`](./bin) compatible with SH.
-These are my non-sourced shell utilities.
+Non-sourced shell utilities.
 
 ### [env](./env)
-[`.wryn/setup`](./setup) will link these environment variables to your local machine's shell and vim environments.
+[`~/.wryn/setup`](./setup) will link these environment variables to your local machine's shell and vim environments.
 This is so directories in respective shell/vim modules are not hard-coded to any particular machine.
 The indicated variables should be modified if they cannot be found in the prescribed directory.
 
