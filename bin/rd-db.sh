@@ -11,17 +11,25 @@
 
 ERROR_CODE=0;
 
-OP_ERROR="I require op but it's not installed.    See https://1password.com/downloads/command-line/"
-JQ_ERROR="I require jq but it's not installed."
-FZF_ERROR="I require fzf but it's not installed.    See https://github.com/junegunn/fzf";
-MSSQL_CLI_ERROR="I require mssql-cli but it's not installed.    See https://github.com/dbcli/mssql-cli/blob/master/doc/installation/macos.md#macos-installation";
-PG_CLI_ERROR="I require pgcli but it's not installed.    See https://www.pgcli.com/install";
+LINK_OP="https://1password.com/downloads/command-line"
+LINK_JQ="https://github.com/stedolan/jq"
+LINK_FZF="https://github.com/junegunn/fzf";
+LINK_MSSQLCLI="https://github.com/dbcli/mssql-cli";
+LINK_PGCLI="https://www.pgcli.com/install";
 
-command -v op >/dev/null 2>&1        || { printf "%s\n\n" "$OP_ERROR"        >&2; ERROR_CODE=1; }
-command -v jq >/dev/null 2>&1        || { printf "%s\n\n" "$JQ_ERROR"        >&2; ERROR_CODE=1; }
-command -v fzf >/dev/null 2>&1       || { printf "%s\n\n" "$FZF_ERROR"       >&2; ERROR_CODE=1; }
-command -v mssql-cli >/dev/null 2>&1 || { printf "%s\n\n" "$MSSQL_CLI_ERROR" >&2; ERROR_CODE=1; }
-command -v pgcli >/dev/null 2>&1     || { printf "%s\n\n" "$PG_CLI_ERROR"    >&2; ERROR_CODE=1; }
+REQUIREMENT_ERROR="I require %s but it's not installed. (%s)";
+
+command -v op >/dev/null 2>&1\
+	|| { printf "$REQUIREMENT_ERROR\n\n" 'op' "$LINK_OP" >&2; ERROR_CODE=1; }
+command -v jq >/dev/null 2>&1\
+	|| { printf "$REQUIREMENT_ERROR\n\n" 'jq' "$LINK_JQ" >&2; ERROR_CODE=1; }
+command -v fzf >/dev/null 2>&1\
+	|| { printf "$REQUIREMENT_ERROR\n\n" 'fzf' "$LINK_FZF" >&2; ERROR_CODE=1; }
+command -v mssql-cli >/dev/null 2>&1\
+	|| { printf "$REQUIREMENT_ERROR\n\n" 'mssql-cli' "$LINK_MSSQLCLI" >&2; ERROR_CODE=1; }
+command -v pgcli >/dev/null 2>&1\
+	|| { printf "$REQUIREMENT_ERROR\n\n" 'pgcli' "$LINK_PGCLI" >&2; ERROR_CODE=1; }
+
 
 [[ $ERROR_CODE -ne 0 ]] && exit $ERROR_CODE;
 
