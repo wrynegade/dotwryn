@@ -29,11 +29,5 @@ alias restart='clear; source ~/.zshrc; echo'
 alias clera='clear';
 alias sl='sl -alF | lolcat';
 
-
-# --- BASH RC DEPENDENCIES ------------------------------------
-# sl
-# lolcat
-# figlet
-# fortune
-# vim
-# cowsay
+# --- ZSH Completion Styles -----------------------------------
+zstyle ':completion:*' menu; #select;
