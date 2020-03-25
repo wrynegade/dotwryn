@@ -1,13 +1,17 @@
 #!/bin/sh
 
 #
-# Not my script; big thanks to Sam Christensen (https://github.com/samachr)
+# Not my script originally; big thanks to Sam Christensen (https://github.com/samachr)
 #
 
 #
 # Requires one-time signin to onepassword:
 # `op signin rent-dynamics.1password.com <your-email-address>`
 #
+
+FZF_HEIGHT=20;
+OP_DB_TEMPLATE_UUID=102;
+
 
 REQUIREMENT_ERROR="I require %s but it's not installed. (%s)\n\n";
 REQUIREMENT_ERROR_CODE=1;
@@ -22,14 +26,18 @@ OP_ERROR='\n\n1-password error. Double check password and op-cli configuration\n
 Have you run the one-time signin? (`op signin rent-dynamics.1password.com <your-email-address>`)\n\n';
 OP_ERROR_CODE=2;
 
-DB_SELECT_ERROR='No database selected. Exiting.\n\n';
+DB_SELECT_ERROR='No valid database selected. Exiting.\n\n';
 DB_SELECT_ERROR_CODE=3;
 
 DB_USER_WARNING='WARNING:No username available for selected connection: (%s)\n\n';
-DB_USER_ERROR='No username supplied. Exiting.';
+DB_USER_ERROR='No username supplied. Exiting.\n';
 DB_USER_ERROR_CODE=4;
 
-DB_PASSWORD_WARNING='WARNING : No password available for selected connection.';
+DB_PASSWORD_WARNING='WARNING : No password available for selected connection.\n';
+
+DB_TYPE_DETECTED='Database type detected! (%s) Connecting...\n';
+DB_TYPE_SELECTED='Database type selected. (%s) Connecting...\n';
+
 
 ERROR_CODE=0;
 
@@ -55,14 +63,16 @@ op list templates >/dev/null 2>&1 || {
 }
 
 
-printf "\n\nSelect database connection:";
+printf "\nSelect database connection:";
 connection=$(\
 	op list items 2>/dev/null \
-		| jq '.[] | select(.templateUuid == "102") | .overview.title' \
+		| jq '.[] | select(.templateUuid == "'$OP_DB_TEMPLATE_UUID'") | .overview.title' \
 		| sed 's/\"//g' \
 		| sort \
-		| fzf --height=20% --layout=reverse \
+		| fzf --height="$FZF_HEIGHT"% --layout=reverse \
 );
+
+[[ ! "$connection" || "$connection" == 'null' ]] && { printf "$DB_SELECT_ERROR" >&2; exit "$DB_SELECT_ERROR_CODE"; };
 
 credentials=$(\
 	op get item "$connection" 2>/dev/null \
@@ -70,41 +80,39 @@ credentials=$(\
 		| jq -s 'add | (.type, if .url then .url else .server end, .username, .password, .database)' \
 );
 
-database_type=$(echo "$credentials" | awk '{print $1;}' | xargs);
-server=$(echo "$credentials" | awk '{print $2;}' | xargs);
-user=$(echo "$credentials" | awk '{print $3;}' | xargs);
-pass=$(echo "$credentials" | awk '{print $4;}' | xargs);
-dbname=$(echo "$credentials" | awk '{print $5;}' | xargs);
+database_type=$(echo $credentials | awk '{print $1;}' | xargs);
+server=$(echo $credentials | awk '{print $2;}' | xargs);
+user=$(echo $credentials | awk '{print $3;}' | xargs);
+pass=$(echo $credentials | awk '{print $4;}' | xargs);
+dbname=$(echo $credentials | awk '{print $5;}' | xargs);
 
-[ "$server" == 'null' ] && { printf "$DB_SELECT_ERROR" >&2; exit "$DB_SELECT_ERROR_CODE"; };
-
-[ "$user" == 'null' ] && {
-	printf "$DB_USER_WARNING" "$connection";
+[[ ! "$user" || "$user" == 'null' ]] && {
+	printf "$DB_USER_WARNING" "$(echo $connection | sed 's/^\s+\(.*\)\s+$/\1/')";
 	printf "Enter username:";
 	read user;
 
-	[ ! "$user" ] && { echo "$DB_USER_ERROR" >&2; exit "$DB_USER_ERROR_CODE"; };
+	[ ! "$user" ] && { printf "$DB_USER_ERROR" >&2; exit "$DB_USER_ERROR_CODE"; };
 };
 
-[ "$pass" == 'null' ] && {
+[[ ! "$pass" || "$pass" == 'null' ]] && {
 	printf "$DB_PASSWORD_WARNING";
-	printf "Enter password (%s::%s):" "$connection" "$user";
+	printf "Enter password (%s::%s):" "$(echo $connection | sed 's/^\s+\(.*\)\s+$/\1/')" "$user";
 	read pass;
 };
 
 if [ "$database_type" == "mssql" ]; then
-	echo "Microsoft SQL database detected! Connecting...";
+	printf "$DB_TYPE_DETECTED" "Microsoft SQL";
 	mssql-cli -S "$server" -U "$user" -P "$pass";
 elif [ "$database_type" == "postgresql" ]; then
-	echo "Postgres database detected! Connecting...";
+	printf "$DB_TYPE_DETECTED" "Postgres";
 	PGPASSWORD="$pass" pgcli -h "$server" -U "$user" -d "$dbname";
 else
-	database_type=$(echo -e "mssql\npostgresql" | fzf --height=20% --layout=reverse);
+	database_type=$(echo -e "mssql\npostgresql" | fzf --height="$FZF_HEIGHT"% --layout=reverse);
 	if [ "$database_type" == "mssql" ]; then
-		echo "Connection type selected: Microsoft SQL. Connecting...";
+		printf "DB_TYPE_SELECTED" "Microsoft SQL";
 		mssql-cli -S "$server" -U "$user" -P "$pass";
 	elif [ "$database_type" == "postgresql" ]; then
-		echo "Connection type selected: Postgres. Connecting...";
+		printf "DB_TYPE_SELECTED" "Postgres";
 		PGPASSWORD="$pass" pgcli -h "$server" -U "$user" -d "$dbname";
 	fi
 fi
