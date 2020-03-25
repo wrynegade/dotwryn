@@ -19,22 +19,25 @@
 #	
 
 function rnt() {
+	ERROR_CODE=0;
+
 	case $1 in
 		db | DB)
-			RENT_DYNAMICS_CONNECT_TO_DATABASE "${@:2}";
+			RENT_DYNAMICS_CONNECT_TO_DATABASE "${@:2}" || ERROR_CODE=1;
 			;;
 		refresh_db | REFRESH_DB)
-			RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES "${@:2}";
+			RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES "${@:2}" || ERROR_CODE=2;
 			;;
 		cleanup | CLEANUP)
-			RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP "${@:2}";
+			RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP "${@:2}" || ERROR_CODE=3;
 			;;
 		status | slack-status)
-			RENT_DYANAMICS_UPDATE_SLACK_STATUS "${@:2}";
+			RENT_DYANAMICS_UPDATE_SLACK_STATUS "${@:2}" || ERROR_CODE=4;
 			;;
 		mail | MAIL | email | EMAIL)
 			# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
 			echo "Email not currently supported :c"
+			return 5;
 			;;
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
@@ -48,6 +51,7 @@ function rnt() {
 				[ -d "./code" ] && cd "./code";
 			}
 	esac
+	return ERROR_CODE;
 }
 _rnt () { # autocompletion
 	local state;
@@ -168,6 +172,9 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 		off | not-working | no-money)
 			MESSAGE="not making money"; EMOJI=':sunglasses:';
 			;;
+		school )
+			MESSAGE="probably doing homework..."; EMOJI=':male-teacher:';
+			;;
 		clear | clear-status | no-status | please-turn-off-my-status-mr-slack-robot)
 			slack status clear >/dev/null 2>&1
 			;;
@@ -189,6 +196,6 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 _RENT_DYANAMICS_UPDATE_SLACK_STATUS() { # autocompletion
 	compadd \
 		boost-fire bike-ride monkas surprised plank meal turbo super meeting budget cheese foos belax \
-		panic not-working clear-status \
+		panic not-working school clear-status \
 		;
 }
