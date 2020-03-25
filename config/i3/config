@@ -165,6 +165,9 @@ bar {
 bindsym XF86MonBrightnessUp exec gmux_backlight +100
 bindsym XF86MonBrightnessDown exec gmux_backlight -100
 
+# Microphone Toggle
+bindsym $mod+backslash exec pactl set-source-mute 0 toggle
+
 # Composite
 exec compton
 
