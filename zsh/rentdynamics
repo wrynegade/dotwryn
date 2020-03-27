@@ -32,7 +32,7 @@ function rnt() {
 			RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP "${@:2}" || ERROR_CODE=3;
 			;;
 		status | slack-status)
-			RENT_DYANAMICS_UPDATE_SLACK_STATUS "${@:2}" || ERROR_CODE=4;
+			RENT_DYNAMICS_UPDATE_SLACK_STATUS "${@:2}" || ERROR_CODE=4;
 			;;
 		mail | MAIL | email | EMAIL)
 			# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
@@ -66,7 +66,7 @@ _rnt () { # autocompletion
 			compadd db refresh_db cleanup mail status;
 			;;
 		command_args)
-			[ $words[2] == 'status' ] && _RENT_DYANAMICS_UPDATE_SLACK_STATUS;
+			[ $words[2] == 'status' ] && _RENT_DYNAMICS_UPDATE_SLACK_STATUS;
 			;;
 	esac
 }
@@ -107,7 +107,7 @@ function RENT_DYNAMICS_CONNECT_TO_EMAIL() {
 	'VMAIL_HOME=~/.vmail/business1 vmail';
 }
 
-function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
+function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 	slack-cli --version >/dev/null 2>&1 || {
 		echo 'I require the slack-cli. For installation and setup, see https://github.com/rockymadden/slack-cli';
 	}
@@ -193,7 +193,7 @@ function RENT_DYANAMICS_UPDATE_SLACK_STATUS() {
 		&& echo "Slack status successfully updated! : ($STATUS_ARG)" \
 		|| echo "ERROR:::Failed to update slack status :c ($ERROR_MESSAGE)";
 }
-_RENT_DYANAMICS_UPDATE_SLACK_STATUS() { # autocompletion
+_RENT_DYNAMICS_UPDATE_SLACK_STATUS() { # autocompletion
 	compadd \
 		boost-fire bike-ride monkas surprised plank meal turbo super meeting budget cheese foos belax \
 		panic not-working school clear-status \
