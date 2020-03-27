@@ -6,8 +6,8 @@
 # Performs one of the following actions based on first argument:
 # 	- (arg = NO ARGUMENT)  Deactivate current virtual environment and return to $RD_PATH
 # 	- (arg = project-name) Activate (and step into) project by name
-# 	- (arg = 'login')      Gets 1password token for current shell (useful for quick db access)
-# 	- (arg = 'db')         Connect to databases available to the 1password api
+# 	- (arg = 'db')         Connect to databases available to the 1-password api
+# 	- (arg = 'op')         1pass login/logout tool for current shell (assists in quick db access)
 # 	- (arg = 'refresh_db') Drops and recreates local POSTGRES databases
 # 	- (arg = 'cleanup')    Performs safe-deletions on all projects' inactive branches
 # 	- (arg = 'status')     Uses 'rockymadden/slack-cli' to update slack status
@@ -40,8 +40,8 @@ function rnt() {
 			echo "Email not currently supported :c"
 			ERROR_CODE=5;
 			;;
-		login | LOGIN | op-login | OP_LOGIN)
-			RENT_DYNAMICS_ONE_PASSWORD_LOGIN "${@:2}" || ERROR_CODE=6;
+		op | 1pass )
+			RENT_DYNAMICS_ONE_PASSWORD "${@:2}" || ERROR_CODE=6;
 			;;
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
@@ -68,10 +68,11 @@ _rnt () { # autocompletion
 	case "$state" in
 		project_or_command)
 			compadd $(ls "$RD_PATH");
-			compadd db refresh_db cleanup mail status login;
+			compadd db refresh_db cleanup mail status op;
 			;;
 		command_args)
 			[ $words[2] == 'status' ] && _RENT_DYNAMICS_UPDATE_SLACK_STATUS;
+			[ $words[2] == 'op' ] && _RENT_DYNAMICS_ONE_PASSWORD;
 			;;
 	esac
 }
@@ -205,4 +206,66 @@ _RENT_DYNAMICS_UPDATE_SLACK_STATUS() { # autocompletion
 		;
 }
 
-RENT_DYNAMICS_ONE_PASSWORD_LOGIN() { eval $(op signin rent_dynamics) }
+RENT_DYNAMICS_ONE_PASSWORD() {
+	ERROR_CODE=0;
+
+	case $1 in
+		login )
+			RENT_DYNAMICS_ONE_PASSWORD_LOGIN "${@:2}" || ERROR_CODE=1;
+			;;
+		logout | deactivate )
+			RENT_DYNAMICS_ONE_PASSWORD_LOGOUT "${@:2}" || ERROR_CODE=2;
+			;;
+		* )
+			RENT_DYNAMICS_ONE_PASSWORD_CHECK_LOGIN "${@:2}" || ERROR_CODE=3;
+			;;
+	esac
+
+	return "$ERROR_CODE";
+}
+_RENT_DYNAMICS_ONE_PASSWORD() { # autocompletion
+	compadd \
+		login deactivate\
+		;
+}
+
+RENT_DYNAMICS_ONE_PASSWORD_LOGIN() {
+	ERROR_CODE=0;
+
+	RENT_DYNAMICS_ONE_PASSWORD_IS_LOGGED_IN && {
+		echo 'Already logged in!';
+	} || {
+		unset OP_SESSION_rent_dynamics;
+		eval $(op signin rent_dynamics 2>/dev/null);
+
+		op list templates >/dev/null 2>&1 && {
+			echo 'Successfully logged in to 1-password!';
+		} || {
+			echo 'Failed to log in. Double check your password and op-cli settings.';
+			echo 'Have you run one-time setup? (`op signin rent-dynamics.1-password.com <your-email-address>`)';
+			ERROR_CODE=1;
+		};
+	}
+
+	return "$ERROR_CODE";
+}
+
+RENT_DYNAMICS_ONE_PASSWORD_LOGOUT() {
+	[ ! -z $OP_SESSION_rent_dynamics ] && {
+		unset OP_SESSION_rent_dynamics && echo 'Successfully logged out from 1-password';
+	} || {
+		echo 'Current shell is not logged in to 1-password';
+		return 1;
+	}
+}
+
+RENT_DYNAMICS_ONE_PASSWORD_CHECK_LOGIN() {
+	RENT_DYNAMICS_ONE_PASSWORD_IS_LOGGED_IN \
+		&& echo 'Current shell is logged-in to rent_dynamics 1-password'\
+		|| echo 'Current shell is not logged-in rent_dynamics 1-password';
+	return 0;
+}
+
+RENT_DYNAMICS_ONE_PASSWORD_IS_LOGGED_IN() {
+	op list templates >/dev/null 2>&1 && return 0 || return 1;
+}
