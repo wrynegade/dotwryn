@@ -6,6 +6,7 @@
 # Performs one of the following actions based on first argument:
 # 	- (arg = NO ARGUMENT)  Deactivate current virtual environment and return to $RD_PATH
 # 	- (arg = project-name) Activate (and step into) project by name
+# 	- (arg = 'login')      Gets 1password token for current shell (useful for quick db access)
 # 	- (arg = 'db')         Connect to databases available to the 1password api
 # 	- (arg = 'refresh_db') Drops and recreates local POSTGRES databases
 # 	- (arg = 'cleanup')    Performs safe-deletions on all projects' inactive branches
@@ -37,7 +38,10 @@ function rnt() {
 		mail | MAIL | email | EMAIL)
 			# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
 			echo "Email not currently supported :c"
-			return 5;
+			ERROR_CODE=5;
+			;;
+		login | LOGIN | op-login | OP_LOGIN)
+			RENT_DYNAMICS_ONE_PASSWORD_LOGIN "${@:2}" || ERROR_CODE=6;
 			;;
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
@@ -51,6 +55,7 @@ function rnt() {
 				[ -d "./code" ] && cd "./code";
 			}
 	esac
+
 	return ERROR_CODE;
 }
 _rnt () { # autocompletion
@@ -63,7 +68,7 @@ _rnt () { # autocompletion
 	case "$state" in
 		project_or_command)
 			compadd $(ls "$RD_PATH");
-			compadd db refresh_db cleanup mail status;
+			compadd db refresh_db cleanup mail status login;
 			;;
 		command_args)
 			[ $words[2] == 'status' ] && _RENT_DYNAMICS_UPDATE_SLACK_STATUS;
@@ -199,3 +204,5 @@ _RENT_DYNAMICS_UPDATE_SLACK_STATUS() { # autocompletion
 		panic not-working school clear-status \
 		;
 }
+
+RENT_DYNAMICS_ONE_PASSWORD_LOGIN() { eval $(op signin rent_dynamics) }
