@@ -53,10 +53,18 @@ function SYMLINK_CONFIG() {
 	ln -s "$HOME/.wryn/config/$1/$2" "$HOME/.config/$1/$2";
 }
 
+function SYMLINK_RC() {
+	# $1 = path (from .wryn) to rc file
+	# $2 = system rc filename
+	[ ! -f "$HOME/.config/$2" ] &&  [ -f "$HOME/.wryn/$1" ] && ln -s "$HOME/.wryn/$1" "$HOME/.config/$2";
+}
+
 SYMLINK_CONFIG "compton" "compton.conf";
 SYMLINK_CONFIG "i3" "config";
 SYMLINK_CONFIG "kitty" "kitty.conf";
 SYMLINK_CONFIG "kitty" "theme.conf";
+
+SYMLINK_RC "config/pylint/pylintrc" "pylintrc";
 
 function terminfo_setup() {
 	for file in $(find "$HOME/.wryn/config/terminfo" -type f); do
