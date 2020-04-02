@@ -29,6 +29,14 @@ nnoremap <Space> @q
 vnoremap Q !$SHELL<CR>
 nnoremap Q !!$SHELL<CR>
 
+" \c \v to copy/paste from xclip
+vnoremap <Leader>c :w !xclip<CR><CR>
+nnoremap <Leader>v o<esc>!!xclip -o<CR>
+
+" \s previous selection command
+nnoremap <Leader>sq :'<,'>
+nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
+
 " \q for `q:`
 nnoremap <Leader>q q:
 
