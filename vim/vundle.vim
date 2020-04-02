@@ -69,7 +69,8 @@ nnoremap <C-p> :call ToggleYCM()<CR>
 
 " --- ALE ---
 let g:ale_linters = {
-\ 'cs' : ['OmniSharp']
+\ 'cs' : ['OmniSharp'],
+\ 'python' : ['pylint']
 \}
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 'never'
