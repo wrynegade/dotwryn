@@ -109,10 +109,10 @@ elif [ "$database_type" == "postgresql" ]; then
 else
 	database_type=$(echo -e "mssql\npostgresql" | fzf --height="$FZF_HEIGHT"% --layout=reverse);
 	if [ "$database_type" == "mssql" ]; then
-		printf "DB_TYPE_SELECTED" "Microsoft SQL";
+		printf "$DB_TYPE_SELECTED" "Microsoft SQL";
 		mssql-cli -S "$server" -U "$user" -P "$pass";
 	elif [ "$database_type" == "postgresql" ]; then
-		printf "DB_TYPE_SELECTED" "Postgres";
+		printf "$DB_TYPE_SELECTED" "Postgres";
 		PGPASSWORD="$pass" pgcli -h "$server" -U "$user" -d "$dbname";
 	fi
 fi
