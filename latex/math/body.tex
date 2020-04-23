@@ -2,12 +2,29 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}{Corollary}[theorem]
 
+\newcommand{\egfcoefficient}{\ensuremath{\left[\frac{x^n}{n!}\right]}}
+\newcommand{\ogfcoefficient}{\ensuremath{\left[x^n\right]}}
+\newcommand{\sumgz}{\ensuremath{\sum_{n\geq 0}}}
+\newcommand{\falling}[1]{^{\underline{#1}}}
+\newcommand{\divides}{\ensuremath{\;\backslash\;}}
+
+\newcommand{\clispsnippet}[2]{%
+	\lstset{%
+		language=Lisp,
+		showstringspaces=false,
+		numbers=left,
+	}\lstinputlisting[caption=#1]{#2}
+}
+
 \begin{document}
 \maketitle
 % ----------------------------------------------------------
 % ----------------------------------------------------------
 
 % ----------------------------------------------------------
+%
+% \input{1.tex}
+%
 \section{} %Problem 1
 \subsection{Prompt}
 \kant%
