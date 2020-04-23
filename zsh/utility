@@ -20,3 +20,4 @@ alias gitbranchcleanup='git branch -d $(git branch | sed -E "/develop|master|\*/
 alias pd='pushd';
 alias qd='popd';
 alias ds='dirs';
+alias cdo='cd $(xclip -o)';
