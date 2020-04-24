@@ -30,6 +30,8 @@ vnoremap Q !$SHELL<CR>
 nnoremap Q !!$SHELL<CR>
 
 " \c \v to copy/paste from xclip
+" @TODO: learn how to freaking compile vim with x11 compatibility so these
+"        aren't necessary :)
 vnoremap <Leader>c :w !xclip<CR><CR>
 nnoremap <Leader>v o<esc>!!xclip -o<CR>
 
