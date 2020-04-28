@@ -21,3 +21,4 @@ alias pd='pushd';
 alias qd='popd';
 alias ds='dirs';
 alias cdo='cd $(xclip -o)';
+alias pdo='pwd | xclip';
