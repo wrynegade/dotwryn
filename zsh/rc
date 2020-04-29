@@ -30,4 +30,4 @@ alias clera='clear';
 alias sl='sl -alF | lolcat';
 
 # --- ZSH Completion Styles -----------------------------------
-zstyle ':completion:*' menu; #select;
+zstyle ':completion:*' menu select;
