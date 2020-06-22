@@ -30,4 +30,7 @@ alias clera='clear';
 alias sl='sl -alF | lolcat';
 
 # --- ZSH Completion Styles -----------------------------------
+zmodload -i zsh/complist;
+
 zstyle ':completion:*' menu select;
+bindkey -M menuselect '^M' .accept-line; # don't require 'return' to select menu item
