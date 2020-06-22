@@ -28,7 +28,7 @@ PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT
 
 ######################################################################################
 #
-function kittyChangeTheme () {
+function KITTY_CHANGE_THEME () {
 	[ ! $1 ] && echo no filename given :c && return 1;
 	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$1" ] \
 		&& echo colorscheme not supported && return 2;
@@ -37,7 +37,7 @@ function kittyChangeTheme () {
 	ln -s "$DOTWRYN/config/colorschemes/kitty/$1" "$DOTWRYN/config/kitty/theme.conf"\
 		&& echo 'theme changed successfully! (effective on new terminal session)'
 }
-_kittyChangeTheme () {
+_KITTY_CHANGE_THEME () {
 	compadd $(ls $DOTWRYN/config/colorschemes/kitty)
 }
-compdef _kittyChangeTheme kittyChangeTheme;
+compdef _KITTY_CHANGE_THEME KITTY_CHANGE_THEME;
