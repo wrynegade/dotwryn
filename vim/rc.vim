@@ -29,6 +29,10 @@ nnoremap <Space> @q
 vnoremap Q !$SHELL<CR>
 nnoremap Q !!$SHELL<CR>
 
+" \d to insert formatted date before/after cursor
+nnoremap <Leader>di :let @d = system("date '+%A, %B %d, %Y'")<CR>i<C-r>d<BS> <esc>
+nnoremap <Leader>da :let @d = system("date '+%A, %B %d, %Y'")<CR>a <C-r>d<BS><esc>
+
 " \c \v to copy/paste from xclip
 " @TODO: learn how to freaking compile vim with x11 compatibility so these
 "        aren't necessary :)
