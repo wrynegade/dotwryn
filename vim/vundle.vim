@@ -13,7 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
 " <======================================================>
 " <==== Insert plugins here =============================>
 " command-t (
-	Plugin 'git://git.wincent.com/command-t.git'
+"	Plugin 'git://git.wincent.com/command-t.git'
 " tpope/surround
 	Plugin 'tpope/vim-surround'
 " nerdtree
