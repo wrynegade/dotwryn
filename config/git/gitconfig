@@ -1,0 +1,15 @@
+[user]
+	email = wagner.wryn@gmail.com
+	name = Wryn Wagner
+[push]
+	default = current
+[difftool]
+	trustExitCode = true
+	prompt = false
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+[pull]
+	default = current
+	rebase = true

@@ -134,6 +134,10 @@ function CONFIG__KITTY() {
 	echo "linked kitty configuration"
 }
 
+function CONFIG__GIT() {
+	CONFIG__BASIC_SYMLINK "$HOME/.gitconfig" "$HOME/.wryn/config/git/gitconfig";
+}
+
 function CONFIG__PYLINT() {
 	CONFIG__BASIC_SYMLINK "$HOME/.config/pylintrc" "$HOME/.wryn/config/pylint/pylintrc";
 
@@ -159,6 +163,7 @@ function CONFIG__SETUP() {
 	CONFIG__COMPTON;
 	CONFIG__KITTY;
 
+	CONFIG__GIT;
 	CONFIG__PYLINT;
 	CONFIG__TMUX;
 
