@@ -12,6 +12,8 @@
 FZF_HEIGHT=20;
 OP_DB_TEMPLATE_UUID=102;
 
+QUERY_ROW_LIMIT=20;
+
 
 REQUIREMENT_ERROR="I require %s but it's not installed. (%s)\n\n";
 REQUIREMENT_ERROR_CODE=1;
@@ -110,7 +112,7 @@ else
 	database_type=$(echo -e "mssql\npostgresql" | fzf --height="$FZF_HEIGHT"% --layout=reverse);
 	if [ "$database_type" == "mssql" ]; then
 		printf "$DB_TYPE_SELECTED" "Microsoft SQL";
-		mssql-cli -S "$server" -U "$user" -P "$pass";
+		mssql-cli -S "$server" -U "$user" -P "$pass" --row-limit "$QUERY_ROW_LIMIT";
 	elif [ "$database_type" == "postgresql" ]; then
 		printf "$DB_TYPE_SELECTED" "Postgres";
 		PGPASSWORD="$pass" pgcli -h "$server" -U "$user" -d "$dbname";
