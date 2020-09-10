@@ -1,2 +1,6 @@
 #!/bin/bash
+[ ! -d "$HOME/.vim" ] && mkdir "$HOME/.vim"
+[ ! -d "$HOME/.vim/colors" ] && mkdir "$HOME/.vim/colors"
+
 for file in $(find ./ -name \*.vim); do cp $file ~/.vim/colors/; done
+echo "vim colorschemes updated"

@@ -1,22 +1,41 @@
 #!/bin/bash
 
-function updateCommandT() {
-	local COMMAND_T_DIR="$HOME/.vim/bundle/command-t/ruby/command-t/ext/command-t";
-	[ ! -d $COMMAND_T_DIR ] && echo "Unable to locate command t build files" && exit 1;
+function INSTALL() {
+	local CMD_NAME="$1"
+	local BUILD_DIR="$2"
+	local BUILD="$3"
 
-	cd $COMMAND_T_DIR;
-	ruby extconf.rb;
-	make;
+	echo "installing $CMD_NAME";
+	[ ! -d $BUILD_DIR ] && { echo "unable to locate $CMD_NAME build files"; exit 1; }
+
+	$BUILD >/dev/null 2>&1 \
+		&& echo "$CMD_NAME installation successful" \
+		|| echo "$CMD_NAME installation failed. Please attempt manual installation";
 }
 
-function buildYCM() {
-	python3 --version || "python3-dev required to build YouCompleteMe" && exit 1;
-	local YCM_DIR="$HOME/.vim/bundle/YouCompleteMe";
-	[ ! -d $YCM_DIR ] && echo "Unable to locate YouCompleteMe build files" && exit 1;
+function INSTALL_COMMAND_T() {
+	local CMD_NAME='CommandT'
+	local BUILD_DIR="$HOME/.vim/bundle/command-t/ruby/command-t/ext/command-t";
 
-	cd $YCM_DIR;
-	python3 install.py;
+	function BUILD() {
+		cd $BUILD_DIR;
+		ruby extconf.rb;
+		make
+	}
+
+	INSTALL $CMD_NAME $BUILD_DIR BUILD;
 }
 
-#updateCommandT;
-buildYCM;
+function INSTALL_YCM() {
+	local CMD_NAME='YouCompleteMe';
+	local BUILD_DIR="$HOME/.vim/bundle/YouCompleteMe";
+
+	function BUILD() {
+		python3 $BUILD_DIR/install.py;
+	}
+
+	INSTALL $CMD_NAME $BUILD_DIR BUILD;
+}
+
+#INSTALL_COMMAND_T;
+INSTALL_YCM;

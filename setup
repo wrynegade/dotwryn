@@ -1,74 +1,176 @@
 #!/bin/bash
-[ ! -f "$HOME/.bashrc" ] && touch "$HOME/.bashrc";
-[ ! -f "$HOME/.vimrc" ] && touch "$HOME/.vimrc";
+
+################################################################################
+### SHELL SETUP ################################################################
+################################################################################
 
 [ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
 [ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
 
-# Source RCs
-grep '.wryn' $HOME/.bashrc >/dev/null 2>/dev/null \
-	&& echo already set up bash rc \
-	|| echo source $HOME/.wryn/bash/rc >> $HOME/.bashrc;
+function SOURCE_DOTWRYN_RC {
+	local HOME_RC="$1";
+	local WRYN_RC="$2";
 
-grep '.wryn' $HOME/.vimrc >/dev/null 2>/dev/null \
-	&& echo already set up vim rc \
-	|| echo source $HOME/.wryn/vim/rc.vim >> $HOME/.vimrc;
+	[ ! -f "$HOME/$HOME_RC" ] && touch "$HOME/$HOME_RC";
 
-grep '.wryn' $HOME/.zshrc >/dev/null 2>/dev/null \
-	&& echo already set up zsh rc \
-	|| echo source $HOME/.wryn/zsh/rc >> $HOME/.zshrc;
+	grep -q '\.wryn' "$HOME/$HOME_RC" \
+		&& echo "already set up $HOME_RC" \
+		|| {
+			echo "source $WRYN_RC" >> "$HOME/$HOME_RC";
+			echo "successfully set up $HOME_RC";
+		}
+}
 
+function SHELL__SETUP {
+	SOURCE_DOTWRYN_RC '.bashrc' '$HOME/.wryn/bash/rc'
+	which bash >/dev/null && "$HOME/.wryn/env/env.bash";
 
-# setup local environments
-which sh   >/dev/null && "$HOME/.wryn/env/env.sh";
-which bash >/dev/null && "$HOME/.wryn/env/env.bash";
-which zsh  >/dev/null && "$HOME/.wryn/env/env.zsh";
+	SOURCE_DOTWRYN_RC '.zshrc' '$HOME/.wryn/zsh/rc';
+	which zsh >/dev/null && "$HOME/.wryn/env/env.zsh";
+}
 
-LOCAL_VIM_ENV="$HOME/.config/wryn/env.vim"
-[ ! -f "$LOCAL_VIM_ENV" ] \
-	&& {
-		touch "$LOCAL_VIM_ENV";
+################################################################################
+### VIM SETUP ##################################################################
+################################################################################
+
+function VIM__SETUP_ENVIRONMENT_VARIABLES() {
+	VIM_ENV="$HOME/.config/wryn/env.vim";
+
+	[ ! -f "$VIM_ENV" ] && {
+		touch "$VIM_ENV";
 		which google-chrome-stable \
-			&& echo 'let $WEBBROWSER="'$(which google-chrome-stable)'"' >> $LOCAL_VIM_ENV\
-			|| echo 'let $WEBBROWSER=""' >> $LOCAL_VIM_ENV;
-
+			&& echo 'let $WEBBROWSER="'$(which google-chrome-stable)'"' >> $VIM_ENV\
+			|| echo 'let $WEBBROWSER=""' >> $VIM_ENV;
 	} || {
 		echo 'vim environment variables already set up';
 	}
+}
 
+function VIM__UPDATE_COLORSCHEMES() {
+	pushd $HOME/.wryn/config/colorschemes/vim >/dev/null
+	./update_colorschemes
+	popd >/dev/null
+}
+
+function VIM__INSTALL_VUNDLE_PLUGINS() {
+	[ ! -d "$HOME/.vim" ] && mkdir "$HOME/.vim"
+	[ ! -d "$HOME/.vim/bundle" ] && mkdir "$HOME/.vim/bundle"
+	[ ! -d "$HOME/.vim/bundle/Vundle.vim" ] && {
+		echo "installing vundle";
+		git clone https://github.com/VundleVim/Vundle.vim.git "$HOME/.vim/bundle/Vundle.vim";
+	}
+
+	echo "installing vundle plugins"
+	vim +PluginInstall +qall;
+
+	echo "building plugins"
+	$HOME/.wryn/vim/rebuild_plugins;
+}
+
+function VIM__SETUP() {
+	echo 'setting up vim';
+
+	SOURCE_DOTWRYN_RC '.vimrc' '$HOME/.wryn/vim/rc.vim';
+
+	VIM__SETUP_ENVIRONMENT_VARIABLES;
+	VIM__UPDATE_COLORSCHEMES;
+	VIM__INSTALL_VUNDLE_PLUGINS;
+
+	echo 'vim setup complete';
+}
+
+#VIM__SETUP;
+
+
+################################################################################
+### LINK CONFIGURATION FILES ###################################################
+################################################################################
 
 # setup config symlinks
-[ -f "$HOME/.tmux.conf" ] && mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak";
-ln -s "$HOME/.wryn/tmux/tmux.conf" "$HOME/.tmux.conf";
 
 xfce4-panel --version >/dev/null 2>&1 \
 	&& [ ! -f "$HOME/.xinitrc" ] \
 	&& ln -s "$HOME/.wryn/config/xserver/xinitrc" "$HOME/.xinitrc";
 
-function SYMLINK_CONFIG() {
-	# $1 = config directory name
-	# $2 = filename
-	[ ! -d "$HOME/.config/$1" ] && mkdir "$HOME/.config/$1";
-	[ -f "$HOME/.config/$1/$2" ] && mv "$HOME/.config/$1/$2" "$HOME/.config/$1/$2.bak";
-	ln -s "$HOME/.wryn/config/$1/$2" "$HOME/.config/$1/$2";
+function CONFIG__BASIC_SYMLINK() {
+	local HOME_CONFIG="$1";
+	local WRYN_CONFIG="$2";
+
+	mv "$HOME_CONFIG" "$HOME_CONFIG.bak"; # >/dev/null 2>&1;
+	ln -s "$WRYN_CONFIG" "$HOME_CONFIG";
 }
 
-function SYMLINK_RC() {
-	# $1 = path (from .wryn) to rc file
-	# $2 = system rc filename
-	[ ! -f "$HOME/.config/$2" ] &&  [ -f "$HOME/.wryn/$1" ] && ln -s "$HOME/.wryn/$1" "$HOME/.config/$2";
+function CONFIG__SYMLINK() {
+	local CONFIG_DIR="$1";
+	local FILENAME="$2";
+
+	local HOME_CONFIG_DIR="$HOME/.config/$CONFIG_DIR";
+	local HOME_CONFIG="$HOME_CONFIG_DIR/$FILENAME";
+
+	local WRYN_CONFIG="$HOME/.wryn/.config/$CONFIG_DIR/$FILENAME";
+
+	[ ! -d "$HOME_CONFIG_DIR" ] && mkdir "$HOME_CONFIG_DIR";
+
+	CONFIG__BASIC_SYMLINK $HOME_CONFIG $WRYN_CONFIG;
 }
 
-SYMLINK_CONFIG "compton" "compton.conf";
-SYMLINK_CONFIG "i3" "config";
-SYMLINK_CONFIG "kitty" "kitty.conf";
-SYMLINK_CONFIG "kitty" "theme.conf";
 
-SYMLINK_RC "config/pylint/pylintrc" "pylintrc";
+function CONFIG__I3() {
+	CONFIG__SYMLINK "i3" "config";
 
-function terminfo_setup() {
+	echo "linked i3 configuration"
+}
+
+function CONFIG__COMPTON() {
+	CONFIG__SYMLINK "compton" "compton.conf";
+
+	echo "linked compton configuration"
+}
+
+function CONFIG__KITTY() {
+	CONFIG__SYMLINK "kitty" "kitty.conf";
+	CONFIG__SYMLINK "kitty" "theme.conf";
+
+	echo "linked kitty configuration"
+}
+
+function CONFIG__PYLINT() {
+	CONFIG__BASIC_SYMLINK "$HOME/.config/pylintrc" "$HOME/.wryn/config/pylint/pylintrc";
+
+	echo "linked pylint configuration"
+}
+
+function CONFIG__TMUX() {
+	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$HOME/.wryn/tmux/tmux.conf";
+
+	echo "linked tmux configuration"
+}
+
+function CONFIG__TERMINFO() {
+	echo "adding terminfo files"
 	for file in $(find "$HOME/.wryn/config/terminfo" -type f); do
-		tic -x $file;
+		tic -x $file >/dev/null 2>&1 || echo "failed to add $file" ;
 	done
 }
-terminfo_setup;
+
+
+function CONFIG__SETUP() {
+	CONFIG__I3;
+	CONFIG__COMPTON;
+	CONFIG__KITTY;
+
+	CONFIG__PYLINT;
+	CONFIG__TMUX;
+
+	CONFIG__TERMINFO;
+}
+
+################################################################################
+### RUN CONFIG #################################################################
+################################################################################
+
+SHELL__SETUP;
+VIM__SETUP;
+CONFIG__SETUP;
+
+echo -e "\nsetup complete"

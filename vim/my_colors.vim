@@ -1,4 +1,4 @@
-colorscheme $COLORSCHEME
+silent! colorscheme $COLORSCHEME
 
 set t_Co=256
 

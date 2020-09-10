@@ -13,7 +13,9 @@ let mapleader = "\\"
 "let localmapleader = ','
 
 " Load Vundle first
-source $VIM_DIR/vundle.vim
+if isdirectory(expand("$HOME/.vim/bundle/Vundle.vim"))
+	source $VIM_DIR/vundle.vim
+endif
 
 source $VIM_DIR/global_sets.vim
 source $VIM_DIR/file_formatting.vim
