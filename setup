@@ -4,9 +4,6 @@
 ### SHELL SETUP ################################################################
 ################################################################################
 
-[ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
-[ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
-
 function SOURCE_DOTWRYN_RC {
 	local HOME_RC="$1";
 	local WRYN_RC="$2";
@@ -28,6 +25,7 @@ function SHELL__SETUP {
 	SOURCE_DOTWRYN_RC '.zshrc' '$HOME/.wryn/zsh/rc';
 	which zsh >/dev/null && "$HOME/.wryn/env/env.zsh";
 }
+
 
 ################################################################################
 ### VIM SETUP ##################################################################
@@ -79,8 +77,6 @@ function VIM__SETUP() {
 	echo 'vim setup complete';
 }
 
-#VIM__SETUP;
-
 
 ################################################################################
 ### LINK CONFIGURATION FILES ###################################################
@@ -117,13 +113,11 @@ function CONFIG__SYMLINK() {
 
 function CONFIG__I3() {
 	CONFIG__SYMLINK "i3" "config";
-
 	echo "linked i3 configuration"
 }
 
 function CONFIG__COMPTON() {
 	CONFIG__SYMLINK "compton" "compton.conf";
-
 	echo "linked compton configuration"
 }
 
@@ -136,17 +130,16 @@ function CONFIG__KITTY() {
 
 function CONFIG__GIT() {
 	CONFIG__BASIC_SYMLINK "$HOME/.gitconfig" "$HOME/.wryn/config/git/gitconfig";
+	echo "linked global git configuration"
 }
 
 function CONFIG__PYLINT() {
 	CONFIG__BASIC_SYMLINK "$HOME/.config/pylintrc" "$HOME/.wryn/config/pylint/pylintrc";
-
 	echo "linked pylint configuration"
 }
 
 function CONFIG__TMUX() {
 	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$HOME/.wryn/tmux/tmux.conf";
-
 	echo "linked tmux configuration"
 }
 
@@ -170,9 +163,13 @@ function CONFIG__SETUP() {
 	CONFIG__TERMINFO;
 }
 
+
 ################################################################################
 ### RUN CONFIG #################################################################
 ################################################################################
+
+[ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
+[ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
 
 SHELL__SETUP;
 VIM__SETUP;
