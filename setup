@@ -168,11 +168,27 @@ function CONFIG__SETUP() {
 ### RUN CONFIG #################################################################
 ################################################################################
 
+function CLEAN_BACKUP() {
+	read -p "Clean backup files? [yN] : " yn;
+
+	case $yn in
+		[Yy]* ) 
+			echo 'cleaning backup files';
+			for file in $(find "$HOME/.config/" -name \*.bak); do rm $file; done
+			for file in $(find "$HOME" -name .\*.bak); do rm $file; done
+			;;
+		* ) echo 'skipping cleanup';;
+	esac
+}
+
+
 [ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
 [ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
 
 SHELL__SETUP;
 VIM__SETUP;
 CONFIG__SETUP;
+
+CLEAN_BACKUP;
 
 echo -e "\nsetup complete"
