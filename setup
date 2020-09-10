@@ -82,12 +82,6 @@ function VIM__SETUP() {
 ### LINK CONFIGURATION FILES ###################################################
 ################################################################################
 
-# setup config symlinks
-
-xfce4-panel --version >/dev/null 2>&1 \
-	&& [ ! -f "$HOME/.xinitrc" ] \
-	&& ln -s "$HOME/.wryn/config/xserver/xinitrc" "$HOME/.xinitrc";
-
 function CONFIG__BASIC_SYMLINK() {
 	local HOME_CONFIG="$1";
 	local WRYN_CONFIG="$2";
@@ -143,6 +137,11 @@ function CONFIG__TMUX() {
 	echo "linked tmux configuration"
 }
 
+function CONFIG__XINITRC() {
+	CONFIG__BASIC_SYMLINK "$HOME/.xinitrc" "$HOME/.wryn/config/xserver/xinitrc"
+	echo "linked xinitrc"
+}
+
 function CONFIG__TERMINFO() {
 	echo "adding terminfo files"
 	for file in $(find "$HOME/.wryn/config/terminfo" -type f); do
@@ -159,6 +158,7 @@ function CONFIG__SETUP() {
 	CONFIG__GIT;
 	CONFIG__PYLINT;
 	CONFIG__TMUX;
+	CONFIG__XINITRC;
 
 	CONFIG__TERMINFO;
 }
