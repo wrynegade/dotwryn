@@ -143,6 +143,7 @@ disable=print-statement,
 	invalid-name,
 	bad-continuation,
 	bad-whitespace,
+	missing-class-docstring,
 	missing-function-docstring,
 	missing-module-docstring,
 
