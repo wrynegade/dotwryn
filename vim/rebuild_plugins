@@ -5,9 +5,18 @@ function updateCommandT() {
 	[ ! -d $COMMAND_T_DIR ] && echo "Unable to locate command t build files" && exit 1;
 
 	cd $COMMAND_T_DIR;
-	pwd;
 	ruby extconf.rb;
 	make;
 }
 
-updateCommandT;
+function buildYCM() {
+	python3 --version || "python3-dev required to build YouCompleteMe" && exit 1;
+	local YCM_DIR="$HOME/.vim/bundle/YouCompleteMe";
+	[ ! -d $YCM_DIR ] && echo "Unable to locate YouCompleteMe build files" && exit 1;
+
+	cd $YCM_DIR;
+	python3 install.py;
+}
+
+#updateCommandT;
+buildYCM;
