@@ -2,3 +2,6 @@
 latex/*.aux
 latex/*.log
 latex/*.pdf
+resume/*.aux
+resume/*.log
+resume/*.pdf
