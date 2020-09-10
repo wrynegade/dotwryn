@@ -24,12 +24,12 @@ bind-key -n M-7 select-window -t 6
 bind-key -n M-8 select-window -t 7
 bind-key -n M-9 select-window -t 8
 
-
 # new window and split pane quickly
 bind-key -n M-c new-window
 bind-key -n M-v split-window -v
 bind-key -n M-b split-window -h
 bind-key -n M-q killp
+bind-key -n M-z resize-pane -Z
 
 # nested session with meta-a
 bind-key -n M-a send-prefix
