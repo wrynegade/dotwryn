@@ -10,6 +10,8 @@ ACTIVE_DESKTOP="$(xdotool get_desktop)"
 ACTIVE_WINDOW_ID="$(xdotool getactivewindow)"
 ACTIVE_WINDOW_NAME="$(xdotool getwindowname $ACTIVE_WINDOW_ID)"
 
+TIMEOUT='0.1';
+
 case $1 in
 	next) KEY_COMMAND='j';;
 	prev) KEY_COMMAND='k';;
@@ -17,7 +19,7 @@ case $1 in
 esac
 
 xdotool search --name 'YouTube Music' windowactivate;
-sleep 0.05;
+sleep $TIMEOUT;
 xdotool key --clearmodifiers "$KEY_COMMAND";
 
 xdotool set_desktop "$ACTIVE_DESKTOP";
