@@ -25,7 +25,7 @@ augroup end
 " -- <Leader>ec to 'execute' a file ---------------------- {{{
 augroup execute_file_shortcuts
 	autocmd FileType tex		nnoremap <Leader>ec :! $WEBBROWSER %:r.pdf<CR>
-	autocmd FileType markdown	nnoremap <Leader>ec :! $WEBBROWSER %:p<CR><CR>
+	autocmd FileType markdown	nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
 augroup end
 " }}}
 
