@@ -41,6 +41,9 @@ nnoremap <Leader>da :let @d = system("date '+%A, %B %d, %Y'")<CR>a <C-r>d<BS><es
 vnoremap <Leader>c :w !xclip<CR><CR>
 nnoremap <Leader>v o<esc>!!xclip -o<CR>
 
+" \b for git blame
+nnoremap <Leader>b :set termwinsize=15*0<BAR>:execute "terminal git blame -L " .eval(line(".")-5) . ",+10 %"<BAR>:set termwinsize&<CR>
+
 " \s previous selection command
 nnoremap <Leader>sq :'<,'>
 nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
