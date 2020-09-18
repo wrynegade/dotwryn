@@ -17,4 +17,4 @@ for display in $(xrandr | grep connect | awk '{print $1;}' | grep -v "$CURRENT_M
 	xrandr --output $display --off;
 done;
 
-feh --bg-fill --randomize $HOME/.wallpaper;
+feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
