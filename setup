@@ -97,7 +97,7 @@ function CONFIG__SYMLINK() {
 	local HOME_CONFIG_DIR="$HOME/.config/$CONFIG_DIR";
 	local HOME_CONFIG="$HOME_CONFIG_DIR/$FILENAME";
 
-	local WRYN_CONFIG="$HOME/.wryn/.config/$CONFIG_DIR/$FILENAME";
+	local WRYN_CONFIG="$HOME/.wryn/config/$CONFIG_DIR/$FILENAME";
 
 	[ ! -d "$HOME_CONFIG_DIR" ] && mkdir "$HOME_CONFIG_DIR";
 
