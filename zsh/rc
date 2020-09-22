@@ -25,7 +25,7 @@ zmodload -i zsh/complist;
 bindkey -M menuselect '^M' .accept-line;
 
 # Completion for Kitty
-kitty + complete setup zsh | source /dev/stdin
+which kitty >/dev/null && kitty + complete setup zsh | source /dev/stdin
 
 #
 #
