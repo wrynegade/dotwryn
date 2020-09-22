@@ -1,4 +1,5 @@
-#!/bin/sh NATIVE_MONITOR='eDP1';
+#!/bin/sh
+NATIVE_MONITOR='eDP1';
 CONNECTED_MONITOR=$(xrandr | grep ' connect' | awk '{print $1;}' | grep -v "$NATIVE_MONITOR" | head -n 1);
 
 MONITOR_DIRECTION='--above'; # left-of, below, above, right-of
