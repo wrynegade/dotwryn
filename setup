@@ -115,7 +115,7 @@ function CONFIG__PGCLI() {
 	echo "linked pgcli configuration";
 }
 
-function CONFIG__PGCLI() {
+function CONFIG__MSSQLCLI() {
 	CONFIG__SYMLINK "mssqlcli" "config";
 	echo "linked mssqlcli configuration";
 }
@@ -186,8 +186,8 @@ function CLEAN_BACKUP() {
 	case $yn in
 		[Yy]* ) 
 			echo 'cleaning backup files';
-			for file in $(find "$HOME/.config/" -name \*.bak); do rm $file; done
-			for file in $(find "$HOME" -name .\*.bak); do rm $file; done
+			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file; done
+			for file in $(find "$HOME" -name .\*.bak 2>/dev/null); do rm $file; done
 			;;
 		* ) echo 'skipping cleanup';;
 	esac
