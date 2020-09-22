@@ -158,7 +158,7 @@ bindsym $mod+space exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-25'
 ## Miscellaneous ###############################################################
 ################################################################################
 
-exec --no-startup-id nm-applet # network-manager-applet
+# exec --no-startup-id nm-applet # network-manager-applet
 exec --no-startup-id compton # composite
 
 bindsym $mod+p exec feh --recursive --randomize --bg-fill $CONFIG/wallpaper/*
