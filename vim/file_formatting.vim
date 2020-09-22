@@ -14,18 +14,30 @@ augroup filetype_specific_formatting
 	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
 	autocmd FileType markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab foldmethod=indent foldlevel=99 spell
 	autocmd FileType tex        setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab foldmethod=indent foldlevel=99 spell
+	autocmd FileType postscr    setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=indent foldlevel=99
 augroup end
 
 augroup forced_filetype_recognition
 	autocmd BufRead,BufNewFile *.tmux setfiletype tmux
+	let g:tex_flavor = "latex"
 augroup end
 " }}}
 
 
-" -- <Leader>ec to 'execute' a file ---------------------- {{{
+" -- <Leader>ec to 'ExeCute' a file ---------------------- {{{
 augroup execute_file_shortcuts
-	autocmd FileType tex		nnoremap <Leader>ec :! $WEBBROWSER %:r.pdf<CR>
+	autocmd FileType tex		nnoremap <Leader>ec :! pdf=$(grep -rl 'documentclass' ./ <bar> head -n 1 <bar> sed 's/\(.*\)\.tex/\1.pdf/'); $WEBBROWSER $pdf<CR>
 	autocmd FileType markdown	nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
+augroup end
+" }}}
+
+" -- Miscelaneous File-specific Commands ----------------- {{{
+augroup latex_commands
+
+	" overwrite the <leader>t 'test' to (double) recompile the latex document.
+	" in case pdflatex gets in a stuck state, it is run through timeout 5
+	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 5 pdflatex $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
+
 augroup end
 " }}}
 
