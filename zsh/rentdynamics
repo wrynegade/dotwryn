@@ -132,6 +132,10 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 			;;
 	esac
 
+	local ACTIVE='active';
+	local AWAY='away';
+	local PRESENCE="$ACTIVE";
+
 	local MESSAGE;
 	local EMOJI;
 	case $STATUS_ARG in
@@ -141,15 +145,14 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 		monkas)
 			MESSAGE=" "; EMOJI=':monkas:';
 			;;
-
 		ride | bike-ride | bike)
-			MESSAGE="probably riding"; EMOJI=':man-biking:';
+			MESSAGE="probably riding"; EMOJI=':man-biking:'; PRESENCE="$AWAY";
 			;;
 		plank)
 			MESSAGE="plank time!"; EMOJI=':evergreen_tree:';
 			;;
 		meal | eat | food)
-			MESSAGE="so hungry..."; EMOJI=':hamburger:';
+			MESSAGE="so hungry..."; EMOJI=':hamburger:'; PRESENCE="$AWAY";
 			;;
 		turbo)
 			MESSAGE="ZOOOM"; EMOJI=':turbo:';
@@ -158,7 +161,7 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 			MESSAGE="AAAAAAAAAAAAHHHHHHHHH"; EMOJI=':gohan:';
 			;;
 		meeting)
-			MESSAGE="afk"; EMOJI=':necktie:';
+			MESSAGE="afk"; EMOJI=':necktie:'; PRESENCE="$AWAY";
 			;;
 		budget)
 			MESSAGE="did somebody say skee-ball??"; EMOJI=':scales:';
@@ -167,7 +170,7 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 			MESSAGE="only the most important things on my mind"; EMOJI=':cheese_wedge:';
 			;;
 		foos)
-			MESSAGE="I will defeat Mike... someday..."; EMOJI=':soccer:';
+			MESSAGE="I will defeat Mike... someday..."; EMOJI=':soccer:'; PRESENCE="$AWAY";
 			;;
 		lax | belax | belax8 )
 			MESSAGE="BELAAAAAAAX"; EMOJI=':exploding_head:';
@@ -176,10 +179,10 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 			MESSAGE="dont panic!"; EMOJI=':exclamation:';
 			;;
 		off | not-working | no-money)
-			MESSAGE="not making money"; EMOJI=':sunglasses:';
+			MESSAGE="not making money"; EMOJI=':sunglasses:'; PRESENCE="$AWAY";
 			;;
 		school )
-			MESSAGE="probably doing homework..."; EMOJI=':male-teacher:';
+			MESSAGE="Shhhh! Taking notes..."; EMOJI=':male-teacher:'; PRESENCE="$AWAY";
 			;;
 		clear | clear-status | no-status | please-turn-off-my-status-mr-slack-robot)
 			slack status clear >/dev/null 2>&1
@@ -196,6 +199,7 @@ function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
 
 	[ $EMOJI ] \
 		&& slack-cli status edit "$MESSAGE" "$EMOJI" >/dev/null 2>&1 \
+		&& slack-cli presence $PRESENCE >/dev/null 2>&1 \
 		&& echo "Slack status successfully updated! : ($STATUS_ARG)" \
 		|| echo "ERROR:::Failed to update slack status :c ($ERROR_MESSAGE)";
 }
