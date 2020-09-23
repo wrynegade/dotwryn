@@ -1,8 +1,18 @@
 #!/bin/sh
+
+X11_SCRIPTS='/etc/X11/xinit/xinitrc.d';
+if [ -d $X11_SCRIPTS ] ; then
+	for script in $(find "$X11_SCRIPTS" -name \*.sh); do
+		source "$script" && echo "$script sourced" >> $HOME/LOG.txt;
+	done
+fi
+
+
 CUSTOM_DMENU_COMMANDS="$HOME/.local/custom_dmenu"
 [ ! -d $CUSTOM_DMENU_COMMANDS ] && mkdir $CUSTOM_DMENU_COMMANDS
 
 export PATH="$CUSTOM_DMENU_COMMANDS:$PATH"
+
 
 "$HOME/.wryn/config/xserver/set_randr_layout" &
 
