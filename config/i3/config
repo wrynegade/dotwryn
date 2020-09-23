@@ -3,37 +3,38 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+
 set $CONFIG /home/w0ryn/.config/wryn
+set $UTILS /home/w0ryn/.config/wryn/i3utils
 
 font pango:monospace 6
+
+# for use after any command which should refresh the statusbar
+set $refresh_statusbar killall -SIGUSR1 i3status
+
+bar {
+        status_command i3status
+}
 
 ################################################################################
 ## Media Keys ##################################################################
 ################################################################################
 
 # Audio
-set $refresh_i3status killall -SIGUSR1 i3status
-
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-
-bindsym XF86AudioRewind exec  --no-startup-id $CONFIG/prev
-bindsym XF86AudioPrev exec  --no-startup-id $CONFIG/prev
-
-bindsym XF86AudioForward exec --no-startup-id $CONFIG/next
-bindsym XF86AudioNext exec --no-startup-id $CONFIG/next
-
-bindsym XF86AudioPlay exec --no-startup-id $CONFIG/playpause
-
-bindsym $mod+backslash exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-
+bindsym XF86AudioRewind      exec --no-startup-id $UTILS prev
+bindsym XF86AudioPrev        exec --no-startup-id $UTILS prev
+bindsym XF86AudioForward     exec --no-startup-id $UTILS next
+bindsym XF86AudioNext        exec --no-startup-id $UTILS next
+bindsym XF86AudioPlay        exec --no-startup-id $UTILS playpause
+bindsym XF86AudioRaiseVolume exec --no-startup-id $UTILS volumeraise
+bindsym XF86AudioLowerVolume exec --no-startup-id $UTILS volumelower
+bindsym XF86AudioMute        exec --no-startup-id $UTILS mute
+bindsym XF86AudioMicMute     exec --no-startup-id $UTILS micmute
+bindsym $mod+backslash       exec --no-startup-id $UTILS micmute
 
 # Screen brightness
-bindsym XF86MonBrightnessUp exec $CONFIG/backlightup
-bindsym XF86MonBrightnessDown exec $CONFIG/backlightdown
+bindsym XF86MonBrightnessUp   exec --no-startup-id $UTILS backlightup
+bindsym XF86MonBrightnessDown exec --no-startup-id $UTILS backlightdown
 
 
 ################################################################################
@@ -131,26 +132,17 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 ## i3 Settings #################################################################
 ################################################################################
 
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes' 'i3-msg exit'"
+bindsym $mod+Shift+e exec $UTILS logout
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+c reload
 
-
 # i3-gaps settings
-
 for_window [class="^.*"] border pixel 2
 gaps inner 5
 gaps outer 5
 
-bar {
-        status_command i3status
-}
-
-
 # Terminal / Application Launcher
-
 bindsym $mod+Return exec i3-sensible-terminal
-
 bindsym $mod+space exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-25'
 
 
@@ -161,5 +153,5 @@ bindsym $mod+space exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-25'
 # exec --no-startup-id nm-applet # network-manager-applet
 exec --no-startup-id compton # composite
 
-bindsym $mod+p exec feh --recursive --randomize --bg-fill $CONFIG/wallpaper/*
-bindsym $mod+Shift+minus exec $CONFIG/lock
+bindsym $mod+p exec --no-startup-id $UTILS bgrandomize
+bindsym $mod+Shift+minus exec --no-startup-id $UTILS lock

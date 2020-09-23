@@ -1,6 +1,0 @@
-#!/bin/bash
-source $HOME/.wryn/env/env.bash
-LAYOUTS="$DOTWRYN/config/i3/layouts";
-
-i3-msg "workspace 3; append_layout $LAYOUTS/chat_and_htop.json"
-i3-msg "workspace 4; append_layout $LAYOUTS/repl.json"

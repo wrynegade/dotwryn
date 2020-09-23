@@ -86,7 +86,7 @@ function CONFIG__BASIC_SYMLINK() {
 	local HOME_CONFIG="$1";
 	local WRYN_CONFIG="$2";
 
-	mv "$HOME_CONFIG" "$HOME_CONFIG.bak"; # >/dev/null 2>&1;
+	mv "$HOME_CONFIG" "$HOME_CONFIG.bak" >/dev/null 2>&1;
 	ln -s "$WRYN_CONFIG" "$HOME_CONFIG";
 }
 
@@ -107,7 +107,8 @@ function CONFIG__SYMLINK() {
 
 function CONFIG__I3() {
 	CONFIG__SYMLINK "i3" "config";
-	echo "linked i3 configuration"
+	CONFIG__BASIC_SYMLINK "$HOME/.config/wryn/i3utils" "$HOME/.wryn/config/i3/utils";
+	echo "linked i3 configuration";
 }
 
 function CONFIG__PGCLI() {

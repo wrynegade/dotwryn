@@ -1,0 +1,40 @@
+#!/bin/sh
+
+UTIL_BIN="$HOME/.wryn/bin/desktop"
+
+MEDIA__NEXT="$UTIL_BIN/youtube-music/next.sh"
+MEDIA__PREV="$UTIL_BIN/youtube-music/previous.sh"
+MEDIA__PLAYPAUSE="$UTIL_BIN/youtube-music/playpause.sh"
+
+VOLUME__UP="$UTIL_BIN/pulseaudio/sink-volume/default-up.sh";
+VOLUME__DOWN="$UTIL_BIN/pulseaudio/sink-volume/default-down.sh";
+VOLUME__MUTE="$UTIL_BIN/pulseaudio/sink-volume/default-mute.sh";
+VOLUME__MICMUTE="$UTIL_BIN/pulseaudio/source-volume/default-mute.sh";
+
+BACKLIGHT__UP="$UTIL_BIN/xbacklight/up.sh";
+BACKLIGHT__DOWN="$UTIL_BIN/xbacklight/down.sh";
+
+LOCK_SCREEN="$UTIL_BIN/i3lock/lock.sh";
+LOG_OUT="$UTIL_BIN/i3/logout.sh";
+
+BG_RANDOMIZE="$UTIL_BIN/feh/randomize-background.sh"
+
+
+case $1 in
+	next ) "$MEDIA__NEXT" ;;
+	prev ) "$MEDIA__PREV" ;;
+	playpause ) "$MEDIA__PLAYPAUSE" ;;
+
+	volumeraise ) "$VOLUME__UP" ;;
+	volumelower ) "$VOLUME__DOWN" ;;
+	mute ) "$VOLUME__MUTE" ;;
+	micmute ) "$VOLUME__MICMUTE" ;;
+
+	backlightup ) "$BACKLIGHT__UP" ;;
+	backlightdown ) "$BACKLIGHT__DOWN" ;;
+
+	lock ) "$LOCK_SCREEN" ;;
+	logout ) "$LOG_OUT" ;;
+
+	bgrandomize ) "$BG_RANDOMIZE" ;;
+esac
