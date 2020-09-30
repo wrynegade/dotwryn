@@ -26,6 +26,7 @@ bind-key -n M-9 select-window -t 8
 
 # new window and split pane quickly
 bind-key -n M-c new-window
+bind-key -n M-Enter new-window
 bind-key -n M-v split-window -v
 bind-key -n M-b split-window -h
 bind-key -n M-q killp
