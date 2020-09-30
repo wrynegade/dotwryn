@@ -86,7 +86,7 @@ compdef _rnt rnt;
 ###############################################################################
 
 function RENT_DYNAMICS_CONNECT_TO_DATABASE() {
-	"$DOTWRYN/bin/rent-dyanmics/db.sh" "$@";
+	"$DOTWRYN/bin/rentdynamics/db.sh" "$@";
 }
 
 function RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES() {
