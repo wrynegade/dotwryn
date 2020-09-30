@@ -1,52 +1,44 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" ===================================================================================
+" === VUNDLE SETTINGS ===============================================================
+" ===================================================================================
+set nocompatible
+filetype off
 
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
 " <======================================================>
 " <==== Insert plugins here =============================>
-" command-t (
-"	Plugin 'git://git.wincent.com/command-t.git'
+
 " tpope/surround
 	Plugin 'tpope/vim-surround'
 " nerdtree
 	Plugin 'git://github.com/scrooloose/nerdtree.git'
 " youCompleteMe
 	Plugin 'git://github.com/Valloric/YouCompleteMe.git'
-" leafgarland -- typescript recognition
-"	Plugin 'https://github.com/leafgarland/typescript-vim'
 " omnisharp (c#)
 	Plugin 'OmniSharp/omnisharp-vim'
 " ale -- asynchronus error checking
  	Plugin 'https://github.com/w0rp/ale'
 
-" example for local command:
-"	Plugin 'file:///home/gmarik/path/to/plugin'
 " <======================================================>
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()
+filetype plugin indent on
 " To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
+" filetype plugin on
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
 " :PluginSearch foo - searches for foo; append `!` to refresh local cache
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
+
 " see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " ===================================================================================
-" === MY PLUGIN SETTINGS ============================================================
+" === PLUGIN-SPECIFIC SETTINGS ======================================================
 " ===================================================================================
 
 " --- Nerd Tree ---
@@ -63,7 +55,11 @@ function! ToggleYCM()
 		echohl DiffAdd | echo "YouCompleteMe autocompletion enabled" | echohl None
 	endif
 endfunction
+
+let g:ycm_goto_buffer_command = 'new-tab'
+
 nnoremap <C-p> :call ToggleYCM()<CR>
+nnoremap gd :YcmCompleter GoToDefinition<CR>
 " STARTS DEACTIVATED
 " let g:ycm_auto_trigger=0
 
