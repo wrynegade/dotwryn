@@ -10,6 +10,7 @@ set $UTILS /home/w0ryn/.config/wryn/i3utils
 set $SLACK_CLIENT_TITLE ^Slack.*$
 set $MESSAGE_CLIENT_TITLE ^Android.Messages$
 set $MEDIA_CLIENT_TITLE ^.*YouTube.Music.*$
+set $DISCORD_CLIENT_TITLE ^.*Discord.*$
 
 font pango:monospace 6
 
@@ -82,18 +83,28 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 
-bindsym $mod+Shift+Tab move scratchpad
-bindsym $mod+Tab scratchpad show
-
-bindsym $mod+shift+s [title=$SLACK_CLIENT_TITLE] scratchpad show
-bindsym $mod+shift+m [title=$MESSAGE_CLIENT_TITLE] scratchpad show
-bindsym $mod+m [title=$MEDIA_CLIENT_TITLE] scratchpad show
+################################################################################
+## Floating / Scratchpad Management and Navigation #############################
+################################################################################
 
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+d focus mode_toggle
-
 floating_modifier $mod
 
+bindsym $mod+Shift+Tab move scratchpad
+bindsym $mod+Tab scratchpad show
+
+bindsym $mod+shift+d [title=$DISCORD_CLIENT_TITLE] scratchpad show
+for_window [title=$DISCORD_CLIENT_TITLE] move scratchpad; [title=$DISCORD_CLIENT_TITLE] scratchpad show
+
+bindsym $mod+shift+m [title=$MESSAGE_CLIENT_TITLE] scratchpad show
+for_window [title=$MESSAGE_CLIENT_TITLE] move scratchpad; [title=$MESSAGE_CLIENT_TITLE] scratchpad show
+
+bindsym $mod+m       [title=$MEDIA_CLIENT_TITLE] scratchpad show
+for_window [title=$MEDIA_CLIENT_TITLE] move scratchpad; [title=$MEDIA_CLIENT_TITLE] scratchpad show
+
+bindsym $mod+shift+s [title=$SLACK_CLIENT_TITLE] scratchpad show
+for_window [title=$SLACK_CLIENT_TITLE] move scratchpad; [title=$SLACK_CLIENT_TITLE] scratchpad show
 
 
 ################################################################################
