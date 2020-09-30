@@ -80,6 +80,9 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 
+bindsym $mod+Shift+Tab move scratchpad
+bindsym $mod+Tab scratchpad show
+
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
