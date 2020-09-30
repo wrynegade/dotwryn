@@ -6,7 +6,7 @@ alias ls='ls --color=auto';
 
 # zsh prompt
 COFFEE="☕";
-PREVIOUS_COMMAND_CONDITION="%B%(?.%F{yellow}.%F{210}) $COFFEE";
+PREVIOUS_COMMAND_CONDITION="%B%(?.%F{yellow}.%F{red}) $COFFEE";
 
 USER='%B%F{green}%n';
 
@@ -27,7 +27,7 @@ PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT
 
 
 ######################################################################################
-#
+
 function KITTY_CHANGE_THEME () {
 	[ ! $1 ] && echo no filename given :c && return 1;
 	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$1" ] \

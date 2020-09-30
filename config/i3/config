@@ -7,6 +7,10 @@ set $mod Mod4
 set $CONFIG /home/w0ryn/.config/wryn
 set $UTILS /home/w0ryn/.config/wryn/i3utils
 
+set $SLACK_CLIENT_TITLE ^Slack.*$
+set $MESSAGE_CLIENT_TITLE ^Android.Messages$
+set $MEDIA_CLIENT_TITLE ^.*YouTube.Music.*$
+
 font pango:monospace 6
 
 # for use after any command which should refresh the statusbar
@@ -73,8 +77,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-
-# change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
@@ -83,14 +85,15 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+Tab move scratchpad
 bindsym $mod+Tab scratchpad show
 
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+shift+s [title=$SLACK_CLIENT_TITLE] scratchpad show
+bindsym $mod+shift+m [title=$MESSAGE_CLIENT_TITLE] scratchpad show
+bindsym $mod+m [title=$MEDIA_CLIENT_TITLE] scratchpad show
 
-# Use Mouse+$mod to drag floating windows to their wanted position
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+d focus mode_toggle
+
 floating_modifier $mod
 
-# change focus between tiling / floating windows
-bindsym $mod+d focus mode_toggle
 
 
 ################################################################################
