@@ -43,6 +43,9 @@ function rnt() {
 		op | 1pass )
 			RENT_DYNAMICS_ONE_PASSWORD "${@:2}" || ERROR_CODE=6;
 			;;
+		clone )
+			RENT_DYNAMICS_GIT_PROJECT_SET_UP "${@:2}" || ERROR_CODE=7;
+			;;
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
 			cd "$RD_PATH"
@@ -68,7 +71,7 @@ _rnt () { # autocompletion
 	case "$state" in
 		project_or_command)
 			compadd $(ls "$RD_PATH");
-			compadd db refresh_db cleanup mail status op;
+			compadd db refresh_db cleanup mail status op clone;
 			;;
 		command_args)
 			[ $words[2] == 'status' ] && _RENT_DYNAMICS_UPDATE_SLACK_STATUS;
@@ -272,4 +275,19 @@ RENT_DYNAMICS_ONE_PASSWORD_CHECK_LOGIN() {
 
 RENT_DYNAMICS_ONE_PASSWORD_IS_LOGGED_IN() {
 	op list templates >/dev/null 2>&1 && return 0 || return 1;
+}
+
+RENT_DYNAMICS_GIT_PROJECT_SET_UP() {
+	PROJECT_URL="git@github.com:RentDynamics/$1.git";
+	PROJECT_DIR="$RD_PATH/$1";
+
+	[ -d "$PROJECT_DIR" ] \
+		&& { echo "Project '$1' already exists locally (access quickly with 'rnt $1')."; return 1; }
+
+	git ls-remote "$PROJECT_URL" >/dev/null || return 2;
+
+	mkdir "$PROJECT_DIR" >/dev/null 2>&1;
+	git clone -q "$PROJECT_URL" "$PROJECT_DIR/code" \
+		&& echo "Succesfully cloned project '$1' (access quickly with 'rnt $1')." \
+		|| { echo "$PROJECT_DIR"; rm -rI "$PROJECT_DIR" }
 }
