@@ -1,16 +1,12 @@
 #
 # Chrome / YouTube only accepts keypresses when window is active
 #
-# This activates the YouTube window, sends the keypress, then reactivates the original window
+# This activates the YouTube window and sends the keypress
 #
 
 xdotool search --name 'YouTube Music' >/dev/null 2>&1 || return 1;
 
-ACTIVE_DESKTOP="$(xdotool get_desktop)"
-ACTIVE_WINDOW_ID="$(xdotool getactivewindow)"
-ACTIVE_WINDOW_NAME="$(xdotool getwindowname $ACTIVE_WINDOW_ID)"
-
-TIMEOUT='0.1';
+TIMEOUT='0.3';
 
 case $1 in
 	next) KEY_COMMAND='j';;
@@ -21,6 +17,3 @@ esac
 xdotool search --name 'YouTube Music' windowactivate;
 sleep $TIMEOUT;
 xdotool key --clearmodifiers "$KEY_COMMAND";
-
-xdotool set_desktop "$ACTIVE_DESKTOP";
-[[ "$ACTIVE_WINDOW_NAME" != "Desktop" ]] && xdotool windowactivate "$ACTIVE_WINDOW_ID";
