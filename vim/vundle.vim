@@ -42,7 +42,7 @@ filetype plugin indent on
 " ===================================================================================
 
 " --- Nerd Tree ---
-map <C-o> :NERDTreeToggle<CR>
+map <C-o> :NERDTreeToggle %<CR>
 let g:NERDTreeNodeDelimiter = "\u00a0" " -- Was seeing ^G character, and this should fix that
 
 " --- YouCompleteMe (YCM) ---
