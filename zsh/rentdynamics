@@ -36,9 +36,7 @@ function rnt() {
 			RENT_DYNAMICS_UPDATE_SLACK_STATUS "${@:2}" || ERROR_CODE=4;
 			;;
 		mail | MAIL | email | EMAIL)
-			# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
-			echo "Email not currently supported :c"
-			ERROR_CODE=5;
+			RENT_DYNAMICS_CONNECT_TO_EMAIL || ERROR_CODE=5;
 			;;
 		op | 1pass )
 			RENT_DYNAMICS_ONE_PASSWORD "${@:2}" || ERROR_CODE=6;
@@ -113,7 +111,9 @@ function RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP() {
 }
 
 function RENT_DYNAMICS_CONNECT_TO_EMAIL() {
-	'VMAIL_HOME=~/.vmail/business1 vmail';
+	# RENT_DYNAMICS_CONNECT_TO_EMAIL "${@:2}";
+	echo "Email not currently supported :c"
+	return 1;
 }
 
 function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
