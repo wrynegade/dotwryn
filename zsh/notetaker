@@ -1,0 +1,82 @@
+#!/bin/zsh
+#
+alias note="TAKE_NOTE_OR_MEMO note"
+alias memo="TAKE_NOTE_OR_MEMO memo"
+alias memos="TAKE_NOTE_OR_MEMO viewmemos"
+
+function TAKE_NOTE_OR_MEMO() {
+	local FILENAME="$2";
+
+	local MEMO_DIR="$HOME/.memos";
+	local FILETYPE='md';
+
+	local DIR="";
+	local TITLE="$FILENAME";
+	local ADD_EDITOR_ARGS=0;
+	local EDITOR_ARGS='';
+
+	local ERROR_CODE=0;
+
+	case $1 in
+
+		viewmemos )
+			[ -d $MEMO_DIR ] || {
+				echo "unable to find any memos; try to make a memo first";
+				ERROR_CODE=1;
+			}
+
+			DIR="$MEMO_DIR"
+			FILENAME='';
+			;;
+
+		memo )
+			[ -d $MEMO_DIR ] || {
+				mkdir $MEMO_DIR || { 
+					echo "unable to find or create memo directory '$MEMO_DIR'"
+					ERROR_CODE=2;
+				}
+			}
+			DIR="$MEMO_DIR"
+
+			[ $FILENAME ] && FILENAME="$FILENAME.$FILETYPE"\
+				|| {
+					for i in {001..999}; do
+						TITLE="$i";
+						FILENAME="$i.$FILETYPE";
+						[ ! -f "$MEMO_DIR/$i.$FILETYPE" ] && break;
+					done
+				}
+
+			ADD_EDITOR_ARGS=1;
+			;;
+
+		note )
+			DIR="."
+
+			[ $FILENAME ] || {
+				FILENAME="$(date -I)-notes";
+				TITLE='Notes';
+				ADD_EDITOR_ARGS=1;
+			}
+
+			FILENAME="$FILENAME.$FILETYPE"
+			;;
+
+		* )
+			echo "please specify whether this is an in-place 'note' or a general 'memo'";
+			ERROR_CODE=3;
+			;;
+	esac
+
+	[ $ERROR_CODE -ne 0 ] && {
+		echo 'syntax: `TAKE_NOTE_OR_MEMO [ note | memo | viewmemos ] [ filename ]`';
+			return $ERROR_CODE;
+		}
+
+	[ $ADD_EDITOR_ARGS -ne 0 ] && {
+		DATESTRING="$(date '+%A, %B %-d, %Y')"
+		[ $EDITOR == 'vim' ] && EDITOR_ARGS='-c "normal! i# $TITLE :: $DATESTRING"';
+	}
+
+	eval "$EDITOR $EDITOR_ARGS $DIR/$FILENAME";
+}

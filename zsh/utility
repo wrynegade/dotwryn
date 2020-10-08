@@ -1,26 +1,45 @@
 #!/bin/zsh
 
-# --- Shortcuts for quick ARANDR switch -----------------------
-alias undock="$DOTWRYN/config/xserver/screenlayout/undock.sh";
-alias workdock="$DOTWRYN/config/xserver/screenlayout/workdock.sh";
-alias homedock="$DOTWRYN/config/xserver/screenlayout/homedock_hdmionly.sh";
-alias hdmidock="$DOTWRYN/config/xserver/screenlayout/hdmidock.sh";
+# --- Basic Alias ---------------------------------------------
+alias pd='pushd';
+alias qd='popd';
+alias lspd='dirs';
 
-# --- Note-taking facilitated ---------------------------------
-NOTE_PATH='/Users/w0ryn/Documents/notes';
-NOTE_EXTENSION='.txt';
-alias mynotes='cd $NOTE_PATH';
-function note() { vim $NOTE_PATH/$1$NOTE_EXTENSION; }
-function notes() { NOTE="$NOTE_PATH/$1$NOTE_EXTENSION"; [ $1 ] && [ -f $NOTE ] && vim $NOTE || vim $NOTE_PATH; }
+alias pdo='pwd | xclip';    # [p]aste current [d]irectory [o]n clipboard
+alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
+
+alias color_demo='msgcat --color=test'
+
 
 # --- GIT -----------------------------------------------------
 alias gitbranchcleanup='git branch -d $(git branch | sed -E "/develop|master|\*/d")'
 alias fix='vim $(git diff --name-only | uniq) -p';
 
+alias github="OPEN_CURRENT_GIT_REPOSITORY_IN_WEB_BROWSER"
+OPEN_CURRENT_GIT_REPOSITORY_IN_WEB_BROWSER() {
+	local REMOTE;
+	[ $1 ] && REMOTE="$1" || REMOTE="origin";
 
-alias monitor_connection='MONITOR_GLOBAL_INTERNET_CONNECTION';
+	git remote get-url $REMOTE >/dev/null 2>&1 || {
+		echo "no remote called '$REMOTE' here";
+		return 1;
+	}
+	local URL="$(git remote get-url $REMOTE | sed 's/git@\([^:]*\):/http:\/\/\1\//')"
+	xdg-open $URL;
+}
 
-MONITOR_GLOBAL_INTERNET_CONNECTION() {
+
+# --- Miscellaneous -------------------------------------------
+alias rgv='EDIT_RIP_GREP_FILE_MATCHES';
+EDIT_RIP_GREP_FILE_MATCHES() {
+	[ $EDITOR = "vim" ] \
+		&& $EDITOR -p $(rg -l $1) \
+		|| $EDITOR $(rg -l $1) ;
+}
+
+
+alias monitor_connection='PING_MONITOR_GLOBAL_INTERNET_CONNECTION';
+PING_MONITOR_GLOBAL_INTERNET_CONNECTION() {
 	local DELIMITER="\n==============================\n";
 	local CONNECTION_MONITOR_FILE="$HOME/.local/connection"
 
@@ -44,20 +63,3 @@ MONITOR_GLOBAL_INTERNET_CONNECTION() {
 		sleep 30;
 	done;
 }
-
-alias pd='pushd';
-alias qd='popd';
-alias ds='dirs';
-alias cdo='cd $(xclip -o)';
-alias pdo='pwd | xclip';
-
-alias rgv='EDIT_RIP_GREP_FILE_MATCHES';
-
-EDIT_RIP_GREP_FILE_MATCHES() {
-	[ $EDITOR = "vim" ] \
-		&& $EDITOR -p $(rg -l $1) \
-		|| $EDITOR $(rg -l $1) ;
-}
-
-
-alias color_demo='msgcat --color=test'
