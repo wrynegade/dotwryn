@@ -45,9 +45,7 @@ function VIM__SETUP_ENVIRONMENT_VARIABLES() {
 }
 
 function VIM__UPDATE_COLORSCHEMES() {
-	pushd $HOME/.wryn/config/colorschemes/vim >/dev/null
-	./update_colorschemes
-	popd >/dev/null
+	$HOME/.wryn/bin/vim/update_colorschemes
 }
 
 function VIM__INSTALL_VUNDLE_PLUGINS() {
@@ -62,7 +60,7 @@ function VIM__INSTALL_VUNDLE_PLUGINS() {
 	vim +PluginInstall +qall;
 
 	echo "building plugins"
-	$HOME/.wryn/vim/rebuild_plugins;
+	$HOME/.wryn/bin/vim/rebuild_plugins;
 }
 
 function VIM__SETUP() {
@@ -187,8 +185,8 @@ function CLEAN_BACKUP() {
 	case $yn in
 		[Yy]* ) 
 			echo 'cleaning backup files';
-			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file; done
-			for file in $(find "$HOME" -name .\*.bak 2>/dev/null); do rm $file; done
+			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
+			for file in $(find "$HOME" -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
 			;;
 		* ) echo 'skipping cleanup';;
 	esac
