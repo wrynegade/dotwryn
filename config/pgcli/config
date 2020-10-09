@@ -20,7 +20,7 @@ multi_line = True
 # If multi_line_mode is set to "safe", in multi-line mode, [Enter] will always
 # insert a newline, and [Esc] [Enter] or [Alt]-[Enter] must be used to execute
 # a command.
-multi_line_mode = psql
+multi_line_mode = safe
 
 # Destructive warning mode will alert you before executing a sql statement
 # that may cause harm to the database such as "drop table", "drop database"
@@ -34,7 +34,7 @@ expand = False
 auto_expand = False
 
 # If set to True, table suggestions will include a table alias
-generate_aliases = False
+generate_aliases = True
 
 # log_file location.
 # In Unix/Linux: ~/.config/pgcli/log
@@ -43,7 +43,7 @@ generate_aliases = False
 log_file = default
 
 # keyword casing preference. Possible values "lower", "upper", "auto"
-keyword_casing = auto
+keyword_casing = upper
 
 # casing_file location.
 # In Unix/Linux: ~/.config/pgcli/casing
