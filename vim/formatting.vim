@@ -31,7 +31,7 @@ augroup execute_file_shortcuts
 augroup end
 " }}}
 
-" -- Miscelaneous File-specific Commands ----------------- {{{
+" -- Miscellaneous File-specific Commands ---------------- {{{
 augroup latex_commands
 
 	" overwrite the <leader>t 'test' to (double) recompile the latex document.

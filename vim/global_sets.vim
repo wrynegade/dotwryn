@@ -1,23 +1,21 @@
-set linebreak " automatically wraps text
-set breakindent " indent for single-line wrap
-set breakindentopt=shift:3 " indent amount for single-line wrap
 
 set formatoptions=lj
-" l = prevents the breaking up of words
-" j = remove comment leaders when joining lines
 
-let &t_co=256 " use 256-color
+set number relativenumber
 
-set number " show line numbers
-set relativenumber
+set linebreak breakindent breakindentopt=shift:3
+set autoindent smartindent
 
-set autoindent " match indentation with next line
-set smartindent " match indentation with syntax
-
-set spellfile=$VIM_DIR/en.utf-8.add
-set spelllang=en
+set timeoutlen=200
 
 set showmatch   " -- emit 'beep' when no matching symbol,
 set matchtime=0 " -- but don't jump to it.
 
-set timeoutlen=200 " -- short timeout for multi-key functions
+
+set t_ZH=[3m t_ZR=[23m " italic start / end characters
+
+set spellfile=$VIM_DIR/en.utf-8.add spelllang=en
+
+set encoding=utf-8
+
+let &t_co=256
