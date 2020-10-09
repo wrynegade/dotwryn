@@ -13,3 +13,5 @@ for display in $(xrandr | grep connect | awk '{print $1;}' | grep -v "$NATIVE_MO
 done;
 
 feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
+
+[ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx login

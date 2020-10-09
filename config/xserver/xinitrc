@@ -3,7 +3,7 @@
 X11_SCRIPTS='/etc/X11/xinit/xinitrc.d';
 if [ -d $X11_SCRIPTS ] ; then
 	for script in $(find "$X11_SCRIPTS" -name \*.sh); do
-		source "$script" && echo "$script sourced" >> $HOME/LOG.txt;
+		source "$script";
 	done
 fi
 
@@ -16,4 +16,4 @@ export PATH="$CUSTOM_DMENU_COMMANDS:$PATH"
 
 "$HOME/.wryn/config/xserver/set_randr_layout" &
 
-exec i3
+exec i3;
