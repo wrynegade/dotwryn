@@ -2,8 +2,8 @@
 let $RC_DIR=expand("$HOME/.wryn")
 let $VIM_DIR=expand("$RC_DIR/vim")
 let $WRYNVIMRC=expand("$VIM_DIR/rc.vim")
-let $WRYNBASH=expand("$RC_DIR/bashrc")
-let $MYBASHRC=expand("$HOME/.bashrc")
+let $BASHRC=expand("$HOME/.bashrc")
+let $ZSHRC=expand("$HOME/.zshrc")
 " }}}
 
 
@@ -13,6 +13,11 @@ let $MYBASHRC=expand("$HOME/.bashrc")
 "
 " customs   : snow
 let $COLORSCHEME="skittles_autumn"
+" }}}
+
+" -- Web Browser Settings --------------------------------------- {{{
+" set the webbrowser locally
+" let $WEBBROWSER=""
 " }}}
 
 
