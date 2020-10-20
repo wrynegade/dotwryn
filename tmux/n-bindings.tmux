@@ -34,3 +34,6 @@ bind-key -n M-z resize-pane -Z
 
 # nested session with meta-a
 bind-key -n M-a send-prefix
+
+# rena[M]e session
+bind-key -n M-m command-prompt -I "#S" "rename-session '%%'"
