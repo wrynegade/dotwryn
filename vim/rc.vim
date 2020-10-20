@@ -6,7 +6,8 @@ if isdirectory(expand("$HOME/.vim/bundle/Vundle.vim"))
 	source $VIM_DIR/vundle.vim
 endif
 
-source $VIM_DIR/global_sets.vim
+source $VIM_DIR/options.vim
+source $VIM_DIR/testing.vim
 source $VIM_DIR/formatting.vim
 source $VIM_DIR/abbreviations.vim
 source $VIM_DIR/navigation.vim
@@ -42,8 +43,8 @@ augroup personal_bindings
 	nnoremap - :m +1 <CR> 
 	nnoremap _ :m -2 <CR>
 
-	" \t for rerun last 'test' command:
-	nnoremap <Leader>t q:?test<CR><CR>
+	" \t for rerun last 'vimtest' command:
+	nnoremap <Leader>t q:?vimtest<CR><CR>
 
 	" \b for git blame
 	nnoremap <Leader>b :set termwinsize=15*0<BAR>:execute "terminal git blame -L " .eval(line(".")-5) . ",+10 %"<BAR>:set termwinsize&<CR>

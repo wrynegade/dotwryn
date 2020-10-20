@@ -43,7 +43,7 @@ augroup end
 
 
 " -- Format Override Layers ------------------------------ {{{
-source $VIM_DIR/rd_formatting.vim
+source $VIM_DIR/rentdynamics.vim
 " }}}
 
 
