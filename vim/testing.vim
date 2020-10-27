@@ -3,7 +3,7 @@ let tmuxTestSessionName = "test"
 let defaultTmuxPaneId = g:tmuxTestSessionName . ":0.0"
 
 function InitializeTmuxTestSession()
-	silent execute '!tmux new -ds ' . g:tmuxTestSessionName . ' -c $HOME >/dev/null 2>&1'
+	call system("tmux new -ds " . g:tmuxTestSessionName . " -c $HOME >/dev/null 2>&1")
 endfunction
 
 
@@ -13,7 +13,7 @@ endfunction
 
 function TmuxTest(shellCommand, paneId = g:defaultTmuxPaneId)
 	if a:paneId == g:defaultTmuxPaneId
-		call InitializeTmuxTestSession()
+		silent call InitializeTmuxTestSession()
 	endif
 
 	call system("tmux send-keys -t " . a:paneId . " '" . a:shellCommand . "' Enter")
