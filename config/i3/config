@@ -11,6 +11,7 @@ set $SLACK_CLIENT_TITLE ^Slack.*$
 set $MESSAGE_CLIENT_TITLE ^Android.Messages$
 set $MEDIA_CLIENT_TITLE ^.*YouTube.Music.*$
 set $DISCORD_CLIENT_TITLE ^.*Discord.*$
+set $EMAIL_CLIENT_TITLE ^.*Mozilla.Thunderbird$
 
 font pango:monospace 6
 
@@ -105,6 +106,9 @@ for_window [title=$MEDIA_CLIENT_TITLE] move scratchpad; [title=$MEDIA_CLIENT_TIT
 
 bindsym $mod+shift+s [title=$SLACK_CLIENT_TITLE] scratchpad show
 for_window [title=$SLACK_CLIENT_TITLE] move scratchpad; [title=$SLACK_CLIENT_TITLE] scratchpad show
+
+bindsym $mod+shift+t [title=$EMAIL_CLIENT_TITLE] scratchpad show
+for_window [title=$EMAIL_CLIENT_TITLE] move scratchpad; [title=$EMAIL_CLIENT_TITLE] scratchpad show
 
 
 ################################################################################
