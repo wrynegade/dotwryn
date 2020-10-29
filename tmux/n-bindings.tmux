@@ -37,3 +37,6 @@ bind-key -n M-a send-prefix
 
 # rena[M]e session
 bind-key -n M-m command-prompt -I "#S" "rename-session '%%'"
+
+# toggle readonly session
+bind-key -n M-r switch-client -r;
