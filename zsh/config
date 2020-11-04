@@ -1,0 +1,26 @@
+# --- General ZSH Settings -----------------------------------
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+setopt appendhistory autocd beep notify
+unsetopt nomatch
+
+bindkey -v
+
+
+# --- Autocompletion Settings --------------------------------
+zmodload -i zsh/complist;
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' max-errors 4
+zstyle ':completion:*' menu select;
+bindkey -M menuselect '^M' .accept-line; # don't require 'return' to select menu item
+
+zstyle :compinstall filename "$HOME/.zshrc"
+
+autoload -Uz compinit
+compinit
+
+
+# --- Enable completion in kitty-terminal --------------------
+which kitty >/dev/null && kitty + complete setup zsh | source /dev/stdin

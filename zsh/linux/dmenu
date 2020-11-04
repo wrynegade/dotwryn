@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+function DMENU__NEW_COMMAND() {
+	local BIN="$HOME/.local/custom_dmenu";
+	local HELP_STRING='\ncorrect syntax:\nDMENU__NEW_COMMAND [ name or "test" ] [ command .. args ]\n';
+
+	[[ "$1" == help ]] && {
+		echo $HELP_STRING;
+		return 0;
+	}
+
+	[ ! -d $BIN ] && mkdir $BIN;
+
+	# fail if no command is provided
+	[ ! $2 ] && return 1;
+
+	[[ "$1" != "test" ]] && {
+		echo "${@:2}" > "$BIN/$1" 2>/dev/null \
+			&& chmod +x "$BIN/$1" \
+			&& echo "Command '$1' saved! ('${@:2}')" \
+			|| { echo "Something went wrong :c \n"; echo "$HELP_STRING"; }
+	} || {
+		echo;
+		echo -e "saved to : \e[32m$BIN/$1\e[0m";
+		echo -e "executes : \e[31m${@:2}\e[0m";
+		echo;
+	}
+}

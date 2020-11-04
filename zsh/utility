@@ -1,6 +1,8 @@
 #!/bin/zsh
 
 # --- Basic Alias ---------------------------------------------
+alias restart='clear; source ~/.zshrc; echo'
+
 alias pd='pushd';
 alias qd='popd';
 alias lspd='dirs';
@@ -9,6 +11,10 @@ alias pdo='pwd | xclip';    # [p]aste current [d]irectory [o]n clipboard
 alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
 
 alias color_demo='msgcat --color=test'
+
+
+# --- !@#$ Aliases --------------------------------------------
+alias sl='sl -alF | lolcat';
 
 
 # --- GIT -----------------------------------------------------
@@ -30,7 +36,7 @@ OPEN_CURRENT_GIT_REPOSITORY_IN_WEB_BROWSER() {
 
 
 # --- Miscellaneous -------------------------------------------
-alias rgv='EDIT_RIP_GREP_FILE_MATCHES';
+alias erg='EDIT_RIP_GREP_FILE_MATCHES';
 EDIT_RIP_GREP_FILE_MATCHES() {
 	[ $EDITOR = "vim" ] \
 		&& $EDITOR -p $(rg -l $1) \

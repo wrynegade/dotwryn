@@ -1,67 +1,34 @@
 #!/bin/zsh
-#
-#
-
-# The following lines were added by compinstall
-zstyle ':completion:*' completer _complete _ignored _approximate
-zstyle ':completion:*' max-errors 4
-zstyle :compinstall filename '/home/w0ryn/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt appendhistory autocd beep notify
-unsetopt nomatch
-bindkey -v
-# End of lines configured by zsh-newuser-install
-
-
-zmodload -i zsh/complist;
-bindkey -M menuselect '^M' .accept-line;
-
-# Completion for Kitty
-which kitty >/dev/null && kitty + complete setup zsh | source /dev/stdin
-
-#
-#
 
 source "$HOME/.wryn/env/env.zsh"
 
 RC_DIR="$DOTWRYN/zsh"
 
-# source .wryn/zsh files
+# zsh plugins
 for file in $(find $RC_DIR -maxdepth 1 -type f ! -name 'rc'); do source $file; done;
 
-# osx
-if [[ "$OSTYPE" == "darwin"* ]]; then
-	for file in $(find $RC_DIR/osx -type f); do source $file; done;
-fi
-
-# linux
+# linux-specific plugins
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	for file in $(find $RC_DIR/linux -type f); do source $file; done;
 fi
 
-# --- ViM as default editor -----------------------------------
-export EDITOR='vim'
-export VISUAL='vim'
+# osx-specific plugins
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	for file in $(find $RC_DIR/osx -type f); do source $file; done;
+fi
 
-# --- Welcome message -----------------------------------------
+
+# --- vi / vim as default editor (vim preferred) -------------------
+which vi >/dev/null 2>&1 && {
+	export EDITOR='vi';
+	export VISUAL='vi';
+}
+
+which vim >/dev/null 2>&1 && {
+	export EDITOR='vim';
+	export VISUAL='vim';
+}
+
+
+# --- welcome message ----------------------------------------------
 exec figlet "Welcome, beautiful" | lolcat; echo; cowsay -p "damn u sexy" | lolcat; 
-
-alias restart='clear; source ~/.zshrc; echo'
-
-# --- !@#$ Aliases --------------------------------------------
-alias clera='clear';
-alias sl='sl -alF | lolcat';
-
-# --- ZSH Completion Styles -----------------------------------
-zmodload -i zsh/complist;
-
-zstyle ':completion:*' menu select;
-bindkey -M menuselect '^M' .accept-line; # don't require 'return' to select menu item
