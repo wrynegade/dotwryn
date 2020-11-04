@@ -7,7 +7,7 @@ set $mod Mod4
 set $CONFIG /home/w0ryn/.config/wryn
 set $UTILS /home/w0ryn/.config/wryn/i3utils
 
-set $SLACK_CLIENT_TITLE ^Slack.*$
+set $SLACK_CLIENT_TITLE ^.*Slack.*$
 set $MESSAGE_CLIENT_TITLE ^Android.Messages$
 set $MEDIA_CLIENT_TITLE ^.*YouTube.Music.*$
 set $DISCORD_CLIENT_TITLE ^.*Discord.*$
