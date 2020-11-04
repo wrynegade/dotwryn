@@ -4,30 +4,36 @@ source "$HOME/.wryn/env/env.zsh"
 
 RC_DIR="$DOTWRYN/zsh"
 
-# zsh plugins
+# --- load custom plugins ------------------------------------------
+
 for file in $(find $RC_DIR -maxdepth 1 -type f ! -name 'rc'); do source $file; done;
 
-# linux-specific plugins
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-	for file in $(find $RC_DIR/linux -type f); do source $file; done;
-fi
+# operating system specific plugins
+case "$OSTYPE" in
+	linux-gnu )
+		for file in $(find $RC_DIR/linux -type f); do source $file; done;
+		;;
+	darwin* )
+		for file in $(find $RC_DIR/osx -type f); do source $file; done;
+		;;
+esac
 
-# osx-specific plugins
-if [[ "$OSTYPE" == "darwin"* ]]; then
-	for file in $(find $RC_DIR/osx -type f); do source $file; done;
-fi
 
+# --- set default editor -------------------------------------------
+SET_PREFERRED_EDITOR() {
+	local PREFERENCE="$PREFERRED_EDITOR"; # load preference from environment (vi vim) by default
+	[ -z $PREFERENCE ] && { echo 'unable to find $PREFERRED_EDITOR environment variable'; return 1; }
 
-# --- vi / vim as default editor (vim preferred) -------------------
-which vi >/dev/null 2>&1 && {
-	export EDITOR='vi';
-	export VISUAL='vi';
+	[[ $EDITOR == "${PREFERENCE[-1]}" ]] && [[ $VISUAL == "${PREFERENCE[-1]}" ]] && return 0;
+
+	local AVAILABLE_EDITOR="$EDITOR";
+
+	for program in $PREFERENCE; do which $program >/dev/null 2>&1 && AVAILABLE_EDITOR="$program"; done
+
+	export EDITOR="$AVAILABLE_EDITOR";
+	export VISUAL="$AVAILABLE_EDITOR";
 }
-
-which vim >/dev/null 2>&1 && {
-	export EDITOR='vim';
-	export VISUAL='vim';
-}
+SET_PREFERRED_EDITOR
 
 
 # --- welcome message ----------------------------------------------
