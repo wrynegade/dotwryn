@@ -1,24 +1,40 @@
 " -- Custom Format Settings ------------------------------ {{{
+function FormatFileType(indent, expandtab, foldmethod, foldlevel, spell)
+	let &l:tabstop = a:indent
+	let &l:softtabstop = a:indent
+	let &l:shiftwidth = a:indent
+
+	let &l:expandtab = a:expandtab
+
+	let &l:foldmethod = a:foldmethod
+	let &l:foldlevel = a:foldlevel
+
+	let &l:spell = a:spell
+endfunction
+
 augroup filetype_specific_formatting
 	autocmd!
-	autocmd FileType python     setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType java       setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType cpp        setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType cs         setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType html       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType css        setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=indent foldlevel=99
-	autocmd FileType vim        setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=marker foldlevel=99
-	autocmd FileType sh         setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
-	autocmd FileType zsh        setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab foldmethod=indent foldlevel=99
-	autocmd FileType lisp       setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=manual foldlevel=99
-	autocmd FileType markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab foldmethod=indent foldlevel=99 spell
-	autocmd FileType tex        setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab foldmethod=indent foldlevel=99 spell
-	autocmd FileType postscr    setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab   foldmethod=indent foldlevel=99
+	autocmd FileType python     call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType java       call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType cpp        call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType cs         call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType html       call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType javascript call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType vim        call FormatFileType(4, v:false, 'marker', 99, v:false)
+	autocmd FileType sh         call FormatFileType(4, v:false, 'indent', 99, v:false)
+	autocmd FileType zsh        call FormatFileType(4, v:false, 'indent', 99, v:false)
+	autocmd FileType lisp       call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType markdown   call FormatFileType(2, v:false, 'indent', 99, v:true )
+	autocmd FileType tex        call FormatFileType(8, v:false, 'indent', 99, v:true )
+	autocmd FileType postscr    call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType haskell    call FormatFileType(2, v:true,  'indent', 99, v:false)
 augroup end
 
 augroup forced_filetype_recognition
-	autocmd BufRead,BufNewFile *.tmux setfiletype tmux
+	autocmd BufRead,BufNewFile *.tmux  setfiletype tmux
+	autocmd BufRead,BufNewFile *.clisp setfiletype lisp
+	autocmd BufRead,BufNewFile *.lsp   setfiletype lisp
+
 	let g:tex_flavor = "latex"
 augroup end
 " }}}
@@ -31,12 +47,13 @@ augroup execute_file_shortcuts
 augroup end
 " }}}
 
+
 " -- Miscellaneous File-specific Commands ---------------- {{{
 augroup latex_commands
 
 	" overwrite the <leader>t 'test' to (double) recompile the latex document.
-	" in case pdflatex gets in a stuck state, it is run through timeout 5
-	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 5 pdflatex $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
+	" in case pdflatex gets in a stuck state, it is run through timeout 3
+	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 3 pdflatex $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
 
 augroup end
 " }}}
