@@ -4,16 +4,22 @@
 
 set $mod Mod4
 
+font pango:monospace 6
+
 set $CONFIG /home/w0ryn/.config/wryn
 set $UTILS /home/w0ryn/.config/wryn/i3utils
 
-set $SLACK_CLIENT_TITLE ^.*Slack.*$
-set $MESSAGE_CLIENT_TITLE ^Android.Messages$
-set $MEDIA_CLIENT_TITLE ^.*YouTube.Music.*$
-set $DISCORD_CLIENT_TITLE ^.*Discord.*$
-set $EMAIL_CLIENT_TITLE ^.*Mozilla.Thunderbird$
 
-font pango:monospace 6
+set $SLACK_CLIENT_CLASS ^Slack$
+set $MESSAGE_CLIENT_CLASS ^android-messages-desktop$
+set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier-.*$
+set $DISCORD_CLIENT_CLASS ^discord$
+
+set $EMAIL_CLIENT_INSTANCE ^Mail$
+
+set $GAMES_CLIENT_CLASSES ^(Steam)|(dolphin-emu)|(Visualboyadvance-m)$
+set $TERMINAL_EMULATOR_CLASSES ^(kitty)$
+
 
 # for use after any command which should refresh the statusbar
 set $refresh_statusbar killall -SIGUSR1 i3status
@@ -95,20 +101,21 @@ floating_modifier $mod
 bindsym $mod+Shift+Tab move scratchpad
 bindsym $mod+Tab scratchpad show
 
-bindsym $mod+shift+d [title=$DISCORD_CLIENT_TITLE] scratchpad show
-for_window [title=$DISCORD_CLIENT_TITLE] move scratchpad; [title=$DISCORD_CLIENT_TITLE] scratchpad show
+bindsym $mod+Shift+d [class=$DISCORD_CLIENT_CLASS] scratchpad show
+for_window [class=$DISCORD_CLIENT_CLASS] move scratchpad;
 
-bindsym $mod+shift+m [title=$MESSAGE_CLIENT_TITLE] scratchpad show
-for_window [title=$MESSAGE_CLIENT_TITLE] move scratchpad; [title=$MESSAGE_CLIENT_TITLE] scratchpad show
+bindsym $mod+Shift+m [class=$MESSAGE_CLIENT_CLASS] scratchpad show
+for_window [class=$MESSAGE_CLIENT_CLASS] move scratchpad;
 
-bindsym $mod+m       [title=$MEDIA_CLIENT_TITLE] scratchpad show
-for_window [title=$MEDIA_CLIENT_TITLE] move scratchpad; [title=$MEDIA_CLIENT_TITLE] scratchpad show
+bindsym $mod+m       [class=$MEDIA_CLIENT_CLASS] scratchpad show
+for_window [class=$MEDIA_CLIENT_CLASS] move scratchpad;
 
-bindsym $mod+shift+s [title=$SLACK_CLIENT_TITLE] scratchpad show
-for_window [title=$SLACK_CLIENT_TITLE] move scratchpad; [title=$SLACK_CLIENT_TITLE] scratchpad show
+bindsym $mod+Shift+t [instance=$EMAIL_CLIENT_INSTANCE] scratchpad show
+for_window [instance=$EMAIL_CLIENT_INSTANCE] move scratchpad;
 
-bindsym $mod+shift+t [title=$EMAIL_CLIENT_TITLE] scratchpad show
-for_window [title=$EMAIL_CLIENT_TITLE] move scratchpad; [title=$EMAIL_CLIENT_TITLE] scratchpad show
+bindsym $mod+Shift+s [class=$SLACK_CLIENT_CLASS] scratchpad show;
+bindsym $mod+Shift+x [class=$GAMES_CLIENT_CLASSES] scratchpad show;
+bindsym $mod+x [class=$TERMINAL_EMULATOR_CLASSES] scratchpad show;
 
 
 ################################################################################
@@ -161,6 +168,9 @@ bindsym $mod+Shift+c reload
 for_window [class="^.*"] border pixel 2
 gaps inner 5
 gaps outer 5
+
+bindsym $mod+z       gaps outer current plus  1; gaps inner current plus  1;
+bindsym $mod+shift+z gaps outer current minus 1; gaps inner current minus 1;
 
 # Terminal / Application Launcher
 bindsym $mod+Return exec i3-sensible-terminal
