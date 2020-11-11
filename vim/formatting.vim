@@ -17,6 +17,7 @@ augroup filetype_specific_formatting
 	autocmd FileType python     call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType java       call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType cpp        call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType cmake      call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType cs         call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType html       call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType javascript call FormatFileType(2, v:true,  'indent', 99, v:false)
@@ -28,6 +29,7 @@ augroup filetype_specific_formatting
 	autocmd FileType tex        call FormatFileType(8, v:false, 'indent', 99, v:true )
 	autocmd FileType postscr    call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType haskell    call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType perl       call FormatFileType(4, v:true,  'indent', 99, v:false)
 augroup end
 
 augroup forced_filetype_recognition
