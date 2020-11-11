@@ -16,7 +16,7 @@ function TmuxTest(shellCommand, paneId = g:defaultTmuxPaneId)
 		silent call InitializeTmuxTestSession()
 	endif
 
-	call system("tmux send-keys -t " . a:paneId . " '" . a:shellCommand . "' Enter")
+	call system("tmux send-keys -t " . a:paneId . " 'clear; " . a:shellCommand . "' Enter")
 endfunction
 
 function SplitPaneTest(shellCommand, verticalSplit = 0)
