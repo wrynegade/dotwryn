@@ -102,20 +102,20 @@ bindsym $mod+Shift+Tab move scratchpad
 bindsym $mod+Tab scratchpad show
 
 bindsym $mod+Shift+d [class=$DISCORD_CLIENT_CLASS] scratchpad show
-for_window [class=$DISCORD_CLIENT_CLASS] move scratchpad;
+for_window [class=$DISCORD_CLIENT_CLASS] move scratchpad
 
 bindsym $mod+Shift+m [class=$MESSAGE_CLIENT_CLASS] scratchpad show
-for_window [class=$MESSAGE_CLIENT_CLASS] move scratchpad;
-
-bindsym $mod+m       [class=$MEDIA_CLIENT_CLASS] scratchpad show
-for_window [class=$MEDIA_CLIENT_CLASS] move scratchpad;
+for_window [class=$MESSAGE_CLIENT_CLASS] move scratchpad
 
 bindsym $mod+Shift+t [instance=$EMAIL_CLIENT_INSTANCE] scratchpad show
-for_window [instance=$EMAIL_CLIENT_INSTANCE] move scratchpad;
+for_window [instance=$EMAIL_CLIENT_INSTANCE] move scratchpad
 
-bindsym $mod+Shift+s [class=$SLACK_CLIENT_CLASS] scratchpad show;
-bindsym $mod+Shift+x [class=$GAMES_CLIENT_CLASSES] scratchpad show;
-bindsym $mod+x [class=$TERMINAL_EMULATOR_CLASSES] scratchpad show;
+bindsym $mod+m       [class=$MEDIA_CLIENT_CLASS] scratchpad show
+for_window [class=$MEDIA_CLIENT_CLASS] move scratchpad; [class=$MEDIA_CLIENT_CLASS] scratchpad show
+
+bindsym $mod+Shift+s [class=$SLACK_CLIENT_CLASS] scratchpad show
+bindsym $mod+Shift+x [class=$GAMES_CLIENT_CLASSES] scratchpad show
+bindsym $mod+x [class=$TERMINAL_EMULATOR_CLASSES] scratchpad show
 
 
 ################################################################################
@@ -171,6 +171,43 @@ gaps outer 5
 
 bindsym $mod+z       gaps outer current plus  1; gaps inner current plus  1;
 bindsym $mod+shift+z gaps outer current minus 1; gaps inner current minus 1;
+
+# color settings
+set $FOCUSED_BORDER       #288B52
+set $FOCUSED_BACKGROUND   #288B52
+set $FOCUSED_TEXT         #CCDDFF
+set $FOCUSED_INDICATOR    #55C9B5
+set $FOCUSED_CHILD_BORDER #225925
+
+set $INACTIVE_BORDER       #690420
+set $INACTIVE_BACKGROUND   #690420
+set $INACTIVE_TEXT         #CCDDFF
+set $INACTIVE_INDICATOR    #800040
+set $INACTIVE_CHILD_BORDER #400010
+
+set $UNFOCUSED_BORDER       #614F41
+set $UNFOCUSED_BACKGROUND   #614F41
+set $UNFOCUSED_TEXT         #CCDDFF
+set $UNFOCUSED_INDICATOR    #614F41
+set $UNFOCUSED_CHILD_BORDER #614F41
+
+set $URGENT_BORDER       #FFFFFF
+set $URGENT_BACKGROUND   #FFFFFF
+set $URGENT_TEXT         #FF1440
+set $URGENT_INDICATOR    #FFFFFF
+set $URGENT_CHILD_BORDER #FFFFFF
+
+set $PLACEHOLDER_BORDER       #614F41
+set $PLACEHOLDER_BACKGROUND   #614F41
+set $PLACEHOLDER_TEXT         #CCDDFF
+set $PLACEHOLDER_INDICATOR    #614F41
+set $PLACEHOLDER_CHILD_BORDER #614F41
+
+client.focused $FOCUSED_BORDER $FOCUSED_BACKGROUND $FOCUSED_TEXT $FOCUSED_INDICATOR $FOCUSED_CHILD_BORDER
+client.focused_inactive $INACTIVE_BORDER $INACTIVE_BACKGROUND $INACTIVE_TEXT $INACTIVE_INDICATOR $INACTIVE_CHILD_BORDER
+client.unfocused $UNFOCUSED_BORDER $UNFOCUSED_BACKGROUND $UNFOCUSED_TEXT $UNFOCUSED_INDICATOR $UNFOCUSED_CHILD_BORDER
+client.urgent $URGENT_BORDER $URGENT_BACKGROUND $URGENT_TEXT $URGENT_INDICATOR $URGENT_CHILD_BORDER
+client.placeholder $PLACEHOLDER_BORDER $PLACEHOLDER_BACKGROUND $PLACEHOLDER_TEXT $PLACEHOLDER_INDICATOR $PLACEHOLDER_CHILD_BORDER
 
 # Terminal / Application Launcher
 bindsym $mod+Return exec i3-sensible-terminal
