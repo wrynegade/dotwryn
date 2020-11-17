@@ -14,4 +14,4 @@ done;
 
 feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
 
-[ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx login
+[ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx undock

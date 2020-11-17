@@ -13,6 +13,9 @@ case $1 in
 	backlight ) PLAY yaru-audio-volume-change.oga ;;
 	login     ) PLAY yaru-desktop-login.oga ;;
 	logout    ) PLAY smooth-desktop-login.oga ;;
-
+	notify    ) PLAY yaru-complete.oga ;;
+	undock    ) PLAY yaru-desktop-login.oga ;;
+	homedock  ) PLAY homedock.oga ;;
+	gamedock  ) PLAY gamedock.oga ;;
 	* ) ls $SFX ;;
 esac
