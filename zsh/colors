@@ -19,10 +19,12 @@ function parse_git_branch(){
 }
 GIT_BRANCH='%B%F{cyan}$(parse_git_branch)';
 
-PROMPT=$'\n'' %B%F{128}%# %b%f'
+PROMPT_LINE=$'\n'' %B%F{128}%# %b%f'
 
 setopt PROMPT_SUBST
-PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT"
+PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT_LINE"
+
+[ -f "$HOME/.config/wryn/custom-ps1" ] && source "$HOME/.config/wryn/custom-ps1"
 #RPROMPT="$(\e[1A) $GIT_BRANCH";
 
 
