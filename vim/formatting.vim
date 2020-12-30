@@ -30,6 +30,7 @@ augroup filetype_specific_formatting
 	autocmd FileType postscr    call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType haskell    call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType perl       call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType kotlin     call FormatFileType(2, v:true,  'indent', 99, v:false)
 augroup end
 
 augroup forced_filetype_recognition
