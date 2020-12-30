@@ -44,9 +44,16 @@ function rnt() {
 		clone )
 			RENT_DYNAMICS_GIT_PROJECT_SET_UP "${@:2}" || ERROR_CODE=7;
 			;;
+		shell )
+			RENT_DYNAMICS_MANAGE_PY_SHELL "${@:2}" || ERROR_CODE=8;
+			;;
+		usage )
+			RENT_DYNAMICS_CHECK_PROJECT_USAGE "${@:2}" || ERROR_CODE=9;
+			;;
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
 			cd "$RD_PATH"
+			source "$RD_PATH/ENV.sh"
 
 			[ -d "$1" ] && {
 				cd "$1" >/dev/null 2>/dev/null;
@@ -69,7 +76,7 @@ _rnt () { # autocompletion
 	case "$state" in
 		project_or_command)
 			compadd $(ls "$RD_PATH");
-			compadd db refresh_db cleanup mail status op clone;
+			compadd db refresh_db cleanup mail status op clone usage;
 			;;
 		command_args)
 			[ $words[2] == 'status' ] && _RENT_DYNAMICS_UPDATE_SLACK_STATUS;
@@ -88,10 +95,10 @@ function RENT_DYNAMICS_CONNECT_TO_DATABASE() {
 }
 
 function RENT_DYNAMICS_REFRESH_LOCAL_POSTGRES_DATABASES() {
-	psql postgres -c "DROP DATABASE rentdynamics;"
-	psql postgres -c "CREATE DATABASE rentdynamics with owner rd;"
-	psql postgres -c "DROP DATABASE rdrentplus;"
-	psql postgres -c "CREATE DATABASE rdrentplus with owner rd;"
+	psql -U postgres -c "DROP DATABASE rentdynamics;"
+	psql -U postgres -c "CREATE DATABASE rentdynamics with owner rd;"
+	psql -U postgres -c "DROP DATABASE rdrentplus;"
+	psql -U postgres -c "CREATE DATABASE rdrentplus with owner rd;"
 }
 
 function RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP() {
@@ -288,4 +295,28 @@ RENT_DYNAMICS_GIT_PROJECT_SET_UP() {
 	git clone -q "$PROJECT_URL" "$PROJECT_DIR/code" \
 		&& echo "Succesfully cloned project '$1' (access quickly with 'rnt $1')." \
 		|| { echo "$PROJECT_DIR"; rm -rI "$PROJECT_DIR" }
+}
+
+RENT_DYNAMICS_MANAGE_PY_SHELL() {
+	echo 'TODO: Implement me!';
+	return;
+
+	MANAGE_PY_DIR="$(pwd | sed 's/\(.*code\).*/\1/')";
+	PROJECT_NAME="$(pwd | sed 's/.*\/\(.*\)\/code.*/\1/' | sed 's/-/_/g')";
+
+	IMPORT_MODELS="from $PROJECT_NAME.domain.models import *\n";
+	IMPORT_HELPER="from $PROJECT_NAME.test.helpers import *\n";
+
+	IMPORT_PPRINT='from pprint import pprint\n';
+	PPRINT_LAMBDA='P = lambda x: pprint(vars(x))\n';
+
+	COMMANDS="$IMPORT_MODELS$IMPORT_HELPER$IMPORT_PPRINT$PPRINT_LAMBDA";
+
+	"$MANAGE_PY_DIR/manage.py" shell -i ipython <(echo $COMMANDS);
+}
+
+RENT_DYNAMICS_CHECK_PROJECT_USAGE() {
+	echo "The regex $1 is found in the following projects/repositories:\n"
+	rg $1 $RD_PATH -l | sed 's/^.*w0ryn\/RentDynamics\///' | sed 's/\/.*$//' | uniq;
+	echo;
 }
