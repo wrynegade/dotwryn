@@ -57,7 +57,7 @@ function GetDjangoTestCommand()
 endfunction
 
 function GetDjangoManagePy()
-	return substitute(expand(getcwd()), "/code/.*", "/code/manage.py", "")
+	return substitute(expand(getcwd()), "/code.*", "/code/manage.py", "")
 endfunction
 
 
