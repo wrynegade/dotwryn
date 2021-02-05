@@ -141,6 +141,11 @@ function CONFIG__PYLINT() {
 	echo "linked pylint configuration"
 }
 
+function CONFIG__RIPGREP() {
+	CONFIG__SYMLINK "ripgrep" "config"
+	echo "linked ripgrep configuration"
+}
+
 function CONFIG__TMUX() {
 	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$HOME/.wryn/tmux/tmux.conf";
 	echo "linked tmux configuration"
@@ -157,6 +162,7 @@ function CONFIG__TERMINFO() {
 		tic -x $file >/dev/null 2>&1 || echo "failed to add $file" ;
 	done
 }
+
 
 
 function CONFIG__SETUP() {

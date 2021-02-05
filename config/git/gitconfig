@@ -13,3 +13,7 @@
 [pull]
 	default = current
 	rebase = true
+[color]
+	diff = always
+	status = always
+	branch = always

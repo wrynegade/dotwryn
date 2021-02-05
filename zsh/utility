@@ -7,6 +7,8 @@ alias pd='pushd';
 alias qd='popd';
 alias lspd='dirs';
 
+alias bp='clear; bpython';
+
 alias pdo='pwd | xclip';    # [p]aste current [d]irectory [o]n clipboard
 alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
 
@@ -36,6 +38,8 @@ OPEN_CURRENT_GIT_REPOSITORY_IN_WEB_BROWSER() {
 
 
 # --- Miscellaneous -------------------------------------------
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config";
+
 alias erg='EDIT_RIP_GREP_FILE_MATCHES';
 EDIT_RIP_GREP_FILE_MATCHES() {
 	[ $EDITOR = "vim" ] \

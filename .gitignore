@@ -2,6 +2,8 @@
 latex/*.aux
 latex/*.log
 latex/*.pdf
+latex/*.out
 resume/*.aux
 resume/*.log
 resume/*.pdf
+resume/*.out
