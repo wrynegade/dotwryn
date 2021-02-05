@@ -317,6 +317,6 @@ RENT_DYNAMICS_MANAGE_PY_SHELL() {
 
 RENT_DYNAMICS_CHECK_PROJECT_USAGE() {
 	echo "The regex $1 is found in the following projects/repositories:\n"
-	rg $1 $RD_PATH -l | sed 's/^.*w0ryn\/RentDynamics\///' | sed 's/\/.*$//' | uniq;
+	rg $1 $RD_PATH -l | sed 's/^.*w0ryn\/RentDynamics\///' | sed 's/\/.*$//' | sort | uniq;
 	echo;
 }
