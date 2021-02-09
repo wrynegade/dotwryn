@@ -73,7 +73,7 @@ function TAKE_NOTE_OR_MEMO() {
 			return $ERROR_CODE;
 		}
 
-	[ $ADD_EDITOR_ARGS -ne 0 ] && {
+	[ $ADD_EDITOR_ARGS -ne 0 ] && [ ! -f "$DIR/$FILENAME" ] && {
 		DATESTRING="$(date '+%A, %B %-d, %Y')"
 		[ $EDITOR == 'vim' ] && EDITOR_ARGS='-c "normal! i# $TITLE :: $DATESTRING"';
 	}
