@@ -4,7 +4,7 @@
 
 set $mod Mod4
 
-font pango:monospace 6
+font pango:monospace 20
 
 set $CONFIG /home/w0ryn/.config/wryn
 set $UTILS /home/w0ryn/.config/wryn/i3utils
