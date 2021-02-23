@@ -9,9 +9,15 @@ WRYN_SSH_CONNECTION_LIST="$HOME/.config/wryn/ssh-connections"
 WRYN_SSH_DELIMITER=" *| "
 [ -d "$HOME/.config/wryn" ] && [ ! -f "$WRYN_SSH_CONNECTION_LIST" ] && touch "$WRYN_SSH_CONNECTION_LIST";
 
+WRYN_SSH_ADD_CREDENTIALS() {
+	for key in $(grep -slR "PRIVATE" "$HOME/.ssh/*"); do
+		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" }
+	done
+}
+
 function WRYN_REMOTE_CONNECTOR() {
-	local COMMAND="$1"
-	local CONNECTION="$2"
+	local COMMAND="$1";
+	local CONNECTION="$2";
 
 	local SSH_ID="$CONNECTION$WRYN_SSH_DELIMITER"
 
@@ -20,13 +26,9 @@ function WRYN_REMOTE_CONNECTOR() {
 	grep -q "$SSH_ID" "$WRYN_SSH_CONNECTION_LIST" >/dev/null 2>&1 \
 		|| { echo 'No such connection'; return 2 };
 
-	local 
-	local PARSED_ARGS=$(sed -n "s/$SSH_ID\(.*\)$/\1/p" "$WRYN_SSH_CONNECTION_LIST" )
-
-	echo "$PARSED_ARGS:$3"
 	case $COMMAND in;
-		ssh     ) ssh $PARSED_ARGS ${@:3} ;;
-		sshfs   ) sshfs "$PARSED_ARGS:$3" ${@:4} ;;
+		sshfs     ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4} ;;
+		ssh       ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3};;
 		* ) echo "$COMMAND not implemented" ;;
 	esac
 }
@@ -56,8 +58,7 @@ _WRYN_REMOTE_CONNECTOR() {
 }
 compdef _WRYN_REMOTE_CONNECTOR WRYN_REMOTE_CONNECTOR;
 
-WRYN_SSH_ADD_CREDENTIALS() {
-	for key in $(grep -slR "PRIVATE" "$HOME/.ssh/*"); do
-		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" }
-	done
+WRYN_SSH_PARSE_ARGS() {
+	SSH_ID="$1";
+	sed -n "s/$SSH_ID\(.*\)$/\1/p" "$WRYN_SSH_CONNECTION_LIST"
 }
