@@ -30,13 +30,18 @@ PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT
 
 ######################################################################################
 
+alias change_kitty_theme='KITTY_CHANGE_THEME default'
+alias change_alternate_kitty_theme='KITTY_CHANGE_THEME alternate'
 function KITTY_CHANGE_THEME () {
-	[ ! $1 ] && echo no filename given :c && return 1;
-	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$1" ] \
+	[ ! $2 ] && echo no filename given :c && return 1;
+	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$2" ] \
 		&& echo colorscheme not supported && return 2;
 
-	rm $DOTWRYN/config/kitty/theme.conf
-	ln -s "$DOTWRYN/config/colorschemes/kitty/$1" "$DOTWRYN/config/kitty/theme.conf"\
+	local THEME_DIR="$DOTWRYN/config/kitty";
+	local THEME;
+	[ $1 = 'default' ] && THEME="$THEME_DIR/theme.conf" || THEME="$THEME_DIR/alternate.conf"
+	rm "$THEME"
+	ln -s "$DOTWRYN/config/colorschemes/kitty/$2" "$THEME"\
 		&& echo 'theme changed successfully! (effective on new terminal session)'
 }
 _KITTY_CHANGE_THEME () {

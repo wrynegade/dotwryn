@@ -19,6 +19,8 @@ LOG_OUT="$UTIL_BIN/i3/logout.sh";
 
 BG_RANDOMIZE="$UTIL_BIN/feh/randomize-background.sh"
 
+ALTERNATE_TERMINAL="$UTIL_BIN/kitty/alternate-terminal.sh"
+
 
 case $1 in
 	next ) "$MEDIA__NEXT" ;;
@@ -37,4 +39,6 @@ case $1 in
 	logout ) "$LOG_OUT" ;;
 
 	bgrandomize ) "$BG_RANDOMIZE" ;;
+
+	alternateterm ) "$ALTERNATE_TERMINAL" ;;
 esac
