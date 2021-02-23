@@ -1,0 +1,63 @@
+#!/bin/zsh
+
+alias c='WRYN_REMOTE_CONNECTOR'
+alias sshc='WRYN_REMOTE_CONNECTOR ssh'
+alias sshe='$EDITOR $WRYN_SSH_CONNECTION_LIST'
+alias ssh-add-all='WRYN_SSH_ADD_CREDENTIALS'
+
+WRYN_SSH_CONNECTION_LIST="$HOME/.config/wryn/ssh-connections"
+WRYN_SSH_DELIMITER=" *| "
+[ -d "$HOME/.config/wryn" ] && [ ! -f "$WRYN_SSH_CONNECTION_LIST" ] && touch "$WRYN_SSH_CONNECTION_LIST";
+
+function WRYN_REMOTE_CONNECTOR() {
+	local COMMAND="$1"
+	local CONNECTION="$2"
+
+	local SSH_ID="$CONNECTION$WRYN_SSH_DELIMITER"
+
+	[ $2 ] \
+		|| { echo 'Must specify a connection'; return 1 };
+	grep -q "$SSH_ID" "$WRYN_SSH_CONNECTION_LIST" >/dev/null 2>&1 \
+		|| { echo 'No such connection'; return 2 };
+
+	local 
+	local PARSED_ARGS=$(sed -n "s/$SSH_ID\(.*\)$/\1/p" "$WRYN_SSH_CONNECTION_LIST" )
+
+	echo "$PARSED_ARGS:$3"
+	case $COMMAND in;
+		ssh     ) ssh $PARSED_ARGS ${@:3} ;;
+		sshfs   ) sshfs "$PARSED_ARGS:$3" ${@:4} ;;
+		* ) echo "$COMMAND not implemented" ;;
+	esac
+}
+_WRYN_REMOTE_CONNECTOR() {
+	local state;
+	_arguments \
+		'1: :->remote_command'\
+		'2: :->connections'\
+		':: :->remote_args'\
+	;
+	case "$state" in
+		remote_command)
+			compadd -X 'Choose a connection command:' ssh sshfs
+			;;
+		connections)
+			compadd -X 'Choose a conection:' $(sed "s/$WRYN_SSH_DELIMITER.*//" "$WRYN_SSH_CONNECTION_LIST")
+			;;
+		remote_args)
+			_files
+			case $words[2] in;
+				ssh     ) _ssh;;
+				sshfs   ) _sshfs;;
+				* ) ;;
+			esac
+			;;
+	esac
+}
+compdef _WRYN_REMOTE_CONNECTOR WRYN_REMOTE_CONNECTOR;
+
+WRYN_SSH_ADD_CREDENTIALS() {
+	for key in $(grep -slR "PRIVATE" "$HOME/.ssh/*"); do
+		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" }
+	done
+}
