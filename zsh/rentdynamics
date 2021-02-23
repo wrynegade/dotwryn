@@ -59,7 +59,10 @@ function rnt() {
 				cd "$1" >/dev/null 2>/dev/null;
 				[ -f "./env/bin/activate" ] \
 					&& source "./env/bin/activate" \
-					|| echo No environment here, boss!;
+					|| echo 'No environment here, boss!';
+				[ -f "./myenv" ] \
+					&& source "./myenv" \
+					&& echo 'Loaded custom environment settings!';
 				[ -d "./code" ] && cd "./code";
 			}
 	esac
