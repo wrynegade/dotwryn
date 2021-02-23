@@ -43,8 +43,8 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config";
 alias erg='EDIT_RIP_GREP_FILE_MATCHES';
 EDIT_RIP_GREP_FILE_MATCHES() {
 	[ $EDITOR = "vim" ] \
-		&& $EDITOR -p $(rg -l $1) \
-		|| $EDITOR $(rg -l $1) ;
+		&& $EDITOR -p $(rg --color=never -l $1 ) \
+		|| $EDITOR $(rg --color=never -l $1) ;
 }
 
 
