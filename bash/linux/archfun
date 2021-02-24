@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# dependency :: feh
-alias bgrandomizer="feh --randomize --bg-fill $HOME/.wallpaper/1/* $HOME/.wallpaper/2/* $HOME/.wallpaper/3/*";
-# temp
-alias bgrandomizer="feh --randomize --bg-fill $HOME/.wallpaper/* $HOME/.wallpaper/* $HOME/.wallpaper/*";
