@@ -2,29 +2,29 @@
 
 ##############################
 
-foreground='FFFF00'
-background='021400'
+foreground='FF6622'
+background='051000'
 
-red='FE3500'
-brightred='FE9800'
+red='FF2200'
+brightred='FF8700'
 
-green='074B0F'
-brightgreen='78FF00'
+green='FFFF00'
+brightgreen='AAAA00'
 
-yellow='F4FF00'
-brightyellow='FFD700'
+yellow='78FF00'
+brightyellow='008B20'
 
-blue='06FF84'
+blue='00FF88'
 brightblue='BFEA83'
 
-magenta='007015'
-brightmagenta='007015'
+magenta='00A000'
+brightmagenta='005000'
 
 cyan='07FF4F'
-brightcyan='346800'
+brightcyan='648800'
 
-gray='252615'
-brightgray='827000'
+gray='00FF00'
+brightgray='00AA00'
 
 ##############################
 
