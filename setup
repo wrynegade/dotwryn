@@ -198,7 +198,7 @@ function CLEAN_BACKUP() {
 		[Yy]* ) 
 			echo 'cleaning backup files';
 			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
-			for file in $(find "$HOME" -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
+			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
 			;;
 		* ) echo 'skipping cleanup';;
 	esac
