@@ -12,14 +12,13 @@ let $ZSHRC=expand("$HOME/.zshrc")
 " ........... vice, lanox, nightsky, made_of_code, moss, skittles_berry, pf_earth
 "
 " customs   : snow
-let $COLORSCHEME="skittles_autumn"
+let $COLORSCHEME="default"
 " }}}
 
 " -- Web Browser Settings --------------------------------------- {{{
 " set the webbrowser locally
-" let $WEBBROWSER=""
+"let $WEBBROWSER=""
 " }}}
-
 
 " -- Local Environment Overrides -------------------------------- {{{
 source $HOME/.config/wryn/env.vim
