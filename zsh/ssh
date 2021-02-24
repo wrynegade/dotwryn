@@ -6,12 +6,13 @@ alias sshe='$EDITOR $WRYN_SSH_CONNECTION_LIST'
 alias ssh-add-all='WRYN_SSH_ADD_CREDENTIALS'
 
 WRYN_SSH_CONNECTION_LIST="$HOME/.config/wryn/ssh-connections"
-WRYN_SSH_DELIMITER=" *| "
+WRYN_SSH_DELIMITER=' *| '
+
 [ -d "$HOME/.config/wryn" ] && [ ! -f "$WRYN_SSH_CONNECTION_LIST" ] && touch "$WRYN_SSH_CONNECTION_LIST";
 
 WRYN_SSH_ADD_CREDENTIALS() {
-	for key in $(grep -slR "PRIVATE" "$HOME/.ssh/*"); do
-		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" }
+	for key in $(grep -slR "PRIVATE" "$HOME/.ssh"); do
+		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" };
 	done
 }
 
@@ -27,8 +28,12 @@ function WRYN_REMOTE_CONNECTOR() {
 		|| { echo 'No such connection'; return 2 };
 
 	case $COMMAND in;
-		sshfs     ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4} ;;
-		ssh       ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3};;
+		sshfs   ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4}    ;;
+		ssh     ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3}         ;;
+		cp-to   ) scp $(WRYN_SCP_PARSE_ARGS $SSH_ID $4):$3 ${@:5}   ;;
+		cp-from ) scp $(WRYN_SCP_PARSE_ARGS $SSH_ID):$3 $4 ${@:5}   ;;
+		copy-id ) ssh-copy-id $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3} ;;
+
 		* ) echo "$COMMAND not implemented" ;;
 	esac
 }
@@ -41,7 +46,7 @@ _WRYN_REMOTE_CONNECTOR() {
 	;
 	case "$state" in
 		remote_command)
-			compadd -X 'Choose a connection command:' ssh sshfs
+			compadd -X 'Choose a connection command:' ssh sshfs cp-to cp-from copy-id
 			;;
 		connections)
 			compadd -X 'Choose a conection:' $(sed "s/$WRYN_SSH_DELIMITER.*//" "$WRYN_SSH_CONNECTION_LIST")
@@ -51,6 +56,8 @@ _WRYN_REMOTE_CONNECTOR() {
 			case $words[2] in;
 				ssh     ) _ssh;;
 				sshfs   ) _sshfs;;
+				cpto | cpfrom ) _scp;;
+				copy-id ) _ssh-copy-id;;
 				* ) ;;
 			esac
 			;;
@@ -61,4 +68,11 @@ compdef _WRYN_REMOTE_CONNECTOR WRYN_REMOTE_CONNECTOR;
 WRYN_SSH_PARSE_ARGS() {
 	SSH_ID="$1";
 	sed -n "s/$SSH_ID\(.*\)$/\1/p" "$WRYN_SSH_CONNECTION_LIST"
+}
+
+WRYN_SCP_PARSE_ARGS() {
+	SSH_ID="$1";
+	[ $2 ]\
+		&& sed -n "s>$SSH_ID *-p \([^ ]*\)\(.*\)$>-P \1 $2\2>p" "$WRYN_SSH_CONNECTION_LIST"\
+		|| sed -n "s/$SSH_ID *-p\(.*\)$/-P\1/p" "$WRYN_SSH_CONNECTION_LIST"
 }
