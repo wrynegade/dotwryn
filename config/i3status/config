@@ -1,0 +1,64 @@
+general {
+	output_format = 'i3bar'
+        colors = true
+	separator = ''
+	color_good = '#8800FF'
+	color_bad = '#FF0044'
+	color_degraded = '#FF8800'
+        interval = 1
+}
+
+order += 'memory'
+order += 'disk /'
+order += 'wireless _first_'
+order += 'ethernet _first_'
+order += 'ipv6'
+order += 'tztime local'
+order += 'tztime utc'
+order += 'battery all'
+
+wireless _first_ {
+        format_up = '(%essid%quality) %ip'
+        format_down = '(wifi:⊘)'
+}
+
+ethernet _first_ {
+        format_up = '(%speed) %ip'
+        format_down = ''
+}
+
+battery all {
+        format = '[%status%percentage]'
+	integer_battery_capacity = true
+	format_down = ''
+	status_bat = '⌁'
+	status_chr = '⚡ '
+	status_full = '😻 '
+	status_unk = 'BAT⁉'
+	low_threshold = 40
+	threshold_type = 'percentage'
+}
+
+disk '/' {
+	format = ''
+        format_below_threshold = '[root %avail / %total]'
+	prefix_type = 'custom'
+	low_threshold = 20
+	threshold_type = 'percentage_free'
+}
+
+memory {
+	format = ''
+	threshold_degraded = "20%"
+	threshold_critical = "10%"
+	format_degraded = '[RAM %free / %total]'
+}
+
+tztime local {
+	format = '{%A %B %m, %Y} %I:%M:%S-%P'
+}
+
+tztime utc {
+        format = '{%H:%M-UTC}'
+	timezone = UTC
+}

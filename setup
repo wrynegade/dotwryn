@@ -109,6 +109,11 @@ function CONFIG__I3() {
 	echo "linked i3 configuration";
 }
 
+function CONFIG__I3STATUS() {
+	CONFIG__SYMLINK "i3status" "config";
+	echo "linked i3status configuration";
+}
+
 function CONFIG__PGCLI() {
 	CONFIG__SYMLINK "pgcli" "config";
 	echo "linked pgcli configuration";
@@ -167,6 +172,7 @@ function CONFIG__TERMINFO() {
 
 function CONFIG__SETUP() {
 	CONFIG__I3;
+	CONFIG__I3STATUS;
 	CONFIG__PGCLI;
 	CONFIG__MSSQLCLI;
 	CONFIG__COMPTON;
