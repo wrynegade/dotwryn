@@ -12,10 +12,9 @@ set $UTILS /home/w0ryn/.config/wryn/i3utils
 
 set $SLACK_CLIENT_CLASS ^Slack$
 set $MESSAGE_CLIENT_CLASS ^android-messages-desktop$
-set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier-.*$
+set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier
 set $DISCORD_CLIENT_CLASS ^discord$
-
-set $EMAIL_CLIENT_INSTANCE ^Mail$
+set $EMAIL_CLIENT_CLASS ^Thunderbird$
 
 set $GAMES_CLIENT_CLASSES ^(Steam)|(dolphin-emu)|(Visualboyadvance-m)$
 set $TERMINAL_EMULATOR_CLASSES ^(kitty)$
@@ -101,19 +100,12 @@ floating_modifier $mod
 bindsym $mod+Shift+Tab move scratchpad
 bindsym $mod+Tab scratchpad show
 
-bindsym $mod+Shift+d [class=$DISCORD_CLIENT_CLASS] scratchpad show
-for_window [class=$DISCORD_CLIENT_CLASS] move scratchpad
+bindsym $mod+Shift+d exec --no-startup-id $UTILS discord $DISCORD_CLIENT_CLASS;
+bindsym $mod+Shift+t exec --no-startup-id $UTILS email   $EMAIL_CLIENT_CLASS;
+bindsym $mod+m       exec --no-startup-id $UTILS media   $MEDIA_CLIENT_CLASS;
+bindsym $mod+Shift+m exec --no-startup-id $UTILS message $MESSAGE_CLIENT_CLASS;
+bindsym $mod+Shift+s exec --no-startup-id $UTILS slack   $SLACK_CLIENT_CLASS;
 
-bindsym $mod+Shift+m [class=$MESSAGE_CLIENT_CLASS] scratchpad show
-for_window [class=$MESSAGE_CLIENT_CLASS] move scratchpad
-
-bindsym $mod+Shift+t [instance=$EMAIL_CLIENT_INSTANCE] scratchpad show
-for_window [instance=$EMAIL_CLIENT_INSTANCE] move scratchpad
-
-bindsym $mod+m       [class=$MEDIA_CLIENT_CLASS] scratchpad show
-for_window [class=$MEDIA_CLIENT_CLASS] move scratchpad; [class=$MEDIA_CLIENT_CLASS] scratchpad show
-
-bindsym $mod+Shift+s [class=$SLACK_CLIENT_CLASS] scratchpad show
 bindsym $mod+Shift+x [class=$GAMES_CLIENT_CLASSES] scratchpad show
 bindsym $mod+x [class=$TERMINAL_EMULATOR_CLASSES] scratchpad show
 
