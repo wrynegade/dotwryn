@@ -55,7 +55,7 @@ memory {
 }
 
 tztime local {
-	format = '{%A %B %m, %Y} %I:%M:%S-%P'
+	format = '- %A %B %m, %Y - %I:%M:%S-%P'
 }
 
 tztime utc {
