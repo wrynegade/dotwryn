@@ -1,6 +1,7 @@
 #!/bin/sh
 ENGINE="$(which canberra-gtk-play) -f"
 SFX="$HOME/Personal/sfx";
+source "$HOME/.config/wryn/env.zsh"
 
 
 PLAY() {
