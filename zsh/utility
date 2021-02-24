@@ -12,6 +12,7 @@ alias bp='clear; bpython';
 alias pdo='pwd | xclip';    # [p]aste current [d]irectory [o]n clipboard
 alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
 
+alias disable_screen_blank='xset s 0'
 alias color_demo='msgcat --color=test'
 
 
