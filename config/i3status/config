@@ -17,6 +17,11 @@ order += 'tztime local'
 order += 'tztime utc'
 order += 'battery all'
 
+ipv6 {
+	format_up = '%ip'
+	format_down = '[no IPv6]'
+}
+
 wireless _first_ {
         format_up = '(%essid%quality) %ip'
         format_down = '(wifi:⊘)'
@@ -55,7 +60,7 @@ memory {
 }
 
 tztime local {
-	format = '- %A %B %m, %Y - %I:%M:%S-%P'
+	format = '%A %B %m, %Y : %I:%M:%S-%P'
 }
 
 tztime utc {
