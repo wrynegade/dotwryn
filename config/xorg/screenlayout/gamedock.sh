@@ -1,4 +1,5 @@
 #!/bin/sh
+source "$HOME/.config/wryn/env/env"
 
 RESOLUTION='1920x1080';
 
@@ -17,6 +18,5 @@ for display in $(xrandr | grep connect | awk '{print $1;}' | grep -v "$CURRENT_M
 	xrandr --output $display --off;
 done;
 
-feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
-
+"$DOTWRYN/bin/desktop/feh/randomize-background.sh"
 [ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx gamedock

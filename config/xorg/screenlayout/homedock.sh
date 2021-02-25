@@ -1,4 +1,6 @@
 #!/bin/sh
+source "$HOME/.config/wryn/env/env"
+
 NATIVE_MONITOR='eDP1';
 HOMEDOCK_MONITOR=$(xrandr | grep ' connect' | awk '{print $1;}' | grep -v "$NATIVE_MONITOR" | head -n 1);
 
@@ -15,6 +17,5 @@ for display in $(xrandr | grep connect | awk '{print $1;}' | grep -v "$HOMEDOCK_
 	xrandr --output $display --off;
 done;
 
-feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
-
+"$DOTWRYN/bin/desktop/feh/randomize-background.sh"
 [ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx homedock

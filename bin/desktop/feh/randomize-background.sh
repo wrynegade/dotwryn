@@ -1,4 +1,4 @@
-WALLPAPER_DIR="$HOME/.config/wryn/wallpaper";
+source "$HOME/.config/wryn/env/env"
 
-[ -d $WALLPAPER_DIR ] \
-	&& feh --recursive --randomize --bg-fill "$WALLPAPER_DIR";
+[ -d "$WALLPAPER_PATH" ] \
+	&& feh --recursive --randomize --bg-fill "$WALLPAPER_PATH";

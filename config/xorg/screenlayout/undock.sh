@@ -1,4 +1,6 @@
 #!/bin/sh
+source "$HOME/.config/wryn/env/env"
+
 NATIVE_MONITOR='eDP1';
 NATIVE_MODE="$(xrandr | grep -A 2 "$NATIVE_MONITOR" | sed -n '2 p' | awk '{print $1;}')";
 
@@ -17,6 +19,5 @@ for display in $(xrandr | grep connect | awk '{print $1;}' | grep -v "$NATIVE_MO
 	xrandr --output $display --off;
 done;
 
-feh --bg-fill --randomize $HOME/.config/wryn/wallpaper;
-
+"$DOTWRYN/bin/desktop/feh/randomize-background.sh"
 [ -f $HOME/.config/wryn/sfx ] && $HOME/.config/wryn/sfx undock
