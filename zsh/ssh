@@ -12,7 +12,7 @@ WRYN_SSH_DELIMITER=' *| '
 
 WRYN_SSH_ADD_CREDENTIALS() {
 	for key in $(grep -slR "PRIVATE" "$HOME/.ssh"); do
-		ssh-add "$key" && { echo "Added $key" } || { echo "Failed to add $key" };
+		ssh-add "$key";
 	done
 }
 
