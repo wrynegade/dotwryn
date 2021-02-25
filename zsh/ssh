@@ -32,7 +32,7 @@ function WRYN_REMOTE_CONNECTOR() {
 		ssh     ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3}         ;;
 		cp-to   ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID $3):$4   ;;
 		cp-from ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID):$3 $4   ;;
-		copy-id ) ssh-copy-id $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3} ;;
+		copy-id ) ssh-copy-id ${@:3} $(WRYN_SSH_PARSE_ARGS $SSH_ID) ;;
 
 		* ) echo "$COMMAND not implemented" ;;
 	esac
@@ -49,7 +49,7 @@ _WRYN_REMOTE_CONNECTOR() {
 			compadd -X 'Choose a connection command:' ssh sshfs cp-to cp-from copy-id
 			;;
 		connections)
-			compadd -X 'Choose a conection:' $(sed "s/$WRYN_SSH_DELIMITER.*//" "$WRYN_SSH_CONNECTION_LIST")
+			compadd -X 'Choose a connection:' $(sed -n "s/$WRYN_SSH_DELIMITER.*//p" "$WRYN_SSH_CONNECTION_LIST")
 			;;
 		remote_args)
 			_files
