@@ -29,7 +29,7 @@ A compilation of LaTeX templates, used by the [`.wryn/zsh/latex`](./zsh/latex) u
 Each template is composed of four files: `template.tex`, `body.tex`, `imports.sty`, and `formatting.sty`.
 The `template.tex` file is the parent of the document, and thus the target of the latex compiler.
 This can be renamed to match the document title, but typically does not contain the document body.
-Every template will use the same parent `template.tex` file, so this is found at the [`~/.wryn/latex`](./latex) directory root.
+Every template will use the same parent `template.tex` file, so this is found at the `~/.wryn/latex` directory root.
 
 ### [resume](./resume)
 My working resume in `.tex` format.
