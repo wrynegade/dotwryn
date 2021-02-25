@@ -1,64 +1,49 @@
-# The `.wryn` Directory
+# The `.wryn` Library
 
-This is a compilation of utilities which I use across machines.
-I expect this to be a lifelong struggle to get everything to work the second that I'm on a new machine, but I have yet to have a flawless transfer from one machine to the next.
-Despite my failures (so far) in a *perfect* transfer installation, I have found this project to have sped up my transferring between machines immensely.
-When I'm working on multiple machines, a simple `git pull` will keep all of my shell and VI scripts in sync.
+A compilation of utilities which I use across my machines.
+This library represents my lifelong efforts to create a custom, streamlined IDE based on the terminal and terminal-based editors.
 
 So I suppose here is the disclaimer: **this repo is principally for personal utility**.
-Sometimes there are local machine dependencies which will cause (particularly setup) utilities to fail.
-Feel free to use or adapt anything you find useful, just leave credit where credit is due :)
+Although I try to build utilities to be dependency aware, the library is considered to be in a good state when it works on my machine.
+Feel free to use or adapt anything you find useful :)
 
 ## File Structure Breakdown
-
-Here's a little breakdown of what each directory may contain (in no particular order).
-
-### [bash](./bash)
-It contains `bash` aliases and functions which might be placed in a `~/.bashrc` to be called from the command line.
-I have found it personally useful to break these out into topical groupings or modules.
-
-All modules which are found directly within `~/.wryn/bash` will be loaded across all operating systems, while specific operating systems architectures will each have their own specified modules (e.g. [`~/.wryn/bash/linux`](./bash/linux) or [`~/.wryn/bash/osx`](./bash/osx)).
-
-### [zsh](./zsh)
-Just like [`~/.wryn/bash`](./bash) but for ZSH.
-Currently, I'm using ZSH, so these utilities may be more up-to-date than those found in `~/.wryn/bash`
+### [bin](./bin)
+Program-specific shell utilities used throughout configurations and other `zsh` scripts.
+These utilities are not used directly by the user and are **not** sourced to the user RC.
 
 ### [config](./config)
-These are all the sort of files you would expect to find in your `~/.config` directory.
-In fact, the [`~/.wryn/setup`](./setup) script is designed to symlink relevant files to your local `~/.config` directory.
+Configuration files which are typically symlinked to the `~/.config` directory.
+
+### [env](./env)
+Default environment variables used by library utilities.
+Overrides can be set on each machine by editing the appropriate local environment in `~/.config/wryn/`.
+
+### [freeze](./freeze)
+A historical list of packages used on personal machines.
+Also contains machine-specific `systemd` daemons for managing hardware-specific issues.
 
 ### [latex](./latex)
-This directory contains my TeX templates.
-Each template is composed of four files: `template.tex`, `body.tex`, `imports.sty`, and `formatting.sty`.
+A compilation of LaTeX templates, used by the [`.wryn/zsh/latex`](./zsh/latex) utility.
 
+Each template is composed of four files: `template.tex`, `body.tex`, `imports.sty`, and `formatting.sty`.
 The `template.tex` file is the parent of the document, and thus the target of the latex compiler.
 This can be renamed to match the document title, but typically does not contain the document body.
 Every template will use the same parent `template.tex` file, so this is found at the [`~/.wryn/latex`](./latex) directory root.
 
-The remaining three files will vary from template to template, but should be copied to the same directory as `template.tex` when creating a working document.
-The two style files, `imports.sty` and `formatting.sty` manage external imports and document styling (respectively), while the `body.tex` should contain the document's text and text-specific commands.
-
-There are [shell utilities](./zsh/latex) which facilitate their copying for general use.
-
-### [systemd-utils](./systemd-utils)
-I started this directory when I installed Arch Linux on a late 2013 macbook pro.
-Currently these are daemons designed to help fix hardware issues with that machine.
+### [resume](./resume)
+My working resume in `.tex` format.
 
 ### [vim](./vim)
-This contains all my custom keybindings and vim-scripts.
-There is also an installer which pulls down and builds (or rebuilds) the few external plugins which I use with VI.
+Contains keybindings, dictionary binary, and custom plugins for `vim`.
 
-### [bin](./bin)
-Non-sourced shell utilities.
+The [`setup`](./setup) utility will source the `.wryn/vim/rc.vim` and set up all necessary environment variables.
+Local environment overrides are placed in `~/.config/wryn/env/env.vim`.
 
-### [env](./env)
-[`~/.wryn/setup`](./setup) will link these environment variables to your local machine's shell and vim environments.
-This is so directories in respective shell/vim modules are not hard-coded to any particular machine.
-The indicated variables should be modified if they cannot be found in the prescribed directory.
+### [zsh](./zsh)
+Contains `zsh` aliases and functions used directly by a terminal user.
+The [`.wryn/zsh/rc`](./zsh/rc), which loads the custom `zsh` modules is sourced directly from the user RC.
+Any OS specific utilities are nested in appropriately named directories.
 
-### [new_computer_setup](./new_computer_setup)
-Now that I'm writing this, it occurs to me this may be a misnomer.
-It is actually a historical log of system and python packages I have installed on previous machines.
-
-### [tmux](./tmux)
-Contains tmux configuration files for keybindings, status bar settings, etc.
+The [`setup`](./setup) utility will source the `.wryn/zsh/rc` and set up all necessary environment variables.
+Local environment overrides are placed in `~/.config/wryn/env/env`.

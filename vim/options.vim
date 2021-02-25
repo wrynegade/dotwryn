@@ -14,7 +14,7 @@ set matchtime=0 " -- but don't jump to it.
 
 set t_ZH=[3m t_ZR=[23m " italic start / end characters
 
-set spellfile=$VIM_DIR/en.utf-8.add spelllang=en
+set spellfile=$WRYNVIMPATH/en.utf-8.add spelllang=en
 
 set encoding=utf-8
 

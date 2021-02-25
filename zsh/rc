@@ -1,21 +1,21 @@
 #!/bin/zsh
 
-source "$HOME/.wryn/env/env.zsh"
-
-RC_DIR="$DOTWRYN/zsh"
-source "$DOTWRYN/zsh/config"
+source "$HOME/.config/wryn/env/env"
 
 # --- load custom plugins ------------------------------------------
 
-for file in $(find $RC_DIR -maxdepth 1 -type f ! -name 'rc' ! -name 'config'); do source $file; done;
+# zsh config : must load first for zsh-plugins to work
+source "$DOTWRYN/zsh/config"
+
+for file in $(find "$DOTWRYN/zsh" -maxdepth 1 -type f ! -name 'rc' ! -name 'config'); do source $file; done;
 
 # operating system specific plugins
 case "$OSTYPE" in
 	linux-gnu )
-		for file in $(find $RC_DIR/linux -type f); do source $file; done;
+		for file in $(find "$DOTWRYN/zsh/linux" -type f); do source $file; done;
 		;;
 	darwin* )
-		for file in $(find $RC_DIR/osx -type f); do source $file; done;
+		for file in $(find "$DOTWRYN/zsh/osx" -type f); do source $file; done;
 		;;
 esac
 

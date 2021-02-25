@@ -63,7 +63,7 @@ augroup end
 
 
 " -- Format Override Layers ------------------------------ {{{
-source $VIM_DIR/rentdynamics.vim
+source $WRYNVIMPATH/rentdynamics.vim
 " }}}
 
 

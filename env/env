@@ -1,3 +1,4 @@
+#!/bin/sh
 DOTWRYN="$HOME/.wryn"
 SCHOOL_PATH="$HOME/School"
 RD_PATH="$HOME/RentDynamics"
@@ -8,5 +9,3 @@ PREFERRED_EDITOR=(vi vim)
 
 # plays audio files located throughout the system
 MEDIA_ENGINE="$(which canberra-gtk-play) -f"
-
-source "$LOCAL_OVERRIDES" 

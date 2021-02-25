@@ -1,11 +1,15 @@
 " -- RC Resources ----------------------------------------------- {{{
-let $RC_DIR=expand("$HOME/.wryn")
-let $VIM_DIR=expand("$RC_DIR/vim")
-let $WRYNVIMRC=expand("$VIM_DIR/rc.vim")
+let $DOTWRYN=expand("$HOME/.wryn")
+let $WRYNVIMPATH=expand("$DOTWRYN/vim")
+let $WRYNVIMRC=expand("$WRYNVIMPATH/rc.vim")
 let $BASHRC=expand("$HOME/.bashrc")
 let $ZSHRC=expand("$HOME/.zshrc")
 " }}}
 
+" -- Leader bindings -------------------------------------------- {{{
+let mapleader = "\\"
+"let localmapleader = ',' (not used currently)
+" }}}
 
 " -- Colorscheme Settings --------------------------------------- {{{
 " favorites : tigrana-256-dark, codedark, lilydjwg_dark, up, skittles_autumn,
@@ -18,8 +22,4 @@ let $COLORSCHEME="default"
 " -- Web Browser Settings --------------------------------------- {{{
 " set the webbrowser locally
 "let $WEBBROWSER=""
-" }}}
-
-" -- Local Environment Overrides -------------------------------- {{{
-source $HOME/.config/wryn/env.vim
 " }}}

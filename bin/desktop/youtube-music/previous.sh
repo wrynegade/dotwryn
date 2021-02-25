@@ -1,1 +1,3 @@
-"$HOME/.wryn/bin/desktop/youtube-music/controller.sh" prev
+source "$HOME/.config/wryn/env/env"
+
+"$DOTWRYN/bin/desktop/youtube-music/controller.sh" prev

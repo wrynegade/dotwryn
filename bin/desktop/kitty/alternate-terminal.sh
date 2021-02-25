@@ -1,6 +1,8 @@
 #!/bin/sh
 
-CONFIG_DIR="$HOME/.wryn/config/kitty"
+source "$HOME/.config/wryn/env/env"
+
+CONFIG_DIR="$DOTWRYN/config/kitty"
 
 [ -f "$CONFIG_DIR/temp.conf" ] && return 1 # race condition lock
 

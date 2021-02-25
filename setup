@@ -1,4 +1,19 @@
-#!/bin/bash
+################################################################################
+### SETUP VERIFICATION #########################################################
+################################################################################
+
+DOTWRYN_PATH="$(pwd)"
+function CHECK_DIR() {
+	read -p "Is DOTWRYN.git installed at '$DOTWRYN_PATH'? [Yn] : " validate;
+
+	case $validate in
+		[nN]* ) exit 1;;
+		* ) ;;
+	esac
+}
+
+CHECK_DIR; # verify install detected correct location before continuing
+
 
 ################################################################################
 ### SHELL SETUP ################################################################
@@ -10,20 +25,35 @@ function SOURCE_DOTWRYN_RC {
 
 	[ ! -f "$HOME/$HOME_RC" ] && touch "$HOME/$HOME_RC";
 
-	grep -q '\.wryn' "$HOME/$HOME_RC" \
-		&& echo "already set up $HOME_RC" \
-		|| {
-			echo "source $WRYN_RC" >> "$HOME/$HOME_RC";
-			echo "successfully set up $HOME_RC";
-		}
+	grep "$WRYN_RC" "$HOME/$HOME_RC" && {
+		echo "already set up $HOME_RC";
+	} || {
+		echo "source $WRYN_RC" >> "$HOME/$HOME_RC";
+		echo "successfully set up $HOME_RC";
+	}
+}
+
+function ENV__SETUP_LOCAL_OVERRIDES() {
+	local DEFAULT_SHELL_ENV="$DOTWRYN_PATH/env/env"
+	local LOCAL_SHELL_ENV="$HOME/.config/wryn/env/env"
+
+	local DEFAULT_VIM_ENV="$DOTWRYN_PATH/env/env.vim"
+	local LOCAL_VIM_ENV="$HOME/.config/wryn/env/env.vim"
+
+	echo "source $DOTWRYN_PATH/env/env" > "$LOCAL_SHELL_ENV"
+	echo -e '\n#\n# ~/.wryn/env/env local overrides\n#\n' >> "$LOCAL_SHELL_ENV"
+	sed 's/[#]*\(.*\)/#\1/' $DEFAULT_SHELL_ENV >> "$LOCAL_SHELL_ENV"
+
+	echo "source $DOTWRYN_PATH/env/env.vim" > "$LOCAL_VIM_ENV"
+	echo -e '\n"\n" ~/.wryn/env/env.vim local overrides\n"\n' >> "$LOCAL_VIM_ENV"
+	sed 's/["]*\(.*\)/"\1/' $DEFAULT_VIM_ENV >> "$LOCAL_VIM_ENV"
 }
 
 function SHELL__SETUP {
-	SOURCE_DOTWRYN_RC '.bashrc' '$HOME/.wryn/bash/rc'
-	which bash >/dev/null && "$HOME/.wryn/env/env.bash";
+	SOURCE_DOTWRYN_RC '.bashrc' "$DOTWRYN_PATH/zsh/rc";
+	SOURCE_DOTWRYN_RC '.zshrc' "$DOTWRYN_PATH/zsh/rc";
 
-	SOURCE_DOTWRYN_RC '.zshrc' '$HOME/.wryn/zsh/rc';
-	which zsh >/dev/null && "$HOME/.wryn/env/env.zsh";
+	ENV__SETUP_LOCAL_OVERRIDES;
 }
 
 
@@ -31,21 +61,8 @@ function SHELL__SETUP {
 ### VIM SETUP ##################################################################
 ################################################################################
 
-function VIM__SETUP_ENVIRONMENT_VARIABLES() {
-	VIM_ENV="$HOME/.config/wryn/env.vim";
-
-	[ ! -f "$VIM_ENV" ] && {
-		touch "$VIM_ENV";
-		which google-chrome-stable \
-			&& echo 'let $WEBBROWSER="'$(which google-chrome-stable)'"' >> $VIM_ENV\
-			|| echo 'let $WEBBROWSER=""' >> $VIM_ENV;
-	} || {
-		echo 'vim environment variables already set up';
-	}
-}
-
 function VIM__UPDATE_COLORSCHEMES() {
-	$HOME/.wryn/bin/vim/update_colorschemes
+	$DOTWRYN_PATH/bin/vim/update_colorschemes
 }
 
 function VIM__INSTALL_VUNDLE_PLUGINS() {
@@ -60,15 +77,14 @@ function VIM__INSTALL_VUNDLE_PLUGINS() {
 	vim +PluginInstall +qall;
 
 	echo "building plugins"
-	$HOME/.wryn/bin/vim/rebuild_plugins;
+	$DOTWRYN_PATH/bin/vim/rebuild_plugins;
 }
 
 function VIM__SETUP() {
 	echo 'setting up vim';
 
-	SOURCE_DOTWRYN_RC '.vimrc' '$HOME/.wryn/vim/rc.vim';
+	SOURCE_DOTWRYN_RC '.vimrc' "$DOTWRYN_PATH/vim/rc.vim";
 
-	VIM__SETUP_ENVIRONMENT_VARIABLES;
 	VIM__UPDATE_COLORSCHEMES;
 	VIM__INSTALL_VUNDLE_PLUGINS;
 
@@ -95,7 +111,7 @@ function CONFIG__SYMLINK() {
 	local HOME_CONFIG_DIR="$HOME/.config/$CONFIG_DIR";
 	local HOME_CONFIG="$HOME_CONFIG_DIR/$FILENAME";
 
-	local WRYN_CONFIG="$HOME/.wryn/config/$CONFIG_DIR/$FILENAME";
+	local WRYN_CONFIG="$DOTWRYN_PATH/config/$CONFIG_DIR/$FILENAME";
 
 	[ ! -d "$HOME_CONFIG_DIR" ] && mkdir "$HOME_CONFIG_DIR";
 
@@ -105,7 +121,7 @@ function CONFIG__SYMLINK() {
 
 function CONFIG__I3() {
 	CONFIG__SYMLINK "i3" "config";
-	CONFIG__BASIC_SYMLINK "$HOME/.config/wryn/i3utils" "$HOME/.wryn/config/i3/utils";
+	CONFIG__BASIC_SYMLINK "$HOME/.config/wryn/i3utils" "$DOTWRYN_PATH/config/i3/utils";
 	echo "linked i3 configuration";
 }
 
@@ -136,34 +152,34 @@ function CONFIG__KITTY() {
 	echo "linked kitty configuration"
 }
 
-function CONFIG__GIT() {
-	CONFIG__BASIC_SYMLINK "$HOME/.gitconfig" "$HOME/.wryn/config/git/gitconfig";
-	echo "linked global git configuration"
-}
-
-function CONFIG__PYLINT() {
-	CONFIG__BASIC_SYMLINK "$HOME/.config/pylintrc" "$HOME/.wryn/config/pylint/pylintrc";
-	echo "linked pylint configuration"
-}
-
 function CONFIG__RIPGREP() {
 	CONFIG__SYMLINK "ripgrep" "config"
 	echo "linked ripgrep configuration"
 }
 
+function CONFIG__GIT() {
+	CONFIG__BASIC_SYMLINK "$HOME/.gitconfig" "$DOTWRYN_PATH/config/git/gitconfig";
+	echo "linked global git configuration"
+}
+
+function CONFIG__PYLINT() {
+	CONFIG__BASIC_SYMLINK "$HOME/.config/pylintrc" "$DOTWRYN_PATH/config/pylint/pylintrc";
+	echo "linked pylint configuration"
+}
+
 function CONFIG__TMUX() {
-	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$HOME/.wryn/tmux/tmux.conf";
+	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$DOTWRYN_PATH/config/tmux/tmux.conf";
 	echo "linked tmux configuration"
 }
 
 function CONFIG__XINITRC() {
-	CONFIG__BASIC_SYMLINK "$HOME/.xinitrc" "$HOME/.wryn/config/xserver/xinitrc"
+	CONFIG__BASIC_SYMLINK "$HOME/.xinitrc" "$DOTWRYN_PATH/config/xorg/xinitrc"
 	echo "linked xinitrc"
 }
 
 function CONFIG__TERMINFO() {
 	echo "adding terminfo files"
-	for file in $(find "$HOME/.wryn/config/terminfo" -type f); do
+	for file in $(find "$DOTWRYN_PATH/config/terminfo" -type f); do
 		tic -x $file >/dev/null 2>&1 || echo "failed to add $file" ;
 	done
 }
@@ -177,6 +193,7 @@ function CONFIG__SETUP() {
 	CONFIG__MSSQLCLI;
 	CONFIG__COMPTON;
 	CONFIG__KITTY;
+	CONFIG__RIPGREP;
 
 	CONFIG__GIT;
 	CONFIG__PYLINT;
@@ -192,21 +209,22 @@ function CONFIG__SETUP() {
 ################################################################################
 
 function CLEAN_BACKUP() {
-	read -p "Clean backup files? [yN] : " yn;
+	read -p "Clean backup files? [Yn] : " yn;
 
 	case $yn in
-		[Yy]* ) 
+		[nN]* ) echo 'skipping cleanup';;
+		* )
 			echo 'cleaning backup files';
 			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
 			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
 			;;
-		* ) echo 'skipping cleanup';;
 	esac
 }
 
 
 [ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
 [ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
+[ ! -d "$HOME/.config/wryn/env" ] && mkdir "$HOME/.config/wryn/env";
 
 SHELL__SETUP;
 VIM__SETUP;

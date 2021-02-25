@@ -1,11 +1,8 @@
 #!/bin/sh
-ENGINE="$(which canberra-gtk-play) -f"
-SFX="$HOME/Personal/sfx";
-source "$HOME/.config/wryn/env.zsh"
-
+source "$HOME/.config/wryn/env/env"
 
 PLAY() {
-	eval "$ENGINE" "$SFX/$1"
+	eval "$MEDIA_ENGINE" "$SFX_PATH/$1"
 }
 
 case $1 in

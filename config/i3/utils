@@ -1,6 +1,8 @@
 #!/bin/sh
 
-UTIL_BIN="$HOME/.wryn/bin/desktop"
+source "$HOME/.config/wryn/env/env"
+
+UTIL_BIN="$DOTWRYN/bin/desktop"
 APP_BIN="$HOME/.config/wryn/default-applications"
 
 MEDIA__NEXT="$UTIL_BIN/youtube-music/next.sh"

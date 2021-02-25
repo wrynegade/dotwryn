@@ -1,6 +1,10 @@
 #!/bin/bash
+source "$HOME/.config/wryn/env/env"
+
 [ ! -d "$HOME/.vim" ] && mkdir "$HOME/.vim"
 [ ! -d "$HOME/.vim/colors" ] && mkdir "$HOME/.vim/colors"
 
-for file in $(find "$HOME/.wryn/config/colorschemes/vim" -name \*.vim); do cp $file ~/.vim/colors/; done
+for file in $(find "$DOTWRYN/config/colorschemes/vim" -name \*.vim); do
+	cp $file ~/.vim/colors/;
+done
 echo "vim colorschemes updated"
