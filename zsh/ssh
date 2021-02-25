@@ -30,7 +30,7 @@ function WRYN_REMOTE_CONNECTOR() {
 	case $COMMAND in;
 		sshfs   ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4}    ;;
 		ssh     ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3}         ;;
-		cp-to   ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID $4):$3   ;;
+		cp-to   ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID $3):$4   ;;
 		cp-from ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID):$3 $4   ;;
 		copy-id ) ssh-copy-id $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3} ;;
 
