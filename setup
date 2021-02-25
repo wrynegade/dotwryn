@@ -167,6 +167,11 @@ function CONFIG__PYLINT() {
 	echo "linked pylint configuration"
 }
 
+function CONFIG__SFX_APPLICATION() {
+	CONFIG__BASIC_SYMLINK "$HOME/.config/wryn/sfx" "$DOTWRYN_PATH/bin/desktop/sfx/play.sh";
+	echo "linked xinitrc"
+}
+
 function CONFIG__TMUX() {
 	CONFIG__BASIC_SYMLINK "$HOME/.tmux.conf" "$DOTWRYN_PATH/config/tmux/tmux.conf";
 	echo "linked tmux configuration"
@@ -176,6 +181,7 @@ function CONFIG__XINITRC() {
 	CONFIG__BASIC_SYMLINK "$HOME/.xinitrc" "$DOTWRYN_PATH/config/xorg/xinitrc"
 	echo "linked xinitrc"
 }
+
 
 function CONFIG__TERMINFO() {
 	echo "adding terminfo files"
@@ -197,6 +203,7 @@ function CONFIG__SETUP() {
 
 	CONFIG__GIT;
 	CONFIG__PYLINT;
+	CONFIG__SFX_APPLICATION;
 	CONFIG__TMUX;
 	CONFIG__XINITRC;
 
