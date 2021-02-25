@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 function DMENU__NEW_COMMAND() {
-	local BIN="$HOME/.local/custom_dmenu";
+	local BIN="$HOME/.local/custom-dmenu";
 	local HELP_STRING='\ncorrect syntax:\nDMENU__NEW_COMMAND [ name or "test" ] [ command .. args ]\n';
 
 	[[ "$1" == help ]] && {

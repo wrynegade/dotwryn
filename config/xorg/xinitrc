@@ -10,7 +10,7 @@ if [ -d $X11_SCRIPTS ] ; then
 fi
 
 
-CUSTOM_DMENU_COMMANDS="$HOME/.local/custom_dmenu"
+CUSTOM_DMENU_COMMANDS="$HOME/.local/custom-dmenu"
 [ ! -d $CUSTOM_DMENU_COMMANDS ] && mkdir $CUSTOM_DMENU_COMMANDS
 
 export PATH="$CUSTOM_DMENU_COMMANDS:$PATH"
