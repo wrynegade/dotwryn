@@ -20,7 +20,7 @@ function WRYN_REMOTE_CONNECTOR() {
 	local COMMAND="$1";
 	local CONNECTION="$2";
 
-	local SSH_ID="$CONNECTION$WRYN_SSH_DELIMITER"
+	local SSH_ID="^$CONNECTION$WRYN_SSH_DELIMITER"
 
 	[ $2 ] \
 		|| { echo 'Must specify a connection'; return 1 };
