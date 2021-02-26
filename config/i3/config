@@ -155,12 +155,12 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+c reload
 
 # i3-gaps settings
-for_window [class="^.*"] border pixel 2
-gaps inner 5
-gaps outer 5
+for_window [class="^.*"] border pixel 4
+gaps inner 10
+gaps outer 10
 
-bindsym $mod+z       gaps outer current plus  1; gaps inner current plus  1;
-bindsym $mod+shift+z gaps outer current minus 1; gaps inner current minus 1;
+bindsym $mod+z       gaps outer current plus  2; gaps inner current plus  2;
+bindsym $mod+shift+z gaps outer current minus 2; gaps inner current minus 2;
 
 # color settings
 set $FOCUSED_BORDER       #288B52
