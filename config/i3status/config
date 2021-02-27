@@ -60,7 +60,7 @@ memory {
 }
 
 tztime local {
-	format = '%A %B %m, %Y : %I:%M:%S-%P'
+	format = '%A %B %d, %Y : %I:%M:%S-%P'
 }
 
 tztime utc {
