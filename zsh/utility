@@ -34,7 +34,10 @@ OPEN_CURRENT_GIT_REPOSITORY_IN_WEB_BROWSER() {
 		return 1;
 	}
 	local URL="$(git remote get-url $REMOTE | sed 's/git@\([^:]*\):/http:\/\/\1\//')"
-	xdg-open $URL;
+	[ "$WEBBROWSER" ]\
+		&& "$WEBBROWSER $URL" >/dev/null 2>&1 \
+		|| dg-open $URL >/dev/null 2>&1 \
+		|| echo $URL;
 }
 
 

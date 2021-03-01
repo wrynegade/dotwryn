@@ -10,4 +10,7 @@ WALLPAPER_PATH="$HOME/Pictures/bg"
 PREFERRED_EDITOR=(vi vim)
 
 # plays audio files located throughout the system
-MEDIA_ENGINE="canberra-gtk-play -f"
+MEDIA_ENGINE='canberra-gtk-play -f'
+
+# default applications
+WEBBROWSER='google-chrome-stable'

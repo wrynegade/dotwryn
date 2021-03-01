@@ -53,13 +53,12 @@ function rnt() {
 		*)
 			deactivate >/dev/null 2>/dev/null || deactivate_node >/dev/null 2>/dev/null;
 			cd "$RD_PATH"
-			source "$RD_PATH/ENV.sh"
 
 			[ -d "$1" ] && {
 				cd "$1" >/dev/null 2>/dev/null;
 				[ -f "./env/bin/activate" ] \
 					&& source "./env/bin/activate" \
-					|| echo 'No environment here, boss!';
+					|| echo 'No virtual environment here, boss!';
 				[ -f "./myenv" ] \
 					&& source "./myenv" \
 					&& echo 'Loaded custom environment settings!';
@@ -121,7 +120,7 @@ function RENT_DYNAMICS_GIT_PROJECT_CLEAN_UP() {
 }
 
 function RENT_DYNAMICS_CONNECT_TO_EMAIL() {
-	xdg-open https://mail.google.com/mail/u/1;
+	$WEBBROWSER https://mail.google.com/mail/u/1;
 }
 
 function RENT_DYNAMICS_UPDATE_SLACK_STATUS() {
