@@ -2,10 +2,10 @@
 
 ##############################
 
-foreground='FF6622'
+foreground='5CBC84'
 background='051000'
 
-red='FF2200'
+red='AAFF00'
 brightred='FF8700'
 
 green='FFFF00'
