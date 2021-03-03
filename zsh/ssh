@@ -22,7 +22,6 @@ function WRYN_REMOTE_CONNECTOR() {
 	local CONNECTION="$2";
 
 	local SSH_ID="^$CONNECTION$WRYN_SSH_DELIMITER"
-	local TMUX_UTF8_FLAG=$(locale charmap | grep -q 'UTF-8' && echo '-u')
 
 	[ $2 ] \
 		|| { echo 'Must specify a connection'; return 1 };
@@ -30,14 +29,12 @@ function WRYN_REMOTE_CONNECTOR() {
 		|| { echo 'No such connection'; return 2 };
 
 	case $COMMAND in;
-		sshfs   ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4}     ;;
-		ssh     ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3}          ;;
-		cp-to   ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID $3):$4    ;;
-		cp-from ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID):$3 $4    ;;
-		copy-id ) ssh-copy-id ${@:3} $(WRYN_SSH_PARSE_ARGS $SSH_ID)  ;;
-		tmux    ) [ $4 ] || [ $3 == 'a' ]\
-			&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG ${@:3} \
-			|| ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG a -t $3 ;;
+		sshfs   ) sshfs $(WRYN_SSH_PARSE_ARGS $SSH_ID):$3 ${@:4}    ;;
+		ssh     ) ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) ${@:3}         ;;
+		cp-to   ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID $3):$4   ;;
+		cp-from ) scp ${@:5} $(WRYN_SCP_PARSE_ARGS $SSH_ID):$3 $4   ;;
+		copy-id ) ssh-copy-id ${@:3} $(WRYN_SSH_PARSE_ARGS $SSH_ID) ;;
+		tmux    ) WRYN_REMOTE_TMUX "$SSH_ID" ${@:3}                 ;;
 
 		* ) echo "$COMMAND not implemented" ;;
 	esac
@@ -81,4 +78,17 @@ WRYN_SCP_PARSE_ARGS() {
 	[ $2 ]\
 		&& sed -n "s>$SSH_ID *-p \([^ ]*\)\(.*\)$>-P \1 $2\2>p" "$WRYN_SSH_CONNECTION_LIST"\
 		|| sed -n "s/$SSH_ID *-p\(.*\)$/-P\1/p" "$WRYN_SSH_CONNECTION_LIST"
+}
+
+WRYN_REMOTE_TMUX() {
+	local SSH_ID="$1"
+	local TMUX_UTF8_FLAG=$(locale charmap | grep -q 'UTF-8' && echo '-u')
+	local DEFAULT_TMUX_SESSION_NAME='main'
+
+	[ ! $2 ] \
+		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux new-session -A -s $DEFAULT_TMUX_SESSION_NAME;
+
+	[ $3 ] \
+		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG ${@:2} \
+		|| ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG a -t $2;
 }
