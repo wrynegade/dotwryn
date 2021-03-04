@@ -1,4 +1,3 @@
-
 DOTWRYN="$HOME/.wryn"
 SCHOOL_PATH="$HOME/School"
 RD_PATH="$HOME/RentDynamics"
@@ -14,3 +13,5 @@ MEDIA_ENGINE='canberra-gtk-play -f'
 
 # default applications
 WEBBROWSER='google-chrome-stable'
+
+TMUX_DEFAULT_SESSION_NAME='main'

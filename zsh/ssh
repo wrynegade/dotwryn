@@ -82,13 +82,13 @@ WRYN_SCP_PARSE_ARGS() {
 
 WRYN_REMOTE_TMUX() {
 	local SSH_ID="$1"
-	local TMUX_UTF8_FLAG=$(locale charmap | grep -q 'UTF-8' && echo '-u')
-	local DEFAULT_TMUX_SESSION_NAME='main'
+	local UTF8_FLAG=$(locale charmap | grep -q 'UTF-8' && echo '-u')
 
 	[ ! $2 ] \
-		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux new-session -A -s $DEFAULT_TMUX_SESSION_NAME;
-
-	[ $3 ] \
-		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG ${@:2} \
-		|| ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $TMUX_UTF8_FLAG a -t $2;
+		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG new-session -As $TMUX_DEFAULT_SESSION_NAME \
+		|| {
+			[ $3 ] \
+				&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG ${@:2} \
+				|| ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG a -t $2;
+	}
 }
