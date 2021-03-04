@@ -5,8 +5,8 @@
 foreground='5CBC84'
 background='051000'
 
-red='AAFF00'
-brightred='FF8700'
+red='AAAA00'
+brightred='FFFF00'
 
 green='FFFF00'
 brightgreen='AAAA00'
