@@ -1,3 +1,4 @@
+# script path references
 DOTWRYN="$HOME/.wryn"
 SCHOOL_PATH="$HOME/School"
 RD_PATH="$HOME/RentDynamics"
@@ -15,3 +16,6 @@ MEDIA_ENGINE='canberra-gtk-play -f'
 WEBBROWSER='google-chrome-stable'
 
 TMUX_DEFAULT_SESSION_NAME='main'
+
+# external plugins
+EXTERNAL_PLUGIN_LIST=()

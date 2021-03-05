@@ -18,8 +18,6 @@ zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' menu select;
 bindkey -M menuselect '^M' .accept-line; # don't require 'return' to select menu item
 
-zstyle :compinstall filename "$HOME/.zshrc"
-
 autoload -Uz compinit
 compinit
 

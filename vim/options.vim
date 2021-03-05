@@ -11,6 +11,7 @@ set timeoutlen=200
 set showmatch   " -- emit 'beep' when no matching symbol,
 set matchtime=0 " -- but don't jump to it.
 
+set tabpagemax=20
 
 set t_ZH=[3m t_ZR=[23m " italic start / end characters
 

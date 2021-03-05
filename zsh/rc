@@ -36,6 +36,11 @@ SET_PREFERRED_EDITOR() {
 }
 SET_PREFERRED_EDITOR
 
+# --- load external plugins ----------------------------------------
+
+for PLUGIN in $EXTERNAL_PLUGIN_LIST; do
+	[ -f "$PLUGIN" ] && source "$PLUGIN"
+done
 
 # --- welcome message ----------------------------------------------
 CUSTOM_WELCOME="$HOME/.config/wryn/custom-welcome"
