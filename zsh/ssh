@@ -29,9 +29,11 @@ function WRYN_REMOTE_CONNECTOR() {
 
 	local SSH_ID="^$CONNECTION$WRYN_SSH_DELIMITER"
 
-	[ $2 ] \
-		|| { echo 'Must specify a connection'; return 1 };
+	[[ $COMMAND != 'tmux' ]] && [ ! $CONNECTION ] \
+		&& { echo 'Must specify a connection'; return 1 };
+
 	grep -q "$SSH_ID" "$WRYN_SSH_CONNECTION_LIST" >/dev/null 2>&1 \
+		|| [ ! $CONNECTION ] \
 		|| { echo 'No such connection'; return 2 };
 
 	case $COMMAND in;
@@ -67,6 +69,7 @@ _WRYN_REMOTE_CONNECTOR() {
 				sshfs   ) _sshfs;;
 				cpto | cpfrom ) _scp;;
 				tmux ) _tmux;;
+				ssh-copy-id ) compadd $(ls);;
 				* ) ;;
 			esac
 			;;
@@ -90,11 +93,15 @@ WRYN_REMOTE_TMUX() {
 	local SSH_ID="$1"
 	local UTF8_FLAG=$(locale charmap | grep -q 'UTF-8' && echo '-u')
 
-	[ ! $2 ] \
-		&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG new-session -As $TMUX_DEFAULT_SESSION_NAME \
-		|| {
-			[ $3 ] \
-				&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG ${@:2} \
-				|| ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG a -t $2;
-	}
+	[[ "$SSH_ID" == "^$WRYN_SSH_DELIMITER" ]] \
+		&& { tmux new-session -As $TMUX_DEFAULT_SESSION_NAME } \
+		|| { 
+			[ ! $2 ] \
+				&& ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG new-session -As $TMUX_DEFAULT_SESSION_NAME \
+				|| {
+					[ $3 ] \
+						&& { ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG ${@:2}; return 0 } \
+						|| { ssh $(WRYN_SSH_PARSE_ARGS $SSH_ID) -t tmux $UTF8_FLAG new-session -As $2; };
+					}
+			}
 }
