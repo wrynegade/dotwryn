@@ -34,8 +34,8 @@ nnoremap <Leader>f z
 nnoremap <Leader>j ddpkJ
 
 " move the current line one below where it is
-nnoremap - :m +1 <CR>
-nnoremap _ :m -2 <CR>
+nnoremap - :move +1 <CR>
+nnoremap _ :move -2 <CR>
 
 " \t for rerun last 'vimtest' command:
 nnoremap <Leader>t q:?vimtest<CR><CR>
