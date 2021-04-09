@@ -62,6 +62,32 @@ endfunction
 
 
 " ===================================================================
+" === dotnet core ===================================================
+" ===================================================================
+
+function DotnetTest(filter = '')
+	let l:command =
+				\ 'cd ' . GetDotnetProjectLocation()
+				\ . ';' . 'dotnet build -clp:ErrorsOnly'
+				\ . ';' . 'cd ' . GetDotnetProjectLocation(1)
+				\ . ';' . 'dotnet test -clp:ErrorsOnly'
+	if a:filter != ''
+		let l:command = l:command . ' --filter ' . a:filter
+	endif
+	call TmuxTest(l:command)
+endfunction
+
+function GetDotnetProjectLocation(test = 0)
+	let l:projectRoot = substitute(expand(getcwd()), '/code.*', '/code', '')
+	if a:test
+		let l:testPath = system('ls ' . l:projectRoot . '/**/*.csproj | grep Test | head -1')
+	else
+		let l:testPath = system('ls ' . l:projectRoot . '/**/*.csproj | grep -v Test | head -1')
+	endif
+	return substitute(l:testPath, '\(.*\)/.*.csproj.*', '\1', '')
+endfunction
+
+" ===================================================================
 " === npm ===========================================================
 " ===================================================================
 
