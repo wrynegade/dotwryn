@@ -17,7 +17,7 @@ WRYN_SSH_ADD_CREDENTIALS() {
 		[ -f "$key.pub" ] \
 			&& echo $KEY_LIST | grep -q $(awk '{print $NF;}' $key.pub) \
 			|| echo $KEY_LIST | grep -q $key \
-			|| ssh-add "$key";
+			|| ssh-add "$key" >/dev/null 2>&1;
 	done
 }
 
