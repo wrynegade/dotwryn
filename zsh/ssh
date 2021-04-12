@@ -12,7 +12,7 @@ WRYN_SSH_DELIMITER=' *| '
 [ -d "$HOME/.config/wryn" ] && [ ! -f "$WRYN_SSH_CONNECTION_LIST" ] && touch "$WRYN_SSH_CONNECTION_LIST";
 
 WRYN_SSH_ADD_CREDENTIALS() {
-	local KEY_LIST=$(ssh-add -l | awk '{print $3;}')
+	local KEY_LIST=$(ssh-add -l 2>/dev/null | awk '{print $3;}')
 	for key in $(grep -slR "PRIVATE" "$HOME/.ssh"); do
 		[ -f "$key.pub" ] \
 			&& echo $KEY_LIST | grep -q $(awk '{print $NF;}' $key.pub) \
