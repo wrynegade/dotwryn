@@ -22,6 +22,11 @@ WRYN_SSH_ADD_CREDENTIALS() {
 }
 
 function WRYN_REMOTE_CONNECTOR() {
+	TMP_AUTH_SOCK=$SSH_AUTH_SOCK;
+	TMP_AGENT_PID=$SSH_AGENT_PID;
+	unset SSH_AUTH_SOCK SSH_AGENT_PID
+	eval $(ssh-agent -s) >/dev/null 2>&1;
+
 	WRYN_SSH_ADD_CREDENTIALS;
 
 	local COMMAND="$1";
@@ -46,6 +51,10 @@ function WRYN_REMOTE_CONNECTOR() {
 
 		* ) echo "$COMMAND not implemented" ;;
 	esac
+
+	ssh-agent -k >/dev/null 2>&1;
+	export SSH_AUTH_SOCK=$TMP_AUTH_SOCK;
+	export SSH_AGENT_PID=$TMP_AGENT_PID;
 }
 _WRYN_REMOTE_CONNECTOR() {
 	local state;
