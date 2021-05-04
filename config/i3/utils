@@ -20,15 +20,18 @@ BACKLIGHT__DOWN="$UTIL_BIN/xbacklight/down.sh";
 LOCK_SCREEN="$UTIL_BIN/i3lock/lock.sh";
 LOG_OUT="$UTIL_BIN/i3/logout.sh";
 LAUNCH_OR_SHOW="$UTIL_BIN/i3/launch-or-show-application.sh";
+LAUNCH_ALL_SCRATCHPAD="$UTIL_BIN/i3/launch-all-scratchpad-applications.sh";
 
 BG_RANDOMIZE="$UTIL_BIN/feh/randomize-background.sh"
 
 ALTERNATE_TERMINAL="$UTIL_BIN/kitty/alternate-terminal.sh"
 
+AUDIO="$APP_BIN/audio"
 DISCORD="$APP_BIN/discord"
 EMAIL="$APP_BIN/email"
 MEDIA="$APP_BIN/media"
 MESSAGES="$APP_BIN/messages"
+PHONE="$APP_BIN/phone"
 SLACK="$APP_BIN/slack"
 
 case $1 in
@@ -51,9 +54,13 @@ case $1 in
 
 	alternateterm ) "$ALTERNATE_TERMINAL" ;;
 
+	launchallhidden ) "$LAUNCH_ALL_SCRATCHPAD" ;;
+
+	audio   ) "$LAUNCH_OR_SHOW" "$2" "$AUDIO"   ;;
 	discord ) "$LAUNCH_OR_SHOW" "$2" "$DISCORD" ;;
 	email   ) "$LAUNCH_OR_SHOW" "$2" "$EMAIL"   ;;
 	media   ) "$LAUNCH_OR_SHOW" "$2" "$MEDIA"   ;;
 	message ) "$LAUNCH_OR_SHOW" "$2" "$MESSAGES";;
+	phone   ) "$LAUNCH_OR_SHOW" "$2" "$PHONE"   ;;
 	slack   ) "$LAUNCH_OR_SHOW" "$2" "$SLACK"   ;;
 esac

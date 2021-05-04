@@ -8,11 +8,13 @@ font pango:monospace 20
 
 set $UTILS /home/w0ryn/.config/wryn/i3utils
 
-set $SLACK_CLIENT_CLASS ^Slack$
-set $MESSAGE_CLIENT_CLASS ^android-messages-desktop$
-set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier
+set $AUDIO_CLIENT_CLASS ^Pavucontrol$
 set $DISCORD_CLIENT_CLASS ^discord$
 set $EMAIL_CLIENT_CLASS ^Thunderbird$
+set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier
+set $MESSAGE_CLIENT_CLASS ^android-messages-desktop$
+set $PHONE_CLIENT_CLASS ^google-voice-desktop
+set $SLACK_CLIENT_CLASS ^Slack$
 
 set $GAMES_CLIENT_CLASSES ^(Steam)|(dolphin-emu)|(Visualboyadvance-m)$
 set $TERMINAL_EMULATOR_CLASSES ^(kitty)$
@@ -98,10 +100,14 @@ floating_modifier $mod
 bindsym $mod+Shift+Tab move scratchpad
 bindsym $mod+Tab scratchpad show
 
+bindsym $mod+Shift+a exec --no-startup-id $UTILS launchallhidden;
+
+bindsym $mod+a       exec --no-startup-id $UTILS audio   $AUDIO_CLIENT_CLASS;
 bindsym $mod+Shift+d exec --no-startup-id $UTILS discord $DISCORD_CLIENT_CLASS;
 bindsym $mod+Shift+t exec --no-startup-id $UTILS email   $EMAIL_CLIENT_CLASS;
 bindsym $mod+m       exec --no-startup-id $UTILS media   $MEDIA_CLIENT_CLASS;
 bindsym $mod+Shift+m exec --no-startup-id $UTILS message $MESSAGE_CLIENT_CLASS;
+bindsym $mod+c       exec --no-startup-id $UTILS phone   $PHONE_CLIENT_CLASS;
 bindsym $mod+Shift+s exec --no-startup-id $UTILS slack   $SLACK_CLIENT_CLASS;
 
 bindsym $mod+Shift+x [class=$GAMES_CLIENT_CLASSES] scratchpad show

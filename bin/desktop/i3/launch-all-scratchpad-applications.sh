@@ -1,32 +1,32 @@
+#!/usr/bin/zsh
+
 APPLICATION_BIN="$HOME/.config/wryn/default-applications"
-APPLICATIONS=(
-	'audio'
-	'discord'
-	'email'
-	'media'
-	'message'
-	'phone'
-	'slack'
+APPLICATION_CLASSES=(
+	'audio ^Pavucontrol$'
+	'discord ^discord$'
+	'email ^Thunderbird$'
+	'media ^youtubemusic-nativefier'
+	'message ^android-messages-desktop$'
+	'phone ^google-voice-desktop'
+	'slack ^Slack$'
 	)
 
-CLIENT_CLASSES=(
-	'^Pavucontrol$'
-	'^discord$'
-	'^Thunderbird$'
-	'^youtubemusic-nativefier'
-	'^android-messages-desktop$'
-	'^google-voice-desktop'
-	'^Slack$'
-	)
+for APP_CLS_STR in $APPLICATION_CLASSES; do
+	APPLICATION_CLASS=($(echo $APP_CLS_STR))
+	APPLICATION=${APPLICATION_CLASS[1]}
+	CLIENT_CLASS=${APPLICATION_CLASS[2]}
 
-for APPLICATION in $(echo $APPLICATIONS); do
-	xdotool search --class "$CLIENT_CLASS" >/dev/null 2>&1 || {
+	echo "launching $APPLICATION_BIN/$APPLICATION"
+	xdotool search --class "$CLIENT_CLASS" >/dev/null 2>&1 && echo "found existing" || {
 		i3-msg "exec --no-startup-id $APPLICATION_BIN/$APPLICATION;"
 	}
 done
 
 sleep 10;
 
-for CLIENT_CLASS in $CLIENT_CLASSES; do
+for APP_CLS_STR in $APPLICATION_CLASSES; do
+	APPLICATION_CLASS=($(echo $APP_CLS_STR))
+	CLIENT_CLASS=${APPLICATION_CLASS[2]}
+	echo "hiding application $CLIENT_CLASS"
 	i3-msg "[class=$CLIENT_CLASS] move scratchpad";
 done
