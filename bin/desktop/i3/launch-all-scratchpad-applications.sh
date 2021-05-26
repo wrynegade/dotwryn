@@ -2,7 +2,8 @@
 
 APPLICATION_BIN="$HOME/.config/wryn/default-applications"
 APPLICATION_CLASSES=(
-	'audio ^Pavucontrol$'
+	'audio ^Audio$'
+	'scrcpy ^scrcpy$'
 	'discord ^discord$'
 	'email ^Thunderbird$'
 	'media ^youtubemusic-nativefier'

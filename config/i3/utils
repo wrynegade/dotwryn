@@ -27,6 +27,7 @@ BG_RANDOMIZE="$UTIL_BIN/feh/randomize-background.sh"
 ALTERNATE_TERMINAL="$UTIL_BIN/kitty/alternate-terminal.sh"
 
 AUDIO="$APP_BIN/audio"
+ANDROID_MIRROR="scrcpy"
 DISCORD="$APP_BIN/discord"
 EMAIL="$APP_BIN/email"
 MEDIA="$APP_BIN/media"
@@ -56,11 +57,12 @@ case $1 in
 
 	launchallhidden ) "$LAUNCH_ALL_SCRATCHPAD" ;;
 
-	audio   ) "$LAUNCH_OR_SHOW" "$2" "$AUDIO"   ;;
-	discord ) "$LAUNCH_OR_SHOW" "$2" "$DISCORD" ;;
-	email   ) "$LAUNCH_OR_SHOW" "$2" "$EMAIL"   ;;
-	media   ) "$LAUNCH_OR_SHOW" "$2" "$MEDIA"   ;;
-	message ) "$LAUNCH_OR_SHOW" "$2" "$MESSAGES";;
-	phone   ) "$LAUNCH_OR_SHOW" "$2" "$PHONE"   ;;
-	slack   ) "$LAUNCH_OR_SHOW" "$2" "$SLACK"   ;;
+	audio   ) "$LAUNCH_OR_SHOW" "$2" "$AUDIO"          ;;
+	amirror ) "$LAUNCH_OR_SHOW" "$2" "$ANDROID_MIRROR" ;;
+	discord ) "$LAUNCH_OR_SHOW" "$2" "$DISCORD"        ;;
+	email   ) "$LAUNCH_OR_SHOW" "$2" "$EMAIL"          ;;
+	media   ) "$LAUNCH_OR_SHOW" "$2" "$MEDIA"          ;;
+	message ) "$LAUNCH_OR_SHOW" "$2" "$MESSAGES"       ;;
+	phone   ) "$LAUNCH_OR_SHOW" "$2" "$PHONE"          ;;
+	slack   ) "$LAUNCH_OR_SHOW" "$2" "$SLACK"          ;;
 esac

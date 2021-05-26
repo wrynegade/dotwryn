@@ -8,7 +8,8 @@ font pango:monospace 20
 
 set $UTILS /home/w0ryn/.config/wryn/i3utils
 
-set $AUDIO_CLIENT_CLASS ^Pavucontrol$
+set $AUDIO_CLIENT_CLASS ^Audio$
+set $AMIRROR_CLIENT_CLASS ^scrcpy$
 set $DISCORD_CLIENT_CLASS ^discord$
 set $EMAIL_CLIENT_CLASS ^Thunderbird$
 set $MEDIA_CLIENT_CLASS ^youtubemusic-nativefier
@@ -103,6 +104,7 @@ bindsym $mod+Tab scratchpad show
 bindsym $mod+Shift+a exec --no-startup-id $UTILS launchallhidden;
 
 bindsym $mod+a       exec --no-startup-id $UTILS audio   $AUDIO_CLIENT_CLASS;
+bindsym $mod+Shift+p exec --no-startup-id $UTILS amirror $AMIRROR_CLIENT_CLASS;
 bindsym $mod+Shift+d exec --no-startup-id $UTILS discord $DISCORD_CLIENT_CLASS;
 bindsym $mod+Shift+t exec --no-startup-id $UTILS email   $EMAIL_CLIENT_CLASS;
 bindsym $mod+m       exec --no-startup-id $UTILS media   $MEDIA_CLIENT_CLASS;
