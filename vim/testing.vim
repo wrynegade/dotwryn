@@ -77,12 +77,25 @@ function DotnetTest(filter = '')
 	call TmuxTest(l:command)
 endfunction
 
+function DotnetBuild()
+	let l:command =
+				\ 'cd ' . GetDotnetProjectLocation()
+				\ . ';' . 'dotnet build -clp:ErrorsOnly'
+
+	call TmuxTest(l:command)
+endfunction
+
 function GetDotnetProjectLocation(test = 0)
 	let l:projectRoot = substitute(expand(getcwd()), '/code.*', '/code', '')
+	let l:projectName = substitute(expand(getcwd()), l:projectRoot . '/\([^/]*\).*', '\1', '')
 	if a:test
 		let l:testPath = system('ls ' . l:projectRoot . '/**/*.csproj | grep Test | head -1')
 	else
-		let l:testPath = system('ls ' . l:projectRoot . '/**/*.csproj | grep -v Test | head -1')
+		if l:projectName != ''
+			let l:testPath = l:projectRoot . '/' . l:projectName
+		else
+			let l:testPath = system('ls ' . l:projectRoot . '/**/*.csproj | grep -v Test | head -1')
+		endif
 	endif
 	return substitute(l:testPath, '\(.*\)/.*.csproj.*', '\1', '')
 endfunction
