@@ -1,0 +1,28 @@
+#!/bin/sh
+
+GET_COLOR_FROM_KITTY_THEME() {
+	grep "$1" $DOTWRYN/config/kitty/theme.conf | awk '{print $2}' | sed 's/ //g; s/#//g' | tr '[:lower:]' '[:upper:]'
+}
+
+if [ "$TERM" = "linux" ]; then
+	/bin/echo -e "\
+	\e]P0$(GET_COLOR_FROM_KITTY_THEME '^background ')
+	\e]P1$(GET_COLOR_FROM_KITTY_THEME '^color1 ')
+	\e]P2$(GET_COLOR_FROM_KITTY_THEME '^color2 ')
+	\e]P3$(GET_COLOR_FROM_KITTY_THEME '^color3 ')
+	\e]P4$(GET_COLOR_FROM_KITTY_THEME '^color4 ')
+	\e]P5$(GET_COLOR_FROM_KITTY_THEME '^color5 ')
+	\e]P6$(GET_COLOR_FROM_KITTY_THEME '^color6 ')
+	\e]P7$(GET_COLOR_FROM_KITTY_THEME '^foreground ')
+	\e]P8$(GET_COLOR_FROM_KITTY_THEME '^color9 ')
+	\e]P9$(GET_COLOR_FROM_KITTY_THEME '^color10 ')
+	\e]PA$(GET_COLOR_FROM_KITTY_THEME '^color11 ')
+	\e]PB$(GET_COLOR_FROM_KITTY_THEME '^color12 ')
+	\e]PC$(GET_COLOR_FROM_KITTY_THEME '^color13 ')
+	\e]PD$(GET_COLOR_FROM_KITTY_THEME '^color14 ')
+	\e]PE$(GET_COLOR_FROM_KITTY_THEME '^color7 ')
+	\e]PF$(GET_COLOR_FROM_KITTY_THEME '^color15 ')
+	"
+	clear;
+fi
+
