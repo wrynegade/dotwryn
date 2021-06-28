@@ -1,7 +1,6 @@
 # script path references
 DOTWRYN="$HOME/.wryn"
 SCHOOL_PATH="$HOME/School"
-RD_PATH="$HOME/RentDynamics"
 
 SFX_PATH="$HOME/Media/sfx"
 WALLPAPER_PATH="$HOME/Pictures/bg"
