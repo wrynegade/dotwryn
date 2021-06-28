@@ -24,7 +24,7 @@ PROMPT_LINE=$'\n'' %B%F{128}%# %b%f'
 setopt PROMPT_SUBST
 PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT_LINE"
 
-[ -f "$HOME/.config/wryn/custom-ps1" ] && source "$HOME/.config/wryn/custom-ps1"
+[ -f "$HOME/.config/wryn/ps1" ] && source "$HOME/.config/wryn/ps1"
 #RPROMPT="$(\e[1A) $GIT_BRANCH";
 
 

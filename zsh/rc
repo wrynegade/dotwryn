@@ -43,7 +43,7 @@ for PLUGIN in $EXTERNAL_PLUGIN_LIST; do
 done
 
 # --- welcome message ----------------------------------------------
-CUSTOM_WELCOME="$HOME/.config/wryn/custom-welcome"
+CUSTOM_WELCOME="$HOME/.config/wryn/welcome"
 [ -f "$CUSTOM_WELCOME" ] \
-	&& { "$CUSTOM_WELCOME" } \
-	|| { exec figlet "Welcome, beautiful" | lolcat; echo; cowsay -p "damn u sexy" | lolcat; }
+	&& { source "$CUSTOM_WELCOME" } \
+	|| { { figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy' } | lolcat; }
