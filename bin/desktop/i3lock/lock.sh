@@ -19,10 +19,10 @@ i3lock\
 	--pass-screen-keys --pass-media-keys --pass-volume-keys --pass-power-keys\
 	-B 6\
 	--force-clock\
-	--insidevercolor=$INSIDE_VER --ringvercolor=$RING_VER --verifcolor=$INSIDE_VER\
-	--insidewrongcolor=$INSIDE_WRONG --ringwrongcolor=$RING_WRONG --wrongcolor=$INSIDE_WRONG\
-	--insidecolor=002010 --ringcolor=103020\
-	--linecolor=$LINE\
-	--timecolor=$TIME --datecolor=$DATE\
-	--keyhlcolor=$KEYDOWN --bshlcolor=$KEYREMOVE\
+	--insidever-color=$INSIDE_VER --ringver-color=$RING_VER --verif-color=$INSIDE_VER\
+	--insidewrong-color=$INSIDE_WRONG --ringwrong-color=$RING_WRONG --wrong-color=$INSIDE_WRONG\
+	--inside-color=002010 --ring-color=103020\
+	--line-color=$LINE\
+	--time-color=$TIME --date-color=$DATE\
+	--keyhl-color=$KEYDOWN --bshl-color=$KEYREMOVE\
 	;
