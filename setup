@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/zsh
 
 ################################################################################
 ### SETUP VERIFICATION #########################################################
@@ -6,15 +6,54 @@
 
 DOTWRYN_PATH="$(pwd)"
 function CHECK_DIR() {
-	read -p "Is DOTWRYN.git installed at '$DOTWRYN_PATH'? [Yn] : " validate;
+	printf "is DOTWRYN.git installed at '$DOTWRYN_PATH'? [Yn] : "
+	local yn; read yn
 
-	case $validate in
-		[nN]* ) exit 1;;
-		* ) ;;
-	esac
+	[[ $yn =~ ^[nN] ]] && return 1 || return 0
 }
 
-CHECK_DIR; # verify install detected correct location before continuing
+function INSTALL_DEPENDENCIES() {
+	local OS_NAME=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+
+	local GENERIC_DEPS=(python3 cmake lolcat figlet cowsay)
+	local ARCH_DEPS=(python cmake lolcat figlet cowsay)
+	local DEBIAN_DEPS=(python3-dev cmake lolcat figlet cowsay)
+
+	MISSING_DEPS=()
+
+	echo 'checking dependencies...'
+	for DEP in $GENERIC_DEPS;
+	do
+		command -v $DEP >/dev/null 2>&1 || {
+			echo "missing '$DEP'"
+			MISSING_DEPS+=$DEP
+		}
+	done
+
+	[[ ${#MISSING_DEPS[@]} -eq 0 ]] && {
+		echo '...all dependencies appear to be satisfied'
+	} || {
+		case $OS_NAME in
+			arch )
+				sudo pacman -Syu $ARCH_DEPS
+				;;
+			debian | ubuntu )
+				sudo apt-get install $DEBIAN_DEPS
+				;;
+			* )
+				echo "manual dependency installation required for os '$OS_NAME'..."
+				echo "missing : $MISSING_DEPS"
+				printf 'are you ready to proceed with setup? [yN] : '
+				local yn; read yn
+				[[ $yn =~ ^[yY] ]] && return 0 || return 1
+				;;
+		esac
+	}
+}
+
+
+CHECK_DIR || exit 1
+INSTALL_DEPENDENCIES || exit 1
 
 
 ################################################################################
@@ -36,19 +75,37 @@ function SOURCE_DOTWRYN_RC {
 }
 
 function ENV__SETUP_LOCAL_OVERRIDES() {
+	local yn
+
 	local DEFAULT_SHELL_ENV="$DOTWRYN_PATH/env/env"
 	local LOCAL_SHELL_ENV="$HOME/.config/wryn/env/env"
+
+	[ $LOCAL_SHELL_ENV ] && {
+		printf 'local env override file detected; overwrite? [yN] : '
+		read $yn
+		[[ $yn =~ ^[yY] ]] || DO_NOT_OVERWRITE_SHELL=1
+	}
+
+	[ $DO_NOT_OVERWRITE_SHELL ] && echo 'skipping shell env setup' || {
+		echo "source $DOTWRYN_PATH/env/env" > "$LOCAL_SHELL_ENV"
+		echo -e '\n#\n# ~/.wryn/env/env local overrides\n#\n' >> "$LOCAL_SHELL_ENV"
+		sed 's/[#]*\(.*\)/#\1/' $DEFAULT_SHELL_ENV >> "$LOCAL_SHELL_ENV"
+	}
 
 	local DEFAULT_VIM_ENV="$DOTWRYN_PATH/env/env.vim"
 	local LOCAL_VIM_ENV="$HOME/.config/wryn/env/env.vim"
 
-	echo "source $DOTWRYN_PATH/env/env" > "$LOCAL_SHELL_ENV"
-	echo -e '\n#\n# ~/.wryn/env/env local overrides\n#\n' >> "$LOCAL_SHELL_ENV"
-	sed 's/[#]*\(.*\)/#\1/' $DEFAULT_SHELL_ENV >> "$LOCAL_SHELL_ENV"
+	[ $LOCAL_SHELL_ENV ] && {
+		printf 'local vim env override file detected; overwrite? [yN] : '
+		read $yn
+		[[ $yn =~ ^[yY] ]] || DO_NOT_OVERWRITE_VIM=1
+	}
 
-	echo "source $DOTWRYN_PATH/env/env.vim" > "$LOCAL_VIM_ENV"
-	echo -e '\n"\n" ~/.wryn/env/env.vim local overrides\n"\n' >> "$LOCAL_VIM_ENV"
-	sed 's/["]*\(.*\)/"\1/' $DEFAULT_VIM_ENV >> "$LOCAL_VIM_ENV"
+	[ $DO_NOT_OVERWRITE_VIM ] && echo 'skipping vim env setup' || {
+		echo "source $DOTWRYN_PATH/env/env.vim" > "$LOCAL_VIM_ENV"
+		echo -e '\n"\n" ~/.wryn/env/env.vim local overrides\n"\n' >> "$LOCAL_VIM_ENV"
+		sed 's/["]*\(.*\)/"\1/' $DEFAULT_VIM_ENV >> "$LOCAL_VIM_ENV"
+	}
 }
 
 function SHELL__SETUP {
@@ -192,6 +249,18 @@ function CONFIG__TERMINFO() {
 	done
 }
 
+function CLEAN_BACKUP() {
+	read -p "clean backup files? [Yn] : " yn;
+
+	case $yn in
+		[nN]* ) echo 'skipping cleanup';;
+		* )
+			echo 'cleaning backup files';
+			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
+			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
+			;;
+	esac
+}
 
 
 function CONFIG__SETUP() {
@@ -210,6 +279,9 @@ function CONFIG__SETUP() {
 	CONFIG__XINITRC;
 
 	CONFIG__TERMINFO;
+
+
+	CLEAN_BACKUP
 }
 
 
@@ -217,28 +289,13 @@ function CONFIG__SETUP() {
 ### RUN CONFIG #################################################################
 ################################################################################
 
-function CLEAN_BACKUP() {
-	read -p "Clean backup files? [Yn] : " yn;
-
-	case $yn in
-		[nN]* ) echo 'skipping cleanup';;
-		* )
-			echo 'cleaning backup files';
-			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
-			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null); do rm $file && echo cleaned $file; done
-			;;
-	esac
-}
-
 
 [ ! -d "$HOME/.config" ] && mkdir "$HOME/.config";
 [ ! -d "$HOME/.config/wryn" ] && mkdir "$HOME/.config/wryn";
 [ ! -d "$HOME/.config/wryn/env" ] && mkdir "$HOME/.config/wryn/env";
 
-SHELL__SETUP;
-VIM__SETUP;
-CONFIG__SETUP;
-
-CLEAN_BACKUP;
+SHELL__SETUP
+#VIM__SETUP
+#CONFIG__SETUP
 
 echo -e "\nsetup complete"
