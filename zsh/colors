@@ -25,13 +25,33 @@ setopt PROMPT_SUBST
 PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT_LINE"
 
 [ -f "$HOME/.config/wryn/ps1" ] && source "$HOME/.config/wryn/ps1"
-#RPROMPT="$(\e[1A) $GIT_BRANCH";
+
 
 
 ######################################################################################
 
-alias kitty_change_theme='KITTY_CHANGE_THEME default'
-alias kitty_change_theme_alternate='KITTY_CHANGE_THEME alternate'
+TTY_COLORSCHEME="$HOME/.config/wryn/tty-colorscheme"
+[ ! -f $TTY_COLORSCHEME ] && ln -s $DOTWRYN/config/colorschemes/linux_console/CurrentKitty $TTY_COLORSCHEME
+source $TTY_COLORSCHEME
+
+alias tty-change-theme='TTY_CHANGE_THEME'
+function TTY_CHANGE_THEME() {
+	local SOURCE_THEME="$DOTWRYN/config/colorschemes/linux_console/$1"
+	local LOCAL_THEME="$HOME/.config/wryn/tty-colorscheme"
+
+	[ ! $1 ] && { echo must specify colorscheme; return 1; }
+	[ ! -f $SOURCE_THEME ] && { echo no such colorscheme; return 2; }
+	rm $LOCAL_THEME >/dev/null 2>&1
+	ln -s $SOURCE_THEME $LOCAL_THEME
+	source $LOCAL_THEME
+}
+_TTY_CHANGE_THEME() {
+	compadd $(ls $DOTWRYN/config/colorschemes/linux_console)
+}
+compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME;
+
+alias kitty-change-theme='KITTY_CHANGE_THEME default'
+alias kitty-change-theme-alternate='KITTY_CHANGE_THEME alternate'
 function KITTY_CHANGE_THEME () {
 	[ ! $2 ] && echo no filename given :c && return 1;
 	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$2" ] \
@@ -43,6 +63,8 @@ function KITTY_CHANGE_THEME () {
 	rm "$THEME"
 	ln -s "$DOTWRYN/config/colorschemes/kitty/$2" "$THEME"\
 		&& echo 'theme changed successfully! (effective on new terminal session)'
+
+	[ -f "$HOME/.config/wryn/tty-colorscheme" ] && source "$HOME/.config/wryn/tty-colorscheme"
 }
 _KITTY_CHANGE_THEME () {
 	compadd $(ls $DOTWRYN/config/colorschemes/kitty)
