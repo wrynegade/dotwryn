@@ -1,5 +1,5 @@
 #!/bin/sh
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env" 2>/dev/null
 
 PLAY() {
 	eval "$MEDIA_ENGINE" "$SFX_PATH/$1"
@@ -15,5 +15,5 @@ case $1 in
 	undock    ) PLAY yaru-desktop-login.oga ;;
 	homedock  ) PLAY homedock.oga ;;
 	gamedock  ) PLAY gamedock.oga ;;
-	* ) ls $SFX ;;
+	* ) ls $SFX_PATH ;;
 esac
