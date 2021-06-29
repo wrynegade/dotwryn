@@ -30,23 +30,29 @@ PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT
 
 ######################################################################################
 
-TTY_COLORSCHEME="$HOME/.config/wryn/tty-colorscheme"
-[ ! -f $TTY_COLORSCHEME ] && ln -s $DOTWRYN/config/colorschemes/linux_console/CurrentKitty $TTY_COLORSCHEME
-source $TTY_COLORSCHEME
+source "$DOTWRYN/config/colorschemes/linux-console"
 
 alias tty-change-theme='TTY_CHANGE_THEME'
 function TTY_CHANGE_THEME() {
-	local SOURCE_THEME="$DOTWRYN/config/colorschemes/linux_console/$1"
-	local LOCAL_THEME="$HOME/.config/wryn/tty-colorscheme"
+	local TARGET_THEME_LINK="$HOME/.config/wryn/tty-colorscheme"
+	local SOURCE_THEME="$DOTWRYN/config/colorschemes/kitty/$1"
 
 	[ ! $1 ] && { echo must specify colorscheme; return 1; }
-	[ ! -f $SOURCE_THEME ] && { echo no such colorscheme; return 2; }
-	rm $LOCAL_THEME >/dev/null 2>&1
-	ln -s $SOURCE_THEME $LOCAL_THEME
-	source $LOCAL_THEME
+
+	[[ $1 =~ ^current-kitty-theme$ ]] && {
+		rm $TARGET_THEME_LINK >/dev/null 2>&1
+	} || {
+		[ ! -f $SOURCE_THEME ] && { echo no such colorscheme; return 2; }
+
+		rm $TARGET_THEME_LINK >/dev/null 2>&1
+		ln -s $SOURCE_THEME $TARGET_THEME_LINK
+	}
+	
+	echo 'TTY colorscheme updated; resource shell in TTY for changes to take effect'
+	source "$DOTWRYN/config/colorschemes/linux-console"
 }
 _TTY_CHANGE_THEME() {
-	compadd $(ls $DOTWRYN/config/colorschemes/linux_console)
+	compadd $(ls $DOTWRYN/config/colorschemes/kitty) kitty-current-theme
 }
 compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME;
 
