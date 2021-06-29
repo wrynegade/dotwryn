@@ -52,7 +52,7 @@ function TTY_CHANGE_THEME() {
 	source "$DOTWRYN/config/colorschemes/linux-console"
 }
 _TTY_CHANGE_THEME() {
-	compadd $(ls $DOTWRYN/config/colorschemes/kitty) kitty-current-theme
+	compadd $(ls $DOTWRYN/config/colorschemes/kitty) current-kitty-theme
 }
 compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME;
 
