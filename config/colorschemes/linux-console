@@ -2,7 +2,6 @@
 
 TARGET="$HOME/.config/wryn/tty-colorscheme"
 [ ! -f $TARGET ] && TARGET="$DOTWRYN/config/kitty/theme.conf"
-echo $TARGET
 
 GET_COLOR_FROM_KITTY_THEME() {
 	grep "$1" $TARGET | awk '{print $2}' | sed 's/ //g; s/#//g' | tr '[:lower:]' '[:upper:]'
