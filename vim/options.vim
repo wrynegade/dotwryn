@@ -5,6 +5,7 @@ set number relativenumber
 
 set linebreak breakindent breakindentopt=shift:3
 set autoindent smartindent
+set backspace=indent,eol,start
 
 set timeoutlen=200
 
