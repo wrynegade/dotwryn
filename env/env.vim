@@ -8,7 +8,9 @@ let $ZSHRC=expand("$HOME/.zshrc")
 
 " -- Leader bindings -------------------------------------------- {{{
 let mapleader = "\\"
-"let localmapleader = ',' (not used currently)
+
+nmap <BS> <Nop>
+let maplocalleader = "\<BS>"
 " }}}
 
 " -- Colorscheme Settings --------------------------------------- {{{
