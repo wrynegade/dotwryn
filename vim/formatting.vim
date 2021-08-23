@@ -33,6 +33,8 @@ augroup filetype_specific_formatting
 	autocmd FileType kotlin     call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType dockerfile call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType vue        call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType go         call FormatFileType(4, v:false, 'manual', 99, v:false)
+	autocmd FileType json       call FormatFileType(2, v:false, 'indent', 99, v:false)
 augroup end
 
 augroup forced_filetype_recognition
@@ -49,6 +51,7 @@ augroup end
 augroup execute_file_shortcuts
 	autocmd FileType tex		nnoremap <Leader>ec :! pdf=$(grep -rl 'documentclass' ./ <bar> head -n 1 <bar> sed 's/\(.*\)\.tex/\1.pdf/'); $WEBBROWSER $pdf<CR>
 	autocmd FileType markdown	nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
+	autocmd FileType go         nnoremap <Leader>ec :!clear<CR><CR>q:?GoRun<CR><CR>
 augroup end
 " }}}
 
@@ -60,6 +63,11 @@ augroup latex_commands
 	" in case pdflatex gets in a stuck state, it is run through timeout 3
 	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 3 pdflatex $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
 
+augroup end
+
+augroup go_commands
+	autocmd FileType go nmap <silent> <Leader>ef <Plug>(go-imports)
+	autocmd FileType go nmap <silent> gd <Plug>(go-def-tab)
 augroup end
 " }}}
 

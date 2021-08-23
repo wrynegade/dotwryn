@@ -17,6 +17,9 @@ Plugin 'VundleVim/Vundle.vim'
 " nerdtree
 	Plugin 'git://github.com/scrooloose/nerdtree.git'
 
+" go-vim
+	Plugin 'fatih/vim-go'
+
 " youCompleteMe
 	Plugin 'git://github.com/Valloric/YouCompleteMe.git'
 
@@ -61,22 +64,32 @@ function! ToggleYCM()
 	endif
 endfunction
 
+" uncomment to deactivate by default
+" let g:ycm_auto_trigger=0
+let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_goto_buffer_command = 'new-tab'
 
 nnoremap <S-y> :call ToggleYCM()<CR>
 nnoremap gd :YcmCompleter GoToDefinition<CR>
 
-" STARTS DEACTIVATED
-" let g:ycm_auto_trigger=0
-
 
 " --- ALE ---------------------------------------------------------------------------
 let g:ale_linters = {
 \ 'cs' : ['OmniSharp'],
-\ 'python' : ['pylint']
+\ 'python' : ['pylint'],
+\ 'go' : ['golint']
 \}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 'never'
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_save = 1
+let g:ale_sign_column_always = 1
 
-nnoremap <Leader>ae :ALENext<cr>
-nnoremap <Leader>ar :ALEPrevious<cr>
+nmap <Leader>ae <Plug>(ale_next)
+nmap <Leader>ar <Plug>(ale_previous)
+
+" --- vim-go ------------------------------------------------------------------------
+let g:go_imports_autosave = 0
+let g:go_def_mapping_enabled = 0
+let g:go_fmt_fail_silently = 1
+let g:go_def_reuse_buffer = 1
+let g:go_textobj_enabled = 0
