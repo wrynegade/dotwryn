@@ -82,11 +82,11 @@ function ENV__SETUP_LOCAL_OVERRIDES() {
 
 	[ $LOCAL_SHELL_ENV ] && {
 		printf 'local env override file detected; overwrite? [yN] : '
-		read $yn
+		read yn
 		[[ $yn =~ ^[yY] ]] || DO_NOT_OVERWRITE_SHELL=1
 	}
 
-	[ $DO_NOT_OVERWRITE_SHELL ] && echo 'skipping shell env setup' || {
+	[[ $DO_NOT_OVERWRITE_SHELL -eq 1 ]] && echo 'skipping shell env setup' || {
 		echo "source $DOTWRYN_PATH/env/env" > "$LOCAL_SHELL_ENV"
 		echo -e '\n#\n# ~/.wryn/env/env local overrides\n#\n' >> "$LOCAL_SHELL_ENV"
 		sed 's/[#]*\(.*\)/#\1/' $DEFAULT_SHELL_ENV >> "$LOCAL_SHELL_ENV"
@@ -97,11 +97,11 @@ function ENV__SETUP_LOCAL_OVERRIDES() {
 
 	[ $LOCAL_SHELL_ENV ] && {
 		printf 'local vim env override file detected; overwrite? [yN] : '
-		read $yn
+		read yn
 		[[ $yn =~ ^[yY] ]] || DO_NOT_OVERWRITE_VIM=1
 	}
 
-	[ $DO_NOT_OVERWRITE_VIM ] && echo 'skipping vim env setup' || {
+	[[ $DO_NOT_OVERWRITE_VIM -eq 1 ]] && echo 'skipping vim env setup' || {
 		echo "source $DOTWRYN_PATH/env/env.vim" > "$LOCAL_VIM_ENV"
 		echo -e '\n"\n" ~/.wryn/env/env.vim local overrides\n"\n' >> "$LOCAL_VIM_ENV"
 		sed 's/["]*\(.*\)/"\1/' $DEFAULT_VIM_ENV >> "$LOCAL_VIM_ENV"
@@ -295,7 +295,7 @@ function CONFIG__SETUP() {
 [ ! -d "$HOME/.config/wryn/env" ] && mkdir "$HOME/.config/wryn/env";
 
 SHELL__SETUP
-#VIM__SETUP
-#CONFIG__SETUP
+VIM__SETUP
+CONFIG__SETUP
 
 echo -e "\nsetup complete"
