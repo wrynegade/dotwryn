@@ -1,5 +1,5 @@
 #!/bin/bash
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 [ ! -d "$HOME/.vim" ] && mkdir "$HOME/.vim"
 [ ! -d "$HOME/.vim/colors" ] && mkdir "$HOME/.vim/colors"

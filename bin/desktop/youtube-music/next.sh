@@ -1,3 +1,3 @@
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 "$DOTWRYN/bin/desktop/youtube-music/controller.sh" next

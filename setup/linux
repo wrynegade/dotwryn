@@ -1,0 +1,129 @@
+#!/usr/bin/zsh
+[[ $EUID -eq 0 ]] && { echo  'ERROR::Setup cannot be run as root'; exit 1; }
+command -v zsh >/dev/null || { echo 'ERROR::`zsh` required'; exit 1; }
+
+################################################################################
+### Pre/Post Processing ########################################################
+################################################################################
+
+cd "${0:a:h}"
+export DOTWRYN_PATH="$(git rev-parse --show-toplevel)"
+
+INIT() {
+	source "$DOTWRYN_PATH/zsh/utils/color.zsh"
+	source "$DOTWRYN_PATH/zsh/utils/user-input.zsh"
+	STATUS 'starting .wryn install'
+
+	export LOG="$HOME/dotwryn-install.log"
+	echo "install start : $(date)" > $LOG
+	STATUS "subprocess log can be found here : $LOG"
+}
+
+CLEANUP() {
+	local ERROR="$1"
+	CLEAN_BACKUP
+
+	[ ! $ERROR ] \
+		&& USER_PROMPT "keep logfile ($LOG)? [y/N]" \
+		|| USER_PROMPT "keep logfile ($LOG)? [Y/n]" \
+		;
+
+	READ_K yn
+	case $yn in
+		y | Y )
+			STATUS 'keeping logfile'
+			;;
+		n | N )
+			CHECK 'removing logfile'
+			rm $LOG && OK || WARN "unable to remove '$LOG'"
+			;;
+		* )
+			[ $ERROR ] && { STATUS 'keeping logfile'; return; }
+			CHECK 'removing logfile'
+			rm $LOG && OK || WARN "unable to remove '$LOG'"
+			;;
+	esac
+}
+
+CLEAN_BACKUP() {
+	USER_PROMPT 'clean backup files? [Y/n]'
+	READ_K yn
+
+	case $yn in
+		[nN]* ) STATUS 'skipping cleanup' ;;
+		* )
+			STATUS 'cleaning backup files'
+			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null)
+			do
+				CHECK "removing '$file'"
+				rm $file >>$LOG 2>&1 && OK || WARN
+			done
+			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null)
+			do
+				CHECK "removing '$file'"
+				rm $file >>$LOG 2>&1 && OK || WARN
+			done
+			;;
+	esac
+}
+
+################################################################################
+### General Setup Utilities ####################################################
+################################################################################
+
+GET_SUDO_PASSWORD() {
+	sudo echo hi >/dev/null 2>&1
+}
+
+MAKE_REQUIRED_DIRECTORY_STRUCTURE() {
+	DIRECTORIES=(
+		"$HOME/.config"
+		"$HOME/.config/wryn"
+		"$HOME/.config/wryn/env"
+		"$HOME/.vim"
+		"$HOME/.vim/colors"
+		"$HOME/.vim/bundle"
+		)
+	FILES=(
+		"$HOME/.zshrc"
+		"$HOME/.vimrc"
+		)
+	
+	for D in $DIRECTORIES; do [ ! -d $D ] && mkdir $D; done
+	for F in $FILES; do [ ! -f $F ] && touch $F; done
+}
+
+################################################################################
+
+source "$DOTWRYN_PATH/setup/os-dependencies/setup.zsh"
+source "$DOTWRYN_PATH/setup/zsh/setup.zsh"
+source "$DOTWRYN_PATH/setup/vim/setup.zsh"
+source "$DOTWRYN_PATH/setup/dotconfig/setup.zsh"
+
+################################################################################
+
+################################################################################
+### Full Setup #################################################################
+################################################################################
+
+INIT
+
+GET_SUDO_PASSWORD
+OS_DEPENDENCY__SETUP || FATAL 'user abort'
+MAKE_REQUIRED_DIRECTORY_STRUCTURE
+
+ZSH__SETUP || ERROR=1
+VIM__SETUP || ERROR=2
+DOTCONFIG__SETUP || ERROR=3
+
+CLEANUP $ERROR
+
+################################################################################
+
+SUCCESS
+SUCCESS '.wryn setup complete; have a nice day :)'
+SUCCESS
+echo
+echo
+
+exit 0

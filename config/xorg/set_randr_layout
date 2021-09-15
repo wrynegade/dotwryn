@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 XSERVER_DIR="$DOTWRYN/config/xorg"
 
 AT_HOME(){

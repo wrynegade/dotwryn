@@ -1,0 +1,5 @@
+cmake
+cowsay
+figlet
+lolcat
+python3-dev

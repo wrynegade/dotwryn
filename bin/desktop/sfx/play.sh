@@ -1,5 +1,5 @@
 #!/bin/sh
-source "$HOME/.config/wryn/env/env" 2>/dev/null
+source "$HOME/.config/wryn/env/env.zsh" 2>/dev/null
 
 PLAY() {
 	eval "$MEDIA_ENGINE" "$SFX_PATH/$1"

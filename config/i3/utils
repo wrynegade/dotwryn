@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 UTIL_BIN="$DOTWRYN/bin/desktop"
 APP_BIN="$HOME/.config/wryn/default-applications"

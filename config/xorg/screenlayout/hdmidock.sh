@@ -1,5 +1,5 @@
 #!/bin/sh
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 NATIVE_MONITOR='eDP1';
 CONNECTED_MONITOR=$(xrandr | grep ' connect' | awk '{print $1;}' | grep -v "$NATIVE_MONITOR" | head -n 1);

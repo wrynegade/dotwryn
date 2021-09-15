@@ -1,5 +1,5 @@
 #!/bin/sh
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 NATIVE_MONITOR='eDP1';
 NATIVE_MODE="$(xrandr | grep -A 2 "$NATIVE_MONITOR" | sed -n '2 p' | awk '{print $1;}')";

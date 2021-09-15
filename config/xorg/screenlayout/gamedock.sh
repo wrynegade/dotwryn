@@ -1,5 +1,5 @@
 #!/bin/sh
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 RESOLUTION='1920x1080';
 

@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-source "$HOME/.config/wryn/env/env"
+source "$HOME/.config/wryn/env/env.zsh"
 
 # --- load custom plugins ------------------------------------------
 
