@@ -10,12 +10,24 @@ cd "${0:a:h}"
 export DOTWRYN_PATH="$(git rev-parse --show-toplevel)"
 cd $DOTWRYN_PATH
 
+SOURCE_ZSH_SUBMODULE() {
+	local NAME="$1"
+
+	local SUBMODULE_PATH=$(\
+		git config --file "$DOTWRYN_PATH/.gitmodules" --get-regexp "$NAME.path"\
+			| awk '{print $2;}'\
+	)
+	local MODULE="$(ls $DOTWRYN_PATH/$SUBMODULE_PATH/*.module.zsh)"
+
+	source $MODULE
+}
+
 INIT() {
-	git submodule update --init --remote || {
+	git submodule update --init --remote >/dev/null 2>&1 || {
 		echo 'unable to initialize required submodules'
 		exit 1
 	}
-	source "$DOTWRYN_PATH/zsh/utils/color.zsh"
+	SOURCE_ZSH_SUBMODULE 'color-zsh'
 	source "$DOTWRYN_PATH/zsh/utils/user-input.zsh"
 	STATUS 'starting .wryn install'
 
