@@ -2,3 +2,9 @@
 	path = zsh/utils/color
 	url = https://wryn.cloud/gizmos/color-zsh
 	update = rebase
+[submodule "z-navigator"]
+	path = zsh/plugins/z
+	url = https://github.com/rupa/z.git
+[submodule "fzf-tab"]
+	path = zsh/plugins/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab

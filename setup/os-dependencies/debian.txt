@@ -1,5 +1,7 @@
 cmake
 cowsay
 figlet
+fzf
 lolcat
 python3-dev
+ripgrep
