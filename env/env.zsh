@@ -16,7 +16,7 @@ PREFERRED_EDITOR=(vi vim)
 MEDIA_ENGINE='canberra-gtk-play -f'
 
 WEBBROWSER='google-chrome-stable'
-TMUX_DEFAULT_SESSION_NAME='main'
+TMUX_DEFAULT_SESSION_NAME='wryn'
 
 #####################################################################
 ### External Plugins / Settings #####################################
