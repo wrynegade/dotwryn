@@ -1,3 +1,4 @@
 [submodule "color-zsh"]
 	path = zsh/utils/color
 	url = https://wryn.cloud/gizmos/color-zsh
+	update = rebase
