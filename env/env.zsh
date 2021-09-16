@@ -23,7 +23,9 @@ PS1_INDICATOR_SYMBOL='☕'
 PS1_SEPARATOR='::'
 PS1_USER='%n'
 
-WELCOME () { { figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy' } | lolcat }
+WELCOME () {
+	{ figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy'; } | lolcat
+}
 
 #####################################################################
 ### External Plugins / Settings #####################################
