@@ -8,3 +8,6 @@
 [submodule "fzf-tab"]
 	path = zsh/plugins/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
+[submodule "latex-zsh"]
+	path = zsh/plugins/latex
+	url = https://wryn.cloud/gizmos/latex-zsh
