@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+echo hiya
 git submodule update --remote --rebase --init
 
 SUBMODULES=$(\
@@ -7,6 +8,8 @@ SUBMODULES=$(\
 		| grep '(new commits)' \
 		| sed 's/^.*modified:\s*//; s/\s*(new commits).*$//' \
 )
+
+echo $SUBMODULES
 
 [[ ${#SUBMODULES[@]} -gt 0 ]] && {
 	git add $SUBMODULES
