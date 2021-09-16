@@ -49,6 +49,6 @@ function ZSH__SET_LOCAL_CONFIG() {
 	{
 		echo "source $DEFAULT_CONFIG"
 		echo -e '\n#\n# .wryn configuration overrides\n#\n'
-		sed 's/[#]*\(.*\)/#\1/' $DEFAULT_CONFIG
+		sed 's/^[^#].*/#&/' $DEFAULT_CONFIG
 	} > $LOCAL_CONFIG && OK || WARN
 }
