@@ -1,3 +1,0 @@
-#!/bin/zsh
-alias cheerup="clear; echo; fortune | cowsay -f stegosaurus | lolcat; echo;"
-alias netrogue='nethack -u "w0ryn-rog-hum-cha-mal"'
