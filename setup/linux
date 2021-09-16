@@ -8,8 +8,13 @@ command -v zsh >/dev/null || { echo 'ERROR::`zsh` required'; exit 1; }
 
 cd "${0:a:h}"
 export DOTWRYN_PATH="$(git rev-parse --show-toplevel)"
+cd $DOTWRYN_PATH
 
 INIT() {
+	git submodule update --init --remote || {
+		echo 'unable to initialize required submodules'
+		exit 1
+	}
 	source "$DOTWRYN_PATH/zsh/utils/color.zsh"
 	source "$DOTWRYN_PATH/zsh/utils/user-input.zsh"
 	STATUS 'starting .wryn install'
