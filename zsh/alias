@@ -1,0 +1,22 @@
+#!/bin/zsh
+# --------------------------------------------------------------------- 
+alias restart='clear; source ~/.zshrc; echo'
+
+alias pd='pushd';
+alias qd='popd';
+alias lspd='dirs';
+
+alias bp='bpython';
+
+alias pdo='pwd | xclip';    # [p]aste current [d]irectory [o]n clipboard
+alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
+
+alias fix='vim $(git diff --name-only | uniq) -p';
+# --------------------------------------------------------------------- 
+
+alias erg='EDIT_RIP_GREP_FILE_MATCHES';
+EDIT_RIP_GREP_FILE_MATCHES() {
+	[ $EDITOR = "vim" ] \
+		&& $EDITOR -p $(rg --color=never -l $1 ) \
+		|| $EDITOR $(rg --color=never -l $1) ;
+}
