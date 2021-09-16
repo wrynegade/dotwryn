@@ -11,3 +11,8 @@
 [submodule "latex-zsh"]
 	path = zsh/plugins/latex
 	url = https://wryn.cloud/gizmos/latex-zsh
+	update = rebase
+[submodule "code-activator-zsh"]
+	path = zsh/plugins/code-activator
+	url = https://wryn.cloud/gizmos/code-activator-zsh.git
+	update = rebase

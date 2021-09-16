@@ -32,10 +32,11 @@ WELCOME () {
 #####################################################################
 
 EXTERNAL_PLUGINS=(
-	"$DOTWRYN/zsh/plugins/z/z.sh"
 	'/usr/share/fzf/key-bindings.zsh'
 	'/usr/share/fzf/completion.zsh'
+	"$DOTWRYN/zsh/plugins/z/z.sh"
 	"$DOTWRYN/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+	"$DOTWRYN/zsh/plugins/latex/latex.plugin.zsh"
 	)
 
 FZF_DEFAULT_OPTS='--reverse'
@@ -44,3 +45,5 @@ FZF_DEFAULT_COMMAND='rg --files'
 zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept' ';:toggle'
 zstyle ':fzf-tab:*' continuous-trigger '/'
+
+export ZSH_COLOR_UTIL="$DOTWRYN/zsh/utils/color/color.module.zsh"
