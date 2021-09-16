@@ -1,49 +1,41 @@
 #!/bin/zsh
-
 source "$HOME/.config/wryn/env/env.zsh"
+# ---------------------------------------------------------------------
+INTERNAL_PLUGINS=(
+	"$DOTWRYN/zsh/config" # must load first
+	$(find "$DOTWRYN/zsh" -maxdepth 1 -type f \
+		! -name 'rc' \
+		! -name 'config' \
+	)
+)
 
-# --- load custom plugins ------------------------------------------
-
-# zsh config : must load first for zsh-plugins to work
-source "$DOTWRYN/zsh/config"
-
-for file in $(find "$DOTWRYN/zsh" -maxdepth 1 -type f ! -name 'rc' ! -name 'config'); do source $file; done;
-
-# operating system specific plugins
-case "$OSTYPE" in
-	linux-gnu )
-		for file in $(find "$DOTWRYN/zsh/linux" -type f); do source $file; done;
-		;;
-	darwin* )
-		for file in $(find "$DOTWRYN/zsh/osx" -type f); do source $file; done;
-		;;
-esac
-
-
-# --- set default editor -------------------------------------------
 SET_PREFERRED_EDITOR() {
-	# load preference from environment (vi vim) by default
-	[[ -z $PREFERRED_EDITOR ]] && { echo 'unable to find $PREFERRED_EDITOR environment variable'; return 1; }
+	# load preference from environment
+	[[ ${#PREFERRED_EDITOR[@]} -eq 0 ]] && {
+		echo 'unable to find $PREFERRED_EDITOR environment variable'
+		return 1
+	}
 
-	[[ $EDITOR == "${PREFERRED_EDITOR[-1]}" ]] && [[ $VISUAL == "${PREFERENCE[-1]}" ]] && return 0;
+	[[ $EDITOR == "${PREFERRED_EDITOR[-1]}" ]] \
+		&& [[ $VISUAL == "${PREFERENCE[-1]}" ]] \
+		&& return 0
 
-	local AVAILABLE_EDITOR="$EDITOR";
+	local AVAILABLE_EDITOR=$EDITOR
 
-	for program in $PREFERRED_EDITOR; do which $program >/dev/null 2>&1 && AVAILABLE_EDITOR="$program"; done
+	for program in $PREFERRED_EDITOR
+	do
+		which $program >/dev/null 2>&1 \
+			&& AVAILABLE_EDITOR="$program" \
+			&& break
+	done
 
 	export EDITOR="$AVAILABLE_EDITOR";
 	export VISUAL="$AVAILABLE_EDITOR";
 }
+# ---------------------------------------------------------------------
+for p in $INTERNAL_PLUGINS; do source $p; done
+for p in $EXTERNAL_PLUGINS; do source $p; done
 SET_PREFERRED_EDITOR
-
-# --- load external plugins ----------------------------------------
-
-for PLUGIN in $EXTERNAL_PLUGIN_LIST; do
-	[ -f "$PLUGIN" ] && source "$PLUGIN"
-done
-
-# --- welcome message ----------------------------------------------
-CUSTOM_WELCOME="$HOME/.config/wryn/welcome"
-[ -f "$CUSTOM_WELCOME" ] \
-	&& { source "$CUSTOM_WELCOME" } \
-	|| { { figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy' } | lolcat; }
+WELCOME
+# ---------------------------------------------------------------------
+return 0

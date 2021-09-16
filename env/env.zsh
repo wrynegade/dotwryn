@@ -10,14 +10,12 @@ WALLPAPER_PATH="$HOME/Pictures/bg"
 ### Application Settings ############################################
 #####################################################################
 
-# ordered from least-preferred to most-preferred
-PREFERRED_EDITOR=(vi vim)
-
 # should play an audio file argument
 MEDIA_ENGINE='canberra-gtk-play -f'
 
 RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'
+PREFERRED_EDITOR=(vim vi)
 WEBBROWSER='google-chrome-stable'
 
 PS1_BRANCH_SYMBOL=''
@@ -25,12 +23,13 @@ PS1_INDICATOR_SYMBOL='☕'
 PS1_SEPARATOR='::'
 PS1_USER='%n'
 
+WELCOME () { { figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy' } | lolcat }
 
 #####################################################################
 ### External Plugins / Settings #####################################
 #####################################################################
 
-EXTERNAL_PLUGIN_LIST=(
+EXTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/plugins/z/z.sh"
 	'/usr/share/fzf/key-bindings.zsh'
 	'/usr/share/fzf/completion.zsh'
