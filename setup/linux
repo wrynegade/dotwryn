@@ -23,7 +23,7 @@ SOURCE_ZSH_SUBMODULE() {
 }
 
 INIT() {
-	git submodule update --init --remote >/dev/null 2>&1 || {
+	git submodule update --init --remote --recursive >/dev/null 2>&1 || {
 		echo 'unable to initialize required submodules'
 		exit 1
 	}
