@@ -6,15 +6,11 @@ alias ls='ls --color=auto';
 #####################################################################
 
 GENERATE_PS1() {
-	local INDICATOR_SYMBOL="$1"
-	local PROMPT_USER="$2"
-	local SEPARATOR="$3"
-
-	local _INDICATOR="%B%(?.%F{green}.%F{red}) $INDICATOR_SYMBOL"
-	local _USER="%B%F{magenta}$PROMPT_USER"
-	local _SEPARATOR="%b%F{red}$SEPARATOR"
+	local _INDICATOR="%B%(?.%F{green}.%F{red}) $PS1_INDICATOR_SYMBOL"
+	local _USER="%B%F{magenta}$PS1_USER"
+	local _SEPARATOR="%b%F{red}$PS1_SEPARATOR"
 	local _DIRECTORY='%B%F{yellow}%6~'
-	local _GIT_BRANCH='%B%F{cyan}$(git branch --no-color 2>/dev/null | sed "/^[^*]/d; s/* \(.*\)/  \1/")'
+	local _GIT_BRANCH='%B%F{cyan} $(git branch --no-color 2>/dev/null | sed "/^[^*]/d; s/* \(.*\)/$PS1_BRANCH_SYMBOL \1/")'
 
 	local _PROMPT=$'\n'' %B%F{blue}%# %b%f'
 
@@ -22,7 +18,7 @@ GENERATE_PS1() {
 }
 
 setopt PROMPT_SUBST
-export PS1="$(GENERATE_PS1 "$PS1_INDICATOR_SYMBOL" "$PS1_USER" "$PS1_SEPARATOR")"
+export PS1="$(GENERATE_PS1)"
 
 #####################################################################
 

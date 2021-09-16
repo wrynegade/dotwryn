@@ -10,7 +10,6 @@ WALLPAPER_PATH="$HOME/Pictures/bg"
 ### Application Settings ############################################
 #####################################################################
 
-
 # ordered from least-preferred to most-preferred
 PREFERRED_EDITOR=(vi vim)
 
@@ -21,9 +20,10 @@ RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'
 WEBBROWSER='google-chrome-stable'
 
+PS1_BRANCH_SYMBOL=''
 PS1_INDICATOR_SYMBOL='☕'
-PS1_USER='%n'
 PS1_SEPARATOR='::'
+PS1_USER='%n'
 
 
 #####################################################################
