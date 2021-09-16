@@ -17,3 +17,5 @@
 	diff = always
 	status = always
 	branch = always
+[submodule]
+	recurse = true
