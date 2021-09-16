@@ -1,34 +1,30 @@
 #!/bin/zsh
+#####################################################################
 
-# ls colors
 alias ls='ls --color=auto';
 
+#####################################################################
 
-# zsh prompt
-COFFEE="☕";
-PREVIOUS_COMMAND_CONDITION="%B%(?.%F{yellow}.%F{red}) $COFFEE";
+GENERATE_PS1() {
+	local INDICATOR_SYMBOL="$1"
+	local PROMPT_USER="$2"
+	local SEPARATOR="$3"
 
-USER='%B%F{green}%n';
+	local _INDICATOR="%B%(?.%F{green}.%F{red}) $INDICATOR_SYMBOL"
+	local _USER="%B%F{magenta}$PROMPT_USER"
+	local _SEPARATOR="%b%F{red}$SEPARATOR"
+	local _DIRECTORY='%B%F{yellow}%6~'
+	local _GIT_BRANCH='%B%F{cyan}$(git branch --no-color 2>/dev/null | sed "/^[^*]/d; s/* \(.*\)/  \1/")'
 
-SEPARATOR='%b%F{red}::';
+	local _PROMPT=$'\n'' %B%F{blue}%# %b%f'
 
-DIRECTORY='%B%F{yellow}%6~';
-
-function parse_git_branch(){
-    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
+	echo "$_INDICATOR $_USER $_SEPARATOR $_DIRECTORY $_GIT_BRANCH $_PROMPT"
 }
-GIT_BRANCH='%B%F{cyan}$(parse_git_branch)';
-
-PROMPT_LINE=$'\n'' %B%F{128}%# %b%f'
 
 setopt PROMPT_SUBST
-PS1="$PREVIOUS_COMMAND_CONDITION $USER $SEPARATOR $DIRECTORY $GIT_BRANCH $PROMPT_LINE"
+export PS1="$(GENERATE_PS1 "$PS1_INDICATOR_SYMBOL" "$PS1_USER" "$PS1_SEPARATOR")"
 
-[ -f "$HOME/.config/wryn/ps1" ] && source "$HOME/.config/wryn/ps1"
-
-
-
-######################################################################################
+#####################################################################
 
 source "$DOTWRYN/config/colorschemes/linux-console"
 
@@ -55,6 +51,8 @@ _TTY_CHANGE_THEME() {
 	compadd $(ls $DOTWRYN/config/colorschemes/kitty) current-kitty-theme
 }
 compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME;
+
+#####################################################################
 
 alias kitty-change-theme='KITTY_CHANGE_THEME default'
 alias kitty-change-theme-alternate='KITTY_CHANGE_THEME alternate'

@@ -1,13 +1,15 @@
 #####################################################################
 ### Path References #################################################
 #####################################################################
+
 DOTWRYN="$HOME/.wryn"
 SFX_PATH="$HOME/Media/sfx"
 WALLPAPER_PATH="$HOME/Pictures/bg"
 
 #####################################################################
-### Applications / Application Settings #############################
+### Application Settings ############################################
 #####################################################################
+
 
 # ordered from least-preferred to most-preferred
 PREFERRED_EDITOR=(vi vim)
@@ -15,8 +17,14 @@ PREFERRED_EDITOR=(vi vim)
 # should play an audio file argument
 MEDIA_ENGINE='canberra-gtk-play -f'
 
-WEBBROWSER='google-chrome-stable'
+RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'
+WEBBROWSER='google-chrome-stable'
+
+PS1_INDICATOR_SYMBOL='☕'
+PS1_USER='%n'
+PS1_SEPARATOR='::'
+
 
 #####################################################################
 ### External Plugins / Settings #####################################
