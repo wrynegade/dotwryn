@@ -10,12 +10,13 @@ WALLPAPER_PATH="$HOME/Pictures/bg"
 ### Application Settings ############################################
 #####################################################################
 
+PREFERRED_EDITOR=(vim vi)
+
 # should play an audio file argument
 MEDIA_ENGINE='canberra-gtk-play -f'
 
 RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'
-PREFERRED_EDITOR=(vim vi)
 WEBBROWSER='google-chrome-stable'
 
 PS1_BRANCH_SYMBOL=''
