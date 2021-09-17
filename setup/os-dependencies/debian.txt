@@ -5,3 +5,5 @@ fzf
 lolcat
 python3-dev
 ripgrep
+build-essential
+ncurses-dev

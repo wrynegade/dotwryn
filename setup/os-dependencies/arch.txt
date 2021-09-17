@@ -1,3 +1,4 @@
+base-devel
 cmake
 cowsay
 figlet
@@ -5,3 +6,4 @@ fzf
 lolcat
 python
 ripgrep
+ncurses

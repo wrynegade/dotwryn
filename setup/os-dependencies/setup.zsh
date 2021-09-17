@@ -1,3 +1,5 @@
+source "$DOTWRYN_PATH/setup/os-dependencies/arch.zsh"
+
 ################################################################################
 ### Automated System Dependency Install ########################################
 ################################################################################
@@ -10,7 +12,10 @@ function OS_DEPENDENCY__SETUP() {
 	local ERROR=0
 	STATUS 'checking os dependencies'
 
-	local OS_NAME=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+	local OS_NAME=$(lsb_release -is 2>/dev/null | tr '[:upper:]' '[:lower:]')
+	[ ! $OS_NAME ] && {
+		OS_NAME=$(cat /etc/os-release | grep ^ID= | sed 's/^ID=//')
+	}
 	STATUS "detected os '$OS_NAME'"
 
 	case $OS_NAME in
@@ -54,6 +59,10 @@ function OS_DEPENDENCY__SETUP() {
 
 function OS_INSTALL__ARCH() {
 	local TARGET="$1"
+	[[ $TARGET =~ ^base-devel$ ]] && {
+		WARNING 'base-devel is required; make sure it is installed'
+		return 0
+	}
 	CHECK "checking for $TARGET"
 	pacman -Qq | grep -q "^$TARGET$" && OK || {
 		WARN "$TARGET not found"
@@ -61,6 +70,7 @@ function OS_INSTALL__ARCH() {
 		sudo pacman -Syu --noconfirm $TARGET >>$LOG 2>&1 \
 			&& OK || { WARN "failed to install $TARGET"; return 1; }
 	}
+	YAY__INSTALL_FROM_SOURCE
 }
 
 function OS_INSTALL__DEBIAN() {
