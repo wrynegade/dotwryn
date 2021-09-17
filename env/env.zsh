@@ -37,8 +37,9 @@ EXTERNAL_PLUGINS=(
 	'/usr/share/fzf/completion.zsh'
 	"$DOTWRYN/zsh/plugins/z/z.sh"
 	"$DOTWRYN/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
-	"$DOTWRYN/zsh/plugins/latex/latex.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/code-activator/activator.plugin.zsh"
+	"$DOTWRYN/zsh/plugins/latex/latex.plugin.zsh"
+	"$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh"
 	)
 
 FZF_DEFAULT_OPTS='--reverse'

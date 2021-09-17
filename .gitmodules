@@ -16,3 +16,6 @@
 	path = zsh/plugins/code-activator
 	url = https://wryn.cloud/gizmos/code-activator-zsh.git
 	update = rebase
+[submodule "ssh-zsh"]
+	path = zsh/plugins/ssh
+	url = https://wryn.cloud/gizmos/ssh-zsh.git
