@@ -20,3 +20,45 @@ EDIT_RIP_GREP_FILE_MATCHES() {
 		&& $EDITOR -p $(rg --color=never -l $1 ) \
 		|| $EDITOR $(rg --color=never -l $1) ;
 }
+
+# --------------------------------------------------------------------- 
+
+alias gdrive="RCLONE_GOOGLE_DRIVE_MOUNT"
+alias gphotos="RCLONE_GOOGLE_PHOTOS_MOUNT"
+
+RCLONE_GOOGLE_DRIVE_MOUNT() {
+	local REMOTE_NAME='google-drive';
+	local MOUNT_POINT="$HOME/GoogleDrive";
+	local TITLE="GOOGLE DRIVE CONNECTION";
+	local MOUNT_FOLDER_EXTENSION="$1";
+
+	RCLONE_GOOGLE_MOUNT "$REMOTE_NAME" "$MOUNT_POINT" "$TITLE" "$MOUNT_FOLDER_EXTENSION";
+
+}
+
+RCLONE_GOOGLE_PHOTOS_MOUNT() {
+	local REMOTE_NAME='google-photos';
+	local MOUNT_POINT="$HOME/GooglePhotos";
+	local TITLE="GOOGLE PHOTOS CONNECTION";
+
+	RCLONE_GOOGLE_MOUNT "$REMOTE_NAME" "$MOUNT_POINT" "$TITLE";
+}
+
+
+RCLONE_GOOGLE_MOUNT() {
+	local REMOTE_NAME="$1";
+	local MOUNT_POINT="$2";
+	local TITLE="$3";
+	local MOUNT_FOLDER_EXTENSION="$4";
+
+	[ -d $MOUNT_POINT ] && [[ $(ls $MOUNT_POINT | wc -l) -gt 0 ]] \
+		&& { echo "connection already active at '$MOUNT_POINT'"; return 1; }
+
+	clear;
+	figlet -w $(tput cols) "$TITLE"| lolcat;
+	echo -e "\e[3m(C-c to close)\e[0m";
+
+	mkdir $MOUNT_POINT >/dev/null 2>&1;
+	rclone mount "$REMOTE_NAME:$MOUNT_FOLDER_EXTENSION" "$MOUNT_POINT"
+	rmdir $MOUNT_POINT >/dev/null 2>&1;
+}
