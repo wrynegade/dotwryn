@@ -1,7 +1,10 @@
+build-essential
 cmake
 cowsay
 figlet
 fzf
 lolcat
+ncurses
 python3
 rg
+tmux

@@ -1,9 +1,10 @@
+build-essential
 cmake
 cowsay
 figlet
 fzf
 lolcat
+ncurses-dev
 python3-dev
 ripgrep
-build-essential
-ncurses-dev
+tmux

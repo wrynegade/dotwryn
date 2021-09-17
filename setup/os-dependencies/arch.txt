@@ -4,6 +4,7 @@ cowsay
 figlet
 fzf
 lolcat
+ncurses
 python
 ripgrep
-ncurses
+tmux
