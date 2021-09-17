@@ -97,13 +97,16 @@ MAKE_REQUIRED_DIRECTORY_STRUCTURE() {
 		"$HOME/.config"
 		"$HOME/.config/wryn"
 		"$HOME/.config/wryn/env"
+		"$HOME/.local"
+		"$HOME/.local/bin"
+		"$HOME/.packages"
 		"$HOME/.vim"
-		"$HOME/.vim/colors"
 		"$HOME/.vim/bundle"
+		"$HOME/.vim/colors"
 		)
 	FILES=(
-		"$HOME/.zshrc"
 		"$HOME/.vimrc"
+		"$HOME/.zshrc"
 		)
 	
 	for D in $DIRECTORIES; do [ ! -d $D ] && mkdir $D; done
@@ -137,6 +140,8 @@ CLEANUP $ERROR
 
 ################################################################################
 
+echo
+echo
 SUCCESS
 SUCCESS '.wryn setup complete; have a nice day :)'
 SUCCESS
