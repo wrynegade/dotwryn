@@ -19,3 +19,6 @@
 [submodule "ssh-zsh"]
 	path = zsh/plugins/ssh
 	url = https://wryn.cloud/gizmos/ssh-zsh.git
+[submodule "memo-zsh"]
+	path = zsh/plugins/memo
+	url = https://wryn.cloud/gizmos/memo-zsh.git

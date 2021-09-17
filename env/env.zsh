@@ -40,6 +40,7 @@ EXTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/plugins/code-activator/activator.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/latex/latex.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh"
+	"$DOTWRYN/zsh/plugins/memo/memo.plugin.zsh"
 	)
 
 FZF_DEFAULT_OPTS='--reverse'
