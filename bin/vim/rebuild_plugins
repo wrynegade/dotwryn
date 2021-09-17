@@ -1,11 +1,10 @@
-#!/bin/bash
-
+#!/bin/zsh
 function INSTALL() {
 	local CMD_NAME="$1"
 	local BUILD_DIR="$2"
 	local BUILD="$3"
 
-	echo "installing $CMD_NAME";
+	echo "installing $CMD_NAME"
 	[ ! -d $BUILD_DIR ] && { echo "unable to locate $CMD_NAME build files"; exit 1; }
 
 	$BUILD >/dev/null 2>&1 \
@@ -13,29 +12,15 @@ function INSTALL() {
 		|| echo "$CMD_NAME installation failed. Please attempt manual installation";
 }
 
-function INSTALL_COMMAND_T() {
-	local CMD_NAME='CommandT'
-	local BUILD_DIR="$HOME/.vim/bundle/command-t/ruby/command-t/ext/command-t";
-
-	function BUILD() {
-		cd $BUILD_DIR;
-		ruby extconf.rb;
-		make
-	}
-
-	INSTALL $CMD_NAME $BUILD_DIR BUILD;
-}
-
 function INSTALL_YCM() {
 	local CMD_NAME='YouCompleteMe';
 	local BUILD_DIR="$HOME/.vim/bundle/YouCompleteMe";
 
 	function BUILD() {
-		python3 $BUILD_DIR/install.py;
+		python3 $BUILD_DIR/install.py
 	}
 
-	INSTALL $CMD_NAME $BUILD_DIR BUILD;
+	INSTALL $CMD_NAME $BUILD_DIR BUILD
 }
 
-#INSTALL_COMMAND_T;
-INSTALL_YCM;
+INSTALL_YCM

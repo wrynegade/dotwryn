@@ -1,10 +1,16 @@
+source "$DOTWRYN_PATH/setup/vim/compile-from-source.zsh"
+
 #####################################################################
 
 function VIM__SETUP() {
+	STATUS 'starting vim setup'
+	VIM__COMPILE_FROM_SOURCE
 	VIM__SOURCE_RC
 	VIM__SET_LOCAL_CONFIG
 	VIM__UPDATE_COLORSCHEMES
 	VIM__INSTALL_VUNDLE_PLUGINS
+	VIM__CREATE_PANE_DEFAULT_APP
+	STATUS 'finished vim setup'
 }
 
 VIM__VUNDLE_TARGET='https://github.com/VundleVim/Vundle.vim.git'
@@ -71,10 +77,24 @@ function VIM__INSTALL_VUNDLE_PLUGINS() {
 		cd $PREV_DIR >>$LOG 2>&1
 	}
 
-	CHECK 'installing vundle plugins'
+	STATUS 'installing Vundle.vim plugins'
 	vim +PluginInstall +qall \
-		&& OK || WARN
+		&& SUCCESS 'successfully installed Vundle.vim plugins' \
+		|| WARN 'failed to install one or more Vundle.vim plugins' \
+		;
 
-	STATUS 'building plugins'
-	$DOTWRYN_PATH/bin/vim/rebuild_plugins
+	CHECK 'building plugins (this may take a minute)'
+	$DOTWRYN_PATH/bin/vim/rebuild_plugins >>$LOG 2>&1\
+		&& OK || WARN 'retry plugin build manually'
+}
+
+function VIM__CREATE_PANE_DEFAULT_APP() {
+	which vim | grep "$HOME/.local/bin/vim" && return 0
+
+	CHECK 'updating vim to open in panes by default'
+	{
+		echo '#!/bin/sh'
+		echo "exec $(which vim) -p "'$@'
+	} > "$HOME/.local/bin/vim" && OK || WARN
+	chmod +x "$HOME/.local/bin/vim"
 }
