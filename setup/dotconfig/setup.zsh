@@ -39,7 +39,7 @@ function CONFIG__SYMLINK() {
 
 function CONFIG__TERMINFO() {
 	for file in $(find "$DOTWRYN_PATH/config/terminfo" -type f); do
-		CHECK "adding '$file' terminfo"
+		CHECK "adding '$(basename $file)'"
 		tic -x $file >>$LOG 2>&1 \
 			&& OK || WARN
 	done
