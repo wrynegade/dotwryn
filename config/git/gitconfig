@@ -19,3 +19,5 @@
 	branch = always
 [submodule]
 	recurse = true
+[alias]
+	serve = !git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
