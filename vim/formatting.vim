@@ -19,6 +19,7 @@ augroup filetype_specific_formatting
 	autocmd FileType cpp        call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType cmake      call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType cs         call FormatFileType(4, v:true,  'indent', 99, v:false)
+	autocmd FileType css        call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType html       call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType javascript call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType vim        call FormatFileType(4, v:false, 'marker', 99, v:false)
@@ -61,7 +62,7 @@ augroup latex_commands
 
 	" overwrite the <leader>t 'test' to (double) recompile the latex document.
 	" in case pdflatex gets in a stuck state, it is run through timeout 3
-	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 3 pdflatex $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
+	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 3 pdflatex -synctex=0 $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
 
 augroup end
 
