@@ -10,7 +10,7 @@ PS1__GET_DIRECTORY() {
 	local GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 	[ $GIT_ROOT ] && {
 		local PROJECT_NAME=$(basename $GIT_ROOT)
-		[[ $PROJECT_NAME =~ code ]] && PROJECT_NAME=$(basename $(dirname $GIT_ROOT))
+		[[ $PROJECT_NAME =~ ^code$ ]] && PROJECT_NAME=$(basename $(dirname $GIT_ROOT))
 
 		local RELATIVE_DIRECTORY=${${PWD#$GIT_ROOT}:1}
 		[[ ${#${RELATIVE_DIRECTORY//[^\/]}} -gt 3 ]] && RELATIVE_DIRECTORY='*/%4~'
