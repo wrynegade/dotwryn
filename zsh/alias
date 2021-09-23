@@ -14,6 +14,8 @@ alias cdo='cd $(xclip -o)'; # [cd] to directory [o]n clipboard
 alias readable-date='date +"%A %B %d, %Y"'
 
 alias fix='vim $(git diff --name-only | uniq) -p'
+
+alias i3-config-update="$DOTWRYN/bin/i3/update-local-config"
 # --------------------------------------------------------------------- 
 
 alias erg='EDIT_RIP_GREP_FILE_MATCHES';
