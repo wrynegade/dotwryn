@@ -2,16 +2,17 @@ DOTCONFIG__SETUP() {
 	############################################################################################
 	#               Friendly Name   ~/.config/THE_REST      .wryn/config/THE_REST (if different)
 	CONFIG__SYMLINK 'compton'       'compton/compton.conf'
-	CONFIG__SYMLINK 'git config'    '../.gitconfig'         'git/gitconfig'
 	CONFIG__SYMLINK 'i3 config'     'i3/config'
 	CONFIG__SYMLINK 'i3 status'     'i3status/config'
-	CONFIG__SYMLINK 'i3 utils'      'wryn/i3utils'          'i3/utils'
 	CONFIG__SYMLINK 'kitty config'  'kitty/kitty.conf'
 	CONFIG__SYMLINK 'kitty theme'   'kitty/theme.conf'
 	CONFIG__SYMLINK 'mssqlcli'      'mssqlcli/config'
 	CONFIG__SYMLINK 'pgcli'         'pgcli/config'
-	CONFIG__SYMLINK 'pylint global' 'pylintrc'              'pylint/pylintrc'
 	CONFIG__SYMLINK 'ripgrep'       'ripgrep/config'
+
+	CONFIG__SYMLINK 'git config'    '../.gitconfig'         'git/gitconfig'
+	CONFIG__SYMLINK 'i3 utils'      'wryn/i3utils'          'i3/utils'
+	CONFIG__SYMLINK 'pylint global' 'pylintrc'              'pylint/pylintrc'
 	CONFIG__SYMLINK 'sfx app'       "wryn/sfx"              '../bin/desktop/sfx/play.sh'
 	CONFIG__SYMLINK 'tmux'          '../.tmux.conf'         'tmux/tmux.conf'
 	CONFIG__SYMLINK 'xinitrc'       '../.xinitrc'           'xorg/xinitrc'
