@@ -71,6 +71,8 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+f focus parent; fullscreen; focus child
 
+bindsym $mod+BackSpace open
+
 
 mode "resize" {
         bindsym h resize grow width 10 px or 10 ppt
