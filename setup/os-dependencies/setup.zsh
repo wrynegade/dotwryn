@@ -21,6 +21,7 @@ function OS_DEPENDENCY__SETUP() {
 	case $OS_NAME in
 		arch )
 			OS_INSTALL() { OS_INSTALL__ARCH $@; }
+			YAY__INSTALL_FROM_SOURCE
 			;;
 		debian | ubuntu )
 			OS_INSTALL() { OS_INSTALL__DEBIAN $@; }
@@ -64,13 +65,12 @@ function OS_INSTALL__ARCH() {
 		return 0
 	}
 	CHECK "checking for $TARGET"
-	pacman -Qq | grep -q "^$TARGET$" && OK || {
+	pacman -Qq | grep -q "^$TARGET$\|^$TARGET-git$" && OK || {
 		WARN "$TARGET not found"
 		CHECK "installing $TARGET"
 		sudo pacman -Syu --noconfirm $TARGET >>$LOG 2>&1 \
 			&& OK || { WARN "failed to install $TARGET"; return 1; }
 	}
-	YAY__INSTALL_FROM_SOURCE
 }
 
 function OS_INSTALL__DEBIAN() {
