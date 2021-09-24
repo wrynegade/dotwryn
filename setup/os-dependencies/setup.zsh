@@ -21,6 +21,7 @@ function OS_DEPENDENCY__SETUP() {
 	case $OS_NAME in
 		arch )
 			OS_INSTALL() { OS_INSTALL__ARCH $@; }
+			WARNING 'base-devel is required; make sure it is installed'
 			YAY__INSTALL_FROM_SOURCE
 			;;
 		debian | ubuntu )
@@ -60,10 +61,6 @@ function OS_DEPENDENCY__SETUP() {
 
 function OS_INSTALL__ARCH() {
 	local TARGET="$1"
-	[[ $TARGET =~ ^base-devel$ ]] && {
-		WARNING 'base-devel is required; make sure it is installed'
-		return 0
-	}
 	CHECK "checking for $TARGET"
 	pacman -Qq | grep -q "^$TARGET$\|^$TARGET-git$" && OK || {
 		WARN "$TARGET not found"

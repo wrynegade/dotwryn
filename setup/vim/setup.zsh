@@ -6,7 +6,6 @@ function VIM__SETUP() {
 	STATUS 'starting vim setup'
 	VIM__COMPILE_FROM_SOURCE
 	VIM__SOURCE_RC
-	VIM__SET_LOCAL_CONFIG
 	VIM__UPDATE_COLORSCHEMES
 	VIM__INSTALL_VUNDLE_PLUGINS
 	VIM__CREATE_PANE_DEFAULT_APP
@@ -29,31 +28,6 @@ function VIM__SOURCE_RC() {
 		echo $SOURCE_LINE >> $LOCAL_VIMRC \
 			&& OK || WARN
 	}
-}
-
-function VIM__SET_LOCAL_CONFIG() {
-	local DEFAULT_CONFIG="$DOTWRYN_PATH/env/env.vim"
-	local LOCAL_CONFIG="$HOME/.config/wryn/env/env.vim"
-
-	[ -f $LOCAL_CONFIG ] && {
-		WARNING "local vim env configuration ($LOCAL_CONFIG)"
-		USER_PROMPT 'overwrite? [y/N]'
-		READ_K yn
-		[[ $yn =~ ^[yY] ]] && {
-			CHECK "backing up local copy ($LOCAL_CONFIG.bak)"
-			mv "$LOCAL_CONFIG" "$LOCAL_CONFIG.bak" && OK || WARN
-		} || {
-			STATUS 'skipping'
-			return
-		}
-	}
-
-	CHECK "setting vim configuration file ($LOCAL_CONFIG)"
-	{
-		echo "source $DEFAULT_CONFIG"
-		echo -e '\n"\n" .wryn configuration overrides\n"\n'
-		sed 's/["]*\(.*\)/"\1/' $DEFAULT_CONFIG
-	} > $LOCAL_CONFIG && OK || WARN
 }
 
 function VIM__UPDATE_COLORSCHEMES() {

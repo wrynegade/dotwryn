@@ -1,3 +1,4 @@
+aws
 build-essential
 cmake
 cowsay

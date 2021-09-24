@@ -1,4 +1,4 @@
-base-devel
+aws-cli-v2
 cmake
 cowsay
 figlet
