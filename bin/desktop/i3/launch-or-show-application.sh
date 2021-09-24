@@ -8,5 +8,25 @@ xdotool search --class "$CLIENT_CLASS" >/dev/null 2>&1 || {
 	i3-msg "exec --no-startup-id $APPLICATION;"
 }
 
-i3-msg "[class=$CLIENT_CLASS] move scratchpad";
-i3-msg "[class=$CLIENT_CLASS] scratchpad show";
+XFFSET=0.0
+YFFSET=0.0
+FACTOR=0.8
+case $(basename $APPLICATION) in
+	audio ) FACTOR=0.4 YFFSET=200  ;;
+	email ) FACTOR=0.8 XFFSET=-200 ;;
+esac
+
+SCREEN_SIZE=$(\
+	xrandr \
+		| grep 'connected primary' \
+		| sed 's/.*connected primary \([^x]*\)x\([^+]*\).*/\1 \2/' \
+		| awk -v f=$FACTOR -v x=$XFFSET -v y=$YFFSET \
+			'{print ($1*f+x)," ",($2*f+y);}'\
+)
+
+
+
+i3-msg "[class=$CLIENT_CLASS] resize set $SCREEN_SIZE"
+i3-msg "[class=$CLIENT_CLASS] move absolute position center"
+i3-msg "[class=$CLIENT_CLASS] move scratchpad"
+i3-msg "[class=$CLIENT_CLASS] scratchpad show"
