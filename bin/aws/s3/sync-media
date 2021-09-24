@@ -1,0 +1,48 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env/env.zsh"
+source $ZSH_COLOR_UTIL
+
+#####################################################################
+
+case $1 in
+	pull ) PULL=1 ;;
+	push ) PUSH=1 ;;
+esac
+
+[ ! $PULL ] && [ ! $PUSH ] && FATAL 'must specify "pull" or "push"'
+
+#####################################################################
+
+PULL_MEDIA() {
+	local TARGET="$1"
+	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
+	local LOCAL_TARGET="$HOME/$1"
+
+	[ ! -d $LOCAL_TARGET ] && mkdir -p $LOCAL_TARGET
+
+	CHECK "updating $1"
+	aws --profile $DOTWRYN_AWS_PROFILE \
+		s3 sync $REMOTE_TARGET $LOCAL_TARGET \
+		>/dev/null 2>&1 \
+		&& OK || WARN
+}
+
+PUSH_MEDIA() {
+	local TARGET="$1"
+	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
+	local LOCAL_TARGET="$HOME/$1"
+
+	CHECK "updating $1"
+	aws --profile $DOTWRYN_AWS_PROFILE \
+		s3 sync $LOCAL_TARGET $REMOTE_TARGET \
+		--delete \
+		>/dev/null 2>&1 \
+		&& OK || WARN
+}
+
+
+for m in $S3_SYNC_MEDIA
+do
+	[ $PULL ] && PULL_MEDIA $m
+	[ $PUSH ] && PUSH_MEDIA $m
+done

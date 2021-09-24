@@ -23,6 +23,20 @@ WEBBROWSER='google-chrome-stable'
 #I3__DMENU_FONT_SIZE=
 #I3__BORDER_PIXEL_SIZE=
 
+S3_SYNC_AWS_PROFILE='yage'
+S3_SYNC_BUCKET='yage'
+S3_SYNC_MEDIA=(
+	"Games/roms"
+	"Games/wrynscape"
+	"Media/sfx"
+	"Pictures/bg"
+	"Pictures/bg-archives"
+	"Pictures/custom-emoji"
+	"Pictures/jest"
+	"Pictures/profile"
+	)
+
+
 PS1_BRANCH_SYMBOL=''
 PS1_INDICATOR_SYMBOL='☕'
 PS1_SEPARATOR='::'
