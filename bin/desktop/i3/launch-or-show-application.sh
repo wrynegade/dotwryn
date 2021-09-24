@@ -21,12 +21,10 @@ SCREEN_SIZE=$(\
 		| grep 'connected primary' \
 		| sed 's/.*connected primary \([^x]*\)x\([^+]*\).*/\1 \2/' \
 		| awk -v f=$FACTOR -v x=$XFFSET -v y=$YFFSET \
-			'{print ($1*f+x)," ",($2*f+y);}'\
+			'{print int($1*f+x)," ",int($2*f+y);}'\
 )
 
-
-
 i3-msg "[class=$CLIENT_CLASS] resize set $SCREEN_SIZE"
-i3-msg "[class=$CLIENT_CLASS] move absolute position center"
 i3-msg "[class=$CLIENT_CLASS] move scratchpad"
 i3-msg "[class=$CLIENT_CLASS] scratchpad show"
+i3-msg "[class=$CLIENT_CLASS] move position center"
