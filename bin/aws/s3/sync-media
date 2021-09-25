@@ -28,7 +28,7 @@ PULL_MEDIA() {
 	local NO_DELETE="$2"
 	[ ! $NO_DELETE ] && FLAGS=--delete
 
-	CHECK "updating $1"
+	CHECK "downloading latest $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
 		s3 sync $REMOTE_TARGET $LOCAL_TARGET \
 		$FLAGS >/dev/null 2>&1 \
@@ -43,7 +43,7 @@ PUSH_MEDIA() {
 	local NO_DELETE="$2"
 	[ ! $NO_DELETE ] && FLAGS=--delete
 
-	CHECK "updating $1"
+	CHECK "uploading $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
 		s3 sync $LOCAL_TARGET $REMOTE_TARGET \
 		$FLAGS \
