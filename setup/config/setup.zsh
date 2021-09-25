@@ -83,6 +83,7 @@ function CONFIG__RC() {
 	READ_K yn
 
 	[[ $yn =~ ^[yY] ]] && {
+		[ ! $EDITOR ] && EDITOR=vi
 		$EDITOR "$HOME/.config/wryn/env/env.$1"
 	}
 }
