@@ -1,46 +1,19 @@
 # The `.wryn` Library
+My collection of configurations and plugins.
 
-A compilation of utilities which I use across my machines **this repo is principally for personal utility**.
-Although I try to build utilities to be dependency aware, the library is considered to be in a good state when it works on my machine.
+## Setup / Configuration
+The setup script is the pride and joy of this project.
+Running an [interactive installer](./setup/linux) removes the hassle of setting up a new computer by configuring symlinks, installing applications, and synchronizing media with the cloud.
 
-Feel free to use or adapt anything you find useful :)
+After running the setup, [default configurations](./env) can be overridden by editing the appropriate local configuration (`~/.config/wryn/env`).
 
-## File Structure Breakdown
-### [setup](./setup)
-The pride and joy of this project.
-Running the script will set up the appropriate links and RC entries to enable the entire library.
-
-Relatively robust, but always works best the OS I'm currently using (arch).
-
-### [config](./config)
-Configuration files / utilities.
-The setup script handles all the headache of symlinking each one to the right place.
-
-### [env](./env)
-Default configuration used by the rest of the library.
-You can override the environment by editing `~/.config/wryn/env` files after running setup.
-
-### [resume](./resume)
-My working resume in `.tex` format.
-
-### [latex](./latex)
-A compilation of LaTeX templates, used by the [`.wryn/zsh/latex`](./zsh/latex) utility.
-
-Each template is composed of four files: `template.tex`, `body.tex`, `imports.sty`, and `formatting.sty`.
-The `template.tex` file is the parent of the document, and thus the target of the latex compiler.
-This can be renamed to match the document title, but typically does not contain the document body.
-Every template will use the same parent `template.tex` file, so this is found at the `~/.wryn/latex` directory root.
-
-### [vim](./vim)
-Contains keybindings, dictionary binary, and custom plugins for `vim`.
-
-### [zsh](./zsh)
-Contains (a mess of) `zsh` aliases and functions used directly by a terminal user.
-The [`.wryn/zsh/rc`](./zsh/rc), which loads the custom `zsh` modules is sourced directly from the user RC.
-Any OS specific utilities are nested in appropriately named directories.
-...this will be hacked to pieces very soon
-
-### [freeze](./freeze)
-A historical list of packages used on personal machines.
-Also contains machine-specific `systemd` daemons for managing hardware-specific issues.
-...this will likely move to a cloud storage soon.
+## System Breakdown
+`.wryn/MODULE`               | Description
+---------------------------- | --------------------------------------
+[setup/](./setup)            | os-specific setup / update utilities
+[config/](./config)          | general configuration; appropriate `~/.config` files are symlinked on setup
+[vim/](./vim)                | `vim` keybindings, plugins, and dictionary binary; activated by an [entry rc](./vim/rc.vim)
+[zsh/](./zsh)                | `zsh` aliases, functions, and plugins; activated by an [entry rc](./zsh/rc)
+[zsh/plugins](./zsh/plugins) | external `zsh` plugins (included as submodules)
+[resume/](./resume)          | my working resume in `.tex` format
+[freeze/](./freeze)          | list of hardware specific packages...this will move to cloud storage soon
