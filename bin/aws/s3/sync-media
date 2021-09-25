@@ -9,6 +9,11 @@ case $1 in
 	push ) PUSH=1 ;;
 esac
 
+case $2 in
+	nodelete ) NODELETE=1 ;; # whether or not to pass '--delete' to s3 sync
+	# default is --delete
+esac
+
 [ ! $PULL ] && [ ! $PUSH ] && FATAL 'must specify "pull" or "push"'
 
 #####################################################################
@@ -20,10 +25,13 @@ PULL_MEDIA() {
 
 	[ ! -d $LOCAL_TARGET ] && mkdir -p $LOCAL_TARGET
 
+	local NO_DELETE="$2"
+	[ ! $NO_DELETE ] && FLAGS=--delete
+
 	CHECK "updating $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
 		s3 sync $REMOTE_TARGET $LOCAL_TARGET \
-		>/dev/null 2>&1 \
+		$FLAGS >/dev/null 2>&1 \
 		&& OK || WARN
 }
 
@@ -32,17 +40,19 @@ PUSH_MEDIA() {
 	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
 	local LOCAL_TARGET="$HOME/$1"
 
+	local NO_DELETE="$2"
+	[ ! $NO_DELETE ] && FLAGS=--delete
+
 	CHECK "updating $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
 		s3 sync $LOCAL_TARGET $REMOTE_TARGET \
-		--delete \
-		>/dev/null 2>&1 \
+		$FLAGS \
 		&& OK || WARN
 }
 
 
 for m in $S3_SYNC_MEDIA
 do
-	[ $PULL ] && PULL_MEDIA $m
-	[ $PUSH ] && PUSH_MEDIA $m
+	[ $PULL ] && PULL_MEDIA $m $NODELETE
+	[ $PUSH ] && PUSH_MEDIA $m $NODELETE
 done
