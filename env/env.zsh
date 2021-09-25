@@ -30,8 +30,9 @@ DOTWRYN_AWS_OUTPUT='json'
 S3_SYNC_AWS_PROFILE=$DOTWRYN_AWS_PROFILE
 S3_SYNC_BUCKET='yage'
 S3_SYNC_MEDIA=(
-	"Games/roms"
-	"Games/wrynscape"
+	#".local/share/dolphin-emu"
+	#"Games/roms"
+	#"Games/wrynscape"
 	"Media/sfx"
 	"Pictures/bg"
 	"Pictures/bg-archives"
