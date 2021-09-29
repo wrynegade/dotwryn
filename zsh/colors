@@ -46,53 +46,85 @@ GENERATE_PS1() {
 setopt PROMPT_SUBST
 export PS1="$(GENERATE_PS1)"
 
-#####################################################################
-
 source "$DOTWRYN/config/colorschemes/linux-console"
 
-alias tty-change-theme='TTY_CHANGE_THEME'
-function TTY_CHANGE_THEME() {
-	local TARGET_THEME_LINK="$HOME/.config/wryn/tty-colorscheme"
-	local SOURCE_THEME="$DOTWRYN/config/colorschemes/kitty/$1"
-
-	[ ! $1 ] && { echo must specify colorscheme; return 1; }
-
-	[[ $1 =~ ^current-kitty-theme$ ]] && {
-		rm $TARGET_THEME_LINK >/dev/null 2>&1
-	} || {
-		[ ! -f $SOURCE_THEME ] && { echo no such colorscheme; return 2; }
-
-		rm $TARGET_THEME_LINK >/dev/null 2>&1
-		ln -s $SOURCE_THEME $TARGET_THEME_LINK
-	}
-
-	echo 'TTY colorscheme updated; resource shell in TTY for changes to take effect'
-	source "$DOTWRYN/config/colorschemes/linux-console"
-}
-_TTY_CHANGE_THEME() {
-	compadd $(ls $DOTWRYN/config/colorschemes/kitty) current-kitty-theme
-}
-compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME;
-
 #####################################################################
+
+FZF_THEME_PICK() {
+	echo "$(\
+		sed 's/\.conf//g; s/^./\U&/; s/-\(.\)/\U\1/g; s/^Default/& (use kitty theme)/' \
+		| fzf -i --height=50% --reverse --prompt 'select a theme : ' \
+		| sed 's/^./\L&/; s/[A-Z]/-\L&/g'
+	).conf"
+}
+
+GET_KITTY_THEMES() { ls "$DOTWRYN/config/colorschemes/kitty"; }
 
 alias kitty-change-theme='KITTY_CHANGE_THEME default'
 alias kitty-change-theme-alternate='KITTY_CHANGE_THEME alternate'
-function KITTY_CHANGE_THEME () {
-	[ ! $2 ] && echo no filename given :c && return 1;
-	[ ! -f "$DOTWRYN/config/colorschemes/kitty/$2" ] \
-		&& echo colorscheme not supported && return 2;
+KITTY_CHANGE_THEME () {
+	local USAGE="usage : $0 target [theme]"
 
-	local THEME_DIR="$DOTWRYN/config/kitty";
-	local THEME;
-	[ $1 = 'default' ] && THEME="$THEME_DIR/theme.conf" || THEME="$THEME_DIR/alternate.conf"
-	rm "$THEME"
-	ln -s "$DOTWRYN/config/colorschemes/kitty/$2" "$THEME"\
-		&& echo 'theme changed successfully! (effective on new terminal session)'
+	local TARGET="$1"
+	local TARGET_LINK
+	case $TARGET in
+		default   ) TARGET_LINK="$DOTWRYN/config/kitty/theme.conf" ;;
+		alternate ) TARGET_LINK="$DOTWRYN/config/kitty/alternate.conf" ;;
+		* )
+			echo "error : target must be 'default' or 'alternate'\n$USAGE" >&2
+			return 1
+			;;
+	esac
 
-	[ -f "$HOME/.config/wryn/tty-colorscheme" ] && source "$HOME/.config/wryn/tty-colorscheme"
+	local THEME="$2"
+	[ ! $THEME ] && {
+		THEME=$(GET_KITTY_THEMES | FZF_THEME_PICK)
+		[ ! $THEME ] && return 2
+	}
+
+	local COLORSCHEME="$DOTWRYN/config/colorschemes/kitty/$THEME"
+	[ ! -f $COLORSCHEME ] && { echo "no such theme ($THEME)"; return 2; }
+
+	rm -- $TARGET_LINK
+	ln -s $COLORSCHEME $TARGET_LINK && {
+		echo 'kitty-term theme changed successfully! (effective on new session)'
+		source "$DOTWRYN/config/colorschemes/linux-console"
+	}
 }
-_KITTY_CHANGE_THEME () {
-	compadd $(ls $DOTWRYN/config/colorschemes/kitty)
+_KITTY_CHANGE_THEME () { compadd $(GET_KITTY_THEMES); }
+compdef _KITTY_CHANGE_THEME KITTY_CHANGE_THEME
+
+#####################################################################
+
+GET_TTY_THEMES() {
+	echo default
+	ls "$DOTWRYN/config/colorschemes/kitty"
 }
-compdef _KITTY_CHANGE_THEME KITTY_CHANGE_THEME;
+
+alias tty-change-theme='TTY_CHANGE_THEME'
+TTY_CHANGE_THEME() {
+	local LOCAL_THEME_LINK="$HOME/.config/wryn/tty-colorscheme"
+	local THEME_DIR="$DOTWRYN/config/colorschemes/kitty"
+
+	local THEME="$1"
+	[ ! $THEME ] && {
+		THEME=$(GET_TTY_THEMES | FZF_THEME_PICK)
+		[ ! $THEME ] && return 1
+	}
+
+	[[ "$THEME" =~ ^default ]] && {
+		rm $LOCAL_THEME_LINK >/dev/null 2>&1
+		true
+	} || {
+		local COLORSCHEME="$THEME_DIR/$THEME"
+		[ ! -f $COLORSCHEME ] && { echo "no such theme ($THEME)"; return 2; }
+
+		rm -- $LOCAL_THEME_LINK >/dev/null 2>&1
+		ln -s $SOURCE_THEME $TARGET_THEME_LINK
+	}
+
+	echo 'TTY theme updated; re-source zshrc in TTY for changes to take effect'
+	source "$DOTWRYN/config/colorschemes/linux-console" >/dev/null 2>&1
+}
+_TTY_CHANGE_THEME() { compadd $(GET_TTY_THEMES); }
+compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME
