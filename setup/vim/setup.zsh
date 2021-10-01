@@ -2,7 +2,7 @@ source "$DOTWRYN_PATH/setup/vim/compile-from-source.zsh"
 
 #####################################################################
 
-function VIM__SETUP() {
+function SETUP__VIM() {
 	STATUS 'starting vim setup'
 	VIM__COMPILE_FROM_SOURCE
 	VIM__SOURCE_RC

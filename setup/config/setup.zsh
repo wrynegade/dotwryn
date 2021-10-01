@@ -1,4 +1,4 @@
-CONFIG__SETUP() {
+function SETUP__CONFIG() {
 	############################################################################################
 	#               Friendly Name   ~/.config/THE_REST      .wryn/config/THE_REST (if different)
 	CONFIG__SYMLINK 'compton'       'compton/compton.conf'

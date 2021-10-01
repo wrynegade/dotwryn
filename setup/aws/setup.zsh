@@ -1,4 +1,4 @@
-AWS__SETUP() {
+function SETUP__AWS() {
 	STATUS 'starting aws setup'
 	"$DOTWRYN_PATH/bin/aws/configure"
 

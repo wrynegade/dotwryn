@@ -8,7 +8,7 @@ source "$DOTWRYN_PATH/setup/os-dependencies/arch.zsh"
 	&& DEPENDENCY_DIR="$DOTWRYN_PATH/setup/os-dependencies" \
 	|| DEPENDENCY_DIR="${0:a:h}"
 
-function OS_DEPENDENCY__SETUP() {
+function SETUP__OS_DEPENDENCY() {
 	local ERROR=0
 	STATUS 'checking os dependencies'
 

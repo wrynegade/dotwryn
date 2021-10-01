@@ -1,6 +1,6 @@
 #####################################################################
 
-function ZSH__SETUP() {
+function SETUP__ZSH() {
     ZSH__SET_DEFAULT_SHELL
 	ZSH__SOURCE_RC
 }

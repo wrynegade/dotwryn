@@ -116,9 +116,10 @@ MAKE_REQUIRED_DIRECTORY_STRUCTURE() {
 ################################################################################
 
 source "$DOTWRYN_PATH/setup/os-dependencies/setup.zsh"
+source "$DOTWRYN_PATH/setup/config/setup.zsh"
 source "$DOTWRYN_PATH/setup/zsh/setup.zsh"
 source "$DOTWRYN_PATH/setup/vim/setup.zsh"
-source "$DOTWRYN_PATH/setup/config/setup.zsh"
+source "$DOTWRYN_PATH/setup/apps/setup.zsh"
 source "$DOTWRYN_PATH/setup/aws/setup.zsh"
 
 ################################################################################
@@ -130,14 +131,15 @@ source "$DOTWRYN_PATH/setup/aws/setup.zsh"
 INIT
 
 GET_SUDO_PASSWORD
-OS_DEPENDENCY__SETUP || FATAL 'user abort'
+SETUP__OS_DEPENDENCY || FATAL 'user abort'
 MAKE_REQUIRED_DIRECTORY_STRUCTURE
 
-CONFIG__SETUP || ERROR=1
+SETUP__CONFIG || ERROR=1
 
-ZSH__SETUP || ERROR=2
-VIM__SETUP || ERROR=3
-AWS__SETUP || ERROR=4
+SETUP__ZSH  || ERROR=2
+SETUP__VIM  || ERROR=3
+SETUP__APPS || ERROR=4
+SETUP__AWS  || ERROR=5
 
 CLEANUP $ERROR
 
