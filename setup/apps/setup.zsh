@@ -12,7 +12,7 @@ function APPS__SIMPLE_INSTALL() {
 
 	local TARGET="$1"
 	local NAME="$2"
-	local LOCAL_BUILD="$APPS_PACKAGE_DIR/$NAME"
+	local LOCAL_BUILD="$APPS__PACKAGE_DIR/$NAME"
 
 	CHECK "Downloading $NAME"
 	git clone $TARGET $LOCAL_BUILD >>$LOG 2>&1 \
