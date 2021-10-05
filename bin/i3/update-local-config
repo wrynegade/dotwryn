@@ -17,7 +17,7 @@ LOCAL_CONFIG="$HOME/.config/i3/config"
 MODEL_CONFIG="$DOTWRYN/config/i3/config"
 
 REGEX_FONT='^\(font [^0-9]*\)\(.*\)'
-REGEX_DMENU="^\\(.*dmenu_run -fn '[^0-9]*\\)\\([0-9]*\\)'"
+REGEX_DMENU="^\\(.*dmenu_run .*-fn '[^0-9]*\\)\\([0-9]*\\)'"
 REGEX_BORDER='^\(for_window.*border pixel \)\(.*\)'
 
 DEFAULT_GLOBAL_FONT_SIZE=$(sed -n "s/$REGEX_FONT/\\2/p" $MODEL_CONFIG)
