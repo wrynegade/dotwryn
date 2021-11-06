@@ -27,6 +27,11 @@ EDIT_RIP_GREP_FILE_MATCHES() {
 
 # --------------------------------------------------------------------- 
 
+alias -s mp4=google-chrome-stable
+alias -s pdf=google-chrome-stable
+
+# --------------------------------------------------------------------- 
+
 alias gdrive="RCLONE_GOOGLE_DRIVE_MOUNT"
 alias gphotos="RCLONE_GOOGLE_PHOTOS_MOUNT"
 
