@@ -33,6 +33,8 @@ S3_SYNC_MEDIA=(
 	#".local/share/dolphin-emu"
 	#"Games/roms"
 	#"Games/wrynscape"
+	"Media/fe10-radiant-dawn-ost"
+	"Media/fiesta-online-ost"
 	"Media/sfx"
 	"Pictures/bg"
 	"Pictures/bg-archives"

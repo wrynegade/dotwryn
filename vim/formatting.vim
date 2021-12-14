@@ -20,8 +20,10 @@ augroup filetype_specific_formatting
 	autocmd FileType cmake      call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType cs         call FormatFileType(4, v:true,  'indent', 99, v:false)
 	autocmd FileType css        call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType sass       call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType html       call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType javascript call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType typescript call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType vim        call FormatFileType(4, v:false, 'marker', 99, v:false)
 	autocmd FileType sh         call FormatFileType(4, v:false, 'indent', 99, v:false)
 	autocmd FileType zsh        call FormatFileType(4, v:false, 'indent', 99, v:false)
@@ -39,9 +41,10 @@ augroup filetype_specific_formatting
 augroup end
 
 augroup forced_filetype_recognition
-	autocmd BufRead,BufNewFile *.tmux  setfiletype tmux
-	autocmd BufRead,BufNewFile *.clisp setfiletype lisp
-	autocmd BufRead,BufNewFile *.lsp   setfiletype lisp
+	autocmd BufRead,BufNewFile *.tmux      setfiletype tmux
+	autocmd BufRead,BufNewFile *.clisp     setfiletype lisp
+	autocmd BufRead,BufNewFile *.lsp       setfiletype lisp
+	autocmd BufRead,BufNewFile Dockerfile* setfiletype dockerfile
 
 	let g:tex_flavor = "latex"
 augroup end
