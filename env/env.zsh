@@ -75,4 +75,4 @@ zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept' ';:toggle'
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
-export ZSH_COLOR_UTIL="$DOTWRYN/zsh/utils/color/color.module.zsh"
+export ZSH_COLOR_UTIL="$DOTWRYN/zsh/plugins/color/color.module.zsh"

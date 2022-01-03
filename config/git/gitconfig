@@ -21,7 +21,5 @@
 	recurse = true
 [alias]
 	serve = !git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
-[url "git@github.com:"]
-	insteadOf = https://github.com
 [init]
 	defaultBranch = main

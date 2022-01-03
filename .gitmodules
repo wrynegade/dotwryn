@@ -1,5 +1,5 @@
 [submodule "color-zsh"]
-	path = zsh/utils/color
+	path = zsh/plugins/color
 	url = https://wryn.cloud/gizmos/color-zsh
 	update = rebase
 [submodule "z-navigator"]
