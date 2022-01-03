@@ -10,6 +10,7 @@ source $WRYNVIMPATH/formatting.vim
 source $WRYNVIMPATH/abbreviations.vim
 source $WRYNVIMPATH/navigation.vim
 source $WRYNVIMPATH/color.vim
+source $WRYNVIMPATH/utility.vim
 
 " -- Bindings --------------------------------------------------- {{{
 

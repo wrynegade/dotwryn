@@ -76,13 +76,3 @@ zstyle ':fzf-tab:*' fzf-bindings 'space:accept' ';:toggle'
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
 export ZSH_COLOR_UTIL="$DOTWRYN/zsh/utils/color/color.module.zsh"
-
-#CODE_ACTIVATOR__DIRS=()
-CODE_ACTIVATOR__KNOWN_TARGETS=(
-	'git@github.com:w0ryn/'
-	'git@bitbucket.org:wrynoftheranch/'
-	'git@git.wryn.cloud:yage/'
-	'git@git.wryn.cloud:gizmos/'
-	'git@git.wryn.cloud:usu-coursework/'
-	'https://wryn.cloud/'
-	)

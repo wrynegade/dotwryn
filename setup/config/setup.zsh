@@ -2,6 +2,7 @@ function SETUP__CONFIG() {
 	############################################################################################
 	#               Friendly Name   ~/.config/THE_REST      .wryn/config/THE_REST (if different)
 	CONFIG__SYMLINK 'compton'       'compton/compton.conf'
+	CONFIG__SYMLINK 'codeactivator' 'code-activator-zsh/settings.zsh'
 	CONFIG__SYMLINK 'i3 config'     'i3/config'
 	CONFIG__SYMLINK 'i3 status'     'i3status/config'
 	CONFIG__SYMLINK 'kitty config'  'kitty/kitty.conf'
