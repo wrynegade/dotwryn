@@ -1,6 +1,6 @@
 [submodule "color-zsh"]
 	path = zsh/plugins/color
-	url = https://yage.io/gizmos/color-zsh
+	url = https://yage.io/zsh/color
 	update = rebase
 [submodule "z-navigator"]
 	path = zsh/plugins/z
@@ -10,15 +10,15 @@
 	url = https://github.com/Aloxaf/fzf-tab
 [submodule "latex-zsh"]
 	path = zsh/plugins/latex
-	url = https://yage.io/gizmos/latex-zsh
+	url = https://yage.io/zsh/latex
 	update = rebase
 [submodule "code-activator-zsh"]
 	path = zsh/plugins/code-activator
-	url = https://yage.io/gizmos/code-activator-zsh.git
+	url = https://yage.io/zsh/code-activator
 	update = rebase
 [submodule "ssh-zsh"]
 	path = zsh/plugins/ssh
-	url = https://yage.io/gizmos/ssh-zsh.git
+	url = https://yage.io/zsh/ssh
 [submodule "memo-zsh"]
 	path = zsh/plugins/memo
-	url = https://yage.io/gizmos/memo-zsh.git
+	url = https://yage.io/zsh/memo
