@@ -16,7 +16,7 @@ case $(basename $APPLICATION) in
 	email ) FACTOR=0.8 XFFSET=-200 ;;
 esac
 
-SCREEN_SIZE=$(\
+WINDOW_SIZE=$(\
 	xrandr \
 		| grep 'connected primary' \
 		| sed 's/.*connected primary \([^x]*\)x\([^+]*\).*/\1 \2/' \
@@ -24,7 +24,7 @@ SCREEN_SIZE=$(\
 			'{print int($1*f+x)," ",int($2*f+y);}'\
 )
 
-i3-msg "[class=$CLIENT_CLASS] resize set $SCREEN_SIZE"
 i3-msg "[class=$CLIENT_CLASS] move scratchpad"
+i3-msg "[class=$CLIENT_CLASS] resize set $WINDOW_SIZE"
 i3-msg "[class=$CLIENT_CLASS] scratchpad show"
 i3-msg "[class=$CLIENT_CLASS] move position center"
