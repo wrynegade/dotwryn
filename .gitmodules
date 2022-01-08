@@ -1,6 +1,6 @@
 [submodule "color-zsh"]
 	path = zsh/plugins/color
-	url = https://wryn.cloud/gizmos/color-zsh
+	url = https://yage.io/gizmos/color-zsh
 	update = rebase
 [submodule "z-navigator"]
 	path = zsh/plugins/z
@@ -10,15 +10,15 @@
 	url = https://github.com/Aloxaf/fzf-tab
 [submodule "latex-zsh"]
 	path = zsh/plugins/latex
-	url = https://wryn.cloud/gizmos/latex-zsh
+	url = https://yage.io/gizmos/latex-zsh
 	update = rebase
 [submodule "code-activator-zsh"]
 	path = zsh/plugins/code-activator
-	url = https://wryn.cloud/gizmos/code-activator-zsh.git
+	url = https://yage.io/gizmos/code-activator-zsh.git
 	update = rebase
 [submodule "ssh-zsh"]
 	path = zsh/plugins/ssh
-	url = https://wryn.cloud/gizmos/ssh-zsh.git
+	url = https://yage.io/gizmos/ssh-zsh.git
 [submodule "memo-zsh"]
 	path = zsh/plugins/memo
-	url = https://wryn.cloud/gizmos/memo-zsh.git
+	url = https://yage.io/gizmos/memo-zsh.git
