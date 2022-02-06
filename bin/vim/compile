@@ -1,0 +1,44 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+source $ZSH_COLOR_UTIL
+#####################################################################
+
+TARGET='https://github.com/vim/vim.git'
+LOCAL_PATH="$HOME/.packages/vim"
+
+STATUS 'setting up vim'
+[ -d $LOCAL_PATH/.git ] && {
+	USER_PROMPT 'vim already compiled; update? [y/N]'
+	read -k yn; echo
+	[[ $yn =~ [^yY] ]] && return 0
+	cd $LOCAL_PATH
+
+	CHECK 'updating vim to latest'
+	git pull >/dev/null 2>&1 \
+		&& OK || FAIL 'unable to update vim'
+} || {
+	CHECK 'getting vim source'
+	git clone $TARGET $LOCAL_PATH >/dev/null 2>&1 \
+		&& OK || FAIL 'unable to download vim'
+}	
+cd $LOCAL_PATH
+
+CHECK 'configuring vim'
+./configure \
+	--with-features=huge \
+	--enable-cscope \
+	--enable-gtk2-check \
+	--enable-gtk3-check \
+	--enable-gui=auto \
+	--enable-luainterp=yes \
+	--enable-perlinterp=yes \
+	--enable-python3interp=yes \
+	--enable-rubyinterp=yes \
+	--enable-terminal \
+	>/dev/null 2>&1 && OK || FAIL
+
+CHECK 'building vim'
+sudo make >/dev/null 2>&1 && OK || FAIL
+
+CHECK 'installing vim'
+sudo make install >/dev/null 2>&1 && OK || FAIL

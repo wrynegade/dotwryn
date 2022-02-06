@@ -1,20 +1,25 @@
 #!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+source $ZSH_COLOR_UTIL
+#####################################################################
+
 function INSTALL() {
 	local CMD_NAME="$1"
 	local BUILD_DIR="$2"
 	local BUILD="$3"
 
-	echo "installing $CMD_NAME"
-	[ ! -d $BUILD_DIR ] && { echo "unable to locate $CMD_NAME build files"; exit 1; }
+	[ ! -d $BUILD_DIR ] && FATAL "unable to locate $CMD_NAME build files"
 
+	CHECK "Installing $CMD_NAME"
 	$BUILD >/dev/null 2>&1 \
-		&& echo "$CMD_NAME installation successful" \
-		|| echo "$CMD_NAME installation failed. Please attempt manual installation";
+		&& OK || WARN "failed automated build"
 }
 
+#####################################################################
+
 function INSTALL_YCM() {
-	local CMD_NAME='YouCompleteMe';
-	local BUILD_DIR="$HOME/.vim/bundle/YouCompleteMe";
+	local CMD_NAME='YouCompleteMe'
+	local BUILD_DIR="$HOME/.vim/bundle/YouCompleteMe"
 
 	function BUILD() {
 		python3 $BUILD_DIR/install.py
@@ -23,4 +28,5 @@ function INSTALL_YCM() {
 	INSTALL $CMD_NAME $BUILD_DIR BUILD
 }
 
+#####################################################################
 INSTALL_YCM

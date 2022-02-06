@@ -1,0 +1,29 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+source $ZSH_COLOR_UTIL
+#####################################################################
+
+TARGET='https://github.com/VundleVim/Vundle.vim.git'
+VUNDLE_DIR="$HOME/.vim/bundle/Vundle.vim"
+
+[ ! -d "$VUNDLE_DIR" ] && {
+	CHECK 'installing Vundle.vim'
+	git clone $TARGET $VUNDLE_DIR >>$LOG 2>&1 \
+		&& OK || FAIL
+} || {
+	CHECK 'updating Vundle.vim'
+	cd $VUNDLE_DIR >>$LOG 2>&1 \
+		&& git pull >>$LOG 2>&1 \
+		&& OK || WARN 'unable to pull latest Vundle.vim'
+
+	cd $PREV_DIR >>$LOG 2>&1
+}
+
+STATUS 'installing Vundle.vim plugins'
+vim +PluginInstall +qall \
+	&& SUCCESS 'successfully installed Vundle.vim plugins' \
+	|| WARN 'failed to install one or more Vundle.vim plugins' \
+	;
+
+STATUS 'building plugins (this may take a minute)'
+$DOTWRYN/bin/vim/rebuild-plugins
