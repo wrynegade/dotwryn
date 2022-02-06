@@ -1,8 +1,0 @@
-[Unit]
-Description=Enables the gmux backlighting. This is a non-standard NVIDIA issue on Macbooks
-
-[Service]
-ExecStart=/usr/bin/bash -c 'setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0; gmux_backlight 400'
-
-[Install]
-WantedBy=multi-user.target

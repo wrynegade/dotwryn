@@ -9,4 +9,5 @@ xrandr \
 	--pos 0x0 \
 	;
 
+$DOTWRYN/bin/randomize-background
 PLAY_SFX login

@@ -8,12 +8,12 @@ Running an [interactive installer](./setup/linux) removes the hassle of setting 
 After running the setup, [default configurations](./env) can be overridden by editing the appropriate local configuration (`~/.config/wryn/env`).
 
 ## System Breakdown
-`.wryn/MODULE`               | Description
----------------------------- | --------------------------------------
-[setup/](./setup)            | os-specific setup / update utilities
-[config/](./config)          | general configuration; appropriate `~/.config` files are symlinked on setup
-[vim/](./vim)                | `vim` keybindings, plugins, and dictionary binary; activated by an [entry rc](./vim/rc.vim)
-[zsh/](./zsh)                | `zsh` aliases, functions, and plugins; activated by an [entry rc](./zsh/rc)
-[zsh/plugins](./zsh/plugins) | external `zsh` plugins (included as submodules)
-[resume/](./resume)          | my working resume in `.tex` format
-[freeze/](./freeze)          | list of hardware specific packages...this will move to cloud storage soon
+`.wryn/MODULE`                   | Description
+-------------------------------- | --------------------------------------
+[setup/](./setup)                | os-specific setup / update utilities
+[colorschemes/](./(colorschemes) | 16-color terminal colorschemes; see [colors](./zsh/colors) to see how these are loaded
+[config/](./config)              | general configuration; appropriate `~/.config` files are symlinked on setup
+[resume/](./resume)              | my working resume in `.tex` format
+[vim/](./vim)                    | `vim` keybindings, plugins, and dictionary binary; activated by an [entry rc](./vim/rc.vim)
+[zsh/](./zsh)                    | `zsh` aliases, functions, and plugins; activated by an [entry rc](./zsh/rc)
+[zsh/plugins](./zsh/plugins)     | external `zsh` plugins
