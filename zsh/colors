@@ -5,126 +5,79 @@ alias ls='ls --color=auto --group-directories-first'
 
 #####################################################################
 
-PS1__GET_DIRECTORY() {
-	local _DIRECTORY="%B%F{yellow}%6~"
-	local GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-	[ $GIT_ROOT ] && {
-		local PROJECT_NAME=$(basename $GIT_ROOT)
-		[[ $PROJECT_NAME =~ ^code$ ]] && PROJECT_NAME=$(basename $(dirname $GIT_ROOT))
+_TTY_LOAD_COLORSCHEME() {
+	[[ "$TERM" =~ ^linux$ ]] || return 0
 
-		local RELATIVE_DIRECTORY=${${PWD#$GIT_ROOT}:1}
-		[[ ${#${RELATIVE_DIRECTORY//[^\/]}} -gt 3 ]] && RELATIVE_DIRECTORY='*/%4~'
-
-		_DIRECTORY="%B%F{green}$PROJECT_NAME%B%F{yellow}:$RELATIVE_DIRECTORY"
+	local TARGET="$HOME/.config/wryn/tty-colorscheme"
+	[ ! -f $TARGET ] && TARGET="$DOTWRYN/colorschemes/kitty.main"
+	
+	local PARSE() {
+		grep "$1" $TARGET | awk '{print $2}' | sed 's/ //g; s/#//g' | tr '[:lower:]' '[:upper:]'
 	}
-
-	echo $_DIRECTORY
+	
+	/bin/echo -e "\
+		\e]P0$(PARSE '^background ')
+		\e]P1$(PARSE '^color1 ')
+		\e]P2$(PARSE '^color2 ')
+		\e]P3$(PARSE '^color3 ')
+		\e]P4$(PARSE '^color4 ')
+		\e]P5$(PARSE '^color5 ')
+		\e]P6$(PARSE '^color6 ')
+		\e]P7$(PARSE '^foreground ')
+		\e]P8$(PARSE '^color9 ')
+		\e]P9$(PARSE '^color10 ')
+		\e]PA$(PARSE '^color11 ')
+		\e]PB$(PARSE '^color12 ')
+		\e]PC$(PARSE '^color13 ')
+		\e]PD$(PARSE '^color14 ')
+		\e]PE$(PARSE '^color7 ')
+		\e]PF$(PARSE '^color15 ')
+	"
+	clear
 }
-
-PS1__GET_GIT_BRANCH() {
-	local _GIT_BRANCH=$(\
-		git branch --no-color 2>/dev/null \
-		| sed "/^[^*]/d; s/* \(.*\)/ %B%F{cyan}$PS1_BRANCH_SYMBOL \1/" \
-	)
-
-	echo $_GIT_BRANCH
-}
-
-GENERATE_PS1() {
-
-	local _INDICATOR="%B%(?.%F{green}.%F{red}) $PS1_INDICATOR_SYMBOL"
-	local _USER="%B%F{magenta}$PS1_USER"
-	local _SEPARATOR="%b%F{red}$PS1_SEPARATOR"
-	local _DIRECTORY='$(PS1__GET_DIRECTORY)'
-	local _GIT_BRANCH='$(PS1__GET_GIT_BRANCH)'
-
-	local _PROMPT=$'\n'' %B%F{blue}%# %b%f'
-
-	echo "$_INDICATOR $_USER $_SEPARATOR $_DIRECTORY $_GIT_BRANCH $_PROMPT"
-}
-
-setopt PROMPT_SUBST
-export PS1="$(GENERATE_PS1)"
-
-source "$DOTWRYN/config/colorschemes/linux-console"
+_TTY_LOAD_COLORSCHEME
 
 #####################################################################
 
-FZF_THEME_PICK() {
-	echo "$(\
-		sed 's/\.conf//g; s/^./\U&/; s/-\(.\)/\U\1/g; s/^Default/& (use kitty theme)/' \
+alias kitty-change-colorscheme='CHANGE_COLORSCHEME kitty main'
+alias kitty-change-colorscheme-alternate='CHANGE_COLORSCHEME kitty alternate'
+alias tty-change-theme='CHANGE_COLORSCHEME tty'
+
+CHANGE_COLORSCHEME () {
+	local TYPE="$1"
+	local TARGET_LINK EXTRA_OPTIONS
+	case $TYPE in
+		tty )
+			TARGET_LINK="$HOME/.config/wryn/tty-colorscheme"
+			EXTRA_OPTIONS=(default)
+			;;
+		kitty )
+			TARGET_LINK="$DOTWRYN/colorschemes/kitty.$2"
+			EXTRA_OPTIONS=()
+			;;
+	esac
+	local COLORSCHEMES=($(cd $DOTWRYN/colorschemes; ls *.conf) $EXTRA_OPTIONS)
+	local COLORSCHEME=$(\
+		echo $COLORSCHEMES | sed 's/\s\+/\n/g' | sort -u \
+		| sed 's/\.conf//g; s/^./\U&/; s/-\(.\)/\U\1/g; s/^Default/& (use kitty theme)/' \
 		| fzf -i --height=50% --reverse --prompt 'select a theme : ' \
 		| sed 's/^./\L&/; s/[A-Z]/-\L&/g'
-	).conf"
-}
+	)
 
-GET_KITTY_THEMES() { ls "$DOTWRYN/config/colorschemes/kitty"; }
-
-alias kitty-change-theme='KITTY_CHANGE_THEME default'
-alias kitty-change-theme-alternate='KITTY_CHANGE_THEME alternate'
-KITTY_CHANGE_THEME () {
-	local USAGE="usage : $0 target [theme]"
-
-	local TARGET="$1"
-	local TARGET_LINK
-	case $TARGET in
-		default   ) TARGET_LINK="$DOTWRYN/config/kitty/theme.conf" ;;
-		alternate ) TARGET_LINK="$DOTWRYN/config/kitty/alternate.conf" ;;
+	case $COLORSCHEME in
+		'' ) return 1 ;;
+		default* ) ;;
 		* )
-			echo "error : target must be 'default' or 'alternate'\n$USAGE" >&2
-			return 1
+			COLORSCHEME="$DOTWRYN/colorschemes/$COLORSCHEME.conf"
+			[ ! -f $COLORSCHEME ] && { echo "no such theme">&2; return 2; }
 			;;
 	esac
 
-	local THEME="$2"
-	[ ! $THEME ] && {
-		THEME=$(GET_KITTY_THEMES | FZF_THEME_PICK)
-		[ ! $THEME ] && return 2
-	}
+	rm -- $TARGET_LINK >/dev/null 2>&1
+	ln -s $COLORSCHEME $TARGET_LINK
 
-	local COLORSCHEME="$DOTWRYN/config/colorschemes/kitty/$THEME"
-	[ ! -f $COLORSCHEME ] && { echo "no such theme ($THEME)"; return 2; }
-
-	rm -- $TARGET_LINK
-	ln -s $COLORSCHEME $TARGET_LINK && {
-		echo 'kitty-term theme changed successfully! (effective on new session)'
-		source "$DOTWRYN/config/colorschemes/linux-console"
-	}
+	echo "'$TYPE' theme changed successfully! (effective on new session)"
+	_TTY_LOAD_COLORSCHEME
 }
-_KITTY_CHANGE_THEME () { compadd $(GET_KITTY_THEMES); }
-compdef _KITTY_CHANGE_THEME KITTY_CHANGE_THEME
 
 #####################################################################
-
-GET_TTY_THEMES() {
-	echo default
-	ls "$DOTWRYN/config/colorschemes/kitty"
-}
-
-alias tty-change-theme='TTY_CHANGE_THEME'
-TTY_CHANGE_THEME() {
-	local LOCAL_THEME_LINK="$HOME/.config/wryn/tty-colorscheme"
-	local THEME_DIR="$DOTWRYN/config/colorschemes/kitty"
-
-	local THEME="$1"
-	[ ! $THEME ] && {
-		THEME=$(GET_TTY_THEMES | FZF_THEME_PICK)
-		[ ! $THEME ] && return 1
-	}
-
-	[[ "$THEME" =~ ^default ]] && {
-		rm $LOCAL_THEME_LINK >/dev/null 2>&1
-		true
-	} || {
-		local COLORSCHEME="$THEME_DIR/$THEME"
-		[ ! -f $COLORSCHEME ] && { echo "no such theme ($THEME)"; return 2; }
-
-		rm -- $LOCAL_THEME_LINK >/dev/null 2>&1
-		ln -s $SOURCE_THEME $TARGET_THEME_LINK
-	}
-
-	echo 'TTY theme updated; re-source zshrc in TTY for changes to take effect'
-	source "$DOTWRYN/config/colorschemes/linux-console" >/dev/null 2>&1
-}
-_TTY_CHANGE_THEME() { compadd $(GET_TTY_THEMES); }
-compdef _TTY_CHANGE_THEME TTY_CHANGE_THEME

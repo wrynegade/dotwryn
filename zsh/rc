@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env/env.zsh"
+source "$HOME/.config/wryn/env.zsh"
 # ---------------------------------------------------------------------
 INTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/config" # must load first

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+cd $HOME/Projects/gizmos/xorg-midi/code
+source ../env/bin/activate
+
+./midi-controller
+
+deactivate

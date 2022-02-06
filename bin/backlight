@@ -1,0 +1,19 @@
+#!/bin/zsh
+source $HOME/.config/wryn/env.zsh
+
+case $1 in
+	up )
+		xbacklight + 10 \
+			|| gmux_backlight +100
+		;;
+	down )
+		xbacklight - 10 \
+			|| gmux_backlight -100
+		;;
+	* )
+		echo 'must specify "up" or "down"'
+		exit 1
+		;;
+esac
+
+PLAY_SFX backlight

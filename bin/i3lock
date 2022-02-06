@@ -1,0 +1,29 @@
+#!/bin/zsh
+# requires i3lock-color
+INSIDE_VER='001020'
+RING_VER='004040'
+
+INSIDE_WRONG='200010'
+RING_WRONG='4a0020'
+
+INSIDE='002010'
+RING='103020'
+LINE='8888ff'
+KEYDOWN='44ff44'
+KEYREMOVE='4444ff'
+
+TIME='aaaaaa'
+DATE='888888'
+
+i3lock \
+	-e \
+	--pass-screen-keys --pass-media-keys --pass-volume-keys --pass-power-keys \
+	-B 6 \
+	--force-clock \
+	--insidever-color=$INSIDE_VER --ringver-color=$RING_VER --verif-color=$INSIDE_VER \
+	--insidewrong-color=$INSIDE_WRONG --ringwrong-color=$RING_WRONG --wrong-color=$INSIDE_WRONG \
+	--inside-color=002010 --ring-color=103020 \
+	--line-color=$LINE \
+	--time-color=$TIME --date-color=$DATE \
+	--keyhl-color=$KEYDOWN --bshl-color=$KEYREMOVE \
+	;

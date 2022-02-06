@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env/env.zsh"
+source "$HOME/.config/wryn/env.zsh"
 source $ZSH_COLOR_UTIL
 
 #####################################################################

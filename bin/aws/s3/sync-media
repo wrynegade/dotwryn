@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env/env.zsh"
+source "$HOME/.config/wryn/env.zsh"
 source $ZSH_COLOR_UTIL
 
 #####################################################################
@@ -10,8 +10,8 @@ case $1 in
 esac
 
 case $2 in
-	nodelete ) NODELETE=1 ;; # whether or not to pass '--delete' to s3 sync
-	# default is --delete
+	delete ) DELETE=1 ;; # whether or not to pass '--delete' to s3 sync
+	# default is not to delete
 esac
 
 [ ! $PULL ] && [ ! $PUSH ] && FATAL 'must specify "pull" or "push"'
@@ -25,8 +25,8 @@ PULL_MEDIA() {
 
 	[ ! -d $LOCAL_TARGET ] && mkdir -p $LOCAL_TARGET
 
-	local NO_DELETE="$2"
-	[ ! $NO_DELETE ] && FLAGS=--delete
+	local DELETE="$2"
+	[ $DELETE ] && FLAGS=--delete
 
 	CHECK "downloading latest $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
@@ -40,8 +40,8 @@ PUSH_MEDIA() {
 	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
 	local LOCAL_TARGET="$HOME/$1"
 
-	local NO_DELETE="$2"
-	[ ! $NO_DELETE ] && FLAGS=--delete
+	local DELETE="$2"
+	[ $DELETE ] && FLAGS=--delete
 
 	CHECK "uploading $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
@@ -53,6 +53,6 @@ PUSH_MEDIA() {
 
 for m in $S3_SYNC_MEDIA
 do
-	[ $PULL ] && PULL_MEDIA $m $NODELETE
-	[ $PUSH ] && PUSH_MEDIA $m $NODELETE
+	[ $PULL ] && PULL_MEDIA $m $DELETE
+	[ $PUSH ] && PUSH_MEDIA $m $DELETE
 done

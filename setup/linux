@@ -23,12 +23,16 @@ SOURCE_ZSH_SUBMODULE() {
 }
 
 INIT() {
+	printf 'initializing required submodules...'
 	git submodule update --init --remote --recursive >/dev/null 2>&1 || {
+		echo 'failed!'
 		echo 'unable to initialize required submodules'
 		exit 1
 	}
 	SOURCE_ZSH_SUBMODULE 'color-zsh'
-	source "$DOTWRYN_PATH/zsh/utils/user-input.zsh"
+	echo 'done!'
+	source "$DOTWRYN_PATH/zsh/utils"
+	clear
 	STATUS 'starting .wryn install'
 
 	export LOG="$HOME/dotwryn-install.log"
@@ -73,12 +77,12 @@ CLEAN_BACKUP() {
 			for file in $(find "$HOME/.config/" -name \*.bak 2>/dev/null)
 			do
 				CHECK "removing '$file'"
-				rm $file >>$LOG 2>&1 && OK || WARN
+				rm -- "$file" >>$LOG 2>&1 && OK || WARN
 			done
 			for file in $(find "$HOME" -maxdepth 1 -name .\*.bak 2>/dev/null)
 			do
 				CHECK "removing '$file'"
-				rm $file >>$LOG 2>&1 && OK || WARN
+				rm -- "$file" >>$LOG 2>&1 && OK || WARN
 			done
 			;;
 	esac
@@ -115,12 +119,12 @@ MAKE_REQUIRED_DIRECTORY_STRUCTURE() {
 
 ################################################################################
 
-source "$DOTWRYN_PATH/setup/os-dependencies/setup.zsh"
-source "$DOTWRYN_PATH/setup/config/setup.zsh"
-source "$DOTWRYN_PATH/setup/zsh/setup.zsh"
-source "$DOTWRYN_PATH/setup/vim/setup.zsh"
-source "$DOTWRYN_PATH/setup/apps/setup.zsh"
-source "$DOTWRYN_PATH/setup/aws/setup.zsh"
+source "$DOTWRYN_PATH/setup/os.setup.zsh"
+source "$DOTWRYN_PATH/setup/config.setup.zsh"
+source "$DOTWRYN_PATH/setup/zsh.setup.zsh"
+source "$DOTWRYN_PATH/setup/vim.setup.zsh"
+source "$DOTWRYN_PATH/setup/apps.setup.zsh"
+source "$DOTWRYN_PATH/setup/aws.setup.zsh"
 
 ################################################################################
 

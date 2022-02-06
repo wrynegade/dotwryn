@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env/env.zsh"
+source "$HOME/.config/wryn/env.zsh"
 source $ZSH_COLOR_UTIL
 
 #####################################################################
@@ -14,7 +14,7 @@ BORDER_PIXEL_SIZE="$3"
 
 
 LOCAL_CONFIG="$HOME/.config/i3/config"
-MODEL_CONFIG="$DOTWRYN/config/i3/config"
+MODEL_CONFIG="$DOTWRYN/config/i3.conf"
 
 REGEX_FONT='^\(font [^0-9]*\)\(.*\)'
 REGEX_DMENU="^\\(.*dmenu_run .*-fn '[^0-9]*\\)\\([0-9]*\\)'"
@@ -27,7 +27,7 @@ DEFAULT_BORDER_PIXEL_SIZE=$(sed -n "s/$REGEX_BORDER/\\2/p" $MODEL_CONFIG)
 #####################################################################
 
 RESET_CONFIG_TO_DEFAULT() {
-	STATUS 'relinking config to .wryn/config/i3/config'
+	STATUS 'relinking default config'
 	ln -s $MODEL_CONFIG $LOCAL_CONFIG
 }
 

@@ -1,0 +1,43 @@
+#!/bin/zsh
+source $HOME/.config/wryn/env.zsh
+#####################################################################
+
+USAGE="$0 (sink|source) (up|down|mute)"
+
+function ERROR() {
+	local ERROR_CODE=$1
+	local MESSAGE="$2"
+
+	echo -e "$MESSAGE\n\nUSAGE : $USAGE\n" >&2
+
+	exit $ERROR_CODE
+}
+
+#####################################################################
+
+DEVICE="$1"
+COMMAND="$2"
+
+case $DEVICE in
+	sink | source ) ;;
+	* ) ERROR 1 "Unsupported device '$DEVICE'" ;;
+esac
+
+VOLUME_INCREMENT=10%
+DEFAULT_DEVICE="@DEFAULT_$(echo $DEVICE | tr '[:lower:]' '[:upper:]')@"
+case $COMMAND in
+	up )
+		pactl set-$DEVICE-volume $DEFAULT_DEVICE +$VOlUME_INCREMENT
+		PLAY_SFX volume
+		;;
+	down )
+		pactl set-$DEVICE-volume $DEFAULT_DEVICE -$VOlUME_INCREMENT
+		PLAY_SFX volume
+		;;
+	mute )
+		pactl set-$DEVICE-mute $DEFAULT_DEVICE toggle
+		PLAY_SFX mute
+		notify-send "default $DEVICE" "$(amixer sget Master | grep -q '\[on\]' && echo unmuted || echo muted)"
+		;;
+	* ) ERROR "Unsupported command '$COMMAND'" ;;
+esac

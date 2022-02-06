@@ -1,0 +1,15 @@
+#!/bin/zsh
+source ${0:a:h}/common
+[ ! $NATIVE_MONITOR ] && {
+	NOTIFY "Must specify NATIVE_MONITOR"
+	return
+}
+
+xrandr \
+	--output $NATIVE_MONITOR \
+	--primary \
+	--mode "2560x1440" \
+	--rotate normal \
+	--pos 0x0 \
+	&& DISCONNECT_OTHER undock \
+	|| NOTIFY "Native monitor '$PRIMARY_MONITOR' unresponsive"

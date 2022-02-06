@@ -1,4 +1,4 @@
-source $HOME/.config/wryn/env/env.vim
+source $HOME/.config/wryn/env.vim
 
 if isdirectory(expand("$HOME/.vim/bundle/Vundle.vim"))
 	source $WRYNVIMPATH/vundle.vim

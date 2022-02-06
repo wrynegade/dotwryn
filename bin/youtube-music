@@ -1,0 +1,33 @@
+#!/bin/zsh
+#####################################################################
+
+USAGE="$0 (next|prev|playpause)"
+
+function ERROR() {
+	local ERROR_CODE=$1
+	local MESSAGE="$2"
+
+	echo -e "$MESSAGE\n\nUSAGE : $USAGE\n" >&2
+	notify-send "YouTube media controller" "$MESSAGE"
+
+	exit $ERROR_CODE
+}
+
+#####################################################################
+
+COMMAND="$1"
+case $COMMAND in
+	next      ) COMMAND_KEY='j';;
+	prev      ) COMMAND_KEY='k';;
+	playpause ) COMMAND_KEY='space';;
+	* ) ERROR 1 "unsupported command '$COMMAND'" ;;
+esac
+
+xdotool search --name 'YouTube Music' windowactivate \
+	|| ERROR 2 "YouTube Music is not running"
+
+
+# Chrome / YouTube only accepts keypresses when window is active
+xdotool search --name 'YouTube Music' windowactivate
+sleep 0.3
+xdotool key --clearmodifiers "$COMMAND_KEY"

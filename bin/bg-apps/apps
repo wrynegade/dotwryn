@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+tmux new -d -s apps -n 'foreman' 'htop' \; \
+	split-window -d -t apps:foreman "while true; do clear; ${0:a:h}/apps; echo 'Keeping apps fresh...'; sleep 30; done" \
+	2>/dev/null
+
+for APP in $(ls ${0:a:h} | grep -v 'apps')
+do
+	tmux list-windows -t apps: | awk '{print $2;}' | grep -q $APP \
+		|| tmux new-window -dn $APP -t apps: "${0:a:h}/$APP"
+done

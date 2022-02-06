@@ -1,0 +1,14 @@
+#!/bin/zsh
+_HOSTNAME=$(hostnamectl --static)
+
+case $_HOSTNAME in
+	butterfree ) DEFAULT=undock ;;
+	altaria    ) DEFAULT=hdmi4k ;;
+esac
+
+LAYOUT="${0:a:h}/$_HOSTNAME/$DEFAULT"
+
+[ -f $LAYOUT ] && {
+	until xrandr -q >/dev/null 2>&1; do sleep .1; done
+	$LAYOUT
+}

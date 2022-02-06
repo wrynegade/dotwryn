@@ -1,0 +1,12 @@
+#!/bin/zsh
+source ${0:a:h}/common
+
+xrandr \
+	--output HDMI-0 \
+	--primary \
+	--mode 3840x2160 \
+	--rotate normal \
+	--pos 0x0 \
+	;
+
+PLAY_SFX login
