@@ -1,7 +1,3 @@
-source "$DOTWRYN_PATH/setup/vim.compile.zsh"
-
-#####################################################################
-
 function SETUP__VIM() {
 	STATUS 'starting vim setup'
 	"$DOTWRYN_PATH/bin/vim/compile"

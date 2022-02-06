@@ -23,15 +23,14 @@ case $DEVICE in
 	* ) ERROR 1 "Unsupported device '$DEVICE'" ;;
 esac
 
-VOLUME_INCREMENT=10%
 DEFAULT_DEVICE="@DEFAULT_$(echo $DEVICE | tr '[:lower:]' '[:upper:]')@"
 case $COMMAND in
 	up )
-		pactl set-$DEVICE-volume $DEFAULT_DEVICE +$VOlUME_INCREMENT
+		pactl set-$DEVICE-volume $DEFAULT_DEVICE +10%
 		PLAY_SFX volume
 		;;
 	down )
-		pactl set-$DEVICE-volume $DEFAULT_DEVICE -$VOlUME_INCREMENT
+		pactl set-$DEVICE-volume $DEFAULT_DEVICE -10%
 		PLAY_SFX volume
 		;;
 	mute )

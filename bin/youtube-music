@@ -17,9 +17,9 @@ function ERROR() {
 
 COMMAND="$1"
 case $COMMAND in
-	next      ) COMMAND_KEY='j';;
-	prev      ) COMMAND_KEY='k';;
-	playpause ) COMMAND_KEY='space';;
+	next ) COMMAND_KEY='j';;
+	prev ) COMMAND_KEY='k';;
+	play ) COMMAND_KEY='space';;
 	* ) ERROR 1 "unsupported command '$COMMAND'" ;;
 esac
 

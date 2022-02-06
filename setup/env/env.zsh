@@ -14,9 +14,7 @@ PREFERRED_EDITOR=(vim vi)
 
 # should play an audio file argument
 MEDIA_ENGINE='canberra-gtk-play -f'
-PLAY_SFX () {
-	$HOME/.config/wryn/sfx $@ >/dev/null 2>&1
-}
+PLAY_SFX () { $DOTWRYN/bin/play-sound $@ >/dev/null 2>&1; }
 
 RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'

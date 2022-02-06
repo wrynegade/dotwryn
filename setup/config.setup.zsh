@@ -15,7 +15,6 @@ function SETUP__CONFIG() {
 	CONFIG__SYMLINK 'pgcli/config'                    'pgcli.conf'
 	CONFIG__SYMLINK 'pylintrc'                        'pylintrc'
 	CONFIG__SYMLINK 'ripgrep/config'                  'ripgrep.conf'
-	CONFIG__SYMLINK 'wryn/sfx'                        '../bin/sfx/play.sh'
 	############################################################################################
 
 	CONFIG__TERMINFO
