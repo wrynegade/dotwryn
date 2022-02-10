@@ -44,7 +44,7 @@ DISCONNECT_OTHER() {
 	done
 
 	sleep 1
-	$DOTWRYN/bin/randomize-background
+	$DOTWRYN/bin/set-background random
 
 	[ $SFX ] && ( PLAY_SFX $SFX ) &
 	return 0

@@ -19,29 +19,29 @@ esac
 #####################################################################
 
 PULL_MEDIA() {
-	local TARGET="$1"
 	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
 	local LOCAL_TARGET="$HOME/$1"
+	local FLAGS=()
 
 	[ ! -d $LOCAL_TARGET ] && mkdir -p $LOCAL_TARGET
 
 	local DELETE="$2"
-	[ $DELETE ] && FLAGS=--delete
+	[ $DELETE ] && FLAGS+=--delete
 
 	CHECK "downloading latest $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \
 		s3 sync $REMOTE_TARGET $LOCAL_TARGET \
-		$FLAGS >/dev/null 2>&1 \
+		$FLAGS \
 		&& OK || WARN
 }
 
 PUSH_MEDIA() {
-	local TARGET="$1"
 	local REMOTE_TARGET="s3://$S3_SYNC_BUCKET/$1"
 	local LOCAL_TARGET="$HOME/$1"
+	local FLAGS=()
 
 	local DELETE="$2"
-	[ $DELETE ] && FLAGS=--delete
+	[ $DELETE ] && FLAGS+=--delete
 
 	CHECK "uploading $1"
 	aws --profile $DOTWRYN_AWS_PROFILE \

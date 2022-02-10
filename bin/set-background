@@ -1,0 +1,14 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+[ ! -d $WALLPAPER_PATH ] && exit 1
+
+
+case $1 in 
+	random )
+		feh --recursive --randomize --bg-fill $WALLPAPER_PATH
+		;;
+	* )
+		[ ! -f $WALLPAPER_PATH/$1 ] && exit 2
+		feh --bg-fill $WALLPAPER_PATH/$1
+		;;
+esac
