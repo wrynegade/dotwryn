@@ -23,11 +23,12 @@ EXTERNAL_MONITOR=$(GET_DEFAULT_EXTERNAL_MONITOR)
 DISCONNECT_OTHER() {
 	local SFX="$1"
 
-	for D in $(xrandr | awk '{print $1;}' | grep -v $(GET_PRIMARY_MONITOR))
+	for D in $(xrandr --listmonitors | sed '1d' | awk '{print $NF;}' | grep -v "^$(GET_PRIMARY_MONITOR)$")
 	do
 		xrandr --output $D --off
 	done
 
+	sleep 1
 	$DOTWRYN/bin/randomize-background
 
 	[ $SFX ] && ( PLAY_SFX $SFX ) &
