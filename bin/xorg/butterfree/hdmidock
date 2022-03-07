@@ -8,7 +8,7 @@ source ${0:a:h}/common
 xrandr \
 	--output $EXTERNAL_MONITOR \
 	--primary \
-	--auto \
+	--mode 1920x1080 \
 	--rotate normal \
 	--pos 0x0 \
 	&& DISCONNECT_OTHER login \

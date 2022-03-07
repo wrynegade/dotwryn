@@ -1,0 +1,24 @@
+#!/bin/zsh
+source ${0:a:h}/common
+LEFT=$(GET_ALL_EXTERNAL_MONITORS | grep 'DP.-1')
+RIGHT=$(GET_ALL_EXTERNAL_MONITORS | grep 'DP.-2')
+
+[ $LEFT ] && [ $RIGHT ] || {
+	NOTIFY "Unable to detect work monitors; are you connected?"
+	return
+}
+
+xrandr \
+	--output $RIGHT \
+		--primary \
+		--mode 1920x1080 \
+		--scale 1.25x1.25 \
+		--rotate normal \
+		--pos 2400x0 \
+	--output $LEFT \
+		--mode 1920x1080 \
+		--scale 1.25x1.25 \
+		--rotate normal \
+		--pos 0x0 \
+	&& DISCONNECT_OTHER login $LEFT \
+	|| NOTIFY "Unable to connect '$EXTERNAL_MONITOR' to 1920x1080"
