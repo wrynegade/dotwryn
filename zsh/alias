@@ -16,6 +16,8 @@ alias readable-date='date +"%A %B %d, %Y"'
 alias fix='vim $(git diff --name-only | uniq) -p'
 
 alias i3-config-update="$DOTWRYN/bin/i3/update-local-config"
+
+command -v bat >/dev/null 2>&1 && alias cat='bat --style="plain"'
 # --------------------------------------------------------------------- 
 
 alias erg='EDIT_RIP_GREP_FILE_MATCHES';

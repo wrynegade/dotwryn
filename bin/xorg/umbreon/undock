@@ -1,0 +1,16 @@
+#!/bin/zsh
+source ${0:a:h}/common
+
+xrandr \
+	--output eDP-1 \
+		--primary \
+		--auto \
+		--mode 1920x1200 \
+		--rotate normal \
+		--pos 0x0 \
+	--output DP-3 \
+		--off \
+	;
+
+$DOTWRYN/bin/set-background random
+PLAY_SFX gamedock

@@ -1,9 +1,11 @@
 function SETUP__CONFIG() {
 	############################################################################################
 	#               ~/.config/THE_REST                .wryn/config/THE_REST
+	CONFIG__SYMLINK '../.XCompose'                    'xcompose.conf'
 	CONFIG__SYMLINK '../.gitconfig'                   'gitconfig'
 	CONFIG__SYMLINK '../.tmux.conf'                   'tmux.conf'
 	CONFIG__SYMLINK '../.xinitrc'                     'xinitrc'
+	CONFIG__SYMLINK 'bat/config'                      'bat.conf'
 	CONFIG__SYMLINK 'code-activator-zsh/settings.zsh' 'code-activator.conf'
 	CONFIG__SYMLINK 'compton/compton.conf'            'compton.conf'
 	CONFIG__SYMLINK 'i3/config'                       'i3.conf'
@@ -30,6 +32,7 @@ function CONFIG__SYMLINK() {
 
 	CHECK "linking $FRIENDLY_NAME"
 	{
+		[ ! -d $(dirname $LOCAL_CONFIG) ] && mkdir -p $(dirname $LOCAL_CONFIG)
 		mv "$LOCAL_CONFIG" "$LOCAL_CONFIG.bak"
 		ln -s "$DOTWRYN_CONFIG" "$LOCAL_CONFIG"
 	} >>$LOG 2>&1 && OK || WARN

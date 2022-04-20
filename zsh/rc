@@ -38,4 +38,4 @@ for p in $EXTERNAL_PLUGINS; do [ -f $p ] && source $p; done
 SET_PREFERRED_EDITOR
 WELCOME
 # ---------------------------------------------------------------------
-return 0
+true

@@ -28,7 +28,7 @@ function VIM__CREATE_PANE_DEFAULT_APP() {
 	CHECK 'updating vim to open in panes by default'
 	{
 		echo '#!/bin/sh'
-		echo "exec $(which vim) -p "'$@'
+		echo "exec $(which vim) -p "'"$@"'
 	} > "$HOME/.local/bin/vim" && OK || WARN
 	chmod +x "$HOME/.local/bin/vim"
 }

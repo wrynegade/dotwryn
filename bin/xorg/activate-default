@@ -4,6 +4,7 @@ _HOSTNAME=$(hostnamectl --static)
 case $_HOSTNAME in
 	butterfree ) DEFAULT=undock ;;
 	altaria    ) DEFAULT=hdmi4k ;;
+	umbreon    ) DEFAULT=undock ;;
 esac
 
 LAYOUT="${0:a:h}/$_HOSTNAME/$DEFAULT"

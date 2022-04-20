@@ -15,13 +15,13 @@ Plugin 'VundleVim/Vundle.vim'
 	Plugin 'tpope/vim-surround'
 
 " nerdtree
-	Plugin 'git://github.com/scrooloose/nerdtree.git'
+	Plugin 'https://github.com/scrooloose/nerdtree.git'
 
 " go-vim
 	Plugin 'fatih/vim-go'
 
 " youCompleteMe
-	Plugin 'git://github.com/Valloric/YouCompleteMe.git'
+	Plugin 'https://github.com/Valloric/YouCompleteMe.git'
 
 " omnisharp (c#)
 	Plugin 'OmniSharp/omnisharp-vim'
@@ -49,7 +49,7 @@ filetype plugin indent on
 " ===================================================================================
 
 " --- Nerd Tree ---------------------------------------------------------------------
-map <C-o> :NERDTreeToggle %<CR>
+nnoremap <C-o> :NERDTreeToggle %<CR>
 let g:NERDTreeNodeDelimiter = "\u00a0" " -- Was seeing ^G character, and this should fix that
 
 

@@ -1,4 +1,4 @@
-aws-cli-v2
+aws-cli-v2-bin
 cmake
 cowsay
 figlet
