@@ -2,6 +2,7 @@ function SETUP__CONFIG() {
 	############################################################################################
 	#               ~/.config/THE_REST                .wryn/config/THE_REST
 	CONFIG__SYMLINK '../.XCompose'                    'xcompose.conf'
+	CONFIG__SYMLINK '../.XConfig'                     'xconfig.conf'
 	CONFIG__SYMLINK '../.gitconfig'                   'gitconfig'
 	CONFIG__SYMLINK '../.tmux.conf'                   'tmux.conf'
 	CONFIG__SYMLINK '../.xinitrc'                     'xinitrc'
