@@ -45,6 +45,7 @@ augroup forced_filetype_recognition
 	autocmd BufRead,BufNewFile *.clisp     setfiletype lisp
 	autocmd BufRead,BufNewFile *.lsp       setfiletype lisp
 	autocmd BufRead,BufNewFile Dockerfile* setfiletype dockerfile
+	autocmd BufRead,BufNewFile *i3.conf    setfiletype i3config
 
 	let g:tex_flavor = "latex"
 augroup end
