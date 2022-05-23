@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-cd $HOME/Projects/gizmos/xorg-midi/code
+cd $HOME/Projects/python/xorg-midi/code
 source ../env/bin/activate
 
 ./midi-controller
