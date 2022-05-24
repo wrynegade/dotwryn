@@ -1,0 +1,10 @@
+#!/bin/zsh
+source ${0:a:h}/common
+xrandr \
+	--output eDP1 \
+	--primary \
+	--mode 1280x720 \
+	--rotate normal \
+	--pos 0x0 \
+	&& DISCONNECT_OTHER login \
+	|| NOTIFY "Unable to connect to do the thing :S"
