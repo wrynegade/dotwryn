@@ -12,5 +12,8 @@ xrandr \
 		--off \
 		;
 
+xset dpms 0 0 0 && xset s noblank && xset s off \
+	&& notify-send 'DPMS' 'disabled screen blank'
+
 $DOTWRYN/bin/set-background random
 PLAY_SFX gamedock

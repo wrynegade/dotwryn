@@ -5,15 +5,13 @@ xrandr \
 	--output eDP-1 \
 		--primary \
 		--auto \
-		--mode 1920x1200 \
+		--mode 1280x800 \
 		--rotate normal \
 		--pos 0x0 \
-	--output DP-3 \
-		--off \
-	;
+		;
 
-xset +dpms && xset s blank && xset s on \
-	&& notify-send 'DPMS' 'enabled screen blank'
+xset dpms 0 0 0 && xset s noblank && xset s off \
+	&& notify-send 'DPMS' 'disabled screen blank'
 
 $DOTWRYN/bin/set-background random
 PLAY_SFX gamedock
