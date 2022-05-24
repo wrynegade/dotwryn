@@ -32,9 +32,14 @@ case $APPLICATION in
 	pavucontrol ) FACTOR=0.4 YFFSET=200  ;;
 esac
 
+LAUNCH_APP=0
 
-xdotool search --class "$CLIENT_CLASS" >/dev/null 2>&1 || {
+xdotool search --class "$CLIENT_CLASS" || LAUNCH_APP=1
+[[ $CLIENT_CLASS =~ discord ]] && LAUNCH_APP=1
+
+[[ $LAUNCH_APP -eq 1 ]] && {
 	i3-msg "exec --no-startup-id $APPLICATION;"
+	sleep .5
 }
 
 WINDOW_SIZE=$(\
