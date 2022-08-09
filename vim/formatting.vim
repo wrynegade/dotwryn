@@ -1,4 +1,5 @@
-" -- Custom Format Settings ------------------------------ {{{
+" --- custom format settings ------------------------------------------
+" {{{
 function FormatFileType(indent, expandtab, foldmethod, foldlevel, spell)
 	let &l:tabstop = a:indent
 	let &l:softtabstop = a:indent
@@ -51,36 +52,46 @@ augroup filetype_specific_formatting
 	autocmd FileType go         call FormatFileType(4, v:false, 'manual', 99, v:false)
 	autocmd FileType json       call FormatFileType(2, v:false, 'indent', 99, v:false)
 augroup end
+
+let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh']
 " }}}
 
 
-" -- <Leader>ec to 'ExeCute' a file ---------------------- {{{
-augroup execute_file_shortcuts
-	autocmd FileType tex		nnoremap <Leader>ec :! pdf=$(grep -rl 'documentclass' ./ <bar> head -n 1 <bar> sed 's/\(.*\)\.tex/\1.pdf/'); $WEBBROWSER $pdf<CR>
-	autocmd FileType markdown	nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
-	autocmd FileType go         nnoremap <Leader>ec :!clear<CR><CR>q:?GoRun<CR><CR>
+" --- (e)xe(c)ute -----------------------------------------------------
+"          (i)nteractive
+"          (b)uild
+"     auto-(f)ormat
+"          (t)ests
+" {{{
+augroup file_specific_command_overrides
+	nnoremap <Leader>ec :call SplitPaneTest('%:p', v:true)<CR>
+	nnoremap <Leader>ei :echohl ErrorMsg <bar> echom 'ERROR: no interactive execute defined' <bar> echohl None<CR>
+	nnoremap <Leader>eb :echohl ErrorMsg <bar> echom 'ERROR: no build steps defined'         <bar> echohl None<CR>
+	nnoremap <Leader>ef :echohl ErrorMsg <bar> echom 'ERROR: no auto-format steps defined'   <bar> echohl None<CR>
+	nnoremap <Leader>et :echohl ErrorMsg <bar> echom 'ERROR: no test steps defined'          <bar> echohl None<CR>
+
+	autocmd FileType tex  nnoremap <Leader>ec :! scwrypts -n latex/open-pdf  -- %:p<CR>
+	autocmd FileType tex  nnoremap <Leader>eb :! scwrypts -n latex/build-pdf -- %:p<CR>
+	autocmd FileType tex  nnoremap <Leader>ef :! scwrypts -n latex/cleanup   -- %:p<CR>
+
+	autocmd FileType markdown  nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
+
+	autocmd FileType go  nnoremap          <Leader>ec :!clear<CR><CR>q:?GoRun<CR><CR>
+	autocmd FileType go  nnoremap <silent> <Leader>ef <Plug>(go-imports)
+	autocmd FileType go  nnoremap <silent> gd <Plug>(go-def-tab)
+
+	autocmd FileType python  nnoremap <Leader>ec :call SplitPaneTest('bpython %')<CR>
+	autocmd FileType python  nnoremap <Leader>ei :call SplitPaneTest('bpython -qi %')<CR>
 augroup end
 " }}}
 
 
-" -- Miscellaneous File-specific Commands ---------------- {{{
-augroup latex_commands
+" --- organization overrides ------------------------------------------
+" {{{
 
-	" overwrite the <leader>t 'test' to (double) recompile the latex document.
-	" in case pdflatex gets in a stuck state, it is run through timeout 3
-	autocmd FileType tex nnoremap <Leader>t :! clear; texfile=$(grep -rl 'documentclass' ./ <bar> head -n 1); timeout 3 pdflatex -synctex=0 $texfile && { clear; pdflatex $texfile <bar> lolcat }<CR>
+source $WRYNVIMPATH/override/rentdynamics.vim
+source $WRYNVIMPATH/override/directus.vim
 
-augroup end
-
-augroup go_commands
-	autocmd FileType go nmap <silent> <Leader>ef <Plug>(go-imports)
-	autocmd FileType go nmap <silent> gd <Plug>(go-def-tab)
-augroup end
-" }}}
-
-
-" -- Format Override Layers ------------------------------ {{{
-source $WRYNVIMPATH/rentdynamics.vim
 " }}}
 
 

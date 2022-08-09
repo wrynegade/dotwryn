@@ -7,58 +7,71 @@ endif
 source $WRYNVIMPATH/options.vim
 source $WRYNVIMPATH/testing.vim
 source $WRYNVIMPATH/formatting.vim
-source $WRYNVIMPATH/abbreviations.vim
 source $WRYNVIMPATH/navigation.vim
 source $WRYNVIMPATH/color.vim
 source $WRYNVIMPATH/utility.vim
 
-" -- Bindings --------------------------------------------------- {{{
+" ---------------------------------------------------------------------
+" {{{
 
 " <SPACE> to execute macro on q
 nnoremap <Space> @q
+
+" \q for `q:`
+nnoremap <Leader>q q:
+
+" \f for fold
+nnoremap <Leader>f z
+
+" \s previous selection command
+nnoremap <Leader>s :'<,'>
+
+" (e)dit / (s)ource vimrc
+nnoremap <Leader>ev :tabedit $WRYNVIMRC<CR>
+nnoremap <Leader>sv :source $MYVIMRC<CR>
 
 " Q to replace current line/selection with bash execution
 vnoremap Q !$SHELL<CR>
 nnoremap Q !!$SHELL<CR>
 
-" \q for `q:`
-nnoremap <Leader>q q:
-
-" \s previous selection command
-nnoremap <Leader>s :'<,'>
-
-" \f for fold
-nnoremap <Leader>f z
-nnoremap <Leader>f z
-
-" \j for J, but append current line to the line below
-nnoremap <Leader>j ddpkJ
-
-" move the current line one below where it is
+" move the current line down/up one
 nnoremap - :move +1 <CR>
 nnoremap _ :move -2 <CR>
 
-" \t for rerun last 'vimtest' command:
-nnoremap <Leader>t q:?vimtest<CR><CR>
+" \j like J, but append current line to the line below
+nnoremap <Leader>j ddpkJ
 
-" \b for git blame
-nnoremap <Leader>b :set termwinsize=15*0<BAR>:execute "terminal git blame -L " .eval(line(".")-5) . ",+10 %"<BAR>:set termwinsize&<CR>
+" \d insert formatted date below
+nnoremap <Leader>d  :let @d = system("date '+%A, %B %-d, %Y'")<CR>o<C-r>d<BS> <esc>
 
-" \d to insert formatted date before/after cursor
-nnoremap <Leader>di :let @d = system("date '+%A, %B %-d, %Y'")<CR>i<C-r>d<BS> <esc>
-nnoremap <Leader>da :let @d = system("date '+%A, %B %-d, %Y'")<CR>a <C-r>d<BS><esc>
+" \g git fugitive shortcuts
+nnoremap <Leader>gb :Git blame<CR>
 
-" - toggle casing for current word
-inoremap <C-u> <esc>viw~ea
+" \r = open last REPL (p)ython (n)odejs (c)lisp
+nnoremap <Leader>r  q:?^echom 'quickrepl'<CR><CR>
+nnoremap <Leader>rp q:oechom 'quickrepl' \| call SplitPaneTest('bpython')<CR>
+nnoremap <Leader>rn q:oechom 'quickrepl' \| call SplitPaneTest('node')<CR>
+nnoremap <Leader>rc q:oechom 'quickrepl' \| call SplitPaneTest('clisp', 1)<CR>
 
-" \c \v to copy/paste from xclip
-" @TODO: learn how to freaking compile vim with x11 compatibility so these
-"        aren't necessary :)
+" \t = run last quicktest
+"   t)ype new quicktest
+"   e)dit last quicktest
+nnoremap <Leader>t  q:?^echom 'quicktest'<CR><CR>
+nnoremap <Leader>tt q:oechom 'quicktest' \| call SplitPaneTest('')<ESC>F'i
+nnoremap <Leader>te q:?^echom 'quicktest'<CR>
+
+" ./utility.vim
+nnoremap <Leader><Leader>w  :call Sudowrite()<CR>
+nnoremap <Leader><Leader>x  :call MakeFileExecutable(0)<CR>
+nnoremap <Leader><Leader>xx :call MakeFileExecutable(1)<CR>
+
+" (c)opy / (p)aste from xclip
+" TODO: learn how to compile vim with x11 compatibility and delete
 vnoremap <Leader>c :w !xclip<CR><CR>
 nnoremap <Leader>v o<esc>!!xclip -o<CR>
 nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
 
-" ------- available / rarely used bindings -------
+" --- available / rarely used bindings (personal reference) ---
 
 " nnoremap <BS>
 " nnoremap <C-t>
@@ -67,3 +80,4 @@ nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
 " nnoremap ^
 
 " }}}
+" ---------------------------------------------------------------------

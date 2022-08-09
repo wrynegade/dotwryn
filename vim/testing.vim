@@ -19,11 +19,11 @@ function TmuxTest(shellCommand, paneId = g:defaultTmuxPaneId)
 	call system("tmux send-keys -t " . a:paneId . " 'clear; " . a:shellCommand . "' Enter")
 endfunction
 
-function SplitPaneTest(shellCommand, verticalSplit = 0)
-	if a:verticalSplit
-		execute "vertical terminal " . a:shellCommand
+function SplitPaneTest(shellCommand, horizontal = v:false)
+	if a:horizontal
+		execute "botright terminal " . a:shellCommand
 	else
-		execute "terminal " . a:shellCommand
+		execute "botright vertical terminal " . a:shellCommand
 	endif
 endfunction
 
@@ -41,9 +41,9 @@ function DjangoTmuxTest(paneId = g:defaultTmuxPaneId)
 	call TmuxTest(l:command, a:paneId)
 endfunction
 
-function DjangoSplitTest(verticalSplit = 0)
+function DjangoSplitTest(horizontal = v:false)
 	let l:command = GetDjangoTestCommand()
-	call SplitPaneTest(l:command, a:verticalSplit)
+	call SplitPaneTest(l:command, a:horizontal)
 endfunction
 
 function DjangoTest()
@@ -85,7 +85,7 @@ function DotnetBuild()
 	call TmuxTest(l:command)
 endfunction
 
-function GetDotnetProjectLocation(test = 0)
+function GetDotnetProjectLocation(test = v:false)
 	let l:projectRoot = substitute(expand(getcwd()), '/code.*', '/code', '')
 	let l:projectName = substitute(expand(getcwd()), l:projectRoot . '/\([^/]*\).*', '\1', '')
 	if a:test
@@ -109,9 +109,9 @@ function NpmTmuxTest(paneId = g:defaultTmuxPaneId)
 	call TmuxTest(l:command, a:paneId)
 endfunction
 
-function NpmSplitTest(verticalSplit = 0)
+function NpmSplitTest(horizontal = v:false)
 	let l:command = GetNpmTestCommand()
-	call SplitPaneTest(l:command, a:verticalSplit)
+	call SplitPaneTest(l:command, a:horizontal)
 endfunction
 
 function NpmTest()

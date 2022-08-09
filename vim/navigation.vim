@@ -1,15 +1,21 @@
 
-" (SHIFT + DIRECTION) for tabs 
+" (shift + direction) for tabs
 nnoremap <S-l> gt
 nnoremap <S-h> gT
 nnoremap <S-t> <C-w>T
 
-" (CTRL + DIRECTION)  for panes
+" (ctrl + direction) for panes
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 
-" (CTRL + n/p) for files
+" (ctrl + n/p) for buffers
 nnoremap <C-n> :n<CR>
 nnoremap <C-p> :N<CR>
+
+" flip (gf) / (ctrl+w gf) bindings
+nnoremap <C-w>gf gf
+vnoremap <C-w>gf gf
+nnoremap gf <C-w>gf
+vnoremap gf <C-w>gf
