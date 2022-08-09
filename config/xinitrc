@@ -1,34 +1,12 @@
 #!/bin/zsh
 source "$HOME/.config/wryn/env.zsh"
 
-#####################################################################
+export PATH="$DOTWRYN/bin/xorg/$(hostnamectl --static):$PATH"
 
-X11_SCRIPTS='/etc/X11/xinit/xinitrc.d';
-if [ -d $X11_SCRIPTS ]
-then
-	for script in $(find "$X11_SCRIPTS" -name \*.sh); do
-		source "$script"
-	done
-fi
-
+for SCRIPT in $(find /etc/x11/xinit/xinitrc.d); do source $SCRIPT; done
 command -v dex && dex -a
 
-#####################################################################
-
-CUSTOM_DMENU_COMMANDS="$HOME/.local/dmenu"
-[ ! -d $CUSTOM_DMENU_COMMANDS ] && mkdir $CUSTOM_DMENU_COMMANDS
-
-export PATH="$CUSTOM_DMENU_COMMANDS:$PATH"
-
-#####################################################################
-
-LAYOUT_DIR="$DOTWRYN/bin/xorg/$(hostnamectl --static)"
-[ -d $LAYOUT_DIR ] && export PATH="$LAYOUT_DIR:$PATH"
-
 $DOTWRYN/bin/xorg/activate-default &
-
-#####################################################################
-
 
 cd
 exec i3

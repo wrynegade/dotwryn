@@ -3,12 +3,12 @@ function SETUP__CONFIG() {
 	#               ~/.config/THE_REST                .wryn/config/THE_REST
 	CONFIG__SYMLINK '../.XCompose'                    'xcompose.conf'
 	CONFIG__SYMLINK '../.XConfig'                     'xconfig.conf'
-	CONFIG__SYMLINK '../.gitconfig'                   'gitconfig'
 	CONFIG__SYMLINK '../.tmux.conf'                   'tmux.conf'
 	CONFIG__SYMLINK '../.xinitrc'                     'xinitrc'
 	CONFIG__SYMLINK 'bat/config'                      'bat.conf'
 	CONFIG__SYMLINK 'code-activator-zsh/settings.zsh' 'code-activator.conf'
 	CONFIG__SYMLINK 'compton/compton.conf'            'compton.conf'
+	CONFIG__SYMLINK 'git/config'                      'git.conf'
 	CONFIG__SYMLINK 'i3/config'                       'i3.conf'
 	CONFIG__SYMLINK 'i3/utils'                        '../bin/i3/utils'
 	CONFIG__SYMLINK 'i3status/config'                 'i3status.conf'
@@ -16,7 +16,7 @@ function SETUP__CONFIG() {
 	CONFIG__SYMLINK 'kitty/theme.conf'                '../colorschemes/kitty.main'
 	CONFIG__SYMLINK 'mssqlcli/config'                 'mssqlcli.conf'
 	CONFIG__SYMLINK 'pgcli/config'                    'pgcli.conf'
-	CONFIG__SYMLINK 'pylintrc'                        'pylintrc'
+	CONFIG__SYMLINK 'pylintrc'                        'pylint.conf'
 	CONFIG__SYMLINK 'ripgrep/config'                  'ripgrep.conf'
 	############################################################################################
 
