@@ -12,6 +12,18 @@ function FormatFileType(indent, expandtab, foldmethod, foldlevel, spell)
 	let &l:spell = a:spell
 endfunction
 
+augroup forced_filetype_recognition
+	autocmd BufRead,BufNewFile *.tmux          setfiletype tmux
+	autocmd BufRead,BufNewFile *.clisp         setfiletype lisp
+	autocmd BufRead,BufNewFile *.lsp           setfiletype lisp
+	autocmd BufRead,BufNewFile Dockerfile*     setfiletype dockerfile
+	autocmd BufRead,BufNewFile *i3.conf        setfiletype i3config
+	autocmd BufRead,BufNewFile *.template.yaml set filetype=yaml.cloudformation
+	autocmd BufRead,BufNewFile git.conf        setfiletype gitconfig
+
+	let g:tex_flavor = "latex"
+augroup end
+
 augroup filetype_specific_formatting
 	autocmd!
 	autocmd FileType python     call FormatFileType(4, v:true,  'indent', 99, v:false)
@@ -38,16 +50,6 @@ augroup filetype_specific_formatting
 	autocmd FileType vue        call FormatFileType(2, v:true,  'indent', 99, v:false)
 	autocmd FileType go         call FormatFileType(4, v:false, 'manual', 99, v:false)
 	autocmd FileType json       call FormatFileType(2, v:false, 'indent', 99, v:false)
-augroup end
-
-augroup forced_filetype_recognition
-	autocmd BufRead,BufNewFile *.tmux      setfiletype tmux
-	autocmd BufRead,BufNewFile *.clisp     setfiletype lisp
-	autocmd BufRead,BufNewFile *.lsp       setfiletype lisp
-	autocmd BufRead,BufNewFile Dockerfile* setfiletype dockerfile
-	autocmd BufRead,BufNewFile *i3.conf    setfiletype i3config
-
-	let g:tex_flavor = "latex"
 augroup end
 " }}}
 
