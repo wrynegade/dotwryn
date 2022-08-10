@@ -17,7 +17,7 @@ xrandr \
 
 (pkill compton; sleep 1; compton;) &
 
-$DOTWRYN/bin/set-background random
+$DOTWRYN/bin/set-background purple.jpg
 PLAY_SFX login
 
 xset dpms 0 0 0 && xset s noblank && xset s off \
