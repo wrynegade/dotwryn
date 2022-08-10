@@ -18,3 +18,7 @@
 [submodule "memo-zsh"]
 	path = zsh/plugins/memo
 	url = https://yage.io/zsh/memo
+[submodule "scwrypts"]
+	path = zsh/plugins/scwrypts
+	url = https://yage.io/wrynegade/scwrypts.git
+	branch = main
