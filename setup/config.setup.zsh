@@ -18,6 +18,7 @@ function SETUP__CONFIG() {
 	CONFIG__SYMLINK 'pgcli/config'                    'pgcli.conf'
 	CONFIG__SYMLINK 'pylintrc'                        'pylint.conf'
 	CONFIG__SYMLINK 'ripgrep/config'                  'ripgrep.conf'
+	CONFIG__SYMLINK 'scwrypts/config'                 'scwrypts.conf'
 	############################################################################################
 
 	CONFIG__TERMINFO

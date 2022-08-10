@@ -61,7 +61,7 @@ EXTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/plugins/z/z.sh"
 	"$DOTWRYN/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/code-activator/activator.plugin.zsh"
-	"$DOTWRYN/zsh/plugins/latex/latex.plugin.zsh"
+	"$DOTWRYN/zsh/plugins/scwrypts/scwrypts.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh"
 	"$DOTWRYN/zsh/plugins/memo/memo.plugin.zsh"
 	)
