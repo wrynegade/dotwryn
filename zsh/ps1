@@ -7,7 +7,8 @@ PS1__GET_DIRECTORY() {
 		local PROJECT_NAME=$(basename $GIT_ROOT)
 		[[ $PROJECT_NAME =~ ^code$ ]] && PROJECT_NAME=$(basename $(dirname $GIT_ROOT))
 
-		local RELATIVE_DIRECTORY=${${PWD#$GIT_ROOT}:1}
+		local RESOLVED_WD=$(readlink -f "$(pwd)")
+		local RELATIVE_DIRECTORY=${${RESOLVED_WD#$GIT_ROOT}:1}
 		[[ ${#${RELATIVE_DIRECTORY//[^\/]}} -gt 3 ]] && RELATIVE_DIRECTORY='*/%4~'
 
 		_DIRECTORY="%B%F{green}$PROJECT_NAME%B%F{yellow}:$RELATIVE_DIRECTORY"
