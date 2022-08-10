@@ -8,10 +8,6 @@
 [submodule "fzf-tab"]
 	path = zsh/plugins/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
-[submodule "latex-zsh"]
-	path = zsh/plugins/latex
-	url = https://yage.io/zsh/latex
-	update = rebase
 [submodule "code-activator-zsh"]
 	path = zsh/plugins/code-activator
 	url = https://yage.io/zsh/code-activator
