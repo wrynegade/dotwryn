@@ -1,3 +1,16 @@
+% ---------------------------------------------------------------------
+% - To anyone who has found this,                                     -
+% ---------------------------------------------------------------------
+% -                                                                   -
+% - A special welcome to you! Throughout the comments you'll find my  -
+% - "unabridged" resume. This includes a variety of accomplishments   -
+% - which I'm proud of. Some of these accomplishments are no longer   -
+% - relevant to my resume, but some of them just make the darn thing  -
+% - too long. Feel free to reach out to me with any questions.        -
+% -                                                                   -
+% - Anyway, a big thanks for stopping by!                             -
+% ---------------------------------------------------------------------
+
 \documentclass[letterpaper,11pt]{article}
 \usepackage[margin=.75in,bottom=0.5in,top=1.0in]{geometry}
 
@@ -5,19 +18,16 @@
 \usepackage{enumitem}
 \usepackage{hyperref}
 
-% ---------------------------------------------------------------------------------------------
-% Edit this section to create the title, headers, and footers for the document
-% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
-\newcommand{\authorName}	{Wryn Wagner}
-\newcommand{\phone}		{\textsf{(720)557-5443}}
+\newcommand{\authorName}	{Wryn (yage) Wagner}
+\newcommand{\phone}		{\textsf{(720) 557-5443}}
 \newcommand{\email}		{\textsl{wryn@yage.io}}
 \newcommand{\github}		{\textsl{github.com/wrynegade}}
 \newcommand{\myMajor}		{Computer Science}
 \newcommand{\myMinor}		{Mathematics}
 
-% ---------------------------------------------------------------------------------------------
-% ------ Header Code --------------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \newcommand{\headerLeft}	{\github}
 \newcommand{\headerCenter}	{\begin{huge}\textbf{\authorName\\}\end{huge}\phone}
@@ -30,18 +40,14 @@
 \fancyhead[R]{\headerRight}
 \fancyhead[C]{\headerCenter}
 
-% ---------------------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
 
 \setlength{\parindent}{0em} % Indent Length
 \hyphenpenalty=5000%
 \begin{document}
 
-% ---------------------------------------------------------------------------------------------
-% -- Education --------------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
-
+% ---------------------------------------------------------------------
+% --- Education -------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \begin{Large}\textbf{\\Education}\end{Large}
 
@@ -67,16 +73,17 @@ Utah State University, Logan, Utah%\hfill 3.7 GPA
 %\end{itemize}
 
 
-% ---------------------------------------------------------------------------------------------
-% -- Technical and Work Skills ----------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------
+% --- Technical and Work Skills ---------------------------------------
+% ---------------------------------------------------------------------
+
 \begin{Large}\textbf{\\Technical and Work Skills}\end{Large}
 
 \textbf{Programming Language Proficiency} \\
 Python \hfill JavaScript \hfill SH\hfill CLISP\hfill C / C++\hfill C\#\hfill Java\hfill Matlab\hfill PHP\\
 
 \textbf{Software and Technology}\\
-Kubernetes\hfill Docker\hfill \LaTeX\hfill ViM\hfill Linux\hfill Django\hfill AWS\hfill Redis\hfill Twilio\hfill Angular\hfill Material Design\\
+Kubernetes\hfill Docker\hfill \LaTeX\hfill ViM\hfill Linux\hfill Django\hfill AWS\hfill Redis\hfill Twilio\hfill Angular\hfill Material Design
 
 \noindent\textbf{Communication and Language}
 \begin{itemize}[noitemsep,topsep=0pt]
@@ -85,13 +92,21 @@ Kubernetes\hfill Docker\hfill \LaTeX\hfill ViM\hfill Linux\hfill Django\hfill AW
 	\item Fluent in Spanish both written and oral (formal and idiomatic)
 \end{itemize}
 
-% ---------------------------------------------------------------------------------------------
-% -- Work History -----------------------------------------------------------------------------
-% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------
+% --- Work History ----------------------------------------------------
+% ---------------------------------------------------------------------
 
-\begin{Large}\textbf{\\\\Work History}\end{Large}
+\begin{Large}\textbf{\\Work History}\end{Large}
 
-\textbf{Rent Dynamics} \textit{(Logan UT)}. Site Reliability Engineer \hfill August 2020 - Present
+\textbf{Directus} \textit{(Logan UT)}. Site Reliability Engineer \hfill April 2022 - Present
+\begin{itemize}[noitemsep,topsep=0pt]
+	\item Lead R\&D and demonstrate proof of concept for new technology
+	\item Design and implement architecture at a global scale
+	\item Maintain global server health including on call support for critical system outages
+	\item Provide advanced customer support including solutions consulting, infrastructure inspection, and database maintenance\\
+\end{itemize}
+
+\textbf{Rent Dynamics} \textit{(Logan UT)}. Site Reliability Engineer \hfill August 2020 - April 2022
 \begin{itemize}[noitemsep,topsep=0pt]
 	\item Participate in R\&D and demonstrate proof of concept for new technology
 	\item Assist in team training for new technology and architecture
@@ -110,7 +125,7 @@ Kubernetes\hfill Docker\hfill \LaTeX\hfill ViM\hfill Linux\hfill Django\hfill AW
 	\item Complete deadlines and communicate as a member of an Agile development team
 	\item Major Projects \begin{itemize}[noitemsep, topsep=0pt]
 		\item Prototyped, built, and supported a remote, IoT door-traffic counter for client offices. A configured raspberry pi received signals from coin-cell operated sensors and sent a custom-encoded SMS to our database on a daily basis.
-		\item Designed, prototyped, and implemented an automated property touring application. Included rapid adaptations in anticipation of the COVID-19 Pandemic, allowing for virtual tour options and the disabling of in-person tours when on-site agents reported exposure to COVID-19 symptoms.
+		\item Designed, prototyped, and implemented an automated property touring application. Included rapid adaptations in anticipation of the COVID-19 Pandemic, allowing for virtual tour options and the disabling of in-person tours when on-site agents reported exposure to COVID-19.
 	\end{itemize}
 \end{itemize}
 
@@ -189,24 +204,30 @@ Kubernetes\hfill Docker\hfill \LaTeX\hfill ViM\hfill Linux\hfill Django\hfill AW
 
 \begin{Large}\textbf{\\References}\end{Large}
 
-%\textit{\\available upon request}
-\textbf{Skyler Cain - Former CTO of Rent Dynamics}
-\begin{itemize}[noitemsep,topsep=0pt]
-	\item skylercain@gmail.com \textit{(perferred)}
-	\item \url{https://www.linkedin.com/in/skylercain}\\
-\end{itemize}
-
-\textbf{Haitao Wang - Professor}
-\begin{itemize}[noitemsep,topsep=0pt]
-	\item Haitao.Wang@usu.edu \textit{(perferred)}
-	\item (435) 797-2416\\
-\end{itemize}
-
-\textbf{Josef Wagner - Personal Reference}
-\begin{itemize}[noitemsep,topsep=0pt]
-	\item josefwagnerus@gmail.com \textit{(perferred)}
-	\item (208) 713-3929
-\end{itemize}
+\textit{\\available upon request}
+%\textbf{Skyler Cain - Former CTO of Rent Dynamics}
+%\begin{itemize}[noitemsep,topsep=0pt]
+%	\item skylercain@gmail.com \textit{(perferred)}
+%	\item \url{https://www.linkedin.com/in/skylercain}\\
+%\end{itemize}
+%
+%\textbf{Levi Howa - VP of Technology of Rent Dynamics}
+%\begin{itemize}[noitemsep,topsep=0pt]
+%	\item levicusrodcet@gmail.com \textit{(perferred)}
+%	\item \url{https://www.linkedin.com/in/levi-howa}\\
+%\end{itemize}
+%
+%\textbf{Haitao Wang - Professor}
+%\begin{itemize}[noitemsep,topsep=0pt]
+%	\item Haitao.Wang@usu.edu \textit{(perferred)}
+%	\item (435) 797-2416\\
+%\end{itemize}
+%
+%\textbf{Josef Wagner - Personal Reference}
+%\begin{itemize}[noitemsep,topsep=0pt]
+%	\item josefwagnerus@gmail.com \textit{(perferred)}
+%	\item (208) 713-3929
+%\end{itemize}
 
 
 % ---------------------------------------------------------------------------------------------
