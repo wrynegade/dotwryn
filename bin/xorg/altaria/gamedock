@@ -5,17 +5,15 @@ xrandr --output HDMI-0 --mode 3840x2160; sleep 1
 
 xrandr \
 	--output DP-0 \
-		--mode 3840x2160 \
-		--rotate normal \
-		--pos 0x0 \
+		--off \
 	--output DP-2 \
 		--primary \
-		--mode 4096x2160 \
+		--mode 3840x2160 \
 		--rotate normal \
-		--left-of DP-0 \
 	;
 
-(pkill compton; sleep 1; compton;) &
+sleep 2;
+xrandr --output DP-2 --mode 3840x2160 --rate 120;
 
 $DOTWRYN/bin/set-background random
 PLAY_SFX login
