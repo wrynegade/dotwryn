@@ -13,3 +13,6 @@ xrandr \
 	--pos 0x0 \
 	&& DISCONNECT_OTHER undock \
 	|| NOTIFY "Native monitor '$PRIMARY_MONITOR' unresponsive"
+
+xset +dpms && xset s blank && xset s on \
+	&& notify-send 'DPMS' 'enabled screen blank'
