@@ -52,6 +52,7 @@ nnoremap <Leader>r  q:?^echom 'quickrepl'<CR><CR>
 nnoremap <Leader>rp q:oechom 'quickrepl' \| call SplitPaneTest('bpython')<CR>
 nnoremap <Leader>rn q:oechom 'quickrepl' \| call SplitPaneTest('node')<CR>
 nnoremap <Leader>rc q:oechom 'quickrepl' \| call SplitPaneTest('clisp', 1)<CR>
+nnoremap <Leader>rs q:oechom 'quickrepl' \| call SplitPaneTest('')<CR>
 
 " \t = run last quicktest
 "   t)ype new quicktest
