@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/bin/vim -p $@
+exec /usr/local/bin/vim -p $@
