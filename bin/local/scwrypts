@@ -1,0 +1,3 @@
+#!/bin/zsh
+source $HOME/.config/wryn/env.zsh
+"$DOTWRYN/zsh/plugins/scwrypts/scwrypts" $@

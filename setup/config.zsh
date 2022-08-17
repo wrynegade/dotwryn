@@ -40,25 +40,7 @@ CONFIG__VIM() {
 		|| __FAIL 1 'error detected in vim setup (see above)' \
 		;
 
-	CONFIG__VIM_OPEN_IN_PANES_BY_DEFAULT || return 3
-
 	SCWRYPTS zsh/vim/vundle/install      || return 4
-}
-
-CONFIG__VIM_OPEN_IN_PANES_BY_DEFAULT() {
-	which vim | grep "$HOME/.local/bin/vim" && return 0
-
-	__STATUS 'updating vim to open in panes by default'
-
-	touch "$HOME/.local/bin/vim" \
-		&& chmod +x "$HOME/.local/bin/vim" \
-		|| __FAIL 1 "unable to create '$HOME/.local/bin/vim' executable; does it already exist?" \
-		;
-
-	{ echo '#!/bin/sh'; echo "exec $(which vim) -p "'"$@"'; } > "$HOME/.local/bin/vim" \
-		|| __FAIL 2 "unable to set panes-by-default option" \
-	
-	__SUCCESS 'successfully set vim to open in panes by default'
 }
 
 #####################################################################
