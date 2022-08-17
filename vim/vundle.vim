@@ -9,10 +9,13 @@ Plugin 'VundleVim/Vundle.vim'
 " {{{
 	Plugin 'tpope/vim-surround'
 	Plugin 'tpope/vim-fugitive'
-	Plugin 'https://github.com/scrooloose/nerdtree.git'
+	Plugin 'scrooloose/nerdtree'
 	Plugin 'fatih/vim-go'
-	Plugin 'https://github.com/Valloric/YouCompleteMe.git'
- 	Plugin 'https://github.com/w0rp/ale'
+	Plugin 'w0rp/ale'
+
+	Plugin 'valloric/youcompleteme', {'oninstall': 'python3 install.py --all', 'onupdate': 'python3 install.py --all'}
+
+	Plugin 'rrethy/vim-hexokinase', {'oninstall': 'make hexokinase', 'onupdate': 'make hexokinase'}
 " }}}
 " ---------------------------------------------------------------------
 call vundle#end()

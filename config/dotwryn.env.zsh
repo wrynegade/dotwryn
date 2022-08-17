@@ -2,15 +2,16 @@
 ### Path References #################################################
 #####################################################################
 
-DOTWRYN="$HOME/.wryn"
-SFX_PATH="$HOME/Media/sfx"
-WALLPAPER_PATH="$HOME/Pictures/bg"
+export DOTWRYN="$HOME/.wryn"
+export SFX_PATH="$HOME/Media/sfx"
+export WALLPAPER_PATH="$HOME/Pictures/bg"
+export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
 #####################################################################
 ### Application Settings ############################################
 #####################################################################
 
-PREFERRED_EDITOR=(vim vi)
+export PREFERRED_EDITOR=(vim vi)
 
 # should play an audio file argument
 MEDIA_ENGINE='canberra-gtk-play -f'
@@ -65,6 +66,8 @@ EXTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh"
 	)
 
+export SCWRYPTS_ENV='local'
+
 FZF_DEFAULT_OPTS='--reverse'
 FZF_DEFAULT_COMMAND='rg --files'
 
@@ -72,4 +75,4 @@ zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept' ';:toggle'
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
-export ZSH_COLOR_UTIL="$DOTWRYN/zsh/plugins/color/color.module.zsh"
+LOAD_ZSH_UTILS() { source "$DOTWRYN/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh"; }

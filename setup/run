@@ -1,0 +1,16 @@
+#!/bin/zsh
+source ${0:a:h}/requirements.zsh || exit 1
+################################################################################
+
+LOGFILE="$HOME/dotwryn-install.log"
+
+__INFO "installation start : $(date)" 2>> "$LOGFILE"
+{
+	SETUP__OS     || __FAIL 1 'failed to set up os-dependencies (see above)'
+	SETUP__CONFIG || __FAIL 2 'failed to set up program configuration (see above)'
+} 2>&1 | tee --append "$LOGFILE"
+
+__INFO "installation complete: $(date)" 2>> "$LOGFILE"
+
+################################################################################
+source "$DOTWRYN_PATH/setup/cleanup.zsh"
