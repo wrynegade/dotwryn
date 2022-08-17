@@ -74,7 +74,7 @@ augroup file_specific_command_overrides
 	autocmd FileType tex  nnoremap <Leader>eb :! scwrypts -n latex/build-pdf -- %:p<CR>
 	autocmd FileType tex  nnoremap <Leader>ef :! scwrypts -n latex/cleanup   -- %:p<CR>
 
-	autocmd FileType markdown  nnoremap <Leader>ec :! $WEBBROWSER %:p<CR>
+	autocmd FileType markdown  nnoremap <Leader>ec :!xdg-open %:p<CR>
 
 	autocmd FileType go  nnoremap          <Leader>ec :!clear<CR><CR>q:?GoRun<CR><CR>
 	autocmd FileType go  nnoremap <silent> <Leader>ef <Plug>(go-imports)

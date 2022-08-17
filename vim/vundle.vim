@@ -7,15 +7,14 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 " --- installed plugins -----------------------------------------------
 " {{{
-	Plugin 'tpope/vim-surround'
-	Plugin 'tpope/vim-fugitive'
-	Plugin 'scrooloose/nerdtree'
 	Plugin 'fatih/vim-go'
+	Plugin 'jeffkreeftmeijer/vim-dim'
+	Plugin 'rrethy/vim-hexokinase'
+	Plugin 'scrooloose/nerdtree'
+	Plugin 'tpope/vim-fugitive'
+	Plugin 'tpope/vim-surround'
+	Plugin 'valloric/youcompleteme'
 	Plugin 'w0rp/ale'
-
-	Plugin 'valloric/youcompleteme', {'oninstall': 'python3 install.py --all', 'onupdate': 'python3 install.py --all'}
-
-	Plugin 'rrethy/vim-hexokinase', {'oninstall': 'make hexokinase', 'onupdate': 'make hexokinase'}
 " }}}
 " ---------------------------------------------------------------------
 call vundle#end()
@@ -24,9 +23,20 @@ filetype plugin indent on
 " --- plugin configuration --------------------------------------------
 " {{{
 
+" fatih/vim-go
+let g:go_imports_autosave = 0
+let g:go_def_mapping_enabled = 0
+let g:go_fmt_fail_silently = 1
+let g:go_def_reuse_buffer = 1
+let g:go_textobj_enabled = 0
+
+
+" rrethy/vim-hexokinase
+let g:Hexokinase_highlighters = ['foregroundfull']
+
 " scrooloose/nerdtree
 nnoremap <C-o> :NERDTreeToggle %<CR>
-let g:NERDTreeNodeDelimiter = "\u00a0" " -- Was seeing ^G character, and this should fix that
+let g:NERDTreeNodeDelimiter = "\u00a0" " -- fixes ^G character
 
 
 " Valloric/YouCompleteMe
@@ -60,14 +70,6 @@ let g:ale_sign_column_always = 1
 
 nmap <Leader>ae <Plug>(ale_next)
 nmap <Leader>ar <Plug>(ale_previous)
-
-
-" fatih/vim-go
-let g:go_imports_autosave = 0
-let g:go_def_mapping_enabled = 0
-let g:go_fmt_fail_silently = 1
-let g:go_def_reuse_buffer = 1
-let g:go_textobj_enabled = 0
 
 " }}}
 " ---------------------------------------------------------------------

@@ -1,8 +1,12 @@
-silent! colorscheme $COLORSCHEME
+set termguicolors
 
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 set t_Co=256
 
+colorscheme dim
+
 highlight Normal     guibg=NONE ctermbg=NONE
-highlight SpellBad              ctermbg=NONE ctermfg=red
-highlight LineNr                             ctermfg=yellow
-highlight SignColumn guibg=NONE ctermbg=NONE
+highlight SpellBad   guibg=NONE guifg=red    ctermbg=NONE ctermfg=red
+highlight LineNr     guibg=NONE guifg=purple ctermbg=NONE ctermfg=yellow
+highlight SignColumn guibg=NONE              ctermbg=NONE
