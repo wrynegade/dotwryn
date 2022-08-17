@@ -26,15 +26,22 @@ UPDATE() {
 		;
 
 	VIM_INSTALL $@ --only-build || __FAIL 2 'vim build failed (try with --clean for make clean)'
+
+	VUNDLE_INSTALL || __FAIL 3 'vundle plugin install failed'
 }
 
 VIM_INSTALL() {
-	"$DOTWRYN/zsh/plugins/scwrypts/scwrypts" --env local --no-log \
+	"$DOTWRYN/bin/scwrypts" --env local --no-log \
 		zsh/git/package/install -- \
 			--target-url 'https://github.com/vim/vim.git' \
 			--local-name 'vim' \
 			--update \
 			$@
+}
+
+VUNDLE_INSTALL() {
+	"$DOTWRYN/bin/scwrypts" --env local --no-log \
+		zsh/vim/vundle/install $@
 }
 
 #####################################################################

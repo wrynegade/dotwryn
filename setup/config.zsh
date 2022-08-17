@@ -39,8 +39,6 @@ CONFIG__VIM() {
 		&& __SUCCESS 'completed vim setup' \
 		|| __FAIL 1 'error detected in vim setup (see above)' \
 		;
-
-	SCWRYPTS zsh/vim/vundle/install      || return 4
 }
 
 #####################################################################
