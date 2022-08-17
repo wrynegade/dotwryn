@@ -72,6 +72,9 @@ vnoremap <Leader>c :w !xclip<CR><CR>
 nnoremap <Leader>v o<esc>!!xclip -o<CR>
 nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
 
+" enable/disable true color
+nnoremap <f12> :set invtermguicolors<CR>
+
 " --- available / rarely used bindings (personal reference) ---
 
 " nnoremap <BS>
