@@ -1,15 +1,14 @@
-let &t_8f="\<Esc>[38:2:%lu:%lu:%lum"
-let &t_8b="\<Esc>[48:2:%lu:%lu:%lum"
-set t_Co=256
+set t_Co=256 t_8f=[38:2:%lu:%lu:%lum t_8b=[48:2:%lu:%lu:%lum t_ZH=[3m t_ZR=[23m
 
 colorscheme default
 silent! colorscheme dim
 
-highlight Normal      guibg=NONE ctermbg=NONE
-highlight SignColumn  guibg=NONE ctermbg=NONE
-highlight SpellBad    guibg=NONE ctermbg=NONE ctermfg=red
-highlight LineNr      guibg=NONE ctermbg=NONE ctermfg=darkmagenta
+highlight Normal                                    ctermbg=NONE        guibg=NONE
+highlight SignColumn                                ctermbg=NONE        guibg=NONE
+highlight LineNr                                    ctermbg=NONE        guibg=NONE        ctermfg=darkmagenta guifg=darkmagenta
 
-highlight TabLineFill guibg=NONE ctermbg=NONE ctermfg=magenta
-highlight TabLine     guibg=NONE ctermbg=NONE ctermfg=darkgray
-highlight TabLineSel  guibg=NONE ctermbg=NONE ctermfg=white    term=bold
+highlight SpellBad    cterm=bold      gui=bold      ctermbg=NONE        guibg=NONE        ctermfg=red         guifg=red
+
+highlight TabLineFill cterm=bold      gui=bold      ctermbg=NONE        guibg=NONE
+highlight TabLine     cterm=NONE      gui=NONE      ctermbg=NONE        guibg=NONE        ctermfg=darkgray    guifg=darkgray
+highlight TabLineSel  cterm=bold      gui=bold      ctermbg=NONE        guibg=NONE        ctermfg=white       guifg=white
