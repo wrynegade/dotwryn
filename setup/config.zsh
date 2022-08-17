@@ -1,8 +1,7 @@
 function SETUP__CONFIG() {
 	__STATUS 'starting application configuration'
 
-	CONFIG_USER_SETTINGS="$DOTWRYN_PATH/config/scwrypts.dotfile.conf" \
-		SCWRYPTS zsh/config/update || return 1
+	SCWRYPTS zsh/config/update || return 1
 
 	CONFIG__ZSH || return 2
 	CONFIG__VIM || return 3
