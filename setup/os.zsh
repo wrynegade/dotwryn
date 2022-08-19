@@ -1,15 +1,15 @@
 #####################################################################
 
 SETUP__OS() {
+	OS__MAKE_REQUIRED_RESOURCES      || return 1
 	[ $CI ] && { __STATUS 'detected CI; skipping os setup'; return 0; }
 	__GETSUDO
 
 	local OS_NAME=$(OS__GET_OS)
 	[ ! $OS_NAME ] && __ABORT
 
-	OS__INSTALL_SOURCE_DEPENDENCIES  || return 1
-	OS__INSTALL_MANAGED_DEPENDENCIES || return 2
-	OS__MAKE_REQUIRED_RESOURCES      || return 3
+	OS__INSTALL_SOURCE_DEPENDENCIES  || return 2
+	OS__INSTALL_MANAGED_DEPENDENCIES || return 3
 }
 
 OS__GET_OS() {
