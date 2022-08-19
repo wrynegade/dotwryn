@@ -52,7 +52,7 @@ CHANGE_COLORSCHEME () {
 			EXTRA_OPTIONS=(default)
 			;;
 		kitty )
-			TARGET_LINK="$DOTWRYN/colorschemes/kitty.$2"
+			TARGET_LINK="./kitty.$2"
 			EXTRA_OPTIONS=()
 			;;
 	esac
@@ -64,11 +64,12 @@ CHANGE_COLORSCHEME () {
 		| sed 's/^./\L&/; s/[A-Z]/-\L&/g'
 	)
 
+	cd "$DOTWRYN/colorschemes/"
 	case $COLORSCHEME in
 		'' ) return 1 ;;
 		default* ) ;;
 		* )
-			COLORSCHEME="$DOTWRYN/colorschemes/$COLORSCHEME.conf"
+			COLORSCHEME="$COLORSCHEME.conf"
 			[ ! -f $COLORSCHEME ] && { echo "no such theme">&2; return 2; }
 			;;
 	esac
