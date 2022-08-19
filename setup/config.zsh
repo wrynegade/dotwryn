@@ -34,6 +34,8 @@ CONFIG__VIM() {
 	CONFIG__ENV vim || return 1
 	CONFIG__RC  vim || return 2
 
+	[ $NO_COMPILE_VIM ] && return 0
+
 	__STATUS 'starting vim setup'
 	"$DOTWRYN_PATH/vim/update" \
 		&& __SUCCESS 'completed vim setup' \

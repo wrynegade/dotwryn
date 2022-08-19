@@ -1,6 +1,7 @@
 #####################################################################
 
 SETUP__OS() {
+	[ $CI ] && { __STATUS 'detected CI; skipping os setup'; return 0; }
 	__GETSUDO
 
 	local OS_NAME=$(OS__GET_OS)

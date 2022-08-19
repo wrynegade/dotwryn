@@ -1,4 +1,5 @@
-[[ $EUID -eq 0 ]] && { echo 'ERROR::Setup cannot be run as root'; exit 1; }
+[[ $EUID -eq 0 ]] && [ ! $FORCE_ROOT ] \
+	&& { echo 'ERROR::Setup cannot be run as root'; exit 1; }
 
 #####################################################################
 
