@@ -21,6 +21,8 @@ CONFIG__SET_DEFAULT_SHELL() {
 	local DEFAULT_SHELL=$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd)
 	[[ $DEFAULT_SHELL =~ zsh ]] && return 0
 
+	[ $FORCE_ROOT ] && return 0
+
 	__STATUS 'setting zsh as default shell'
 	sudo chsh -s $(which zsh) $(whoami) 2>&1 \
 		&& __SUCCESS "set zsh as default shell for '$USER'" \
