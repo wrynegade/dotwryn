@@ -25,24 +25,6 @@ WEBBROWSER='google-chrome-stable'
 #I3__DMENU_FONT_SIZE=
 #I3__BORDER_PIXEL_SIZE=
 
-DOTWRYN_AWS_PROFILE='yage'
-DOTWRYN_AWS_REGION='us-east-2'
-DOTWRYN_AWS_OUTPUT='json'
-
-S3_SYNC_AWS_PROFILE=$DOTWRYN_AWS_PROFILE
-S3_SYNC_BUCKET='yage'
-S3_SYNC_MEDIA=(
-	#'.local/share/dolphin-emu'
-	#'Documents'
-	#'Games/roms'
-	#'Games/wrynscape'
-	'.porn'
-	'Documents'
-	'Media'
-	'Pictures'
-	)
-
-
 PS1_BRANCH_SYMBOL=''
 PS1_INDICATOR_SYMBOL='☕'
 PS1_SEPARATOR='::'
