@@ -6,7 +6,7 @@ export PATH="$DOTWRYN/bin/xorg/$(hostnamectl --static):$PATH"
 for SCRIPT in $(find /etc/x11/xinit/xinitrc.d); do source $SCRIPT; done
 command -v dex && dex -a
 
-$DOTWRYN/bin/xorg/activate-default &
+$DOTWRYN/bin/xorg-activate-default &
 
 cd
 exec i3

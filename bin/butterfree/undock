@@ -1,5 +1,5 @@
 #!/bin/zsh
-source ${0:a:h}/common
+source ${0:a:h}/xorg.zsh
 [ ! $NATIVE_MONITOR ] && {
 	NOTIFY "Must specify NATIVE_MONITOR"
 	return

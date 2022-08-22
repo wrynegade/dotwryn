@@ -27,15 +27,15 @@ DEFAULT_DEVICE="@DEFAULT_$(echo $DEVICE | tr '[:lower:]' '[:upper:]')@"
 case $COMMAND in
 	up )
 		pactl set-$DEVICE-volume $DEFAULT_DEVICE +10%
-		PLAY_SFX volume
+		$DOTWRYN/bin/play-sound volume
 		;;
 	down )
 		pactl set-$DEVICE-volume $DEFAULT_DEVICE -10%
-		PLAY_SFX volume
+		$DOTWRYN/bin/play-sound volume
 		;;
 	mute )
 		pactl set-$DEVICE-mute $DEFAULT_DEVICE toggle
-		PLAY_SFX mute
+		$DOTWRYN/bin/play-sound mute
 		notify-send "default $DEVICE" "$(amixer sget Master | grep -q '\[on\]' && echo unmuted || echo muted)"
 		;;
 	* ) ERROR "Unsupported command '$COMMAND'" ;;

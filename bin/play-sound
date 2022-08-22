@@ -1,22 +1,32 @@
 #!/bin/zsh
 source "$HOME/.config/wryn/env.zsh"
 
-PLAY() {
-	eval "$MEDIA_ENGINE" "$SFX_PATH/$1"
-	true
+which canberra-gtk-play >/dev/null 2>&1 || {
+	notify-send 'canberra-gtk-play' "unable to play '$1'; is canberra-gtk-play installed?"
+	exit 1
 }
 
+PLAY() { canberra-gtk-play -f "$SFX_PATH/$1"; }
+
+SFX_FILE=''
 case $1 in
-	volume    ) PLAY yaru-message.oga ;;
-	mute      ) PLAY smooth-dialog-warning.oga ;;
-	backlight ) PLAY yaru-audio-volume-change.oga ;;
-	login     ) PLAY yaru-desktop-login.oga ;;
-	logout    ) PLAY smooth-desktop-login.oga ;;
-	notify    ) PLAY yaru-complete.oga ;;
-	undock    ) PLAY yaru-desktop-login.oga ;;
-	homedock  ) PLAY homedock.oga ;;
-	gamedock  ) PLAY gamedock.oga ;;
-	* )
-		[ -f "$SFX_PATH/$1" ] && PLAY $1 || ls $SFX_PATH
+	volume    ) SFX_FILE=yaru-message.oga             ;;
+	mute      ) SFX_FILE=smooth-dialog-warning.oga    ;;
+	backlight ) SFX_FILE=yaru-audio-volume-change.oga ;;
+	login     ) SFX_FILE=yaru-desktop-login.oga       ;;
+	logout    ) SFX_FILE=smooth-desktop-login.oga     ;;
+	notify    ) SFX_FILE=yaru-complete.oga            ;;
+	undock    ) SFX_FILE=yaru-desktop-login.oga       ;;
+	homedock  ) SFX_FILE=homedock.oga                 ;;
+	gamedock  ) SFX_FILE=gamedock.oga                 ;;
+
+	* ) SFX_FILE="$1"
 		;;
 esac
+[ ! -f "$SFX_PATH/$SFX_FILE" ] && {
+	notify-send 'canberra-gtk-play' "no such sfx file or alias '$1'" \
+	exit 2
+}
+
+canberra-gtk-play -f "$SFX_PATH/$SFX_FILE" \
+	|| notify-send 'canberra-gtk-play' "unable to play '$1'"

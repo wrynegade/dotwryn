@@ -1,5 +1,9 @@
 #!/bin/zsh
-# requires i3lock-color
+which i3lock >/dev/null 2>&1 || {
+	notify-send 'i3lock-color' 'could not find installation of i3lock'
+}
+# note: requires i3lock-color
+
 INSIDE_VER='001020'
 RING_VER='004040'
 
@@ -26,4 +30,5 @@ i3lock \
 	--line-color=$LINE \
 	--time-color=$TIME --date-color=$DATE \
 	--keyhl-color=$KEYDOWN --bshl-color=$KEYREMOVE \
+	|| notify-send 'i3lock-color' 'something went wrong; unable to lock' \
 	;

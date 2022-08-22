@@ -1,5 +1,5 @@
 #!/bin/zsh
-source ${0:a:h}/common
+source ${0:a:h}/xorg.zsh
 
 xrandr \
 	--output eDP-1 \
@@ -18,4 +18,4 @@ xset +dpms && xset s blank && xset s on \
 (pkill compton; sleep 0.5; compton;) &
 
 $DOTWRYN/bin/set-background random
-PLAY_SFX gamedock
+$DOTWRYN/bin/play-sound gamedock

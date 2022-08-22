@@ -16,4 +16,4 @@ case $1 in
 		;;
 esac
 
-PLAY_SFX backlight
+$DOTWRYN/bin/play-sound backlight

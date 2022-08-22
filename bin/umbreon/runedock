@@ -1,5 +1,5 @@
 #!/bin/zsh
-source ${0:a:h}/common
+source ${0:a:h}/xorg.zsh
 
 xrandr \
 	--output eDP-1 \
@@ -17,4 +17,4 @@ xset dpms 0 0 0 && xset s noblank && xset s off \
 	&& notify-send 'DPMS' 'disabled screen blank'
 
 $DOTWRYN/bin/set-background random
-PLAY_SFX gamedock
+$DOTWRYN/bin/play-sound gamedock

@@ -1,5 +1,5 @@
 #!/bin/zsh
-source ${0:a:h}/common
+source ${0:a:h}/xorg.zsh
 LEFT=$(GET_ALL_EXTERNAL_MONITORS | grep 'DP.-1')
 RIGHT=$(GET_ALL_EXTERNAL_MONITORS | grep 'DP.-2')
 

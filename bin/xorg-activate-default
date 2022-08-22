@@ -7,7 +7,7 @@ case $_HOSTNAME in
 	umbreon    ) DEFAULT=undock ;;
 esac
 
-LAYOUT="${0:a:h}/$_HOSTNAME/$DEFAULT"
+LAYOUT="$DOTWRYN/bin/$_HOSTNAME/$DEFAULT"
 
 [ -f $LAYOUT ] && {
 	until xrandr -q >/dev/null 2>&1; do sleep .1; done
