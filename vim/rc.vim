@@ -57,8 +57,8 @@ nnoremap <Leader>rs q:oechom 'quickrepl' \| call ExecuteCommand('zsh -l', 'split
 " \t = run last quicktest
 "   t)ype new quicktest
 "   e)dit last quicktest
-nnoremap <Leader>t  q:?^echom 'quicktest'<CR><CR>
-nnoremap <Leader>tt q:oechom 'quicktest' \| call SplitPaneTest('')<ESC>F'i
+nnoremap <Leader>t  q:?^echom 'quicktest'<CR><CR><CR>
+nnoremap <Leader>tt q:oechom 'quicktest' \| call ExecuteCommand('')<ESC>F'i
 nnoremap <Leader>te q:?^echom 'quicktest'<CR>
 
 " ./utility.vim

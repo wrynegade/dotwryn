@@ -46,10 +46,11 @@ function GetCommandString(args, flavor, output)
 
 	if stridx(a:output, 'tmux') != -1
 		let command = command.";"
-					\ . "echo \"-----------------------------\" | lolcat;"
-					\ . "echo \"(ENTER to close, C^c to stay)\";"
-					\ . "read </dev/tty;"
-					\ . "tmux detach-client -s".g:escapeTmuxSession.";"
+					\ . " echo \"-----------------------------\" | lolcat;"
+					\ . " echo \"(ENTER to close, C^c to stay)\";"
+					\ . " read </dev/tty;"
+					\ . " tmux detach-client" " omit final ';'
+		echom command
 	endif
 
 	if stridx(a:output, 'split-pane') == -1
@@ -61,7 +62,7 @@ endfunction
 
 function GetPrefferredCommandOutput()
 	for output in g:escapeCommandOutputs
-		if stridx(output, 'tmux') && executable('tmux')
+		if stridx(output, 'tmux') != -1 && executable('tmux')
 			return output
 		elseif stridx(output, 'split-pane') != -1 && v:version >= 800
 			return output
