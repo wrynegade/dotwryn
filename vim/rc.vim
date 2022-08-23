@@ -5,7 +5,7 @@ if isdirectory(expand("$HOME/.vim/bundle/Vundle.vim"))
 endif
 
 source $WRYNVIMPATH/options.vim
-source $WRYNVIMPATH/testing.vim
+source $WRYNVIMPATH/execute.vim
 source $WRYNVIMPATH/formatting.vim
 source $WRYNVIMPATH/navigation.vim
 source $WRYNVIMPATH/color.vim
@@ -49,10 +49,10 @@ nnoremap <Leader>gb :Git blame<CR>
 
 " \r = open last REPL (p)ython (n)odejs (c)lisp
 nnoremap <Leader>r  q:?^echom 'quickrepl'<CR><CR>
-nnoremap <Leader>rp q:oechom 'quickrepl' \| call SplitPaneTest('bpython')<CR>
-nnoremap <Leader>rn q:oechom 'quickrepl' \| call SplitPaneTest('node')<CR>
-nnoremap <Leader>rc q:oechom 'quickrepl' \| call SplitPaneTest('clisp', 1)<CR>
-nnoremap <Leader>rs q:oechom 'quickrepl' \| call SplitPaneTest('')<CR>
+nnoremap <Leader>rp q:oechom 'quickrepl' \| call ExecuteCommand('bpython', 'split-pane-vertical')<CR>
+nnoremap <Leader>rn q:oechom 'quickrepl' \| call ExecuteCommand('node', 'split-pane-vertical')<CR>
+nnoremap <Leader>rc q:oechom 'quickrepl' \| call ExecuteCommand('clisp', 'split-pane-horizontal')<CR>
+nnoremap <Leader>rs q:oechom 'quickrepl' \| call ExecuteCommand('zsh -l', 'split-pane-vertical')<CR>
 
 " \t = run last quicktest
 "   t)ype new quicktest

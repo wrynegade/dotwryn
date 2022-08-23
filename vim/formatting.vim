@@ -14,6 +14,7 @@ function FormatFileType(indent, expandtab, foldmethod, foldlevel, spell)
 endfunction
 
 augroup forced_filetype_recognition
+	autocmd!
 	autocmd BufRead,BufNewFile *.tmux          setfiletype tmux
 	autocmd BufRead,BufNewFile *.clisp         setfiletype lisp
 	autocmd BufRead,BufNewFile *.lsp           setfiletype lisp
@@ -64,7 +65,8 @@ let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml
 "          (t)ests
 " {{{
 augroup file_specific_command_overrides
-	nnoremap <Leader>ec :call SplitPaneTest('%:p', v:true)<CR>
+	autocmd!
+	nnoremap <Leader>ec :call ExecuteCommand('%:p', 'split-pane-horizontal')<CR>
 	nnoremap <Leader>ei :echohl ErrorMsg <bar> echom 'ERROR: no interactive execute defined' <bar> echohl None<CR>
 	nnoremap <Leader>eb :echohl ErrorMsg <bar> echom 'ERROR: no build steps defined'         <bar> echohl None<CR>
 	nnoremap <Leader>ef :echohl ErrorMsg <bar> echom 'ERROR: no auto-format steps defined'   <bar> echohl None<CR>
@@ -80,8 +82,8 @@ augroup file_specific_command_overrides
 	autocmd FileType go  nnoremap <silent> <Leader>ef <Plug>(go-imports)
 	autocmd FileType go  nnoremap <silent> gd <Plug>(go-def-tab)
 
-	autocmd FileType python  nnoremap <Leader>ec :call SplitPaneTest('bpython %')<CR>
-	autocmd FileType python  nnoremap <Leader>ei :call SplitPaneTest('bpython -qi %')<CR>
+	autocmd FileType python  nnoremap <Leader>ec :call ExecuteCommand('bpython %:p', 'split-pane-vertical')<CR>
+	autocmd FileType python  nnoremap <Leader>ei :call ExecuteCommand('bpython -qi %:p', 'split-pane-vertical')<CR>
 augroup end
 " }}}
 
