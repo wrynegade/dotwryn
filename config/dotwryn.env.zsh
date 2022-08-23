@@ -9,6 +9,11 @@ export WALLPAPER_PATH="$HOME/Pictures/bg"
 
 export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
+export DOTWRYN_UTILS="$DOTWRYN/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh"
+
+RELOAD_ZSH_UTILS() { source $DOTWRYN_UTILS; }
+[ ! $DOTWRYN_UTILS_LOADED ] && RELOAD_ZSH_UTILS && export DOTWRYN_UTILS_LOADED=1
+
 #####################################################################
 ### Application Settings ############################################
 #####################################################################
@@ -25,10 +30,6 @@ PS1_USER='%n'
 
 WELCOME () {
 	{ figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy'; } | lolcat
-}
-
-LOAD_ZSH_UTILS() {
-	source "$DOTWRYN/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh"
 }
 
 #####################################################################

@@ -1,12 +1,13 @@
 #!/bin/zsh
 source "$HOME/.config/wryn/env.zsh"
-# ---------------------------------------------------------------------
+#####################################################################
 INTERNAL_PLUGINS=(
 	"$DOTWRYN/zsh/config" # must load first
-	$(find "$DOTWRYN/zsh" -maxdepth 1 -type f \
-		! -name 'rc' \
-		! -name 'config' \
-	)
+	$(find "$DOTWRYN/zsh" -mindepth 1 -maxdepth 1 -type f \
+		| grep -v '/rc$' \
+		| grep -v '/config$' \
+		| grep -v '/\.[^/]\+$' \
+		)
 )
 
 SET_PREFERRED_EDITOR() {
@@ -29,13 +30,13 @@ SET_PREFERRED_EDITOR() {
 			&& break
 	done
 
-	export EDITOR="$AVAILABLE_EDITOR";
-	export VISUAL="$AVAILABLE_EDITOR";
+	export EDITOR="$AVAILABLE_EDITOR"
+	export VISUAL="$AVAILABLE_EDITOR"
 }
-# ---------------------------------------------------------------------
+#####################################################################
 for p in $INTERNAL_PLUGINS; do source $p; done
 for p in $EXTERNAL_PLUGINS; do [ -f $p ] && source $p; done
 SET_PREFERRED_EDITOR
 WELCOME
-# ---------------------------------------------------------------------
+#####################################################################
 true

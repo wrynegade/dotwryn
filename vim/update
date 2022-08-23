@@ -1,5 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env.zsh" && LOAD_ZSH_UTILS
+source "$HOME/.config/wryn/env.zsh"
 #####################################################################
 
 UPDATE() {

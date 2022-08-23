@@ -1,5 +1,5 @@
 #!/bin/zsh
-# ---------------------------------------------------------------------
+#####################################################################
 
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -13,20 +13,20 @@ bindkey -v
 bindkey '^R' history-incremental-search-backward
 
 autoload edit-command-line
-zle -N edit-command-line;
-bindkey -M vicmd v edit-command-line;
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
-# ---------------------------------------------------------------------
+#####################################################################
 
-zmodload -i zsh/complist;
+zmodload -i zsh/complist
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' max-errors 1
-zstyle ':completion:*' menu select;
-bindkey -M menuselect '^M' .accept-line; # don't require 'return' to select menu item
+zstyle ':completion:*' menu select
+bindkey -M menuselect '^M' .accept-line
 
 autoload -Uz compinit
 compinit
 
-# ---------------------------------------------------------------------
+#####################################################################
 
 which kitty >/dev/null && kitty + complete setup zsh | source /dev/stdin
