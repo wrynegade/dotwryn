@@ -3,6 +3,11 @@
 
 #####################################################################
 
+# normally "DOTWRYN", but uses "DOTWRYN_PATH" to avoid conflict during setup
+cd "${0:a:h}"
+export DOTWRYN_PATH="$(git rev-parse --show-toplevel)"
+cd "$DOTWRYN_PATH"
+
 printf 'initializing required submodules...' >&2
 git submodule update --init --remote --recursive >/dev/null 2>&1 || {
 	echo 'failed!' >&2
@@ -12,20 +17,13 @@ git submodule update --init --remote --recursive >/dev/null 2>&1 || {
 
 #####################################################################
 
-# normally "DOTWRYN", but uses "DOTWRYN_PATH" to avoid conflict during setup
-cd "${0:a:h}"
-export DOTWRYN_PATH="$(git rev-parse --show-toplevel)"
-cd "$DOTWRYN_PATH"
-
-#####################################################################
-
 _DEPENDENCIES+=(zsh fzf)
 _REQUIRED_ENV+=()
 source "$DOTWRYN_PATH/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh" || exit 3
 
 SCWRYPTS() {
 	CI=1 \
-	CONFIG__USER_SETTINGS="$DOTWRYN_PATH/config/scwrypts/dotfiles.conf" \
+	CONFIG__USER_SETTINGS="$DOTWRYN_PATH/config/scwrypts/dotfiles.zsh" \
 	DOTWRYN=$DOTWRYN_PATH \
 		"$DOTWRYN_PATH/zsh/plugins/scwrypts/scwrypts" -n $1 -- ${@:2}
 }
