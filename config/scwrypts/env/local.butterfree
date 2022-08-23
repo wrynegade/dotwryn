@@ -13,9 +13,9 @@ export AWS__S3__MEDIA_BUCKET=yage # inherited from local
 export AWS__S3__MEDIA_TARGETS=($S3_SYNC_MEDIA) # inherited from local
 
 # custom i3 configuration settings
-export I3__BORDER_PIXEL_SIZE=
-export I3__DMENU_FONT_SIZE=
-export I3__GLOBAL_FONT_SIZE=
+export I3__BORDER_PIXEL_SIZE=7
+export I3__DMENU_FONT_SIZE=20
+export I3__GLOBAL_FONT_SIZE=1
 export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # inherited from local
 
 # redis connection credentials

@@ -1,0 +1,43 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+case $1 in
+	next ) $DOTWRYN/bin/media next ;;
+	prev ) $DOTWRYN/bin/media prev ;;
+	play ) $DOTWRYN/bin/media play ;;
+
+	volumeup   ) $DOTWRYN/bin/pulseaudio sink up ;;
+	volumedown ) $DOTWRYN/bin/pulseaudio sink down ;;
+	volumemute ) $DOTWRYN/bin/pulseaudio sink mute ;;
+	micmute    ) $DOTWRYN/bin/pulseaudio source mute ;;
+
+	backlightup   ) $DOTWRYN/bin/backlight up ;;
+	backlightdown ) $DOTWRYN/bin/backlight down ;;
+
+	lock ) $DOTWRYN/bin/i3lock ;;
+
+	bgrandomize ) $DOTWRYN/bin/set-background random ;;
+
+	alternateterm ) $DOTWRYN/bin/kitty-alternate-theme ;;
+
+	logout ) $DOTWRYN/bin/i3-logout ;;
+
+	launch )
+		local PROGRAM
+		local ARGS=()
+		case $2 in
+			messages ) PROGRAM=android-messsages-desktop ;;
+			voice    ) PROGRAM=google-voice-desktop ;;
+			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
+			scrcpy   ) PROGRAM=scrcpy ;;
+
+			discord  ) PROGRAM=discord     ARGS+=(-a) ;;
+			spotify  ) PROGRAM=spotify     ARGS+=(-c Spotify) ;;
+			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
+			obs      ) PROGRAM=obs         ARGS+=(-c '^obs') ;;
+
+			*        ) PROGRAM=$2 ;;
+		esac
+
+		scwrypts i3/launch-or-show --env local -- $PROGRAM ${ARGS[@]}
+		;;
+esac

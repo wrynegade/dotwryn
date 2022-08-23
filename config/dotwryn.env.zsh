@@ -3,8 +3,10 @@
 #####################################################################
 
 export DOTWRYN="$HOME/.wryn"
+
 export SFX_PATH="$HOME/Media/sfx"
 export WALLPAPER_PATH="$HOME/Pictures/bg"
+
 export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
 #####################################################################
@@ -13,17 +15,8 @@ export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
 export PREFERRED_EDITOR=(vim vi)
 
-# should play an audio file argument
-MEDIA_ENGINE='canberra-gtk-play -f'
-PLAY_SFX () { $DOTWRYN/bin/play-sound $@ >/dev/null 2>&1; }
-
 RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 TMUX_DEFAULT_SESSION_NAME='wryn'
-WEBBROWSER='google-chrome-stable'
-
-#I3__GLOBAL_FONT_SIZE=
-#I3__DMENU_FONT_SIZE=
-#I3__BORDER_PIXEL_SIZE=
 
 PS1_BRANCH_SYMBOL=''
 PS1_INDICATOR_SYMBOL='☕'
@@ -34,27 +27,57 @@ WELCOME () {
 	{ figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy'; } | lolcat
 }
 
+LOAD_ZSH_UTILS() {
+	source "$DOTWRYN/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh"
+}
+
 #####################################################################
 ### External Plugins / Settings #####################################
 #####################################################################
 
-EXTERNAL_PLUGINS=(
+# fzf
+EXTERNAL_PLUGINS+=(
 	'/usr/share/fzf/key-bindings.zsh'
 	'/usr/share/fzf/completion.zsh'
-	"$DOTWRYN/zsh/plugins/z/z.sh"
-	"$DOTWRYN/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
-	"$DOTWRYN/zsh/plugins/code-activator/activator.plugin.zsh"
-	"$DOTWRYN/zsh/plugins/scwrypts/scwrypts.plugin.zsh"
-	"$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh"
-	)
-
-export SCWRYPTS_ENV='local'
+)
 
 FZF_DEFAULT_OPTS='--reverse'
 FZF_DEFAULT_COMMAND='rg --files'
+
+
+# fzf-tab
+EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh")
 
 zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept' ';:toggle'
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
-LOAD_ZSH_UTILS() { source "$DOTWRYN/zsh/plugins/scwrypts/zsh/utils/utils.module.zsh"; }
+
+# scwrypts
+EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/scwrypts/scwrypts.plugin.zsh")
+
+export SCWRYPTS_ENV="local.$(hostnamectl --static)"
+[ ! -f $HOME/.config/scwrypts/env/$SCWRYPTS_ENV ] && export SCWRYPTS_ENV='local'
+
+export S3_SYNC_MEDIA=(
+	#'.local/share/dolphin-emu'
+	#'Documents'
+	#'Games/roms'
+	#'Games/wrynscape'
+	'.porn'
+	'Documents'
+	'Media'
+	'Pictures'
+	)
+
+
+# z
+EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/z/z.sh")
+
+
+# code-activator
+EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/code-activator/activator.plugin.zsh")
+
+
+# ssh
+EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/ssh/ssh.plugin.zsh")

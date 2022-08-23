@@ -36,4 +36,5 @@ $DOTWRYN/config/xconfig.conf                  X11/xconfig
 $DOTWRYN/config/xinitrc                       X11/xinitrc
 $DOTWRYN/bin/scwrypts                         ../.local/bin/scwrypts
 $DOTWRYN/bin/vim                              ../.local/bin/vim
+$DOTWRYN/bin/$(hostnamectl --static)          ../.$(hostnamectl --static)
 "
