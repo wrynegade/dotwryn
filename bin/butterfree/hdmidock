@@ -13,3 +13,6 @@ xrandr \
 	--pos 0x0 \
 	&& DISCONNECT_OTHER login \
 	|| NOTIFY "Unable to connect '$EXTERNAL_MONITOR' to 1920x1080"
+
+xset dpms 0 0 0 && xset s noblank && xset s off \
+	&& notify-send 'DPMS' 'disabled screen blank'
