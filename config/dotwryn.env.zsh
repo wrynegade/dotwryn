@@ -57,8 +57,11 @@ zstyle ':fzf-tab:*' continuous-trigger '/'
 # scwrypts
 EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/scwrypts/scwrypts.plugin.zsh")
 
-export SCWRYPTS_ENV="local.$(hostnamectl --static)"
-[ ! -f $HOME/.config/scwrypts/env/$SCWRYPTS_ENV ] && export SCWRYPTS_ENV='local'
+for e in \
+	"local.$(hostnamectl --static).secret" \
+	"local.$(hostnamectl --static)" \
+	"local"
+do; export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; done
 
 export S3_SYNC_MEDIA=(
 	#'.local/share/dolphin-emu'
