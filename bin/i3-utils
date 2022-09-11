@@ -25,7 +25,7 @@ case $1 in
 		local PROGRAM
 		local ARGS=()
 		case $2 in
-			messages ) PROGRAM=android-messsages-desktop ;;
+			messages ) PROGRAM=android-messages-desktop ;;
 			voice    ) PROGRAM=google-voice-desktop ;;
 			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
 			scrcpy   ) PROGRAM=scrcpy ;;
@@ -37,7 +37,6 @@ case $1 in
 
 			*        ) PROGRAM=$2 ;;
 		esac
-
 		scwrypts i3/launch-or-show --env local -- $PROGRAM ${ARGS[@]}
 		;;
 esac
