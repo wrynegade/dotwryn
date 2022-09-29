@@ -82,7 +82,7 @@ augroup file_specific_command_overrides
 	autocmd FileType go  nnoremap <silent> <Leader>ef <Plug>(go-imports)
 	autocmd FileType go  nnoremap <silent> gd <Plug>(go-def-tab)
 
-	autocmd FileType python  nnoremap <Leader>ec :call ExecuteCommand('bpython %:p', 'split-pane-vertical')<CR>
+	autocmd FileType python  nnoremap <Leader>ec :call ExecuteCommand('python %:p', 'split-pane-vertical')<CR>
 	autocmd FileType python  nnoremap <Leader>ei :call ExecuteCommand('bpython -qi %:p', 'split-pane-vertical')<CR>
 augroup end
 " }}}
