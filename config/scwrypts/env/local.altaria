@@ -10,7 +10,7 @@ export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # inherited from local
 
 # s3 bucket name and filesystem targets for media backups
 export AWS__S3__MEDIA_BUCKET=yage # inherited from local
-export AWS__S3__MEDIA_TARGETS='.local/share/dolphin-emu,.porn,Games/roms,Games/wrynscape,Documents,Media,Pictures'
+export AWS__S3__MEDIA_TARGETS='.local/share/dolphin-emu,.porn,Games/roms,Games/wrynscape,Documents,Media,Pictures,Archives/recordings'
 
 # custom i3 configuration settings
 export I3__BORDER_PIXEL_SIZE=
