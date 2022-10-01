@@ -28,7 +28,9 @@ $DOTWRYN/config/scwrypts/config               scwrypts/config
 $DOTWRYN/config/scwrypts/dotfiles.zsh         scwrypts/dotfiles.zsh
 $DOTWRYN/config/scwrypts/env/local            scwrypts/env/local
 $DOTWRYN/config/scwrypts/env/local.altaria    scwrypts/env/local.altaria
+$DOTWRYN/config/scwrypts/env/local.blaziken   scwrypts/env/local.blaziken
 $DOTWRYN/config/scwrypts/env/local.butterfree scwrypts/env/local.butterfree
+$DOTWRYN/config/scwrypts/env/local.gardevoir  scwrypts/env/local.gardevoir
 $DOTWRYN/config/scwrypts/env/local.umbreon    scwrypts/env/local.umbreon
 $DOTWRYN/config/scwrypts/vundle.zsh           scwrypts/vundle.zsh
 $DOTWRYN/config/tmux.conf                     tmux/tmux.conf

@@ -10,7 +10,7 @@ export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # inherited from local
 
 # s3 bucket name and filesystem targets for media backups
 export AWS__S3__MEDIA_BUCKET=yage # inherited from local
-export AWS__S3__MEDIA_TARGETS=($S3_SYNC_MEDIA) # inherited from local
+export AWS__S3__MEDIA_TARGETS='.porn,Documents,Media,Pictures'
 
 # custom i3 configuration settings
 export I3__BORDER_PIXEL_SIZE=

@@ -63,16 +63,6 @@ for e in \
 	"local"
 do; export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; done
 
-export S3_SYNC_MEDIA=(
-	#'.local/share/dolphin-emu'
-	#'.porn'
-	#'Games/roms'
-	#'Games/wrynscape'
-	'Documents'
-	'Media'
-	'Pictures'
-	)
-
 
 # z
 EXTERNAL_PLUGINS+=("$DOTWRYN/zsh/plugins/z/z.sh")
