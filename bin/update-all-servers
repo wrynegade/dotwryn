@@ -1,0 +1,91 @@
+#!/bin/zsh
+source "$HOME/.config/wryn/env.zsh"
+RELOAD_ZSH_UTILS
+#####################################################################
+
+SESSION='update'
+LOCAL_HOST="$(hostnamectl --static)"
+
+UPDATE_REMINDER="{ echo \\UPDATE : an error occured - you may want to stop execution of 'update-all-servers' on $LOCAL_HOST\\\"; read; }"
+
+CHECK_SESSION() {
+	tmux list-sessions >/dev/null 2>&1 \
+		| grep -q "^$SESSION" && return 0 || return 1
+}
+
+UPDATE_ALL() {
+	__STATUS "starting '$@'"
+	for SERVER in $(echo $SERVER_LIST); do UPDATE $SERVER "$@"; done
+	WAIT_FOR_UPDATES \
+		&& __SUCCESS "'$@' finished across all servers" \
+		|| __FAIL 69 'user abort' \
+		;
+}
+
+UPDATE() {
+	local SERVER_HOST="$1"
+	local COMMAND="${@:2} || $UPDATE_REMINDER"
+
+	[[ $SERVER_HOST =~ $LOCAL_HOST ]] || {
+		COMMAND="ssh -t $SERVER_HOST.lan 'source ~/.zshrc >/dev/null 2>&1; $COMMAND'"
+	}
+
+	tmux new-window -t $SESSION -n $SERVER_HOST "source ~/.zshrc >/dev/null 2>&1; $COMMAND"
+}
+
+WAIT_FOR_UPDATES() {
+	__STATUS 'waiting for updates to complete'
+	while [[ $(tmux list-windows -t $SESSION 2>/dev/null | wc -l) -gt 1 ]]
+	do
+		sleep 1
+	done
+
+	CHECK_SESSION
+}
+
+#####################################################################
+
+
+CURRENT_SESSION=$(\
+	tmux list-panes -a -F '#{pane_tty} #{session_name}' \
+		| grep $(tty) \
+		| awk '{print $2;}' \
+)
+
+#####################################################################
+
+CHECK_SESSION && __FAIL 1 'update currently in progress'
+
+tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
+
+__REMINDER
+__REMINDER 'manual action is required; (in another tab) connect to tmux:'
+__REMINDER "tmux a -t $SESSION"
+__REMINDER
+__REMINDER 'to stop the update at any time, run:'
+__REMINDER "tmux kill-session -t $SESSION"
+__REMINDER
+
+[ $CURRENT_SESSION ] && {
+	__SUCCESS 'currently in a tmux session; opening new window...'
+	tmux new-window -t $CURRENT_SESSION "unset TMUX; tmux a -t $SESSION"
+}
+
+SERVER_LIST=$(
+	ls "$DOTWRYN/config/scwrypts/env/" \
+		| sed 's/^local//; s/^\.//' \
+		| grep . \
+)
+
+UPDATE_ALL 'yay -Syu'
+UPDATE_ALL 'cd ~/.wryn; git pull --autostash'
+UPDATE_ALL '~/.wryn/bin/scwrypts config update'
+UPDATE_ALL '~/.wryn/bin/scwrypts media push'
+UPDATE_ALL '~/.wryn/bin/scwrypts media pull'
+
+tmux kill-session -t $SESSION >/dev/null 2>&1
+CHECK_SESSION && __WARNING "unable to close tmux session '$SESSION'"
+
+__SUCCESS
+__SUCCESS 'finished system update accross all servers'
+__SUCCESS
