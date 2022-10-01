@@ -25,6 +25,7 @@ UPDATE_ALL() {
 UPDATE() {
 	local SERVER_HOST="$1"
 	local COMMAND="${@:2} || $UPDATE_REMINDER"
+	[[ $2 =~ ^reboot ]] && [[ $SERVER_HOST =~ $LOCAL_HOST ]] && return 0
 
 	[[ $SERVER_HOST =~ $LOCAL_HOST ]] || {
 		COMMAND="ssh -t $SERVER_HOST.lan 'source ~/.zshrc >/dev/null 2>&1; $COMMAND'"
@@ -34,7 +35,6 @@ UPDATE() {
 }
 
 WAIT_FOR_UPDATES() {
-	__STATUS 'waiting for updates to complete'
 	while [[ $(tmux list-windows -t $SESSION 2>/dev/null | wc -l) -gt 1 ]]
 	do
 		sleep 1
@@ -58,6 +58,7 @@ CHECK_SESSION && __FAIL 1 'update currently in progress'
 
 tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
 
+__yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
 __REMINDER
 __REMINDER 'manual action is required; (in another tab) connect to tmux:'
 __REMINDER "tmux a -t $SESSION"
@@ -83,9 +84,13 @@ UPDATE_ALL '~/.wryn/bin/scwrypts config update'
 UPDATE_ALL '~/.wryn/bin/scwrypts media push'
 UPDATE_ALL '~/.wryn/bin/scwrypts media pull'
 
+[[ $REBOOT -eq 1 ]] && UPDATE_ALL 'reboot || sudo reboot'
+
 tmux kill-session -t $SESSION >/dev/null 2>&1
 CHECK_SESSION && __WARNING "unable to close tmux session '$SESSION'"
 
 __SUCCESS
 __SUCCESS 'finished system update accross all servers'
 __SUCCESS
+
+[[ $REBOOT -eq 1 ]] && { __STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }
