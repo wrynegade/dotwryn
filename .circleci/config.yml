@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: cimg/base:stable
+      - image: docker:git
     steps:
       - checkout
       - run: docker build . -t blaziken734/debugger -f .docker/Dockerfile
