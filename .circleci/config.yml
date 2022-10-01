@@ -1,0 +1,24 @@
+---
+version: 2.1
+
+jobs:
+  deploy:
+    docker:
+      - img: cimg/base:stable
+    steps:
+      - checkout
+      - run: docker build . -t blaziken734/debugger -f .docker/Dockerfile
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      - run: docker push blaziken734/debugger
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - deploy:
+          context:
+            - yage-docker
+          filters:
+            branches:
+              only:
+                - main

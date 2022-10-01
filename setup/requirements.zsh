@@ -31,6 +31,7 @@ SCWRYPTS() {
 #####################################################################
 
 source "$DOTWRYN_PATH/setup/os.zsh"
+source "$DOTWRYN_PATH/setup/git.zsh"
 source "$DOTWRYN_PATH/setup/config.zsh"
 
 #####################################################################
