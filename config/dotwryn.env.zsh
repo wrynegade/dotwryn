@@ -65,10 +65,9 @@ do; export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; d
 
 export S3_SYNC_MEDIA=(
 	#'.local/share/dolphin-emu'
-	#'Documents'
+	#'.porn'
 	#'Games/roms'
 	#'Games/wrynscape'
-	'.porn'
 	'Documents'
 	'Media'
 	'Pictures'
