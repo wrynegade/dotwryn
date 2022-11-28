@@ -10,7 +10,7 @@ xrandr \
 		--pos 0x0 \
 	--output DP-2 \
 		--primary \
-		--mode 4096x2160 \
+		--mode 3840x2160 \
 		--rotate normal \
 		--left-of DP-0 \
 	;

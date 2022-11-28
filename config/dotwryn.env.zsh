@@ -42,8 +42,8 @@ EXTERNAL_PLUGINS+=(
 	'/usr/share/fzf/completion.zsh'
 )
 
-FZF_DEFAULT_OPTS='--reverse'
-FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_OPTS='--reverse --ansi --height 50%'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 
 # fzf-tab
