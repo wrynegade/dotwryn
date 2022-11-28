@@ -61,7 +61,7 @@ for e in \
 	"local.$(hostnamectl --static).secret" \
 	"local.$(hostnamectl --static)" \
 	"local"
-do; export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; done
+do export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; done
 
 
 # z

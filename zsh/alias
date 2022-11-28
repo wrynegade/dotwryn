@@ -16,9 +16,18 @@ alias w='watch -tn1 '
 
 #####################################################################
 
-command -v bat >/dev/null 2>&1 && alias cat='bat --style="plain"'
+command -v bat >/dev/null 2>&1 \
+	&& alias cat='bat --style="plain"'
+
+command -v startplasma-x11 >/dev/null 2>&1 \
+	&& alias startk="startx '$DOTWRYN/config/xinitrc.kde'"
+
+command -v i3 >/dev/null 2>&1 \
+	&& alias starti="startx '$DOTWRYN/config/xinitrc.i3'"
 
 #####################################################################
 
 alias erg='EDIT_RIPGREP_FILE_MATCHES'
 EDIT_RIPGREP_FILE_MATCHES() { $EDITOR $(rg --color=never -l $@); }
+
+#####################################################################
