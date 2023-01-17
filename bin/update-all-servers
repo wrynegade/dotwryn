@@ -83,7 +83,7 @@ UPDATE_ALL 'cd ~/.wryn; git pull --autostash'
 UPDATE_ALL '~/.wryn/bin/scwrypts config update'
 UPDATE_ALL '~/.wryn/bin/scwrypts media push'
 UPDATE_ALL '~/.wryn/bin/scwrypts media pull'
-UPDATE_ALL '~/.wryn/bin/scwrypts i3 font override'
+UPDATE_ALL 'command -v i3-msg >/dev/null 2>&1 || exit 0; ~/.wryn/bin/scwrypts i3 font override'
 
 [[ $REBOOT -eq 1 ]] && UPDATE_ALL 'reboot || sudo reboot'
 
