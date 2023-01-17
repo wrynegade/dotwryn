@@ -19,7 +19,8 @@ DEVICE="$1"
 COMMAND="$2"
 
 case $DEVICE in
-	sink | source ) ;;
+	sink   ) AMIXER_DEVICE=Master  ;;
+	source ) AMIXER_DEVICE=Capture ;;
 	* ) ERROR 1 "Unsupported device '$DEVICE'" ;;
 esac
 
@@ -36,7 +37,7 @@ case $COMMAND in
 	mute )
 		pactl set-$DEVICE-mute $DEFAULT_DEVICE toggle
 		$DOTWRYN/bin/play-sound mute
-		notify-send "default $DEVICE" "$(amixer sget Master | grep -q '\[on\]' && echo unmuted || echo muted)"
+		notify-send "default $DEVICE" "$(amixer sget $AMIXER_DEVICE | grep -q '\[on\]' && echo unmuted || echo muted)"
 		;;
 	* ) ERROR "Unsupported command '$COMMAND'" ;;
 esac

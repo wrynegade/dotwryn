@@ -20,9 +20,6 @@ nnoremap <Space> @q
 " \q for `q:`
 nnoremap <Leader>q q:
 
-" \f for fold
-nnoremap <Leader>f z
-
 " \s previous selection command
 nnoremap <Leader>s :'<,'>
 
