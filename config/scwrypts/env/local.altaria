@@ -18,6 +18,9 @@ export I3__DMENU_FONT_SIZE=
 export I3__GLOBAL_FONT_SIZE=
 export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # inherited from local
 
+# linear.app project management configuration
+export LINEAR__API_TOKEN=
+
 # redis connection credentials
 export REDIS_AUTH=
 export REDIS_HOST=
