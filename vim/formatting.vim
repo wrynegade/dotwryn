@@ -54,7 +54,7 @@ augroup filetype_specific_formatting
 	autocmd FileType json       call FormatFileType(2, v:false, 'indent', 99, v:false)
 augroup end
 
-let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh']
+let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh', 'sql']
 " }}}
 
 

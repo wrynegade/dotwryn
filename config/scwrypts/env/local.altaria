@@ -1,22 +1,33 @@
 #!/bin/zsh
+#####################################################################
+### scwrypts runtime configuration ##################################
+#####################################################################
 
 # standard AWS environment variables used by awscli and other tools
-export AWS_ACCOUNT=088935110352 # inherited from local
-export AWS_PROFILE=yage # inherited from local
-export AWS_REGION=us-east-2 # inherited from local
+export AWS_ACCOUNT=088935110352 # from local
+export AWS_PROFILE=yage # from local
+export AWS_REGION=us-east-2 # from local
 
 # fully-qualified path to mount the EFS drive
-export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # inherited from local
+export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # from local
 
 # s3 bucket name and filesystem targets for media backups
-export AWS__S3__MEDIA_BUCKET=yage # inherited from local
+export AWS__S3__MEDIA_BUCKET=yage # from local
 export AWS__S3__MEDIA_TARGETS='.local/share/dolphin-emu,.porn,Games/roms,Games/wrynscape,Documents,Media,Pictures,Archives/recordings'
+
+# details for a directus instance
+export DIRECTUS__API_TOKEN=
+export DIRECTUS__BASE_URL=https://heretic.directus.app # from local
+
+# details for discord bot
+export DISCORD__BOT_TOKEN=
+export DISCORD__DEFAULT_CHANNEL=
 
 # custom i3 configuration settings
 export I3__BORDER_PIXEL_SIZE=
 export I3__DMENU_FONT_SIZE=
 export I3__GLOBAL_FONT_SIZE=
-export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # inherited from local
+export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # from local
 
 # linear.app project management configuration
 export LINEAR__API_TOKEN=
@@ -25,3 +36,12 @@ export LINEAR__API_TOKEN=
 export REDIS_AUTH=
 export REDIS_HOST=
 export REDIS_PORT=
+
+# twilio account / credentials
+export TWILIO__ACCOUNT_SID=ACac926b109b3cd8a78685a2a0994d0271 # from local
+export TWILIO__API_KEY=
+export TWILIO__API_SECRET=
+export TWILIO__DEFAULT_PHONE_FROM=
+export TWILIO__DEFAULT_PHONE_TO=
+
+#####################################################################

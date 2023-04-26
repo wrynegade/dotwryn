@@ -1,4 +1,7 @@
 #!/bin/zsh
+#####################################################################
+### scwrypts runtime configuration ##################################
+#####################################################################
 
 # standard AWS environment variables used by awscli and other tools
 export AWS_ACCOUNT=088935110352
@@ -11,6 +14,14 @@ export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage
 # s3 bucket name and filesystem targets for media backups
 export AWS__S3__MEDIA_BUCKET=yage
 export AWS__S3__MEDIA_TARGETS=
+
+# details for a directus instance
+export DIRECTUS__API_TOKEN=
+export DIRECTUS__BASE_URL=https://heretic.directus.app
+
+# details for discord bot
+export DISCORD__BOT_TOKEN=
+export DISCORD__DEFAULT_CHANNEL=
 
 # custom i3 configuration settings
 export I3__BORDER_PIXEL_SIZE=
@@ -25,3 +36,12 @@ export LINEAR__API_TOKEN=
 export REDIS_AUTH=
 export REDIS_HOST=
 export REDIS_PORT=
+
+# twilio account / credentials
+export TWILIO__ACCOUNT_SID=ACac926b109b3cd8a78685a2a0994d0271
+export TWILIO__API_KEY=
+export TWILIO__API_SECRET=
+export TWILIO__DEFAULT_PHONE_FROM=
+export TWILIO__DEFAULT_PHONE_TO=
+
+#####################################################################
