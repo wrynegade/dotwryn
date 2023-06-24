@@ -9,44 +9,34 @@ export IN_PRODUCTION=
 #####################################################################
 
 # standard AWS environment variables used by awscli and other tools
-export AWS_ACCOUNT=088935110352 # from local
-export AWS_PROFILE=yage # from local
-export AWS_REGION=us-east-2 # from local
+export AWS_ACCOUNT=
+export AWS_PROFILE=
+export AWS_REGION=
 
 # fully-qualified path to mount the EFS drive
-export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # from local
+export AWS__EFS__LOCAL_MOUNT_POINT=
 
 # details for a directus instance
 export DIRECTUS__API_TOKEN=
-export DIRECTUS__BASE_URL=https://heretic.directus.app # from local
+export DIRECTUS__BASE_URL=
 
 # details for discord bot
 export DISCORD__BOT_TOKEN=
-export DISCORD__CONTENT_FOOTER=
-export DISCORD__CONTENT_HEADER='<@380809228450922507> ' # from local
 export DISCORD__DEFAULT_AVATAR_URL=
 export DISCORD__DEFAULT_CHANNEL_ID=
-export DISCORD__DEFAULT_USERNAME=
-export DISCORD__DEFAULT_WEBHOOK=
 
 # custom i3 configuration settings
-export I3__BORDER_PIXEL_SIZE=
-export I3__DMENU_FONT_SIZE=
-export I3__GLOBAL_FONT_SIZE=
-export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # from local
+export I3__BORDER_PIXEL_SIZE=3
+export I3__DMENU_FONT_SIZE=18
+export I3__GLOBAL_FONT_SIZE=16
+export I3__MODEL_CONFIG=
 
 # linear.app project management configuration
 export LINEAR__API_TOKEN=
 
 # s3 bucket name and filesystem targets for media backups
-export MEDIA_SYNC__S3_BUCKET=yage # from local
-export MEDIA_SYNC__TARGETS=(
-	.local/share/dolphin-emu
-	Games/roms/gameboy-advance
-	Games/roms/gameboy-color
-	Media
-	Pictures
-)
+export MEDIA_SYNC__S3_BUCKET=
+export MEDIA_SYNC__TARGETS=(_____       .porn_____      Documents_____  Media_____      Pictures_____)_____
 
 # redis connection credentials
 export REDIS_AUTH=
@@ -54,7 +44,7 @@ export REDIS_HOST=
 export REDIS_PORT=
 
 # twilio account / credentials
-export TWILIO__ACCOUNT_SID=ACac926b109b3cd8a78685a2a0994d0271 # from local
+export TWILIO__ACCOUNT_SID=
 export TWILIO__API_KEY=
 export TWILIO__API_SECRET=
 export TWILIO__DEFAULT_PHONE_FROM=

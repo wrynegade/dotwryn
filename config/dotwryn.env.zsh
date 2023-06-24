@@ -42,7 +42,7 @@ EXTERNAL_PLUGINS+=(
 	'/usr/share/fzf/completion.zsh'
 )
 
-export FZF_DEFAULT_OPTS='--reverse --ansi --height 50%'
+export FZF_DEFAULT_OPTS='--reverse --ansi --height 50% --bind=ctrl-c:cancel'
 export FZF_DEFAULT_COMMAND='rg --files'
 
 
@@ -61,7 +61,7 @@ for e in \
 	"local.$(hostnamectl --static).secret" \
 	"local.$(hostnamectl --static)" \
 	"local"
-do export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/env/$e" ] && break; done
+do export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/environments/$e" ] && break; done
 
 
 # z

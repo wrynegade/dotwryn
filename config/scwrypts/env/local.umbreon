@@ -3,6 +3,11 @@
 ### scwrypts runtime configuration ##################################
 #####################################################################
 
+# whether or not to deploy to production (0 = dev (default), 1 = prod)
+export IN_PRODUCTION=
+
+#####################################################################
+
 # standard AWS environment variables used by awscli and other tools
 export AWS_ACCOUNT=088935110352 # from local
 export AWS_PROFILE=yage # from local
@@ -11,23 +16,18 @@ export AWS_REGION=us-east-2 # from local
 # fully-qualified path to mount the EFS drive
 export AWS__EFS__LOCAL_MOUNT_POINT=/mnt/efs/yage # from local
 
-# s3 bucket name and filesystem targets for media backups
-export MEDIA_SYNC__S3_BUCKET=yage # from local
-export MEDIA_SYNC__TARGETS=(
-	.porn
-	Documents
-	Media
-	Pictures
-)
-
-
 # details for a directus instance
 export DIRECTUS__API_TOKEN=
 export DIRECTUS__BASE_URL=https://heretic.directus.app # from local
 
 # details for discord bot
 export DISCORD__BOT_TOKEN=
-export DISCORD__DEFAULT_CHANNEL=
+export DISCORD__CONTENT_FOOTER=
+export DISCORD__CONTENT_HEADER='<@380809228450922507> ' # from local
+export DISCORD__DEFAULT_AVATAR_URL=https://heretic.directus.app/assets/9c975a20-d6f3-47f5-8f77-74014f5d0024
+export DISCORD__DEFAULT_CHANNEL_ID=
+export DISCORD__DEFAULT_USERNAME=umbreon
+export DISCORD__DEFAULT_WEBHOOK=
 
 # custom i3 configuration settings
 export I3__BORDER_PIXEL_SIZE=3
@@ -37,6 +37,15 @@ export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # from local
 
 # linear.app project management configuration
 export LINEAR__API_TOKEN=
+
+# s3 bucket name and filesystem targets for media backups
+export MEDIA_SYNC__S3_BUCKET=yage # from local
+export MEDIA_SYNC__TARGETS=(
+	.porn
+	Documents
+	Media
+	Pictures
+)
 
 # redis connection credentials
 export REDIS_AUTH=
