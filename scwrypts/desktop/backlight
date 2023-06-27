@@ -1,0 +1,73 @@
+#!/bin/zsh
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use desktop/notify --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+{
+command -v xbacklight     && UTIL=xbacklight
+command -v gmux_backlight && UTIL=gmux_backlight
+command -v enlighten      && UTIL=enlighten
+} >/dev/null 2>&1
+
+[[ $UTIL =~ ^enlighten$ ]] && {
+	CURRENT_PERCENT=$(enlighten | sed 's/.*(//;s/%.*//')
+	[[ $CURRENT_PERCENT -gt 60 ]] && DELTA=20
+	[[ $CURRENT_PERCENT -le 60 ]] && DELTA=10
+	[[ $CURRENT_PERCENT -le 40 ]] && DELTA=5
+	[[ $CURRENT_PERCENT -le 10 ]] && DELTA=1
+}
+
+case $1 in
+	up )
+		case $UTIL in
+			xbacklight     ) xbacklight + 10 ;;
+			gmux_backlight ) gmux_backlight +100 ;;
+
+			enlighten )
+				[[ $CURRENT_PERCENT -ge 99 ]] && NOTIFY_SEND 'at maximum brightness' && exit 0
+				enlighten +${DELTA}%
+				;;
+		esac
+		;;
+	down )
+		case $UTIL in
+			xbacklight     ) xbacklight - 10     ;;
+			gmux_backlight ) gmux_backlight -100 ;;
+
+			enlighten ) 
+				[[ $CURRENT_PERCENT -le 1 ]] && NOTIFY_SEND 'at minimum brightness' && exit 0
+				[[ $CURRENT_PERCENT -le 2 ]] && ARGS='=1%' || ARGS="-${DELTA}%"
+				enlighten "$ARGS"
+				;;
+		esac
+		;;
+	set )
+		[ ! $2 ] && FAIL 1 'no value provided to set'
+		case $UTIL in 
+			xbacklight     ) xbacklight -set $2 ;;
+			gmux_backlight ) gmux_backlight $2  ;;
+			enlighten      ) enlighten "=$2"    ;;
+		esac
+		;;
+	min | minimum )
+		case $UTIL in
+			enlighten ) enlighten '=1%' ;;
+		esac
+		;;
+	max | maximum )
+		case $UTIL in
+			enlighten ) enlighten '=100%' ;;
+		esac
+		;;
+	query | '' )
+		case $UTIL in
+			enlighten ) NOTIFY_SUCCESS "current brightness : $(enlighten)" ;;
+		esac
+		;;
+
+	* ) NOTIFY_FAIL 1 "operation '$1' not supported" ;;
+esac

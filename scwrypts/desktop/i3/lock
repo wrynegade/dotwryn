@@ -1,0 +1,40 @@
+#!/bin/zsh
+DEPENDENCIES+=(
+	i3lock
+)
+REQUIRED_ENV+=()
+
+use desktop/colorscheme --group dotwryn
+use desktop/notify      --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+ARGS=(
+	--ignore-empty-password
+	--force-clock
+	--pass-screen-keys
+	--pass-media-keys
+	--pass-volume-keys
+	--pass-power-keys
+	--verif-text=''
+	--wrong-text=''
+	--blur=11
+	--insidever-color=$(GET_COLORSCHEME_HEX 6)
+	--ringver-color=$(GET_COLORSCHEME_HEX 10)
+	--insidewrong-color=$(GET_COLORSCHEME_HEX 1)
+	--ringwrong-color=$(GET_COLORSCHEME_HEX 9)
+	--inside-color=$(GET_COLORSCHEME_HEX 0)
+	--ring-color=$(GET_COLORSCHEME_HEX 2)
+	--time-color=$(GET_COLORSCHEME_HEX 7)
+	--date-color=$(GET_COLORSCHEME_HEX 15)
+	--keyhl-color=$(GET_COLORSCHEME_HEX 11)
+	--bshl-color=$(GET_COLORSCHEME_HEX 13)
+	)
+
+RADIUS=$(xrandr | grep 'connected primary' | sed 's/.* \([0-9]\+\)x.*/\1/' | awk '{print int($1*0.08)}')
+[ $RADIUS ] && ARGS+=(--radius=$RADIUS)
+
+i3lock ${ARGS[@]} \
+	|| NOTIFY_ERROR 'i3lock-color' 'something went wrong; unable to lock' \
+	;

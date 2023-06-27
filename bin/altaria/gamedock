@@ -1,22 +1,18 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
-xrandr --output HDMI-0 --mode 3840x2160; sleep 1
-
 xrandr \
 	--output DP-0 \
 		--off \
-	--output DP-2 \
+	--output HDMI-0 \
 		--primary \
 		--mode 3840x2160 \
 		--rotate normal \
+		--pos 0x0 \
 	;
 
-sleep 2;
-xrandr --output DP-2 --mode 3840x2160 --rate 120;
+pkill compton
 
-$DOTWRYN/bin/set-background random
-$DOTWRYN/bin/play-sound login
-
-xset dpms 0 0 0 && xset s noblank && xset s off \
-	&& notify-send 'DPMS' 'disabled screen blank'
+scwrypts desktop/screen-blank      -- disable
+scwrypts desktop/i3/set-background -- roy-art.jpg
+scwrypts desktop/play-sound        -- gamedock

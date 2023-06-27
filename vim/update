@@ -31,12 +31,11 @@ UPDATE() {
 }
 
 VIM_INSTALL() {
-	"$DOTWRYN/bin/scwrypts" --env local --no-log \
-		zsh/git/package/install -- \
-			--target-url 'https://github.com/vim/vim.git' \
-			--local-name 'vim' \
-			--update \
-			$@
+	scwrypts -n packages/install -- \
+		--target-url 'https://github.com/vim/vim.git' \
+		--local-name 'vim' \
+		--update \
+		$@
 }
 
 VUNDLE_INSTALL() {

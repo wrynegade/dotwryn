@@ -1,0 +1,10 @@
+#!/bin/zsh
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use media/audio --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+MEDIA__PLAY_SFX $@

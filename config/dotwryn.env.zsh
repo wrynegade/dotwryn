@@ -4,9 +4,6 @@
 
 export DOTWRYN="$HOME/.wryn"
 
-export SFX_PATH="$HOME/Media/sfx"
-export WALLPAPER_PATH="$HOME/Pictures/bg"
-
 export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
 export DOTWRYN_UTILS="$DOTWRYN/zsh/plugins/scwrypts/zsh/lib/utils/utils.module.zsh"
@@ -61,7 +58,7 @@ for e in \
 	"local.$(hostnamectl --static).secret" \
 	"local.$(hostnamectl --static)" \
 	"local"
-do export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/environments/$e" ] && break; done
+do export SCWRYPTS_ENV="$e"; [ -f "$HOME/.config/scwrypts/environments/scwrypts/$e" ] && break; done
 
 
 # z

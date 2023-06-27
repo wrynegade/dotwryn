@@ -1,14 +1,5 @@
 #!/bin/zsh
-_HOSTNAME=$(hostnamectl --static)
-
-case $_HOSTNAME in
-	butterfree ) DEFAULT=undock ;;
-	altaria    ) DEFAULT=hdmi4k ;;
-	umbreon    ) DEFAULT=undock ;;
-esac
-
-LAYOUT="$DOTWRYN/bin/$_HOSTNAME/$DEFAULT"
-
+LAYOUT="$DOTWRYN/bin/$(hostnamectl --static)/default"
 [ -f $LAYOUT ] && {
 	until xrandr -q >/dev/null 2>&1; do sleep .1; done
 	$LAYOUT

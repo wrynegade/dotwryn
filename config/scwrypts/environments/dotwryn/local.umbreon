@@ -1,0 +1,11 @@
+#!/bin/zsh
+#####################################################################
+### scwrypts runtime configuration (group 'dotwryn') ################
+#####################################################################
+
+# directory containing sound effects
+export DESKTOP__SFX_PATH="$HOME/Media/sfx" # from local
+export DESKTOP__WALLPAPER_PATH="$HOME/Pictures/bg" # from local
+
+# home server data
+export WRYN__SERVER_HOSTNAMES=

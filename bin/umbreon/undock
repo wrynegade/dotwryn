@@ -1,23 +1,17 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
+ARGS=($(ALL_OTHER_DISPLAYS_OFF eDP-1))
 
-xrandr \
+xrandr ${ARGS[@]} \
 	--output eDP-1 \
 		--primary \
-		--auto \
 		--mode 1920x1200 \
-		--rotate normal \
 		--pos 0x0 \
-	--output DP-3-1 \
-		--off \
-	--output DP-3 \
-		--off \
+		--rotate normal \
 	;
-
-xset +dpms && xset s blank && xset s on \
-	&& notify-send 'DPMS' 'enabled screen blank'
 
 (pkill compton; sleep 0.5; compton;) &
 
-$DOTWRYN/bin/set-background random
-$DOTWRYN/bin/play-sound gamedock
+scwrypts desktop/screen-blank      -- enable
+scwrypts desktop/i3/set-background -- random
+scwrypts desktop/play-sound        -- gamedock

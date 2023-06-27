@@ -1,6 +1,12 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env.zsh"
-RELOAD_ZSH_UTILS
+DEPENDENCIES+=(
+	hostnamectl
+)
+REQUIRED_ENV+=(
+	WRYN__SERVER_HOSTNAMES
+)
+
+CHECK_ENVIRONMENT
 #####################################################################
 
 SESSION='update'
@@ -14,11 +20,11 @@ CHECK_SESSION() {
 }
 
 UPDATE_ALL() {
-	__STATUS "starting '$@'"
-	for SERVER in $(echo $SERVER_LIST); do UPDATE $SERVER "$@"; done
+	STATUS "starting '$@'"
+	for SERVER in ${WRYN__SERVER_HOSTNAMES[@]}; do UPDATE $SERVER "$@"; done
 	WAIT_FOR_UPDATES \
-		&& __SUCCESS "'$@' finished across all servers" \
-		|| __FAIL 69 'user abort' \
+		&& SUCCESS "'$@' finished across all servers" \
+		|| FAIL 69 'user abort' \
 		;
 }
 
@@ -28,7 +34,7 @@ UPDATE() {
 	[[ $2 =~ ^reboot ]] && [[ $SERVER_HOST =~ $LOCAL_HOST ]] && return 0
 
 	[[ $SERVER_HOST =~ $LOCAL_HOST ]] || {
-		COMMAND="ssh -t $SERVER_HOST.lan 'source ~/.zshrc >/dev/null 2>&1; $COMMAND'"
+		COMMAND="ssh -t $SERVER_HOST.local 'source ~/.zshrc >/dev/null 2>&1; $COMMAND'"
 	}
 
 	tmux new-window -t $SESSION -n $SERVER_HOST "source ~/.zshrc >/dev/null 2>&1; $COMMAND"
@@ -54,29 +60,23 @@ CURRENT_SESSION=$(\
 
 #####################################################################
 
-CHECK_SESSION && __FAIL 1 'update currently in progress'
+CHECK_SESSION && FAIL 1 'update currently in progress'
 
 tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
 
-__yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
-__REMINDER
-__REMINDER 'manual action is required; (in another tab) connect to tmux:'
-__REMINDER "tmux a -t $SESSION"
-__REMINDER
-__REMINDER 'to stop the update at any time, run:'
-__REMINDER "tmux kill-session -t $SESSION"
-__REMINDER
+yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
+REMINDER
+REMINDER 'manual action is required; (in another tab) connect to tmux:'
+REMINDER "tmux a -t $SESSION"
+REMINDER
+REMINDER 'to stop the update at any time, run:'
+REMINDER "tmux kill-session -t $SESSION"
+REMINDER
 
 [ $CURRENT_SESSION ] && {
-	__SUCCESS 'currently in a tmux session; opening new window...'
+	SUCCESS 'currently in a tmux session; opening new window...'
 	tmux new-window -t $CURRENT_SESSION "unset TMUX; tmux a -t $SESSION"
 }
-
-SERVER_LIST=$(
-	ls "$DOTWRYN/config/scwrypts/env/" \
-		| sed 's/^local//; s/^\.//' \
-		| grep . \
-)
 
 UPDATE_ALL 'yay -Syu'
 UPDATE_ALL 'cd ~/.wryn; git pull --autostash'
@@ -88,10 +88,10 @@ UPDATE_ALL 'command -v i3-msg >/dev/null 2>&1 || exit 0; ~/.wryn/bin/scwrypts i3
 [[ $REBOOT -eq 1 ]] && UPDATE_ALL 'reboot || sudo reboot'
 
 tmux kill-session -t $SESSION >/dev/null 2>&1
-CHECK_SESSION && __WARNING "unable to close tmux session '$SESSION'"
+CHECK_SESSION && WARNING "unable to close tmux session '$SESSION'"
 
-__SUCCESS
-__SUCCESS 'finished system update accross all servers'
-__SUCCESS
+SUCCESS
+SUCCESS 'finished system update accross all servers'
+SUCCESS
 
-[[ $REBOOT -eq 1 ]] && { __STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }
+[[ $REBOOT -eq 1 ]] && { STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }

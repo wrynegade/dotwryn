@@ -1,0 +1,16 @@
+#!/bin/zsh
+DEPENDENCIES+=(
+	i3-nagbar
+)
+REQUIRED_ENV+=()
+
+use desktop/notify      --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+i3-nagbar \
+		-t warning \
+		-m 'Do you really want to exit i3?' \
+		-B 'Yes' "notify-send 'system' 'exiting i3...' -i face-tired; i3-msg exit" \
+	|| NOTIFY_ERROR 'unable to launch i3-nagbar'
+

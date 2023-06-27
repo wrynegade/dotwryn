@@ -1,25 +1,25 @@
 #!/bin/zsh
 source "$HOME/.config/wryn/env.zsh"
 case $1 in
-	next ) $DOTWRYN/bin/media next ;;
-	prev ) $DOTWRYN/bin/media prev ;;
-	play ) $DOTWRYN/bin/media play ;;
+	#next ) scwrypts desktop/media -- next ;;
+	#prev ) scwrypts desktop/media -- prev ;;
+	#play ) scwrypts desktop/media -- play ;;
 
-	volumeup   ) $DOTWRYN/bin/pulseaudio sink up ;;
-	volumedown ) $DOTWRYN/bin/pulseaudio sink down ;;
-	volumemute ) $DOTWRYN/bin/pulseaudio sink mute ;;
-	micmute    ) $DOTWRYN/bin/pulseaudio source mute ;;
+	volumeup   ) scwrypts desktop/pulseaudio -- sink up ;;
+	volumedown ) scwrypts desktop/pulseaudio -- sink down ;;
+	volumemute ) scwrypts desktop/pulseaudio -- sink mute ;;
+	micmute    ) scwrypts desktop/pulseaudio -- source mute ;;
 
-	backlightup   ) $DOTWRYN/bin/backlight up ;;
-	backlightdown ) $DOTWRYN/bin/backlight down ;;
+	backlightup   ) scwrypts desktop/backlight -- up ;;
+	backlightdown ) scwrypts desktop/backlight -- down ;;
 
-	lock ) $DOTWRYN/bin/i3lock ;;
+	lock ) scwrypts desktop/i3/lock -- ;;
 
-	bgrandomize ) $DOTWRYN/bin/set-background random ;;
+	bgrandomize ) scwrypts desktop/i3/set-background -- random ;;
 
-	alternateterm ) $DOTWRYN/bin/kitty-alternate-theme ;;
+	alternateterm ) scwrypts desktop/kitty-alternate-theme -- ;;
 
-	logout ) $DOTWRYN/bin/i3-logout ;;
+	logout ) scwrypts desktop/i3/logout -- ;;
 
 	launch )
 		local PROGRAM
@@ -28,15 +28,16 @@ case $1 in
 			messages ) PROGRAM=android-messages-desktop ;;
 			voice    ) PROGRAM=google-voice-desktop ;;
 			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
-			scrcpy   ) PROGRAM=scrcpy ;;
 
-			discord  ) PROGRAM=discord     ARGS+=(-a) ;;
-			spotify  ) PROGRAM=spotify     ARGS+=(-c Spotify) ;;
+			1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
+			discord  ) PROGRAM=discord     ARGS+=(-a --has-statusbar-icon) ;;
+			obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
 			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
-			obs      ) PROGRAM=obs         ARGS+=(-c '^obs') ;;
+			scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
+			spotify  ) PROGRAM=spotify     ARGS+=(-c Spotify) ;;
 
 			*        ) PROGRAM=$2 ;;
 		esac
-		scwrypts i3/launch-or-show --env local -- $PROGRAM ${ARGS[@]}
+		scwrypts i3/launch-or-show -- $PROGRAM ${ARGS[@]}
 		;;
 esac

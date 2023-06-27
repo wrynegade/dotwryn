@@ -1,0 +1,10 @@
+#!/bin/zsh
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use desktop/colorscheme --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+GET_COLORSCHEME_HEX $@
