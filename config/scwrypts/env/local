@@ -8,6 +8,15 @@ export IN_PRODUCTION=
 
 #####################################################################
 
+# directory containing sound effects
+export DESKTOP__SFX_PATH="$HOME/Media/sfx"
+export DESKTOP__WALLPAPER_PATH="$HOME/Pictures/bg"
+
+# home server data
+export WRYN__SERVER_HOSTNAMES=
+
+#####################################################################
+
 # standard AWS environment variables used by awscli and other tools
 export AWS_ACCOUNT=088935110352
 export AWS_PROFILE=yage
