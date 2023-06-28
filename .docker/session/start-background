@@ -1,0 +1,13 @@
+#!/bin/zsh
+SESSION=debugger
+tmux ls | grep -q "^$SESSION" && exit 0
+#####################################################################
+
+cd
+
+tmux new -d -s $SESSION \
+	;
+
+tmux new-window -t $SESSION -n \
+	'WARNING' /root/.wryn/.docker/session/show-warning \
+	;

@@ -1,11 +1,11 @@
-__yN 'keep logfile?' || {
+yN 'keep logfile?' || {
 	rm "$LOGFILE" \
-		|| __ERROR "unable to remote '$LOGFILE'" \
+		|| ERROR "unable to remote '$LOGFILE'" \
 		;
 }
 
-__SUCCESS
-__SUCCESS '.wryn setup complete; have a nice day :)'
-__SUCCESS
+SUCCESS '
+	.wryn setup complete; have a nice day :)
+	'
 
 exit 0

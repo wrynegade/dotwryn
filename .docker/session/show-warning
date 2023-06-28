@@ -1,0 +1,15 @@
+#!/bin/zsh
+echo -e "\\033[1;31m=====================================================================\\033[0m
+
+                       \\033[1;32mWelcome to Debugger!\\033[0m
+
+You are now entering a root-privileged container with a variety of
+powerful tools. Be sure to exercise appropriate caution for your
+current use-case / environment!
+
+                             \\033[1;32mGLHF <3\\033[0m
+
+\\033[1;31m=====================================================================\\033[0m"
+
+echo 'press Enter to continue'
+read

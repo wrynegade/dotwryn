@@ -1,18 +1,13 @@
 #!/bin/zsh
 #####################################################################
-echo -e "\\033[1;31m=====================================================================\\033[0m
-
-                       \\033[1;32mWelcome to Debugger!\\033[0m
-
-You are now entering a root-privileged container with a variety of
-powerful tools. Be sure to exercise appropriate caution for your
-current use-case / environment!
-
-                             \\033[1;32mGLHF <3\\033[0m
-
-\\033[1;31m=====================================================================\\033[0m"
 #####################################################################
-zsh -l
+source /root/.wryn/.docker/session/start-background
+
+[ -t 0 ] && tmux a -t $SESSION || echo -e "\\033[1;32m
+REMINDER: connect by executing 'tmux a -t $SESSION'
+\\033[0m"
+
+until ! tmux list-sessions 2>/dev/null | awk '{print $1;}' | grep -q "${SESSION}:"; do sleep 1; done
 #####################################################################
 echo -e "\\033[1;31m=====================================================================\\033[0m
 \\033[1;32mExiting Debugger; see you next time!\\033[0m

@@ -1,12 +1,12 @@
 function SETUP__CONFIG() {
-	__STATUS 'starting application configuration'
+	STATUS 'starting application configuration'
 
-	SCWRYPTS zsh/config/update || return 1
+	SCWRYPTS system/config/update || return 1
 
 	CONFIG__ZSH || return 2
 	CONFIG__VIM || return 3
 
-	__SUCCESS 'finished application configuration'
+	SUCCESS 'finished application configuration'
 }
 
 #####################################################################
@@ -23,10 +23,10 @@ CONFIG__SET_DEFAULT_SHELL() {
 
 	[ $FORCE_ROOT ] && return 0
 
-	__STATUS 'setting zsh as default shell'
+	STATUS 'setting zsh as default shell'
 	sudo chsh -s $(which zsh) $(whoami) 2>&1 \
-		&& __SUCCESS "set zsh as default shell for '$USER'" \
-		|| __FAIL 1 'failed to set zsh as default shell' \
+		&& SUCCESS "set zsh as default shell for '$USER'" \
+		|| FAIL 1 'failed to set zsh as default shell' \
 		;
 }
 
@@ -38,10 +38,10 @@ CONFIG__VIM() {
 
 	[ $NO_COMPILE_VIM ] && return 0
 
-	__STATUS 'starting vim setup'
+	STATUS 'starting vim setup'
 	"$DOTWRYN_PATH/vim/update" \
-		&& __SUCCESS 'completed vim setup' \
-		|| __FAIL 1 'error detected in vim setup (see above)' \
+		&& SUCCESS 'completed vim setup' \
+		|| FAIL 1 'error detected in vim setup (see above)' \
 		;
 }
 
@@ -52,14 +52,14 @@ CONFIG__ENV() {
 	local LOCAL_CONFIG="$HOME/.config/wryn/env.$1"
 
 	[ -f $LOCAL_CONFIG ] && {
-		__WARNING "local $1 configuration exists ($LOCAL_CONFIG)"
-		__yN 'overwrite this configuration?' || return 0
+		WARNING "local $1 configuration exists ($LOCAL_CONFIG)"
+		yN 'overwrite this configuration?' || return 0
 
 		mv "$LOCAL_CONFIG" "$LOCAL_CONFIG.bak" >/dev/null 2>&1 \
-			&& __INFO "created backup of local configuration ($LOCAL_CONFIG.bak)"
+			&& INFO "created backup of local configuration ($LOCAL_CONFIG.bak)"
 	}
 
-	__STATUS "setting up $1 configuration ($LOCAL_CONFIG)"
+	STATUS "setting up $1 configuration ($LOCAL_CONFIG)"
 
 	case $1 in
 		vim ) COMMENT='"' ;;
@@ -71,11 +71,11 @@ CONFIG__ENV() {
 		echo -e "\\n$COMMENT\n$COMMENT .wryn configuration overrides\n$COMMENT\n"
 		sed "s/^[^$COMMENT].*/$COMMENT&/" $DEFAULT_CONFIG
 	} > $LOCAL_CONFIG \
-		&& __SUCCESS "created $1 configuration" \
-		|| __FAIL 1 "unable to create $1 configuration" \
+		&& SUCCESS "created $1 configuration" \
+		|| FAIL 1 "unable to create $1 configuration" \
 		;
 
-	__EDIT "$LOCAL_CONFIG"
+	EDIT "$LOCAL_CONFIG"
 }
 
 
@@ -93,8 +93,8 @@ CONFIG__RC() {
 		|| echo "$SOURCE_LINE" >> $RC
 
 	grep -q "^$SOURCE_LINE$" "$RC" \
-		&& __SUCCESS "${TYPE}rc is configured correctly" \
-		|| __FAIL 1 "failed to configure ${TYPE}rc" \
+		&& SUCCESS "${TYPE}rc is configured correctly" \
+		|| FAIL 1 "failed to configure ${TYPE}rc" \
 		;
 }
 

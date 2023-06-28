@@ -1,7 +1,7 @@
 #####################################################################
 
 SETUP__GIT() {
-	__STATUS 'updating remotes for .wryn'
+	STATUS 'updating remotes for .wryn'
 	cd $DOTWRYN_PATH
 	git remote rm origin 2>/dev/null
 	git remote add origin git@github.com:wrynegade/dotwryn.git
@@ -12,21 +12,21 @@ SETUP__GIT() {
 	git branch --set-upstream-to=origin/main main >/dev/null 2>&1
 
 
-	__STATUS 'updating upstream for zsh/plugins/code-activator'
+	STATUS 'updating upstream for zsh/plugins/code-activator'
 	cd $DOTWRYN_PATH/zsh/plugins/code-activator
 	git remote rm upstream 2>/dev/null
 	git remote add upstream git@yage.io:zsh/code-activator.git
 	git remote set-url --add --push upstream git@yage.io:zsh/code-activator.git
 	git remote set-url --add --push upstream git@github.com:wrynegade/code-activator-zsh.git
 
-	__STATUS 'updating upstream for zsh/plugins/scwrypts'
+	STATUS 'updating upstream for zsh/plugins/scwrypts'
 	cd $DOTWRYN_PATH/zsh/plugins/scwrypts
 	git remote rm upstream 2>/dev/null
 	git remote add upstream git@yage.io:zsh/code-activator
 	git remote set-url --add --push upstream git@yage.io:zsh/code-activator
 	git remote set-url --add --push upstream git@github.com:wrynegade/scwrypts.git
 
-	__STATUS 'updating upstream for zsh/plugins/ssh'
+	STATUS 'updating upstream for zsh/plugins/ssh'
 	cd $DOTWRYN_PATH/zsh/plugins/ssh
 	git remote rm upstream
 	git remote add upstream git@yage.io:zsh/ssh.git
