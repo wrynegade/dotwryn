@@ -30,7 +30,7 @@ case $1 in
 			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
 
 			1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
-			discord  ) PROGRAM=discord     ARGS+=(-a --has-statusbar-icon) ;;
+			discord  ) PROGRAM=discord     ARGS+=(--has-statusbar-icon) ;;
 			obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
 			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
 			scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
