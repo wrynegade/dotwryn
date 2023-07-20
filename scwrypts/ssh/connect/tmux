@@ -1,0 +1,13 @@
+#!/bin/zsh
+#####################################################################
+
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use tmux --group remote
+
+CHECK_ENVIRONMENT
+
+#####################################################################
+
+REMOTE_CONNECT_TMUX $@

@@ -1,0 +1,60 @@
+#!/bin/zsh
+#
+# works as a standalone zsh script
+#
+CONNECTIONS_FILE="$HOME/.config/wryn/remote-connections"
+OMNI_SOCKET="omni.socket"
+OMNI_TMUX() { tmux -L $OMNI_SOCKET $@; }
+
+sleep 1
+OMNI_TMUX new-window -t=omni-manager -dn 'harakiri' "
+while true
+do
+	tmux -L $OMNI_SOCKET list-sessions | grep -v omni-manager | grep -qi omni || {
+		tmux -L $OMNI_SOCKET kill-session -t omni-manager
+	}
+	sleep 5
+done
+"
+
+CONNECTED()    { echo "\\033[1;32mconnected\\033[0m"; }
+DISCONNECTED() { echo "\\033[1;31mdisconnected\\033[0m"; }
+
+while true
+do
+	clear
+	REMOTE_HOSTS=()
+	for CONNECTION in $(sed -n 's/#.*//;s/ \+$//;s/|//g;s/ \+/^/g;/./p;' <(echo "$(hostnamectl --static) | localhost"; cat "$CONNECTIONS_FILE"))
+	do
+		CONNECTION=$(echo $CONNECTION | sed 's/[\^]/ /g')
+
+		REMOTE_NAME=$(echo $CONNECTION | awk '{print $1;}')
+		REMOTE_HOST=$(echo $CONNECTION | awk '{print $2;}')
+		REMOTE_ARGS=($(echo $CONNECTION | awk '{$1=$2="";}1'))
+
+		printf "$REMOTE_NAME : "
+
+		OMNI_TMUX list-windows -t=omni | awk '{print $2;}' | grep -q $REMOTE_NAME \
+			&& CONNECTED && continue
+
+		SUCCESS=0
+		[[ $REMOTE_HOST =~ ^localhost$ ]] && SUCCESS=1
+
+		[[ $SUCCESS -eq 1 ]] || {
+			timeout 3 ssh ${REMOTE_ARGS} -o BatchMode=yes $REMOTE_HOST 'command -v tmux 2>/dev/null' 2>/dev/null | grep -q tmux \
+				&& SUCCESS=1
+		}
+
+		[[ $SUCCESS -eq 1 ]] && {
+			OMNI_TMUX new-window -t=omni -dn $REMOTE_NAME "source ~/.zshrc >/dev/null 2>&1; TMUX= scwrypts -n connect tmux $REMOTE_NAME; echo 'connection closed'; sleep 2"
+			OMNI_TMUX list-window -t=omni | awk '{print $1;}' | grep -q '99:' \
+				&& OMNI_TMUX kill-window -t omni:99
+		}
+
+		OMNI_TMUX list-windows -t=omni | awk '{print $2;}' | grep -q $REMOTE_NAME \
+			&& CONNECTED || DISCONNECTED
+	done
+
+	echo "\nPress ENTER to search again now (checks every 60 seconds)"
+	read -t 60
+done
