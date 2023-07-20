@@ -1,7 +1,3 @@
-[submodule "color-zsh"]
-	path = zsh/plugins/color
-	url = https://yage.io/zsh/color
-	update = rebase
 [submodule "z-navigator"]
 	path = zsh/plugins/z
 	url = https://github.com/rupa/z.git
