@@ -48,4 +48,10 @@ $DOTWRYN/config/scwrypts/environments/dotwryn/local.blaziken    scwrypts/environ
 $DOTWRYN/config/scwrypts/environments/dotwryn/local.butterfree  scwrypts/environments/dotwryn/local.butterfree
 $DOTWRYN/config/scwrypts/environments/dotwryn/local.gardevoir   scwrypts/environments/dotwryn/local.gardevoir
 $DOTWRYN/config/scwrypts/environments/dotwryn/local.umbreon     scwrypts/environments/dotwryn/local.umbreon
+$DOTWRYN/config/scwrypts/environments/remote/local			    scwrypts/environments/remote/local
+$DOTWRYN/config/scwrypts/environments/remote/local.altaria      scwrypts/environments/remote/local.altaria
+$DOTWRYN/config/scwrypts/environments/remote/local.blaziken     scwrypts/environments/remote/local.blaziken
+$DOTWRYN/config/scwrypts/environments/remote/local.butterfree   scwrypts/environments/remote/local.butterfree
+$DOTWRYN/config/scwrypts/environments/remote/local.gardevoir    scwrypts/environments/remote/local.gardevoir
+$DOTWRYN/config/scwrypts/environments/remote/local.umbreon      scwrypts/environments/remote/local.umbreon
 "

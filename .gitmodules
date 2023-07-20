@@ -12,9 +12,6 @@
 	path = zsh/plugins/code-activator
 	url = https://yage.io/zsh/code-activator
 	update = rebase
-[submodule "ssh-zsh"]
-	path = zsh/plugins/ssh
-	url = https://yage.io/zsh/ssh
 [submodule "scwrypts"]
 	path = zsh/plugins/scwrypts
 	url = https://yage.io/wrynegade/scwrypts.git

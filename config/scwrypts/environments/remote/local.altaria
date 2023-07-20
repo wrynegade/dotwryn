@@ -1,0 +1,7 @@
+#!/bin/zsh
+#####################################################################
+### scwrypts runtime configuration (group 'remote') #################
+#####################################################################
+
+# session name for remote connection (default 'remote')
+export REMOTE_TMUX_SESSION=wryn # from local
