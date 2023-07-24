@@ -2,11 +2,7 @@
 
 #####################################################################
 
-DEPENDENCIES+=(
-	tmux
-	hostnamectl
-	scwrypts # must be on path
-)
+DEPENDENCIES+=()
 REQUIRED_ENV+=()
 
 CHECK_ENVIRONMENT
@@ -22,12 +18,12 @@ OMNI_TMUX list-sessions 2>/dev/null | grep -v omni-manager | grep -qi omni || {
 	STATUS "initializing omni server"
 	OMNI_TMUX kill-session -t=omni-manager >/dev/null 2>&1
 
-	OMNI_TMUX -f "$SCWRYPTS_ROOT__remote/omni.tmux.conf" new -d -s omni \
+	OMNI_TMUX -f "$SCWRYPTS_ROOT__remote/omni/tmux.conf" new -d -s omni \
 		"echo searching for first connection...; sleep 30" \; \
 		split-window "sleep 3; TMUX= tmux -L $OMNI_SOCKET a -t=omni-manager" \; \
 		move-window -t 99 \;
 
-	OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/omni-manager"
+	OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/omni/manager"
 }
 
 STATUS 'connecting to omni server'

@@ -25,12 +25,17 @@ SCWRYPTS__LIST_AVAILABLE_SCWRYPTS__remote() {
 	done
 
 	echo "$SCWRYPTS_TYPE__remote/tmux/omni"
+	echo "$SCWRYPTS_TYPE__remote/tmux/spawn"
 	echo "$SCWRYPTS_TYPE__remote/remote/configure"
 }
 
 SCWRYPTS__GET_RUNSTRING__remote__$SCWRYPTS_TYPE__remote() {
 	[[ $SCWRYPT_NAME =~ tmux/omni ]] \
-		&& echo "source $SCWRYPTS_ROOT__remote/omni" \
+		&& echo "source $SCWRYPTS_ROOT__remote/omni/launcher" \
+		&& return 0
+
+	[[ $SCWRYPT_NAME =~ tmux/spawn ]] \
+		&& echo "source $SCWRYPTS_ROOT__remote/omni/spawn" \
 		&& return 0
 
 	[[ $SCWRYPT_NAME =~ remote/configure ]] \
