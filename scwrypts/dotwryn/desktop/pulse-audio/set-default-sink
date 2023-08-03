@@ -1,0 +1,10 @@
+#!/bin/zsh
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use desktop/pulse-audio --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+PA__SET_DEFAULT_AUDIO $@

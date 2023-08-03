@@ -1,19 +1,29 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
-xrandr \
-	--output DP-0 \
-		--primary \
-		--mode 1920x1080 \
-		--rotate normal \
-		--pos 0x0 \
-	--output HDMI-0 \
-		--mode 1920x1080 \
-		--rotate normal \
-		--pos 0x0 \
+: \
+	&& scwrypts desktop/xrandr/disconnect-all \
+	&& xrandr \
+		--output DP-0 \
+			--primary \
+			--mode 3840x2160 \
+			--rotate normal \
+			--pos 0x0 \
+	&& xrandr \
+		--output HDMI-0 \
+			--mode 3840x2160 \
+			--rate 60.00 \
+			--rotate normal \
+			--pos 0x0 \
+		--output DP-2 \
+			--mode 3840x2160 \
+			--rate 60.00 \
+			--rotate normal \
+			--pos 0x0 \
 	;
 
 (pkill compton; sleep 1; compton;) &
+scwrypts desktop/pulse-audio/set-default-sink -- Komplete
 
 scwrypts desktop/screen-blank      -- disable
 scwrypts desktop/i3/set-background -- purple.jpg

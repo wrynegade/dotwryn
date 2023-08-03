@@ -1,0 +1,10 @@
+#!/bin/zsh
+DEPENDENCIES+=()
+REQUIRED_ENV+=()
+
+use desktop/xrandr --group dotwryn
+
+CHECK_ENVIRONMENT
+#####################################################################
+
+XRANDR__DISCONNECT_ALL_DISPLAYS $@
