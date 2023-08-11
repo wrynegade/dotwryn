@@ -1,14 +1,17 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
+OUTPUT=DP-0
+
 : \
 	&& scwrypts desktop/xrandr/disconnect-all \
 	&& xrandr \
-		--output DP-0 \
-			--primary \
+		--output $OUTPUT \
 			--mode 3840x2160 \
 			--rotate normal \
 			--pos 0x0 \
+	&& sleep 4 \
+	&& xrandr --output $OUTPUT --primary \
 	;
 
 pkill compton
