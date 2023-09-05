@@ -31,6 +31,6 @@ REMOTE_CONNECT_TMUX() {
 	# create or connect to session
 	TMUX_ARGS+=(new-session -As wryn)
 
-	REMOTE__EXECUTE "tmux ${TMUX_ARGS[@]}"
+	REMOTE__LOGIN "tmux ${TMUX_ARGS[@]}"
 }
 

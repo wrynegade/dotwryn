@@ -1,0 +1,27 @@
+#!/bin/zsh
+source ${0:a:h}/xorg.zsh
+
+OUTPUT_PRIMARY=DP-2
+OUTPUT_SECONDARY=HDMI-0
+
+: \
+	&& scwrypts desktop/xrandr/disconnect-all \
+	&& xrandr \
+		--output $OUTPUT_PRIMARY \
+			--mode 2560x1440 --rate 119.88 \
+			--rotate normal \
+			--pos 0x0 \
+		--output $OUTPUT_SECONDARY \
+			--mode 2560x1440 --rate 119.88 \
+			--rotate normal \
+			--pos 2560x1440\
+	&& sleep 4 \
+	&& xrandr --output $OUTPUT_PRIMARY --primary \
+	;
+
+pkill compton
+scwrypts desktop/pulse-audio/set-default-sink -- hdmi --id 0 --profile output:hdmi-surround71-extra2
+
+scwrypts desktop/screen-blank      -- disable
+scwrypts desktop/i3/set-background -- roy-art.jpg
+scwrypts desktop/play-sound        -- gamedock

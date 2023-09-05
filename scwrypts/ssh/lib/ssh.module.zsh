@@ -14,7 +14,14 @@ use connection/parse --group remote
 REMOTE__LOGIN() {
 	local READ_COMMAND=0
 
-	[ ! $REMOTE_NAME ] && REMOTE_NAME=$1
+	[ ! $REMOTE_NAME ] && {
+		REMOTE_NAME=$1
+		shift 1
+	}
+
+	[[ $# -gt 0 ]] && {
+		REMOTE_SHELL_ARGS+=(-c "'$@'")
+	}
 
 	[ $REMOTE_NAME ] && {
 		STATUS "connecting to $REMOTE_NAME"
@@ -34,16 +41,5 @@ REMOTE__LOGIN() {
 		return $?
 	}
 
-	ssh -t ${REMOTE_ARGS[@]} $REMOTE_HOST "$REMOTE_DEFAULT_SHELL ${REMOTE_SHELL_ARGS[@]}"
-}
-
-REMOTE__EXECUTE() {
-	[ ! $REMOTE_COMMAND ] && REMOTE_COMMAND="$@"
-
-	[ ! $REMOTE_COMMAND ] && {
-		ERROR 'no REMOTE_COMMAND provided!'
-		return 1
-	}
-
-	REMOTE_SHELL_ARGS=(-c "'$REMOTE_COMMAND'") REMOTE__LOGIN
+	ssh -t ${REMOTE_ARGS[@]} $REMOTE_HOST "$REMOTE_DEFAULT_SHELL ${REMOTE_SHELL_ARGS[@]} $@"
 }
