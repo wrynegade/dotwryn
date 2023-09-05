@@ -12,7 +12,30 @@ alias restart='clear; source ~/.zshrc'
 
 alias fix='vim $(git diff --name-only | uniq) -p'
 
-alias w='watch -tn1 '
+#####################################################################
+
+w() { # fancy(?) version of "alias w='watch -tcn1 '"
+	local WATCH_ARGS=()
+
+	WATCH_ARGS+=(--no-title)
+	WATCH_ARGS+=(--color)
+	WATCH_ARGS+=(--interval 1)
+
+	# don't add delay if command is available to /bin/sh
+	/bin/sh -c "command -v $1" >/dev/null 2>&1 && {
+		watch ${WATCH_ARGS[@]} $@
+		return $?
+	}
+
+	# quickly reduce first-order aliases
+	alias $1 >/dev/null 2>&1 && {
+		watch ${WATCH_ARGS[@]} $(which $1 | sed 's/.*aliased to //') ${@:2}
+		return $?
+	}
+
+	# import zshrc and inject current environment
+	watch ${WATCH_ARGS[@]} "zsh -c 'source ~/.zshrc >/dev/null 2>&1; $(while read e; do printf 'export '; printf '%q ' "$e"; echo; done < <(env) | grep '='); echo \"   $@\n---------------------------------------------------- \$(date +%H:%m:%S)\"; $@'"
+}
 
 #####################################################################
 
