@@ -25,7 +25,7 @@ SCWRYPTS() {
 	CI=1 \
 	CONFIG__USER_SETTINGS="$DOTWRYN_PATH/config/scwrypts/dotfiles.zsh" \
 	DOTWRYN=$DOTWRYN_PATH \
-		"$DOTWRYN_PATH/zsh/plugins/scwrypts/scwrypts" -n $1 -- ${@:2}
+		"$DOTWRYN_PATH/zsh/plugins/scwrypts/scwrypts" -n $@
 }
 
 #####################################################################
