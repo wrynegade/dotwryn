@@ -19,22 +19,23 @@ PARSE_CONNECTION() {
 
 	local CONNECTION_DETAILS=$(echo $CONNECTION | sed 's/|/ /g;')
 
-	REMOTE_NAME=$(echo $CONNECTION_DETAILS | awk '{print $1;}')
-	REMOTE_HOST=$(echo $CONNECTION_DETAILS | awk '{print $2;}')
-	REMOTE_ARGS+=($(echo $CONNECTION_DETAILS | awk '{$1=$2="";}1'))
+	REMOTE_ID=$(echo $CONNECTION_DETAILS | awk '{print $1;}')
+	REMOTE_NAME=$(echo $CONNECTION_DETAILS | awk '{print $2;}')
+	REMOTE_HOST=$(echo $CONNECTION_DETAILS | awk '{print $3;}')
+	REMOTE_ARGS+=($(echo $CONNECTION_DETAILS | awk '{$1=$2=$3="";}1'))
 }
 
 GET_CONNECTIONS() {
 	(
-		echo 'localhost | localhost'
-		echo "$(hostnamectl --static) | localhost"
+		echo '0 | localhost | localhost'
+		echo "0 | $(hostnamectl --static) | localhost"
 		sed -n 's/#.*//;s/ \+$//;/./p' "$REMOTE_CONNECTIONS_FILE"
 	) | sort -u
 }
 
 GET_CONNECTION() {
 	[ ! $1 ] && return 1
-	GET_CONNECTIONS | grep "^$1 *|" | head -n1
+	GET_CONNECTIONS | grep "^[0-9]\+ *| *$1 *|" | head -n1
 }
 
 GET_CONNECTION_NAMES() {

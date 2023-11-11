@@ -18,10 +18,10 @@ SCWRYPTS__LIST_AVAILABLE_SCWRYPTS__remote() {
 	do
 		CONNECTION_TYPE="$(echo $CONNECTION_TYPE | sed 's/\.\///;')"
 		(
-			echo "$(hostnamectl --static) | localhost"
-			echo 'localhost | localhost'
+			echo "0 | $(hostnamectl --static) | localhost"
+			echo '0 | localhost | localhost'
 			cat "$REMOTE_CONNECTIONS_FILE"
-		) | sed -n 's/#.*//; /./p' | awk '{print $1;}' | sort -u | sed "s|^|$SCWRYPTS_TYPE__remote/connect/$CONNECTION_TYPE/|"
+		) | sed -n 's/#.*//; /./p' | awk '{print $3;}' | sort -u | sed "s|^|$SCWRYPTS_TYPE__remote/connect/$CONNECTION_TYPE/|"
 	done
 
 	echo "$SCWRYPTS_TYPE__remote/tmux/omni"

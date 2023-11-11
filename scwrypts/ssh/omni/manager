@@ -20,17 +20,46 @@ done
 CONNECTED()    { echo "\\033[1;32mconnected\\033[0m"; }
 DISCONNECTED() { echo "\\033[1;31mdisconnected\\033[0m"; }
 
+SET_UNIQUE_ID() {
+	i=0
+	while : \
+		&& [[ $(OMNI_TMUX list-windows -t=omni | grep "^$REMOTE_ID:" | wc -l) -gt 0 ]] \
+		&& [[ ! $(OMNI_TMUX list-windows -t=omni | grep "^$REMOTE_ID:" | awk '{print $2;}') =~ ^$REMOTE_NAME ]] \
+		;
+	do
+		echo "$REMOTE_NAME wants id $REMOTE_ID, but it's in use"
+		sleep 1
+		REMOTE_ID=$((69-$i))
+		((i+=1))
+		[[ $i -gt 10 ]] && break
+	done
+}
+
 while true
 do
 	clear
 	REMOTE_HOSTS=()
-	for CONNECTION in $(sed -n 's/#.*//;s/ \+$//;s/|//g;s/ \+/^/g;/./p;' <(echo "$(hostnamectl --static) | localhost"; cat "$CONNECTIONS_FILE"))
+	CONNECTION_LIST=$(cat "$CONNECTIONS_FILE")
+	cat "$CONNECTIONS_FILE" | grep -q localhost || {
+		CONNECTION_LIST=$(echo "1 | $(hostnamectl --static) | localhost\n$CONNECTION_LIST")
+	}
+
+	CONNECTION_LIST=$(
+		echo "$CONNECTION_LIST" | grep localhost
+		echo "$CONNECTION_LIST" | grep -v localhost
+	)
+
+	for CONNECTION in $(sed -n 's/#.*//;s/ \+$//;s/|//g;s/ \+/^/g;/./p;' <<< $CONNECTION_LIST)
 	do
 		CONNECTION=$(echo $CONNECTION | sed 's/[\^]/ /g')
+		echo "'$CONNECTION'"
 
-		REMOTE_NAME=$(echo $CONNECTION | awk '{print $1;}')
-		REMOTE_HOST=$(echo $CONNECTION | awk '{print $2;}')
-		REMOTE_ARGS=($(echo $CONNECTION | awk '{$1=$2="";}1'))
+		REMOTE_ID=$(echo $CONNECTION | awk '{print $1;}')
+		REMOTE_NAME=$(echo $CONNECTION | awk '{print $2;}')
+		REMOTE_HOST=$(echo $CONNECTION | awk '{print $3;}')
+		REMOTE_ARGS=($(echo $CONNECTION | awk '{$1=$2=$3="";}1'))
+
+		SET_UNIQUE_ID
 
 		printf "$REMOTE_NAME : "
 
@@ -46,7 +75,7 @@ do
 		}
 
 		[[ $SUCCESS -eq 1 ]] && {
-			OMNI_TMUX new-window -t=omni -dn $REMOTE_NAME "source ~/.zshrc >/dev/null 2>&1; TMUX= scwrypts -n connect tmux $REMOTE_NAME; echo 'connection closed'; sleep 2"
+			OMNI_TMUX new-window -t=omni:$REMOTE_ID -dn $REMOTE_NAME "source ~/.zshrc >/dev/null 2>&1; TMUX= scwrypts -n connect tmux $REMOTE_NAME; echo 'connection closed'; sleep 2"
 			OMNI_TMUX list-window -t=omni | awk '{print $1;}' | grep -q '99:' \
 				&& OMNI_TMUX kill-window -t omni:99
 		}
