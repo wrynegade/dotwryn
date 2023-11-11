@@ -2,6 +2,7 @@ awscli
 build-essential
 cmake
 cowsay
+default-jdk
 figlet
 fzf
 golang

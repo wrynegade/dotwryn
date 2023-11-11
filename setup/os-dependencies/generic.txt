@@ -4,6 +4,7 @@ cowsay
 figlet
 fzf
 go
+java
 lolcat
 ncurses
 node

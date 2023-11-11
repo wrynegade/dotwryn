@@ -5,6 +5,7 @@ cowsay
 figlet
 fzf
 go
+jdk-openjdk
 lolcat
 mono
 ncurses
