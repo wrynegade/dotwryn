@@ -84,9 +84,31 @@ augroup file_specific_command_overrides
 
 	autocmd FileType python  nnoremap <Leader>ec :call ExecuteCommand('python %:p', 'split-pane-vertical')<CR>
 	autocmd FileType python  nnoremap <Leader>ei :call ExecuteCommand('bpython -qi %:p', 'split-pane-vertical')<CR>
+
+	autocmd FileType yaml  nnoremap <Leader>ec :call ExecuteScwrypt(
+				\ '-n --name helm/get-template --group scwrypts --type zsh'
+				\ , '--template-filename %:p', 'split-pane-vertical'
+				\ , 'yaml'
+				\)<CR>
+	autocmd FileType yaml  nnoremap <Leader>ei :call ExecuteScwrypt(
+				\ '-n --name helm/get-template --group scwrypts --type zsh'
+				\ , '--raw --template-filename %:p', 'split-pane-vertical'
+				\ , 'yaml'
+				\)<CR>
+	autocmd FileType yaml  nnoremap <Leader>eb :call ExecuteScwrypt(
+				\ '-n --name helm/update-dependencies --group scwrypts --type zsh'
+				\ , '--template-filename %:p', 'split-pane-vertical'
+				\ , 'yaml'
+				\)<CR>
 augroup end
 " }}}
 
+" --- notes for meeeeee ----
+" {{{
+" need to adapt this for helm execution;
+" should check for values.test.yaml or tests/default.yaml
+" echom 'quicktest' | execute 'vertical terminal helm template directus . --debug --values values.yaml --values values.test.yaml --show-only %' | set syntax=yaml
+" }}}
 
 " --- organization overrides ------------------------------------------
 " {{{
@@ -95,6 +117,8 @@ source $WRYNVIMPATH/override/rentdynamics.vim
 source $WRYNVIMPATH/override/directus.vim
 
 " }}}
+"
+"
 
 
 syntax on

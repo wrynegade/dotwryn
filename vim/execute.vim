@@ -3,7 +3,11 @@ let escapeTmuxPaneID = g:escapeTmuxSession . ":0.0"
 
 let escapeCommandOutputs = ['tmux', 'split-pane-vertical', 'split-pane-horizontal']
 
-function ExecuteCommand(args = '', output = '', flavor = 'shell')
+function ExecuteScwrypt(scwrypt = '', args = '', output = '', syntax = 'bash')
+	call ExecuteCommand('scwrypts ' . a:scwrypt . ' -- ' . a:args, a:output, 'shell', a:syntax)
+endfunction
+
+function ExecuteCommand(args = '', output = '', flavor = 'shell', syntax = 'bash')
 	let output = a:output
 	if output == ''
 		let output = GetPrefferredCommandOutput()
@@ -16,9 +20,11 @@ function ExecuteCommand(args = '', output = '', flavor = 'shell')
 		call system("tmux send-keys -t ".g:escapeTmuxPaneID." '".command."' Enter")
 		silent call system("tmux display-popup -E 'tmux a -t ".g:escapeTmuxSession."' &")
 	elseif output == 'split-pane-horizontal'
-		execute "botright terminal " . command
+		execute "botright terminal " . command 
+		let &l:syntax=a:syntax
 	elseif output == 'split-pane-vertical'
 		execute "botright vertical terminal " . command
+		let &l:syntax=a:syntax
 	else
 		execute "!" . command
 	endif

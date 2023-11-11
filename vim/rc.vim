@@ -23,6 +23,9 @@ nnoremap <Leader>q q:
 " \s previous selection command
 nnoremap <Leader>s :'<,'>
 
+" \m to set buffer to modifiable
+nnoremap <Leader>m :set modifiable<CR>
+
 " (e)dit / (s)ource vimrc
 nnoremap <Leader>ev :tabedit $WRYNVIMRC<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
