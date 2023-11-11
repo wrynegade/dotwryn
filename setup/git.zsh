@@ -3,14 +3,10 @@
 SETUP__GIT() {
 	STATUS 'updating remotes for .wryn'
 	cd $DOTWRYN_PATH
-	git remote rm origin 2>/dev/null
-	git remote add origin git@github.com:wrynegade/dotwryn.git
-	git remote set-url --add --push origin git@github.com:wrynegade/dotwryn.git
-	git remote set-url --add --push origin git@yage.io:wrynegade/dotwryn.git
-	git remote set-url --add --push origin git@bitbucket.org:wrynegade/dotwryn.git
-	git fetch origin >/dev/null 2>&1
-	git branch --set-upstream-to=origin/main main >/dev/null 2>&1
-
+	git remote add upstream git@github.com:wrynegade/dotwryn.git
+	git remote set-url --add --push upstream git@github.com:wrynegade/dotwryn.git
+	git remote set-url --add --push upstream git@yage.io:wrynegade/dotwryn.git
+	git remote set-url --add --push upstream git@bitbucket.org:wrynegade/dotwryn.git
 
 	STATUS 'updating upstream for zsh/plugins/code-activator'
 	cd $DOTWRYN_PATH/zsh/plugins/code-activator
