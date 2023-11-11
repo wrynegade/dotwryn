@@ -25,7 +25,7 @@ OS__GET_OS() {
 
 	[[ $OS_NAME =~ ^ubuntu$ ]] && OS_NAME=debian
 
-	echo $OS_NAME
+	echo $OS_NAME | tr '[:upper:]' '[:lower:]'
 }
 
 #####################################################################
@@ -55,7 +55,6 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 	STATUS 'checking os dependencies'
 	case $OS_NAME in
 		arch )
-			REMINDER "package 'base-devel' is required"
 			;;
 		debian ) ;;
 		* )
