@@ -39,7 +39,7 @@ CONFIG__VIM() {
 	[ $COMPILE_VIM ] && [[ $COMPILE_VIM -eq 1 ]] && return 0
 
 	STATUS 'starting vim setup'
-	SCWRYPTS --name ystem/vim/vundle/install --group scwrypts --type zsh || return 1
+	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 1
 }
 
 #####################################################################
