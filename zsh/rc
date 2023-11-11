@@ -33,10 +33,14 @@ SET_PREFERRED_EDITOR() {
 	export EDITOR="$AVAILABLE_EDITOR"
 	export VISUAL="$AVAILABLE_EDITOR"
 }
+
 #####################################################################
 for p in $INTERNAL_PLUGINS; do source $p; done
 for p in $EXTERNAL_PLUGINS; do [ -f $p ] && source $p; done
 SET_PREFERRED_EDITOR
 WELCOME
+
+echo $PATH | grep -q "^\\(.*:\\|\\)$HOME/.local/bin\\(:.*\\|\\)$" \
+	|| export PATH="$HOME/.local/bin:$PATH"
 #####################################################################
 true
