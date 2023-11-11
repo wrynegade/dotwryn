@@ -3,8 +3,12 @@ cmake
 cowsay
 figlet
 fzf
+go
 lolcat
 ncurses
+node
+npm
 python3
 rg
 tmux
+xbuild
