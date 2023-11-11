@@ -1,4 +1,4 @@
-aws-cli-v2-bin
+aws-cli-v2
 cmake
 cowsay
 figlet
@@ -8,3 +8,5 @@ ncurses
 python
 ripgrep
 tmux
+vim
+vim-runtime

@@ -33,19 +33,16 @@ OS__GET_OS() {
 OS__INSTALL_SOURCE_DEPENDENCIES() {
 	case $OS_NAME in
 		arch )
-			SCWRYPTS packages/install \
-				'https://aur.archlinux.org/yay.git' \
-				--local-name 'yay' \
+			command -v yay >/dev/null 2>&1 \
+				|| SCWRYPTS packages/install 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
 				;
 			;;
 		debian ) ;;
 		* ) ;;
 	esac
 
-	SCWRYPTS packages/install \
-		'https://github.com/tiyn/dmenu' \
-		--local-name 'patched-dmenu' \
-		;
+	[ $COMPILE_DMENU ] && [[ $COMPILE_DMENU -eq 1 ]] \
+		&& SCWRYPTS packages/install 'https://github.com/tiyn/dmenu' --local-name 'patched-dmenu'
 }
 
 #####################################################################

@@ -3,11 +3,15 @@ cd "${0:a:h}"
 while [[ $# -gt 0 ]]
 do
 	case $1 in
-		--no-compile-vim ) NO_COMPILE_VIM=1 ;;
-		--ci             ) export CI=1      ;;
-		--force-root     ) FORCE_ROOT=1     ;;
-		--no-fluff )
-			NO_COMPILE_VIM=1
+		--force-root ) FORCE_ROOT=1     ;;
+		        --ci ) export CI=1      ;;
+
+		--no-compile-dmenu ) COMPILE_DMENU=0 ;;
+		  --no-compile-vim ) COMPILE_VIM=0 ;;
+
+		--min )
+			COMPILE_VIM=0
+			COMPILE_DMENU=0
 			;;
 	esac
 	shift 1

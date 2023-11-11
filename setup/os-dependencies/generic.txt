@@ -1,5 +1,4 @@
 aws
-build-essential
 cmake
 cowsay
 figlet
