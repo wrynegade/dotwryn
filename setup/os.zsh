@@ -25,14 +25,16 @@ OS__GET_OS() {
 
 	[[ $OS_NAME =~ ^ubuntu$ ]] && OS_NAME=debian
 
-	echo $OS_NAME | tr '[:upper:]' '[:lower:]'
+	[[ $OS_NAME =~ ^[Ee]ndeavour[Oo][Ss]$ ]] && OS_NAME=arch
+
+	echo $OS_NAME
 }
 
 #####################################################################
 
 OS__INSTALL_SOURCE_DEPENDENCIES() {
 	case $OS_NAME in
-		arch | endeavouros )
+		arch )
 			command -v yay >/dev/null 2>&1 \
 				|| SCWRYPTS packages/install 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
 				;
