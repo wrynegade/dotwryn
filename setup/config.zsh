@@ -39,10 +39,7 @@ CONFIG__VIM() {
 	[ $COMPILE_VIM ] && [[ $COMPILE_VIM -eq 1 ]] && return 0
 
 	STATUS 'starting vim setup'
-	"$DOTWRYN_PATH/vim/update" \
-		&& SUCCESS 'completed vim setup' \
-		|| FAIL 1 'error detected in vim setup (see above)' \
-		;
+	SCWRYPTS --name ystem/vim/vundle/install --group scwrypts --type zsh || return 1
 }
 
 #####################################################################
