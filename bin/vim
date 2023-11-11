@@ -1,11 +1,22 @@
 #!/bin/sh
 #####################################################################
+
 VIM_ARGS=(-p)
-VIM=/usr/bin/vim
-#####################################################################
 
-SOURCE_BUILD=/usr/local/bin/vim
-[ -f $SOURCE_BUILD ] && VIM=$SOURCE_BUILD
+BUILD_PREFERENCE=(
+	/usr/local/bin/vim  # source build
+	/usr/bin/vim        # package manager build
+	)
+
+for V in ${BUILD_PREFERENCE[@]}
+do
+	[ -f $V ] && VIM=$V && break
+done
+
+[ -f $VIM ] || {
+	echo "unable to find a build for vim; is it installed?" >&2
+	exit 1
+}
 
 #####################################################################
-exec $(printf "%q " $VIM ${VIM_ARGS[@]} $@)
+exec $VIM ${VIM_ARGS[@]} "$@"
