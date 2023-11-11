@@ -23,7 +23,7 @@ TMUX_DEFAULT_SESSION_NAME='wryn'
 PS1_BRANCH_SYMBOL=''
 PS1_INDICATOR_SYMBOL='☕'
 PS1_SEPARATOR='::'
-PS1_USER='%n'
+PS1_USER='%m'
 
 WELCOME () {
 	{ figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy'; } | lolcat
