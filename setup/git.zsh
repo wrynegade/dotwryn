@@ -26,10 +26,5 @@ SETUP__GIT() {
 	git remote set-url --add --push upstream git@yage.io:zsh/code-activator
 	git remote set-url --add --push upstream git@github.com:wrynegade/scwrypts.git
 
-	STATUS 'updating upstream for zsh/plugins/ssh'
-	cd $DOTWRYN_PATH/zsh/plugins/ssh
-	git remote rm upstream
-	git remote add upstream git@yage.io:zsh/ssh.git
-
 	cd $DOTWRYN_PATH
 }

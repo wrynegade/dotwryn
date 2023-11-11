@@ -32,7 +32,7 @@ OS__GET_OS() {
 
 OS__INSTALL_SOURCE_DEPENDENCIES() {
 	case $OS_NAME in
-		arch )
+		arch | endeavouros )
 			command -v yay >/dev/null 2>&1 \
 				|| SCWRYPTS packages/install 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
 				;
