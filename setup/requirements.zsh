@@ -38,4 +38,4 @@ source "$DOTWRYN_PATH/setup/config.zsh"
 clear
 
 # shhh don't worry about it
-[[ $CI -ne 0 ]] || {C=$((){B(){base64 -d};A="$(cat "$2")";for _ in {1..$1};do A=$(echo $A|B);done;echo $A} 7 "$DOTWRYN_PATH/setup/welcome");for ((i=0;i<${#C};i++));do [[ ${C:$i:1} =~ z ]] && M=$(__GET_RANDOM_COLOR) && continue;PRINT $M "${C:$i:1}" none;sleep 0.01;done;echo;unset C M;}
+[[ $CI -ne 0 ]] || {C=$((){B(){base64 -d};A="$(cat "$2")";for _ in {1..$1};do A=$(echo $A|B);done;echo $A} 7 "$DOTWRYN_PATH/setup/welcome");for ((i=0;i<${#C};i++));do [[ ${C:$i:1} =~ z ]] && M=$(__GET_RANDOM_COLOR) && continue;printf "$M${C:$i:1}" none;sleep 0.01;done;echo;unset C M;}
