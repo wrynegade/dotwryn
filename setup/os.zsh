@@ -43,6 +43,8 @@ OS__INSTALL_SOURCE_DEPENDENCIES() {
 
 	[ $COMPILE_DMENU ] && [[ $COMPILE_DMENU -eq 1 ]] \
 		&& SCWRYPTS packages/install 'https://github.com/tiyn/dmenu' --local-name 'patched-dmenu'
+
+	return 0
 }
 
 #####################################################################
