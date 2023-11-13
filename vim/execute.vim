@@ -4,7 +4,13 @@ let escapeTmuxPaneID = g:escapeTmuxSession . ":0.0"
 let escapeCommandOutputs = ['tmux', 'split-pane-vertical', 'split-pane-horizontal']
 
 function ExecuteScwrypt(scwrypt = '', args = '', output = '', syntax = 'bash')
-	call ExecuteCommand('scwrypts ' . a:scwrypt . ' -- ' . a:args, a:output, 'shell', a:syntax)
+	let b:scwryptsPrevArgs = a:args
+	call ExecuteCommand('scwrypts -n ' . a:scwrypt . ' -- ' . a:args, a:output, 'shell', a:syntax)
+	echom 'scwrypts -n ' . a:scwrypt . '--' . a:args
+endfunction
+
+function ExecuteScwryptInteractive(scwrypt = '', args = '', output = '', syntax = 'bash')
+	call ExecuteScwrypt(a:scwrypt, a:args . input('scwrypts ' . a:scwrypt . '--' . a:args), a:output, a:syntax)
 endfunction
 
 function ExecuteCommand(args = '', output = '', flavor = 'shell', syntax = 'bash')

@@ -7,9 +7,13 @@ endif
 source $WRYNVIMPATH/options.vim
 source $WRYNVIMPATH/execute.vim
 source $WRYNVIMPATH/formatting.vim
+source $WRYNVIMPATH/file-execute.vim
 source $WRYNVIMPATH/navigation.vim
 source $WRYNVIMPATH/color.vim
 source $WRYNVIMPATH/utility.vim
+
+source $WRYNVIMPATH/override/rentdynamics.vim
+source $WRYNVIMPATH/override/directus.vim
 
 " ---------------------------------------------------------------------
 " {{{

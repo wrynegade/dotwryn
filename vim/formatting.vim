@@ -23,6 +23,8 @@ augroup forced_filetype_recognition
 	autocmd BufRead,BufNewFile *.template.yaml set filetype=yaml.cloudformation
 	autocmd BufRead,BufNewFile git.conf        setfiletype gitconfig
 
+	autocmd BufRead,BufNewFile */scwrypts/* execute "set filetype=".&filetype.".scwrypts"
+
 	let g:tex_flavor = "latex"
 augroup end
 
@@ -57,69 +59,5 @@ augroup end
 
 let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh', 'sql']
 " }}}
-
-
-" --- (e)xe(c)ute -----------------------------------------------------
-"          (i)nteractive
-"          (b)uild
-"     auto-(f)ormat
-"          (t)ests
-" {{{
-augroup file_specific_command_overrides
-	autocmd!
-	nnoremap <Leader>ec :call ExecuteCommand('%:p', 'split-pane-horizontal')<CR>
-	nnoremap <Leader>ei :echohl ErrorMsg <bar> echom 'ERROR: no interactive execute defined' <bar> echohl None<CR>
-	nnoremap <Leader>eb :echohl ErrorMsg <bar> echom 'ERROR: no build steps defined'         <bar> echohl None<CR>
-	nnoremap <Leader>ef :echohl ErrorMsg <bar> echom 'ERROR: no auto-format steps defined'   <bar> echohl None<CR>
-	nnoremap <Leader>et :echohl ErrorMsg <bar> echom 'ERROR: no test steps defined'          <bar> echohl None<CR>
-
-	autocmd FileType tex  nnoremap <Leader>ec :! scwrypts -n latex/open-pdf  -- %:p<CR>
-	autocmd FileType tex  nnoremap <Leader>eb :! scwrypts -n latex/build-pdf -- %:p<CR>
-	autocmd FileType tex  nnoremap <Leader>ef :! scwrypts -n latex/cleanup   -- %:p<CR>
-
-	autocmd FileType markdown  nnoremap <Leader>ec :!xdg-open %:p<CR>
-
-	autocmd FileType go  nnoremap          <Leader>ec :!clear<CR><CR>q:?GoRun<CR><CR>
-	autocmd FileType go  nnoremap <silent> <Leader>ef <Plug>(go-imports)
-	autocmd FileType go  nnoremap <silent> gd <Plug>(go-def-tab)
-
-	autocmd FileType python  nnoremap <Leader>ec :call ExecuteCommand('python %:p', 'split-pane-vertical')<CR>
-	autocmd FileType python  nnoremap <Leader>ei :call ExecuteCommand('bpython -qi %:p', 'split-pane-vertical')<CR>
-
-	autocmd FileType yaml  nnoremap <Leader>ec :call ExecuteScwrypt(
-				\ '-n --name helm/get-template --group scwrypts --type zsh'
-				\ , '--template-filename %:p', 'split-pane-vertical'
-				\ , 'yaml'
-				\)<CR>
-	autocmd FileType yaml  nnoremap <Leader>ei :call ExecuteScwrypt(
-				\ '-n --name helm/get-template --group scwrypts --type zsh'
-				\ , '--raw --template-filename %:p', 'split-pane-vertical'
-				\ , 'yaml'
-				\)<CR>
-	autocmd FileType yaml  nnoremap <Leader>eb :call ExecuteScwrypt(
-				\ '-n --name helm/update-dependencies --group scwrypts --type zsh'
-				\ , '--template-filename %:p', 'split-pane-vertical'
-				\ , 'yaml'
-				\)<CR>
-augroup end
-" }}}
-
-" --- notes for meeeeee ----
-" {{{
-" need to adapt this for helm execution;
-" should check for values.test.yaml or tests/default.yaml
-" echom 'quicktest' | execute 'vertical terminal helm template directus . --debug --values values.yaml --values values.test.yaml --show-only %' | set syntax=yaml
-" }}}
-
-" --- organization overrides ------------------------------------------
-" {{{
-
-source $WRYNVIMPATH/override/rentdynamics.vim
-source $WRYNVIMPATH/override/directus.vim
-
-" }}}
-"
-"
-
 
 syntax on
