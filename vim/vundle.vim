@@ -15,6 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 	Plugin 'tpope/vim-surround'
 	Plugin 'valloric/youcompleteme'
 	Plugin 'w0rp/ale'
+	Plugin 'chrisbra/unicode.vim'
 " }}}
 " ---------------------------------------------------------------------
 call vundle#end()
@@ -77,6 +78,8 @@ let g:ale_sign_column_always = 1
 nmap <Leader>ae <Plug>(ale_next)
 nmap <Leader>ar <Plug>(ale_previous)
 nmap <Leader>f  <Plug>(ale_fix)
+
+imap <C-U>   <Plug>(UnicodeFuzzy)
 
 " }}}
 " ---------------------------------------------------------------------

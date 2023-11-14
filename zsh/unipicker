@@ -1,0 +1,10 @@
+#!/bin/zsh
+command -v unipicker >/dev/null 2>&1 || return 0
+
+__ZSH_SHORTCUT__UNIPICKER() {
+	LBUFFER+="$(unipicker)"
+	zle reset-prompt
+}
+
+zle -N unipicker __ZSH_SHORTCUT__UNIPICKER
+bindkey  unipicker

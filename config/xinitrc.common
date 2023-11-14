@@ -4,4 +4,7 @@ export PATH="$DOTWRYN/bin/$(hostnamectl --static):$PATH"
 command -v kitty >/dev/null 2>&1 \
 	&& export TERMINAL=$(which kitty)
 
+command -v alacritty >/dev/null 2>&1 \
+	&& export TERMINAL=$(which alacritty)
+
 for SCRIPT in $(find /etc/x11/xinit/xinitrc.d); do source $SCRIPT; done
