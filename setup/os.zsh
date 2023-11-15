@@ -70,6 +70,11 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 		|| DEPENDENCIES="$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.txt" \
 		;
 
+	[ ! $CI ] && {
+		STATUS 'updating system, repositories, and mirrors'
+		UPDATE_REPOSITORIES__$OS_NAME
+	}
+
 	for DEPENDENCY in $(cat "$DEPENDENCIES")
 	do
 		INSTALL_MANAGED__$OS_NAME $DEPENDENCY
@@ -84,23 +89,25 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 	return 0
 }
 
+UPDATE_REPOSITORIES__arch() { yay -Syu; }
 INSTALL_MANAGED__arch() {
 	local TARGET="$1"
 
 	STATUS "checking for $TARGET"
 
-	pacman -Qq | grep -q "^$TARGET$\|^$TARGET-git$" && {
+	yay -Qq | grep -q "^$TARGET$\|^$TARGET-git$" && {
 		SUCCESS "found installation of '$TARGET'"
 	} || {
 		WARNING "'$TARGET' not found"
 
 		STATUS "installing '$TARGET'"
-		sudo pacman -Syu --noconfirm $TARGET \
+		yay -Syu --noconfirm $TARGET \
 			&& SUCCESS "successfully installed '$TARGET'" \
 			|| ERROR "failed to install '$TARGET'"
 	}
 }
 
+UPDATE_REPOSITORIES__debian() { sudo apt-get update && sudo apt-get upgrade; }
 INSTALL_MANAGED__debian() {
 	STATUS "checking / installing '$1'"
 	sudo apt-get install --yes $1 \
@@ -109,6 +116,7 @@ INSTALL_MANAGED__debian() {
 		;
 }
 
+UPDATE_REPOSITORIES__generic() { return 0; }
 INSTALL_MANAGED__generic() {
 	command -v $1 >/dev/null 2>&1 \
 		|| ERROR "could not find '$1'; it's up to you to install this one!"

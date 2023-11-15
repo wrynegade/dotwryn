@@ -1,13 +1,14 @@
 aws-cli-v2
 base-devel
+bat
 cmake
 cowsay
 figlet
 fzf
+htop
 lolcat
 ncurses
 python
 ripgrep
 tmux
 vim
-vim-runtime
