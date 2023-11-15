@@ -6,9 +6,11 @@ use desktop/colorscheme --group dotwryn
 
 CHECK_ENVIRONMENT
 #####################################################################
-SET_THEME alternate
-i3-sensible-terminal &
-PID=$!
-sleep 0.1
-SET_THEME main
-wait $!
+
+MAIN() {
+	unset USAGE
+	GET_COLORSCHEME_HEX $@
+}
+
+#####################################################################
+MAIN $@

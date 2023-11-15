@@ -7,4 +7,10 @@ use desktop/colorscheme --group dotwryn
 CHECK_ENVIRONMENT
 #####################################################################
 
-GET_COLORSCHEME_HEX $@
+MAIN() {
+	unset USAGE
+	SET_THEME $@
+}
+
+#####################################################################
+MAIN $@

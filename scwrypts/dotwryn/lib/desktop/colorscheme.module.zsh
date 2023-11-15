@@ -1,27 +1,261 @@
 #####################################################################
 
-DEPENDENCIES+=(
-	awk sed tr
-)
+DEPENDENCIES+=(awk sed tr)
 REQUIRED_ENV+=()
 
 #####################################################################
 
-GET_COLORSCHEME_HEX() {
-	[ $1 ] && [[ $1 -le 15 ]] && [[ $1 -ge 0 ]] \
-		|| FAIL 1 'must provide ANSI color number 0-15'
+_COLORSCHEME_DIR="$DOTWRYN/colorschemes"
 
-	grep "^color$1 " "$DOTWRYN/colorschemes/kitty.main" \
-		| awk '{print $2}' \
-		| sed 's/ //g; s/#//g' \
-		| tr '[:lower:]' '[:upper:]' \
-		;
+ACTIVE_THEME_NAME='main'
+ACTIVE_THEME="$_COLORSCHEME_DIR/active.$ACTIVE_THEME_NAME"
+
+GET_COLORSCHEME_HEX() {
+	[ ! $USAGE ] && USAGE="
+		usage: ...args... [...options...]
+
+		options:
+		  -h, --help   show this dialogue and exit
+
+		args:
+		  \$1 [0-15]       gets the indicated color by ANSI color number
+		     background   gets the background color
+		     foreground   gets the foreground color
+		     cursor       gets the cursor color
+		     all          sets all theme variables (returns nothing)
+	"
+
+	local ARGS=()
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			-h | --help ) USAGE; return 0;;
+
+			all ) ARGS=(all); break ;;
+
+			* ) ARGS+=($1) ;;
+		esac
+		shift 1
+	done
+
+	[[ ${#ARGS[@]} -gt 0 ]] || ERROR 'must provide at least one color lookup'
+
+	CHECK_ERRORS || return 1
+
+	##########################################
+
+	local PATTERN
+
+	for A in ${ARGS[@]}
+	do
+		case $A in
+			all )
+				FOREGROUND=$(GET_COLORSCHEME_HEX foreground)
+				BACKGROUND=$(GET_COLORSCHEME_HEX background)
+
+				CURSOR=$(GET_COLORSCHEME_HEX cursor)
+
+				BLACK=$(GET_COLORSCHEME_HEX   0)
+				RED=$(GET_COLORSCHEME_HEX     1)
+				GREEN=$(GET_COLORSCHEME_HEX   2)
+				YELLOW=$(GET_COLORSCHEME_HEX  3)
+				BLUE=$(GET_COLORSCHEME_HEX    4)
+				MAGENTA=$(GET_COLORSCHEME_HEX 5)
+				CYAN=$(GET_COLORSCHEME_HEX    6)
+				WHITE=$(GET_COLORSCHEME_HEX   7)
+
+				BRIGHT_BLACK=$(GET_COLORSCHEME_HEX   8 )
+				BRIGHT_RED=$(GET_COLORSCHEME_HEX     9 )
+				BRIGHT_GREEN=$(GET_COLORSCHEME_HEX   10)
+				BRIGHT_YELLOW=$(GET_COLORSCHEME_HEX  11)
+				BRIGHT_BLUE=$(GET_COLORSCHEME_HEX    12)
+				BRIGHT_MAGENTA=$(GET_COLORSCHEME_HEX 13)
+				BRIGHT_CYAN=$(GET_COLORSCHEME_HEX    14)
+				BRIGHT_WHITE=$(GET_COLORSCHEME_HEX   15)
+
+				return 0
+				;;
+
+			foreground | background | cursor ) PATTERN="^$A " ;;
+
+			* ) : \
+				&& [ $A ] && [[ $A -le 15 ]] && [[ $A -ge 0  ]] \
+					|| { ERROR 'must provide ANSI color number 0-15'; return 1; }
+
+				PATTERN="^color$A "
+				;;
+		esac
+
+		grep "$PATTERN" "$ACTIVE_THEME" \
+			| awk '{print $2}' \
+			| sed 's/ //g; s/#//g' \
+			| tr '[:lower:]' '[:upper:]' \
+			;
+	done
 }
 
 SET_THEME() {
-	local THEME="$DOTWRYN/colorschemes/kitty.$1"
-	[ ! -f "$THEME" ] && FAIL 1 "no such theme '$1'"
+	[ ! $USAGE ] && USAGE="
+		usage: [...options...]
+
+		options:
+		  -t, --theme          one of the available color themes
+		  -l, --list-themes    show available color themes and exit
+
+		  --only   only set the theme for a specific terminal (alacritty kitty tty)
+
+		  -h, --help   show this dialogue and exit
+
+		generate all source-controlled theme files then link them to the
+		appropriate local theme file to immediately update terminal themes
+	"
+	local SOURCE_THEME EMULATOR
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			-t | --theme        ) THEME_NAME=$2; shift 1 ;;
+
+			-l | --list-themes ) _LIST_THEMES; return 0 ;;
+
+			--only )
+				EMULATOR=$2; shift 1
+				command -v _SET_THEME__$EMULATOR >/dev/null 2>&1 \
+					|| ERROR "terminal emulator '$EMULATOR' not supported"
+				;;
+
+			-h | --help ) USAGE; return 0 ;;
+
+			* ) ERROR "unknown argument '$1'"
+		esac
+		shift 1
+	done
+
+	CHECK_ERRORS || return 1
+
+	##########################################
+
+	[ $THEME_NAME ] || THEME_NAME=$(_LIST_THEMES | FZF 'select a theme')
+	[ $THEME_NAME ] || ABORT
+
+	local THEME="$_COLORSCHEME_DIR/$THEME_NAME.conf"
+	[ -f "$THEME" ] || FAIL 1 "no such theme '$THEME_NAME'"
+
+
+	##########################################
+
+	STATUS "updating theme $ACTIVE_THEME_NAME" \
+		&& ln -sf "$THEME" "$ACTIVE_THEME" \
+		&& SUCCESS "theme $ACTIVE_THEME_NAME set to '$THEME_NAME'" \
+		|| FAIL 2 "unable to set theme $ACTIVE_THEME_NAME to '$THEME_NAME'"
+
+	local EMULATORS=(alacritty kitty getty)
+	[ $EMULATOR ] && EMULATORS=($EMULATOR)
+
+	GET_COLORSCHEME_HEX all
+	for EMULATOR in ${EMULATORS[@]}
+	do
+		STATUS "updating $EMULATOR theme to use $ACTIVE_THEME_NAME" \
+			&& _GENERATE_THEME__$EMULATOR \
+			&& _SET_THEME__$EMULATOR \
+			&& SUCCESS "emulator $EMULATOR successfully set to $ACTIVE_THEME_NAME" \
+			|| ERROR "error setting theme $ACTIVE_THEME_NAME for $EMULATOR"
+
+		[[ $EMULATOR =~ ^getty$ ]] && [[ $TERM =~ ^linux$ ]] && {
+			STATUS 'loading getty theme now' \
+				&& NO_CLEAR=1 source "$ACTIVE_THEME.getty" \
+				&& SUCCESS 'getty theme loaded' \
+				|| ERROR 'getty theme loading error (see above)'
+			}
+	done
+
+	CHECK_ERRORS --no-usage
+}
+
+#####################################################################
+
+_LIST_THEMES() {
+	ls "$_COLORSCHEME_DIR" | grep '.conf$' | sed 's/.conf$//'
+}
+
+#####################################################################
+
+_GENERATE_THEME__alacritty() {
+	STATUS "generating $ACTIVE_THEME_NAME.alacritty"
+	echo "---   # yamllint disable rule:colons
+# do not edit; generated by scwrypts
+colors:
+  primary:
+    background: '0x$BACKGROUND'
+    foreground: '0x$FOREGROUND'
+  cursor:
+    cursor: '0x$CURSOR'
+  normal:
+    black:   '0x$BLACK'
+    red:     '0x$RED'
+    green:   '0x$GREEN'
+    yellow:  '0x$YELLOW'
+    blue:    '0x$BLUE'
+    magenta: '0x$MAGENTA'
+    cyan:    '0x$CYAN'
+    white:   '0x$WHITE'
+  bright:
+    black:   '0x$BRIGHT_BLACK'
+    red:     '0x$BRIGHT_RED'
+    green:   '0x$BRIGHT_GREEN'
+    yellow:  '0x$BRIGHT_YELLOW'
+    blue:    '0x$BRIGHT_BLUE'
+    magenta: '0x$BRIGHT_MAGENTA'
+    cyan:    '0x$BRIGHT_CYAN'
+    white:   '0x$BRIGHT_WHITE'
+" | sed '$d' > "$ACTIVE_THEME.alacritty"
+}
+
+_SET_THEME__alacritty() {
+	local LOCAL_THEME="$HOME/.config/alacritty/theme.yml"
+	ln -sf "$ACTIVE_THEME.alacritty" "$LOCAL_THEME"
+}
+
+#####################################################################
+
+_GENERATE_THEME__kitty() {
+	return 0  # existing theme is compatible with kitty
+}
+
+_SET_THEME__kitty() {
 	local LOCAL_THEME="$HOME/.config/kitty/theme.conf"
-	rm -- $LOCAL_THEME
-	ln -s "$THEME" "$LOCAL_THEME"
+	ln -sf "$ACTIVE_THEME" "$LOCAL_THEME"
+}
+
+#####################################################################
+
+_GENERATE_THEME__getty() {
+	echo "#!/bin/sh
+# source this file to apply colorscheme to linux getty
+[[ \"\$TERM\" =~ ^linux$ ]] || return 0
+
+/bin/echo -e \" \
+\\e]P0$BACKGROUND \
+\\e]P1$RED \
+\\e]P2$GREEN \
+\\e]P3$YELLOW \
+\\e]P4$BLUE \
+\\e]P5$MAGENTA \
+\\e]P6$CYAN \
+\\e]P7$FOREGROUND \
+\\e]P8$BRIGHT_RED \
+\\e]P9$BRIGHT_GREEN \
+\\e]PA$BRIGHT_YELLOW \
+\\e]PB$BRIGHT_BLUE \
+\\e]PC$BRIGHT_MAGENTA \
+\\e]PD$BRIGHT_CYAN \
+\\e]PE$WHITE \
+\\e]PF$BRIGHT_WHITE \
+\"
+[ ! \$NO_CLEAR ] && clear
+return 0" > "$ACTIVE_THEME.getty"
+}
+
+_SET_THEME__getty() {
+	local LOCAL_THEME="$HOME/.config/wryn/tty-colorscheme"
+	ln -sf "$ACTIVE_THEME.getty" "$LOCAL_THEME"
 }

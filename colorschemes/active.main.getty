@@ -1,0 +1,7 @@
+#!/bin/sh
+# source this file to apply colorscheme to linux getty
+[[ "$TERM" =~ ^linux$ ]] || return 0
+
+/bin/echo -e " ]P0000505 ]P1A2152D ]P2288B52 ]P3489358 ]P40EA1EE ]P5A03C6F ]P68195A2 ]P7CCDDFF ]P8FF1440 ]P955C9B5 ]PA5BF887 ]PB00FFFF ]PCCF4663 ]PDDFF5FE ]PE486A8A ]PFEBFFF2 "
+[ ! $NO_CLEAR ] && clear
+return 0
