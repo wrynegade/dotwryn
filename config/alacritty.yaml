@@ -1,0 +1,11 @@
+---  # yamllint disable rule:colons
+import:
+  - ~/.config/alacritty/theme.yml
+  - ~/.config/alacritty/local.yml
+
+window:
+  opacity: 0.7
+
+font:
+  normal:
+    family: Monaspace Neon

@@ -11,7 +11,10 @@ SYMLINKS="
 # fully qualified path                       ~/.config/THE-REST
 # --------------------------------------------------------------------------
 $DOTWRYN/bin/i3-utils                         i3/utils
-$DOTWRYN/colorschemes/kitty.main              kitty/theme.conf
+$DOTWRYN/colorschemes/active.main             kitty/theme.conf
+$DOTWRYN/colorschemes/active.main.alacritty   alacritty/theme.yml
+$DOTWRYN/colorschemes/active.main.getty       wryn/tty-colorscheme
+$DOTWRYN/config/alacritty.yaml                alacritty/alacritty.yml
 $DOTWRYN/config/bat.conf                      bat/config
 $DOTWRYN/config/code-activator.conf           code-activator-zsh/settings.zsh
 $DOTWRYN/config/compton.conf                  compton/compton.conf

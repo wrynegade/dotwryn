@@ -65,7 +65,12 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 			;;
 	esac
 
-	for DEPENDENCY in $(cat "$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.txt")
+	[ $MIN ] && [[ $MIN -eq 1 ]] && [ -f "$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.min.txt" ] \
+		&& DEPENDENCIES="$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.min.txt" \
+		|| DEPENDENCIES="$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.txt" \
+		;
+
+	for DEPENDENCY in $(cat "$DEPENDENCIES")
 	do
 		INSTALL_MANAGED__$OS_NAME $DEPENDENCY
 	done

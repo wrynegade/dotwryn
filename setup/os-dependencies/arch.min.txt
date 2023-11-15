@@ -4,17 +4,10 @@ cmake
 cowsay
 figlet
 fzf
-go
-jdk-openjdk
 lolcat
-monaspace-font
-mono
 ncurses
-nodejs
-npm
 python
 ripgrep
 tmux
-unipicker
 vim
 vim-runtime

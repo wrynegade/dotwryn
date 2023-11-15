@@ -10,6 +10,7 @@ do
 		  --no-compile-vim ) COMPILE_VIM=0 ;;
 
 		--min )
+			MIN=1
 			COMPILE_VIM=0
 			COMPILE_DMENU=0
 			;;
