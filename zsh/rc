@@ -43,4 +43,9 @@ WELCOME
 echo $PATH | grep -q "^\\(.*:\\|\\)$HOME/.local/bin\\(:.*\\|\\)$" \
 	|| export PATH="$HOME/.local/bin:$PATH"
 #####################################################################
+
+[[ $TERM =~ alacritty ]] \
+	&& [[ $(xdotool search --classname Alacritty 2>/dev/null | wc -l) -eq 1 ]] \
+	&& scwrypts tmux omni
+
 true
