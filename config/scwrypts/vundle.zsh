@@ -10,6 +10,10 @@ VUNDLE__BUILD__nerdtree() {
 	# ... build steps from /home/w0ryn/.vim/nerdtree 
 }
 
+VUNDLE__BUILD__unicode.vim() {
+	# ... build steps from /home/w0ryn/.vim/unicode.vim 
+}
+
 VUNDLE__BUILD__vim-dim() {
 	# ... build steps from /home/w0ryn/.vim/vim-dim 
 }

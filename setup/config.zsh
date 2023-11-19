@@ -36,8 +36,6 @@ CONFIG__VIM() {
 	CONFIG__ENV vim || return 1
 	CONFIG__RC  vim || return 2
 
-	[ $COMPILE_VIM ] && [[ $COMPILE_VIM -eq 1 ]] && return 0
-
 	STATUS 'starting vim setup'
 	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 1
 }
@@ -49,11 +47,15 @@ CONFIG__ENV() {
 	local LOCAL_CONFIG="$HOME/.config/wryn/env.$1"
 
 	[ -f $LOCAL_CONFIG ] && {
-		WARNING "local $1 configuration exists ($LOCAL_CONFIG)"
-		yN 'overwrite this configuration?' || return 0
+		case $OVERWRITE_EXISTING in
+			0 ) return 0 ;;
+			1 )
+				WARNING "local $1 configuration exists ($LOCAL_CONFIG)"
+				yN 'overwrite this configuration?' || return 0
 
-		mv "$LOCAL_CONFIG" "$LOCAL_CONFIG.bak" >/dev/null 2>&1 \
-			&& INFO "created backup of local configuration ($LOCAL_CONFIG.bak)"
+				mv "$LOCAL_CONFIG" "$LOCAL_CONFIG.bak" >/dev/null 2>&1 \
+					&& INFO "created backup of local configuration ($LOCAL_CONFIG.bak)"
+		esac
 	}
 
 	STATUS "setting up $1 configuration ($LOCAL_CONFIG)"
@@ -72,7 +74,7 @@ CONFIG__ENV() {
 		|| FAIL 1 "unable to create $1 configuration" \
 		;
 
-	EDIT "$LOCAL_CONFIG"
+	EDITOR=vim VISUAL=vim EDIT "$LOCAL_CONFIG"
 }
 
 

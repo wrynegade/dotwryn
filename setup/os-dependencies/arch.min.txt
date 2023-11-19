@@ -6,6 +6,7 @@ cowsay
 figlet
 fzf
 htop
+jq
 lolcat
 ncurses
 python

@@ -1,17 +1,18 @@
 #!/bin/zsh
 cd "${0:a:h}"
+OVERWRITE_EXISTING=0
 while [[ $# -gt 0 ]]
 do
 	case $1 in
 		--force-root ) FORCE_ROOT=1 ;;
 		        --ci ) export CI=1  ;;
 
+		--overwrite ) OVERWRITE_EXISTING=1 ;;
+
 		--no-compile-dmenu ) COMPILE_DMENU=0 ;;
-		  --no-compile-vim ) COMPILE_VIM=0 ;;
 
 		--min )
 			MIN=1
-			COMPILE_VIM=0
 			COMPILE_DMENU=0
 			;;
 	esac
@@ -32,4 +33,7 @@ INFO "installation start : $(date)" 2>> "$LOGFILE"
 INFO "installation complete: $(date)" 2>> "$LOGFILE"
 
 ################################################################################
-source "$DOTWRYN_PATH/setup/cleanup.zsh"
+yN 'keep logfile?' \
+	|| { rm "$LOGFILE" || ERROR "unable to remove '$LOGFILE'" }
+
+SUCCESS "\n.wryn setup complete; have a nice day :)\n"
