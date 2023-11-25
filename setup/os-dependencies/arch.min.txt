@@ -5,6 +5,7 @@ cmake
 cowsay
 figlet
 fzf
+go-yq
 htop
 jq
 lolcat

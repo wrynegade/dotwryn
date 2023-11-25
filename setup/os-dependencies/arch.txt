@@ -8,6 +8,7 @@ figlet
 fprintd
 fzf
 go
+go-yq
 google-chrome
 htop
 i3-wm
