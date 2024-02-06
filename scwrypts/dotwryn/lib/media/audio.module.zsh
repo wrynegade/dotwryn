@@ -26,6 +26,8 @@ MEDIA__PLAY_SFX() {
 		;;
 	esac
 
+	[ ! -f $SFX_FILE ] && SFX_FILE="$DESKTOP__SFX_PATH/$SFX_FILE"
+
 	[ -f $SFX_FILE ] \
 		&& STATUS "detected file '$SFX_FILE'" \
 		|| NOTIFY_FAIL 1 "unable to locate sfx file '$1'" \
