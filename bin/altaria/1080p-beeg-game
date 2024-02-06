@@ -4,7 +4,7 @@ source ${0:a:h}/xorg.zsh
 XRANDR_SET \
 	--compositing  disable \
 	--screen-blank disable \
-	--background   captain-falcon.jpg \
+	--background   link-vs-gdizz.jpg \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__office__4k[@]}     --pos 0x0 --primary \
+	${XRANDR_ARGS__livingroom__1080p[@]} --pos 0x0 --primary \
 	;
