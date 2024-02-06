@@ -75,6 +75,7 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_save = 1
 let g:ale_sign_column_always = 1
 
+nmap <Leader>at <Plug>(ale_toggle_buffer)
 nmap <Leader>ae <Plug>(ale_next)
 nmap <Leader>ar <Plug>(ale_previous)
 nmap <Leader>f  <Plug>(ale_fix)
