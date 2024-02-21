@@ -1,52 +1,51 @@
 #!/bin/zsh
-DEPENDENCIES+=(xset)
-REQUIRED_ENV+=()
-
 use desktop/notify --group dotwryn
 
-CHECK_ENVIRONMENT
+DEPENDENCIES+=(xset)
 #####################################################################
 
-case $1 in
-	enable | disable | query | toggle ) ACTION="$1" ;;
-	* )
-		[ ! $1 ] && ACTION=toggle
-		echo $ACTION
-		;;
-esac
+MAIN() {
+	case $1 in
+		enable | disable | query | toggle ) ACTION="$1" ;;
+		* )
+			[ ! $1 ] && ACTION=toggle
+			echo $ACTION
+			;;
+	esac
 
-[[ $ACTION =~ ^toggle$ ]] && {
-	xset -q | grep -qi 'prefer blanking: *no' \
-		&& ACTION='enable' || ACTION='disable'
-}
-
-[ ! $ACTION ] && NOTIFY_FAIL 1 "unknown screen blank action '$1'"
-
-case $ACTION in
-	enable ) : \
-		&& STATUS 'enabling screen blank' \
-		&& xset +dpms \
-		&& xset s blank \
-		&& xset s on \
-			&& NOTIFY_SUCCESS 'enabled screen blank' \
-			|| NOTIFY_FAIL 2 'error enabling screen blank'
-		;;
-
-	disable ) : \
-		&& STATUS 'disabling screen blank' \
-		&& xset dpms 0 0 0 \
-		&& xset s noblank \
-		&& xset s off \
-			&& NOTIFY_SUCCESS 'disabled screen blank' \
-			|| NOTIFY_FAIL 2 'error disabling screen blank'
-		;;
-
-	query )
+	[[ $ACTION =~ ^toggle$ ]] && {
 		xset -q | grep -qi 'prefer blanking: *no' \
-			&& CURRENT_STATE='disabled' || CURRENT_STATE='enabled'
+			&& ACTION='enable' || ACTION='disable'
+	}
 
-		[ ! $CURRENT_STATE ] && NOTIFY_FAIL 3 'unable to determine current setting'
+	[ ! $ACTION ] && NOTIFY_FAIL 1 "unknown screen blank action '$1'"
 
-		NOTIFY_SUCCESS "screen blank is currently \\033[0;34m$CURRENT_STATE"
-		;;
-esac
+	case $ACTION in
+		enable ) : \
+			&& STATUS 'enabling screen blank' \
+			&& xset +dpms \
+			&& xset s blank \
+			&& xset s on \
+				&& NOTIFY_SUCCESS 'enabled screen blank' \
+				|| NOTIFY_FAIL 2 'error enabling screen blank'
+			;;
+
+		disable ) : \
+			&& STATUS 'disabling screen blank' \
+			&& xset dpms 0 0 0 \
+			&& xset s noblank \
+			&& xset s off \
+				&& NOTIFY_SUCCESS 'disabled screen blank' \
+				|| NOTIFY_FAIL 2 'error disabling screen blank'
+			;;
+
+		query )
+			xset -q | grep -qi 'prefer blanking: *no' \
+				&& CURRENT_STATE='disabled' || CURRENT_STATE='enabled'
+
+			[ ! $CURRENT_STATE ] && NOTIFY_FAIL 3 'unable to determine current setting'
+
+			NOTIFY_SUCCESS "screen blank is currently \\033[0;34m$CURRENT_STATE"
+			;;
+	esac
+}

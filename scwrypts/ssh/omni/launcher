@@ -1,13 +1,9 @@
 #!/bin/zsh
-
-#####################################################################
-
 DEPENDENCIES+=(
 	tmux
 	hostnamectl
 	scwrypts # must be on path
 )
-REQUIRED_ENV+=()
 
 CHECK_ENVIRONMENT
 

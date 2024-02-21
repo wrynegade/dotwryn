@@ -1,27 +1,23 @@
 #!/bin/zsh
-DEPENDENCIES+=()
-REQUIRED_ENV+=(
-	DESKTOP__WALLPAPER_PATH
-)
-
-CHECK_ENVIRONMENT
+REQUIRED_ENV+=(DESKTOP__WALLPAPER_PATH)
 #####################################################################
 
+MAIN() {
+	[ ! -d $WALLPAPER_PATH ] \
+		&& FAIL 1 "no such directory for DESKTOP__WALLPAPER_PATH='$DESKTOP__WALLPAPER_PATH'"
 
-[ ! -d $WALLPAPER_PATH ] \
-	&& FAIL 1 "no such directory for DESKTOP__WALLPAPER_PATH='$DESKTOP__WALLPAPER_PATH'"
+	SELECTION="$1"
+	[ ! $SELECTION ] && SELECTION=random
 
-SELECTION="$1"
-[ ! $SELECTION ] && SELECTION=random
+	case $SELECTION in
+		random )
+			feh --recursive --randomize --bg-fill $WALLPAPER_PATH
+			;;
+		* )
+			[ ! -f $DESKTOP__WALLPAPER_PATH/$SELECTION ] \
+				&& FAIL 2 "no such wallpaper '$SELECTION' in wallpaper path"
 
-case $SELECTION in 
-	random )
-		feh --recursive --randomize --bg-fill $WALLPAPER_PATH
-		;;
-	* )
-		[ ! -f $DESKTOP__WALLPAPER_PATH/$SELECTION ] \
-			&& FAIL 2 "no such wallpaper '$SELECTION' in wallpaper path"
-
-		feh --bg-fill $DESKTOP__WALLPAPER_PATH/$SELECTION
-		;;
-esac
+			feh --bg-fill $DESKTOP__WALLPAPER_PATH/$SELECTION
+			;;
+	esac
+}

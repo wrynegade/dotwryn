@@ -1,45 +1,41 @@
 #!/bin/zsh
-DEPENDENCIES+=(
-	i3-msg
-	xdotool
-	xrandr
-)
-REQUIRED_ENV+=()
-
 use system/desktop/notify
 
-CHECK_ENVIRONMENT
+DEPENDENCIES+=(i3-msg xdotool xrandr)
 #####################################################################
 
-LAUNCH_OR_SHOW() {
-	INFO $@
-	local USAGE="
-		usage: <path-executable> [client-class] [...options...]
+USAGE="
+	usage: <path-executable> [client-class] [...options...]
 
-		options
-		  -c, --client <string>   if different from the executable name, xprop CLIENT_CLASS
+	options
+	  -c, --client <string>   if different from the executable name, xprop CLIENT_CLASS
 
-		  -s, --scale <value>     (default: 0.8 or 0.5 if screen width >3000px)
-		  -x, --x-offset <value>  (default: 0.0)
-		  -y, --y-offset <value>  (default: 0.0)
+	  -s, --scale <value>     (default: 0.8 or 0.5 if screen width >3000px)
+	  -x, --x-offset <value>  (default: 0.0)
+	  -y, --y-offset <value>  (default: 0.0)
 
-		  -a, --always-launch     invoke executable even if client-class exists
-		  -n, --no-resize         don't resize the window (ignores -sxy flags)
-		  -l, --no-center         leave the window wherever it was last positioned
+	  -a, --always-launch     invoke executable even if client-class exists
+	  -n, --no-resize         don't resize the window (ignores -sxy flags)
+	  -l, --no-center         leave the window wherever it was last positioned
 
-		  --has-statusbar-icon    (default: false) use if program has a statusbar icon
+	  --has-statusbar-icon    (default: false) use if program has a statusbar icon
 
-		  -h, --help              print this message and exit
+	  -h, --help              print this message and exit
 
-		Makes it easy to bind appications to key shortcuts without having to
-		spin up redundant instances or cycle through the scratchpad queue.
+	Makes it easy to bind appications to key shortcuts without having to
+	spin up redundant instances or cycle through the scratchpad queue.
 
-		Performs a variety of tasks based on states:
-		  1) starts and application
-		  2) adds all instances of the specified application to the scratchpad
-		  3) (toggle) hides all visible instances
-		  4) (toggle) shows all scratchpad-hidden instances
-	"
+	Performs a variety of tasks based on states:
+	  1) starts and application
+	  2) adds all instances of the specified application to the scratchpad
+	  3) (toggle) hides all visible instances
+	  4) (toggle) shows all scratchpad-hidden instances
+"
+
+#####################################################################
+
+MAIN() {
+	DEBUG $@
 	local APPLICATION CLIENT_CLASS
 
 	local XFFSET=0.0
@@ -55,7 +51,7 @@ LAUNCH_OR_SHOW() {
 
 	while [[ $# -gt 0 ]]
 	do
-		case $1 in 
+		case $1 in
 			-c | --client   ) CLIENT_CLASS="$2"; shift 1 ;;
 			-x | --x-offset ) XFFSET=$2; shift 1 ;;
 			-y | --y-offset ) YFFSET=$2; shift 1 ;;
@@ -112,7 +108,7 @@ LAUNCH_OR_SHOW() {
 			| awk -v f=$SCALE -v x=$XFFSET -v y=$YFFSET \
 				'{print int($1*f+x)," ",int($2*f+y);}'\
 	)
-	INFO "window size: $WINDOW_SIZE"
+	DEBUG "window size: $WINDOW_SIZE"
 
 	STATUS 'moving window to scratchpad'
 	i3-msg "[class=$CLIENT_CLASS] move scratchpad"
@@ -131,6 +127,3 @@ LAUNCH_OR_SHOW() {
 
 	return 0
 }
-
-#####################################################################
-LAUNCH_OR_SHOW $@

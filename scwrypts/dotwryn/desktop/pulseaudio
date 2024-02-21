@@ -1,46 +1,45 @@
 #!/bin/zsh
-source $HOME/.config/wryn/env.zsh
-DEPENDENCIES+=(
-	pactl
-)
-REQUIRED_ENV+=()
-
 use desktop/notify --group dotwryn
 use media/audio    --group dotwryn
 
+DEPENDENCIES+=(pactl)
+
+source $HOME/.config/wryn/env.zsh
 #####################################################################
 
-DEVICE="$1"
-COMMAND="$2"
+MAIN() {
+	local DEVICE="$1"
+	local COMMAND="$2"
 
-case $DEVICE in
-	sink   ) AMIXER_DEVICE=Master  ;;
-	source ) AMIXER_DEVICE=Capture ;;
-	* ) NOTIFY_FAIL 1 "Unsupported device '$DEVICE'" ;;
-esac
+	case $DEVICE in
+		sink   ) AMIXER_DEVICE=Master  ;;
+		source ) AMIXER_DEVICE=Capture ;;
+		* ) NOTIFY_FAIL 1 "Unsupported device '$DEVICE'" ;;
+	esac
 
-DEFAULT_DEVICE="@DEFAULT_$(echo $DEVICE | tr '[:lower:]' '[:upper:]')@"
-case $COMMAND in
-	up )
-		pactl set-$DEVICE-volume $DEFAULT_DEVICE +10% \
-			|| NOTIFY_ERROR "pactl error with set-$DEVICE-volume"
+	local DEFAULT_DEVICE="@DEFAULT_$(echo $DEVICE | tr '[:lower:]' '[:upper:]')@"
+	case $COMMAND in
+		up )
+			pactl set-$DEVICE-volume $DEFAULT_DEVICE +10% \
+				|| NOTIFY_ERROR "pactl error with set-$DEVICE-volume"
 
-		MEDIA__PLAY_SFX volume
-		;;
+			MEDIA__PLAY_SFX volume
+			;;
 
-	down )
-		pactl set-$DEVICE-volume $DEFAULT_DEVICE -10% \
-			|| NOTIFY_ERROR "pactl error with set-$DEVICE-volume"
+		down )
+			pactl set-$DEVICE-volume $DEFAULT_DEVICE -10% \
+				|| NOTIFY_ERROR "pactl error with set-$DEVICE-volume"
 
-		MEDIA__PLAY_SFX volume
-		;;
+			MEDIA__PLAY_SFX volume
+			;;
 
-	mute )
-		pactl set-$DEVICE-mute $DEFAULT_DEVICE toggle \
-			&& NOTIFY_SUCCESS "default $DEVICE" "$(amixer sget $AMIXER_DEVICE | grep -q '\[on\]' && echo unmuted || echo muted)" \
-			|| NOTIFY_ERROR "pactl error with set-$DEVICE-mute"
-		MEDIA__PLAY_SFX mute
-		;;
+		mute )
+			pactl set-$DEVICE-mute $DEFAULT_DEVICE toggle \
+				&& NOTIFY_SUCCESS "default $DEVICE" "$(amixer sget $AMIXER_DEVICE | grep -q '\[on\]' && echo unmuted || echo muted)" \
+				|| NOTIFY_ERROR "pactl error with set-$DEVICE-mute"
+			MEDIA__PLAY_SFX mute
+			;;
 
-	* ) NOTIFY_FAIL 1 "Unsupported command '$COMMAND'" ;;
-esac
+		* ) NOTIFY_FAIL 1 "Unsupported command '$COMMAND'" ;;
+	esac
+}

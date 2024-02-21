@@ -1,12 +1,6 @@
 #!/bin/zsh
-DEPENDENCIES+=(
-	hostnamectl
-)
-REQUIRED_ENV+=(
-	WRYN__SERVER_HOSTNAMES
-)
-
-CHECK_ENVIRONMENT
+DEPENDENCIES+=(hostnamectl)
+REQUIRED_ENV+=(WRYN__SERVER_HOSTNAMES)
 #####################################################################
 
 SESSION='update'
@@ -60,38 +54,38 @@ CURRENT_SESSION=$(\
 
 #####################################################################
 
-CHECK_SESSION && FAIL 1 'update currently in progress'
+MAIN() {
+	CHECK_SESSION && FAIL 1 'update currently in progress'
 
-tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
+	tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
 
-yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
-REMINDER
-REMINDER 'manual action is required; (in another tab) connect to tmux:'
-REMINDER "tmux a -t $SESSION"
-REMINDER
-REMINDER 'to stop the update at any time, run:'
-REMINDER "tmux kill-session -t $SESSION"
-REMINDER
+	yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
+	REMINDER "
+		manual action is required; (in another tab) connect to tmux:
+		tmux a -t $SESSION
 
-[ $CURRENT_SESSION ] && {
-	SUCCESS 'currently in a tmux session; opening new window...'
-	tmux new-window -t $CURRENT_SESSION "unset TMUX; tmux a -t $SESSION"
+		to stop the update at any time, run:
+		tmux kill-session -t $SESSION
+		 "
+
+	[ $CURRENT_SESSION ] && {
+		SUCCESS 'currently in a tmux session; opening new window...'
+		tmux new-window -t $CURRENT_SESSION "unset TMUX; tmux a -t $SESSION"
+	}
+
+	UPDATE_ALL 'yay -Syu'
+	UPDATE_ALL 'cd ~/.wryn; git pull --autostash'
+	UPDATE_ALL '~/.wryn/bin/scwrypts config update'
+	UPDATE_ALL '~/.wryn/bin/scwrypts media push'
+	UPDATE_ALL '~/.wryn/bin/scwrypts media pull'
+	UPDATE_ALL 'command -v i3-msg >/dev/null 2>&1 || exit 0; ~/.wryn/bin/scwrypts i3 font override'
+
+	[[ $REBOOT -eq 1 ]] && UPDATE_ALL 'reboot || sudo reboot'
+
+	tmux kill-session -t $SESSION >/dev/null 2>&1
+	CHECK_SESSION && WARNING "unable to close tmux session '$SESSION'"
+
+	SUCCESS " \nfinished system update accross all servers\n "
+
+	[[ $REBOOT -eq 1 ]] && { STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }
 }
-
-UPDATE_ALL 'yay -Syu'
-UPDATE_ALL 'cd ~/.wryn; git pull --autostash'
-UPDATE_ALL '~/.wryn/bin/scwrypts config update'
-UPDATE_ALL '~/.wryn/bin/scwrypts media push'
-UPDATE_ALL '~/.wryn/bin/scwrypts media pull'
-UPDATE_ALL 'command -v i3-msg >/dev/null 2>&1 || exit 0; ~/.wryn/bin/scwrypts i3 font override'
-
-[[ $REBOOT -eq 1 ]] && UPDATE_ALL 'reboot || sudo reboot'
-
-tmux kill-session -t $SESSION >/dev/null 2>&1
-CHECK_SESSION && WARNING "unable to close tmux session '$SESSION'"
-
-SUCCESS
-SUCCESS 'finished system update accross all servers'
-SUCCESS
-
-[[ $REBOOT -eq 1 ]] && { STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }

@@ -1,16 +1,7 @@
 #!/bin/zsh
-DEPENDENCIES+=()
-REQUIRED_ENV+=()
-
 use desktop/colorscheme --group dotwryn
-
-CHECK_ENVIRONMENT
 #####################################################################
 
 MAIN() {
-	unset USAGE
 	SET_THEME $@
 }
-
-#####################################################################
-MAIN $@
