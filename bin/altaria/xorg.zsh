@@ -61,13 +61,14 @@ XRANDR_SET() {
 
 	##########################################
 
-	scwrypts desktop/xrandr/disconnect-all
+	scwrypts desktop xrandr disconnect all
 
 	xrandr ${XRANDR_ARGS[@]} 
 
 	sleep 1
 
-	scwrypts desktop/screen-blank      -- $SCREEN_BLANK
-	scwrypts desktop/i3/set-background -- $BACKGROUND
-	scwrypts desktop/play-sound        -- $SOUND_EFFECT
+	scwrypts desktop screen blank      -- $SCREEN_BLANK
+	scwrypts desktop i3 set background -- $BACKGROUND
+	$DOTWRYN/bin/polybar
+	scwrypts desktop play sound        -- $SOUND_EFFECT
 }

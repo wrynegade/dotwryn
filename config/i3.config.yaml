@@ -1,0 +1,25 @@
+---  # used by scwrypts i3 generate config (override at ~/.config/i3/local.yaml)
+font:
+  size: 14
+  family: >-
+    pango:Monaspace Argon,
+    pango:Noto Color Emoji,
+    pango:Symbols Nerd Font,
+    FontAwesome
+
+application-launcher: >-
+  dmenu_run -c -l 5 -fn 'DejaVuSansMono Nerd Font-25'
+
+gaps:
+  inner: 0
+  outer: 0
+
+i3configs:
+  - |-
+    # for use after any command which should refresh the statusbar
+    set $refresh_statusbar killall -SIGUSR1 i3status
+    bar {
+            status_command i3status
+    }
+  # - exec_always --no-startup-id $DOTWRYN/bin/polybar &
+  - exec --no-startup-id i3-msg workspace 1

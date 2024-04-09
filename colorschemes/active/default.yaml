@@ -1,0 +1,74 @@
+---   # yamllint disable rule:colons
+ansi:
+  red:
+    regular: .material.base.error
+    bright:  .material.error.200
+
+  green:
+    regular: .material.base.secondary
+    bright:  .material.secondary.200
+
+  yellow:
+    regular: .material.base.primary
+    bright:  .material.primary.200
+
+  gray:
+    black:   '#000505'
+    regular: '#424253'
+    bright:  '#7e707e'
+    white:   '#d0f0f0'
+
+
+background: .ansi.gray.black
+foreground: .ansi.gray.white
+
+selection:
+  background: .material.base.primary
+  foreground: .material.base.foreground.primary
+
+cursor: .material.primary.50
+
+material:
+  base:
+    primary:   .material.primary.500
+    secondary: .material.secondary.500
+    error:     .material.error.500
+    foreground:
+      primary:   .material.foreground.primary.500
+      secondary: .material.foreground.secondary.500
+      error:     .material.foreground.error.500
+
+  foreground:
+    primary:
+      50: .ansi.gray.black
+      100: .ansi.gray.black
+      200: .ansi.gray.black
+      300: .ansi.gray.black
+      400: .ansi.gray.black
+      500: .ansi.gray.white
+      600: .ansi.gray.white
+      700: .ansi.gray.white
+      800: .ansi.gray.white
+      900: .ansi.gray.white
+    secondary:
+      50: .ansi.gray.black
+      100: .ansi.gray.black
+      200: .ansi.gray.black
+      300: .ansi.gray.black
+      400: .ansi.gray.black
+      500: .ansi.gray.white
+      600: .ansi.gray.white
+      700: .ansi.gray.white
+      800: .ansi.gray.white
+      900: .ansi.gray.white
+    error:
+      50: .ansi.gray.black
+      100: .ansi.gray.black
+      200: .ansi.gray.black
+      300: .ansi.gray.black
+      400: .ansi.gray.black
+      500: .ansi.gray.white
+      600: .ansi.gray.white
+      700: .ansi.gray.white
+      800: .ansi.gray.white
+      900: .ansi.gray.white

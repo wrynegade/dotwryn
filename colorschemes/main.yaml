@@ -1,0 +1,61 @@
+---   # yamllint disable rule:colons
+ansi:
+  blue:
+    regular: '#2262bb'
+    bright:  '#229df6'
+
+  magenta:
+    regular: .material.primary.300
+    bright:  .material.primary.100
+
+  cyan:
+    regular: .material.secondary.300
+    bright:  .material.secondary.100
+
+material:
+  base:
+    secondary: .material.secondary.400
+    foreground:
+      secondary: .material.foreground.secondary.400
+
+  primary:  # replaces ANSI yellow
+    50:  '#eeddff'
+    100: '#dd88ff'
+    200: '#aa44ff'
+    300: '#9922dd'
+    400: '#8811cc'
+    500: '#6911aa'
+    600: '#490099'
+    700: '#420069'
+    800: '#220069'
+    900: '#110029'
+
+  secondary:  # replaces ANSI green
+    50:  '#ddffff'
+    100: '#88ffff'
+    200: '#44dddd'
+    300: '#22ccba'
+    400: '#11bb98'
+    500: '#00aa79'
+    600: '#009949'
+    700: '#006942'
+    800: '#006922'
+    900: '#001129'
+
+  error:  # replaces ANSI red
+    50:  '#ffddff'
+    100: '#ff88ff'
+    200: '#ff44ff'
+    300: '#ee22ba'
+    400: '#dd1198'
+    500: '#c80064'
+    600: '#990049'
+    700: '#790032'
+    800: '#690022'
+    900: '#290011'
+
+  foreground:
+    secondary:
+      500: .ansi.gray.black
+    error:
+      400: .ansi.gray.white

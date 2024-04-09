@@ -1,11 +1,9 @@
 #####################################################################
 
-DEPENDENCIES+=(
-	canberra-gtk-play
-)
-REQUIRED_ENV+=()
-
 use desktop/notify --group dotwryn
+
+DEPENDENCIES+=(canberra-gtk-play)
+REQUIRED_ENV+=()
 
 #####################################################################
 

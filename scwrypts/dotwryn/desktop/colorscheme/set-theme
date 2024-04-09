@@ -1,7 +1,56 @@
 #!/bin/zsh
 use desktop/colorscheme --group dotwryn
+use desktop/xorg/i3 --group dotwryn
+#####################################################################
+
+USAGE__options+="
+	-t, --theme          one of the available color themes
+	-l, --list-themes    show available color themes and exit
+
+	--only   only set the theme for a specific terminal/application
+	         ($COLORSCHEME__SUPPORTED_CONFIG_TYPES)
+"
+
+USAGE__args+='
+	\$1   shorthand for "--theme \$1"
+'
+
+USAGE__description+='
+	Generates source-controlled config files for the selected theme.
+	By default, generates all possible config types to provide a
+	consistent, system-wide theme.
+
+	Due to complexities with i3wm colorscheme management, it is not
+	possible to update i3wm colorscheme files when using the "--only"
+	flag.
+'
+
+
 #####################################################################
 
 MAIN() {
-	SET_THEME $@
+	local ARGS=() UPDATE_I3_CONFIG=true
+
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			--only )
+				ARGS+=($1)
+				UPDATE_I3_CONFIG=false
+				;;
+
+			* ) ARGS+=($1) ;;
+		esac
+		shift 1
+	done
+
+	SET_THEME ${ARGS[@]} \
+		|| ERROR 'failed to set theme (see above)' \
+		|| return 1
+
+	[[ $UPDATE_I3_CONFIG =~ true ]] || return 0
+
+	I3__GENERATE_CUSTOM_CONFIG \
+		|| ERROR 'failed to update i3 config (see above)' \
+		|| return 1
 }

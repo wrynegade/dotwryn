@@ -11,10 +11,10 @@ SYMLINKS="
 # fully qualified path                       ~/.config/THE-REST
 # --------------------------------------------------------------------------
 $DOTWRYN/bin/i3-utils                             i3/utils
-$DOTWRYN/colorschemes/active.main                 kitty/theme.conf
-$DOTWRYN/colorschemes/active.main.alacritty       alacritty/theme.toml
-$DOTWRYN/colorschemes/active.main.alacritty.yml   alacritty/theme.yml
-$DOTWRYN/colorschemes/active.main.getty           wryn/tty-colorscheme
+$DOTWRYN/colorschemes/active/kitty.conf           kitty/theme.conf
+$DOTWRYN/colorschemes/active/alacritty.toml       alacritty/theme.toml
+$DOTWRYN/colorschemes/active/alacritty.yaml       alacritty/theme.yml
+$DOTWRYN/colorschemes/active/getty.sh             wryn/tty-colorscheme
 $DOTWRYN/config/alacritty.toml                    alacritty/alacritty.toml
 $DOTWRYN/config/alacritty.yaml                    alacritty/alacritty.yml
 $DOTWRYN/config/bat.conf                          bat/config
@@ -22,11 +22,11 @@ $DOTWRYN/config/code-activator.conf               code-activator-zsh/settings.zs
 $DOTWRYN/config/compton.conf                      compton/compton.conf
 $DOTWRYN/config/git.conf                          git/config
 $DOTWRYN/config/htop.conf                         htop/htoprc
-$DOTWRYN/config/i3.conf                           i3/config
 $DOTWRYN/config/i3status.conf                     i3status/config
 $DOTWRYN/config/kitty.conf                        kitty/kitty.conf
 $DOTWRYN/config/mssqlcli.conf                     mssqlci/config
 $DOTWRYN/config/pgcli.conf                        pgcli/config
+$DOTWRYN/config/polybar.ini                       polybar/config.ini
 $DOTWRYN/config/pylint.conf                       pylintrc
 $DOTWRYN/config/ripgrep.conf                      ripgrep/config
 $DOTWRYN/config/scwrypts/config.zsh               scwrypts/config.zsh
@@ -35,8 +35,8 @@ $DOTWRYN/config/scwrypts/vundle.zsh               scwrypts/vundle.zsh
 $DOTWRYN/config/tmux.conf                         tmux/tmux.conf
 $DOTWRYN/config/xcompose.conf                     X11/xcompose
 $DOTWRYN/config/xconfig.conf                      X11/xconfig
-$DOTWRYN/config/xinitrc.i3                        X11/xinitrc
 $DOTWRYN/config/xinitrc.i3                        ../.xinitrc
+$DOTWRYN/config/xinitrc.i3                        X11/xinitrc
 $DOTWRYN/bin/scwrypts                             ../.local/bin/scwrypts
 $DOTWRYN/bin/vim                                  ../.local/bin/vim
 $DOTWRYN/bin/$(hostnamectl --static)              ../.$(hostnamectl --static)

@@ -1,31 +1,30 @@
 #!/bin/zsh
 source "$HOME/.config/wryn/env.zsh"
 case $1 in
-	#next ) scwrypts desktop/media -- next ;;
-	#prev ) scwrypts desktop/media -- prev ;;
-	#play ) scwrypts desktop/media -- play ;;
 
-	volumeup   ) scwrypts desktop/pulseaudio -- sink up ;;
-	volumedown ) scwrypts desktop/pulseaudio -- sink down ;;
-	volumemute ) scwrypts desktop/pulseaudio -- sink mute ;;
-	micmute    ) scwrypts desktop/pulseaudio -- source mute ;;
+	#next ) scwrypts desktop media -- next ;;
+	#prev ) scwrypts desktop media -- prev ;;
+	#play ) scwrypts desktop media -- play ;;
 
-	backlightup   ) scwrypts desktop/backlight -- up ;;
-	backlightdown ) scwrypts desktop/backlight -- down ;;
+	volumeup   ) scwrypts desktop pulseaudio -- sink up ;;
+	volumedown ) scwrypts desktop pulseaudio -- sink down ;;
+	volumemute ) scwrypts desktop pulseaudio -- sink mute ;;
+	micmute    ) scwrypts desktop pulseaudio -- source mute ;;
 
-	lock ) scwrypts desktop/i3/lock -- ;;
+	backlightup   ) scwrypts desktop backlight -- up ;;
+	backlightdown ) scwrypts desktop backlight -- down ;;
 
-	bgrandomize ) scwrypts desktop/i3/set-background -- random ;;
+	lock ) scwrypts desktop lock i3 -- ;;
 
-	alternateterm ) scwrypts desktop/kitty-alternate-theme -- ;;
+	bgrandomize ) scwrypts desktop set i3 background -- random ;;
 
-	logout ) scwrypts desktop/i3/logout -- ;;
+	logout ) scwrypts desktop i3 logout -- ;;
 
 	launch )
 		local PROGRAM
 		local ARGS=()
 		case $2 in
-			messages ) PROGRAM=android-messages-desktop ;;
+			messages ) PROGRAM=slack ARGS+=(-c Slack --has-statusbar-icon) ;;
 			voice    ) PROGRAM=google-voice-desktop ;;
 			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
 
@@ -38,7 +37,7 @@ case $1 in
 
 			*        ) PROGRAM=$2 ;;
 		esac
-		scwrypts i3/launch-or-show -- $PROGRAM ${ARGS[@]}
+		scwrypts i3 launch or show -- $PROGRAM ${ARGS[@]}
 		;;
 
 	screenshot )

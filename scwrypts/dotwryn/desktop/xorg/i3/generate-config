@@ -1,0 +1,12 @@
+#!/bin/zsh
+use desktop/xorg/i3 --group dotwryn
+
+#####################################################################
+
+I3__GENERATE_CUSTOM_CONFIG__USAGE
+
+MAIN() {
+	I3__GENERATE_CUSTOM_CONFIG
+}
+
+#####################################################################
