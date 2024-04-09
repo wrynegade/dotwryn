@@ -12,6 +12,6 @@ xrandr ${ARGS[@]} \
 
 pkill compton
 
-scwrypts desktop/screen-blank      -- disable
-scwrypts desktop/i3/set-background -- link-vs-gdizz.jpg
-scwrypts desktop/play-sound        -- gamedock
+scwrypts desktop screen-blank      -- disable
+scwrypts desktop i3 set background -- link-vs-gdizz.jpg
+scwrypts desktop play sound        -- gamedock

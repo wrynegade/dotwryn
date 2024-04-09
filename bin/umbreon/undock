@@ -12,6 +12,6 @@ xrandr ${ARGS[@]} \
 
 (pkill compton; sleep 0.5; compton;) &
 
-scwrypts desktop/screen-blank      -- enable
-scwrypts desktop/i3/set-background -- random
-scwrypts desktop/play-sound        -- gamedock
+scwrypts desktop screen-blank      -- enable
+scwrypts desktop i3 set background -- random
+scwrypts desktop play sound        -- gamedock
