@@ -45,7 +45,7 @@ echo $PATH | grep -q "^\\(.*:\\|\\)$HOME/.local/bin\\(:.*\\|\\)$" \
 #####################################################################
 
 [[ $TERM =~ alacritty ]] \
-	&& [[ $(xdotool search --classname Alacritty 2>/dev/null | wc -l) -eq 1 ]] \
+	&& [[ $(tmux -L omni.socket list-clients | wc -l) -eq 0 ]] \
 	&& scwrypts tmux omni
 
 true
