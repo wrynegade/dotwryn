@@ -45,7 +45,7 @@ MAIN() {
 			split-window "sleep 3; TMUX= tmux -L $OMNI_SOCKET a -t=omni-manager" \; \
 			move-window -t 99 \;
 	
-		OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/omni/manager"
+		OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/tmux/manager"
 	}
 
 	STATUS 'connecting to omni server'
