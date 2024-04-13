@@ -1,0 +1,53 @@
+#!/bin/zsh
+DEPENDENCIES+=(tmux scwrypts)
+#####################################################################
+
+USAGE__description="
+	A program which automatically connects to any available connections
+	described in the configuration file.
+	  (configure with 'scwrypts remote configure')
+
+	The omni-session is running it's own wrapper TMUX server with a special
+	config. In the wrapper session, 'M-s' is overwritten as the prefix.
+	Switch between connections by using 'M-s' followed by the session ID
+	number (or use any other default default tmux navigation command). Full
+	configuration can be found here:
+	  - $SCWRYPTS_ROOT__remote/omni/tmux.conf
+
+	Shut-down the omni-session by pressing 'M-Q' (Q not q! ALT + SHIFT + Q)
+
+	Disconnect (but leave the session running) with 'M-s, d'
+
+	A background process periodically attempts to refresh lost connections.
+	Immediate retry can be forced with 'M-R'.
+	
+	Running this command in an existing tmux session will likely result
+	in an infinite loop, so:
+	  - don't run the omni-session in a TMUX session
+	  - don't connect to the omni-session directly (always use this scwrypt)
+"
+
+#####################################################################
+
+MAIN() {
+	[[ $TERM =~ tmux ]] && ERROR "\n Cannot run tmux-omni within a tmux session!\n  "
+	CHECK_ERRORS
+
+	local OMNI_SOCKET="omni.socket"
+	OMNI_TMUX() { tmux -L $OMNI_SOCKET $@; }
+
+	OMNI_TMUX list-sessions 2>/dev/null | grep -v omni-manager | grep -qi omni || {
+		STATUS "initializing omni server"
+		OMNI_TMUX kill-session -t=omni-manager >/dev/null 2>&1
+	
+		OMNI_TMUX -f "$SCWRYPTS_ROOT__remote/tmux/tmux.conf" new -d -s omni \
+			"echo searching for first connection...; sleep 30" \; \
+			split-window "sleep 3; TMUX= tmux -L $OMNI_SOCKET a -t=omni-manager" \; \
+			move-window -t 99 \;
+	
+		OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/omni/manager"
+	}
+
+	STATUS 'connecting to omni server'
+	OMNI_TMUX a -t=omni
+}

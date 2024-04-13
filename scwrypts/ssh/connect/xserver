@@ -1,6 +1,0 @@
-#!/bin/zsh
-use ssh --group remote
-
-CHECK_ENVIRONMENT
-
-REMOTE_ARGS=(-Y) REMOTE__LOGIN $@

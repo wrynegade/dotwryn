@@ -1,6 +1,0 @@
-#!/bin/zsh
-use tmux --group remote
-
-CHECK_ENVIRONMENT
-
-REMOTE_CONNECT_TMUX $@

@@ -1,0 +1,143 @@
+#!/bin/zsh
+use config --group remote
+#####################################################################
+
+USAGE__options="
+	-c, --command   override configured remote command
+	-s, --shell     override configured remote login shell 
+	-t, --type      one of the following connection types:
+	                 - ssh       (default) simple ssh execution
+	                 - xserver   ssh connection with remote-xserver settings
+	                 - tmux      connect directly to configured, remote tmux session
+
+	--no-rc    disable loading the login RC for 'sh -c' commands
+	--no-tty   don't request a tty connection
+
+	--force-local-login   force login through ssh when working with localhost
+"
+
+USAGE__description="
+	Connection / bastion wrapper for  $REMOTE__TARGET. To configure,
+	use 'scwrypts remote configure'
+"
+
+
+#####################################################################
+
+MAIN() {
+	[ $REMOTE__TARGET ] \
+		|| ERROR 'missing REMOTE__TARGET context; this must be run through scwrypts' \
+		|| return 1
+
+	local CONNECTION_TYPE=ssh
+	local REMOTE_NAME=$REMOTE__TARGET
+	local REMOTE_COMMAND LOGIN_SHELL
+	local LOAD_RC=true
+	local USE_TTY=true
+	local FORCE_LOCAL_LOGIN=false
+
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			-t | --type    ) CONNECTION_TYPE=$2; shift 1 ;;
+			-c | --command ) REMOTE_COMMAND=$2;  shift 1 ;;
+			-s | --shell   ) LOGIN_SHELL=$2;     shift 1 ;;
+
+			--no-rc  ) LOAD_RC=false ;;
+			--no-tty ) USE_TTY=false ;;
+
+			--force-local-login ) FORCE_LOCAL_LOGIN=true ;;
+
+			* ) ERROR "unknown argument '$1'" ;;
+		esac
+		shift 1
+	done
+
+	CHECK_ERRORS
+
+	##########################################
+
+	GET_SSH_ARGS() {
+		REMOTE__GET_SSH_ARGS \
+			--type $CONNECTION_TYPE \
+			--use-tty $USE_TTY \
+			$REMOTE_NAME \
+			;
+	}
+
+	GET_SSH_ARGS >/dev/null \
+		&& local SSH_ARGS=($(GET_SSH_ARGS)) \
+		|| FAIL 1 'unable to load ssh args; aborting'
+
+	##########################################
+
+	local CONNECTION_STRING=$(REMOTE__GET_CONNECTION_STRING $REMOTE_NAME)
+	[ $CONNECTION_STRING ] \
+		|| FAIL 1 'unable to determine connection string'
+
+	##########################################
+
+	LOGIN_SHELL=$(\
+		REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+			"$LOGIN_SHELL" \
+			".$REMOTE_NAME.shell" \
+			".default.shell" \
+			"zsh" \
+	)
+
+	REMOTE_COMMAND=$(\
+		REMOTE__QUERY_CONNECTION_WITH_FALLBACK  \
+			"$REMOTE_COMMAND" \
+			".$REMOTE_NAME.$CONNECTION_TYPE.command" \
+			".$REMOTE_NAME.command" \
+			".default.$CONNECTION_TYPE.command" \
+			".default.command" \
+	)
+
+	[ $REMOTE_COMMAND ] || {
+		case $CONNECTION_TYPE in
+			tmux )
+				local TMUX_SESSION_NAME=$(
+					REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+						".sessions.$REMOTE_NAME.tmux.session" \
+						".default.tmux.session" \
+						"wryn" \
+					)
+				local TMUX_ARGS=()
+
+				locale charmap 2>/dev/null | grep -qi 'UTF-8' \
+					&& TMUX_ARGS+=(-u)
+
+				REMOTE_COMMAND="tmux ${TMUX_ARGS[@]} new-session -As $TMUX_SESSION_NAME"
+				;;
+		esac
+	}
+
+	[ $REMOTE_COMMAND ] && [[ $LOAD_RC =~ true ]] && {
+		REMOTE_COMMAND="$LOGIN_SHELL -l -c 'source ~/.$(basename $LOGIN_SHELL)rc &>/dev/null; $REMOTE_COMMAND'"
+	}
+	
+	[ ! $REMOTE_COMMAND ] && {
+		[[ $LOAD_RC =~ true ]] \
+			&& REMOTE_COMMAND="$LOGIN_SHELL -l" \
+			|| REMOTE_COMMAND="$LOGIN_SHELL"
+	}
+
+	##########################################
+
+	STATUS " 
+	attempting execution on $REMOTE_NAME
+	  type       : $CONNECTION_TYPE
+	  connection : $REMOTE_NAME
+	  command    : \"$REMOTE_COMMAND\"
+	 "
+	
+	case $CONNECTION_STRING in
+		localhost | $USER@localhost )
+			eval "$REMOTE_COMMAND"
+			return $?
+			;;
+	esac
+
+	ssh ${SSH_ARGS[@]} $CONNECTION_STRING "$REMOTE_COMMAND"
+}

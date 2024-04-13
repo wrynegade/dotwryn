@@ -1,0 +1,131 @@
+#!/bin/zsh
+#
+# works as a standalone zsh script
+#
+
+#####################################################################
+
+CONNECTIONS_FILE="$HOME/.config/wryn/remote-connections.toml"
+
+OMNI_SOCKET="omni.socket"
+OMNI_TMUX() { tmux -L $OMNI_SOCKET $@; }
+
+CONFIG_QUERY() { yq -oy -r $@ "$CONNECTIONS_FILE" | grep -v ^null$; }
+
+CONNECTED() {
+	[ $WINDOW_ID ] \
+		&& echo "\\033[1;32mconnected (window $WINDOW_ID)\\033[0m" >&2 \
+		|| echo "\\033[1;32mconnected\\033[0m" >&2 \
+}
+DISCONNECTED() { echo "\\033[1;31mdisconnected\\033[0m" >&2; }
+
+GET_UNIQUE_WINDOW_ID() {
+	local MODE=use-default
+
+	local WINDOW_ID="$(eval "echo \$WINDOW_ID__$REMOTE_NAME")"
+	: \
+		&& [[ $(eval "echo \$CAN_CONNECT__$REMOTE_NAME") =~ true ]] \
+		&& [ $WINDOW_ID ] \
+		&& echo $WINDOW_ID \
+		&& return 0 \
+		;
+
+	unset WINDOW_ID__$REMOTE_NAME &>/dev/null
+
+	WINDOW_ID="$1"
+	WINDOW_ID=$(CONFIG_QUERY .sessions.$REMOTE_NAME.id)
+	[ $WINDOW_ID ] && MODE=specify-preferred
+
+	WINDOW_ID_IS_TAKEN() {
+		: \
+			&& [[   $(OMNI_TMUX list-windows -t=omni | grep "^$WINDOW_ID:" | wc -l) -gt 0 ]] \
+			&& [[ ! $(OMNI_TMUX list-windows -t=omni | grep "^$WINDOW_ID:" | awk '{print $2;}' =~ ^$REMOTE_NAME$) ]] \
+			;
+	}
+
+	local FALLBACK_STARTING_POINT
+	case $MODE in
+		use-default       ) FALLBACK_STARTING_POINT=42 ;;
+		specify-preferred ) FALLBACK_STARTING_POINT=69 ;;
+	esac
+
+	local I=0
+	while WINDOW_ID_IS_TAKEN
+	do
+		echo "$REMOTE_NAME tried to acquire window id $WINDOW_ID, but it is already in-use (trying $(($FALLBACK_STARTING_POINT-$I)))" >&2
+		WINDOW_ID=$(($FALLBACK_STARTING_POINT-$I))
+		((I+=1))
+		[[ $I -gt 10 ]] && WINDOW_ID= && break
+	done
+
+	echo $WINDOW_ID
+}
+
+#####################################################################
+
+sleep 1
+OMNI_TMUX new-window -t=omni-manager -dn 'harakiri' "
+while true
+do
+	tmux -L $OMNI_SOCKET list-sessions | grep -v omni-manager | grep -qi omni || {
+		tmux -L $OMNI_SOCKET kill-session -t omni-manager
+	}
+	sleep 5
+done
+"
+
+while true
+do
+	clear
+	for REMOTE_NAME in $(CONFIG_QUERY '.sessions | keys | .[]')
+	do
+		WINDOW_ID=$(GET_UNIQUE_WINDOW_ID)
+		export WINDOW_ID__$REMOTE_NAME=$WINDOW_ID
+
+		OMNI_TMUX list-windows -t=omni | awk '{print $2;}' | grep -q $REMOTE_NAME \
+			&& continue
+
+		printf "testing connection $REMOTE_NAME..."
+		scwrypts -n --name test --group remote --type zsh \
+				-- \
+				--name $REMOTE_NAME \
+				--command 'command -v tmux' \
+				&>/dev/null \
+			&& export CAN_CONNECT__$REMOTE_NAME=true \
+			|| export CAN_CONNECT__$REMOTE_NAME=false \
+			;
+
+		[[ $(eval echo "\$CAN_CONNECT__$REMOTE_NAME") =~ true ]] \
+			&&   echo " \\033[1;32m✔\\033[0m" >&2 \
+			|| { echo " \\033[1;31m✖\\033[0m" >&2; continue; }
+
+		OMNI_TMUX new-window \
+			-t=omni:$WINDOW_ID \
+			-dn $REMOTE_NAME "
+				source ~/.zshrc &>/dev/null
+				TMUX='' scwrypts -n connect/$REMOTE_NAME -- --type tmux
+				echo 'connection closed'
+				sleep 2
+			"
+
+		OMNI_TMUX list-window -t=omni | awk '{print $1;}' | grep -q '99:' && OMNI_TMUX kill-window -t omni:99
+
+		OMNI_TMUX list-windows -t=omni | awk '{print $2;}' | grep -q $REMOTE_NAME \
+			|| export CAN_CONNECT__$REMOTE_NAME=false
+	done
+
+	clear
+	echo "connections:\n"
+	local STATUS
+	{
+		for REMOTE_NAME in $(CONFIG_QUERY '.sessions | keys | .[]')
+		do
+			[[ $(eval "echo \$CAN_CONNECT__$REMOTE_NAME") =~ true ]] \
+				&& echo "${REMOTE_NAME}^$(eval "echo \$WINDOW_ID__$REMOTE_NAME")^\\033[1;32mconnected\\033[0m" \
+				|| echo "${REMOTE_NAME}^-^\\033[1;31mdisconnected\\033[0m" \
+				;
+		done
+	} | column -ts '^'
+	echo "\nPress ENTER to search again now (checks every 60 seconds)" >&2
+	read -t 60
+done

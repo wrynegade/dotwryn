@@ -1,0 +1,84 @@
+#!/bin/zsh
+use config --group remote
+
+DEPENDENCIES+=(timeout ssh)
+#####################################################################
+
+USAGE__options='
+	-n, --name                session name to test
+	-s, --connection-string   explicit session host / ssh connection string to test
+	-t, --maximum-timeout     maximum connection timeout before failure (in seconds)
+	-c, --command             testing command; performs echo by default
+'
+
+USAGE__description='
+	Tests whether you can connect to a particular session or
+	host string.
+'
+
+#####################################################################
+
+MAIN() {
+	local CONNECTION_STRING REMOTE_NAME
+	local TIMEOUT_SECONDS=3
+	local COMMAND='echo OK &>/dev/null'
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			-n | --name )
+				REMOTE_NAME=$2
+				CONNECTION_STRING=$(REMOTE__GET_CONNECTION_STRING $REMOTE_NAME)
+				shift 1
+				;;
+			-s | --connection_string ) 
+				CONNECTION_STRING="$2"
+				shift 1
+				;;
+			-t | --maximum-timout )
+				TIMEOUT_SECONDS=$2
+				[[ $TIMEOUT_SECONDS -gt 0 ]] \
+					|| ERROR "invalid timeout seconds '$TIMEOUT_SECONDS'"
+				shift 1
+				;;
+			-c | --command )
+				COMMAND=$2
+				shift 1
+				;;
+			* ) ERROR "unrecognized argument '$1'" ;;
+		esac
+		shift 1
+	done
+
+	[ $CONNECTION_STRING ] \
+		|| ERROR "unable to determine connection string"
+
+	CHECK_ERRORS
+
+	##########################################
+	
+	case $CONNECTION_STRING in
+		localhost | $USER@localhost )
+			CONNECTION_TEST() { return 0; } # current user on local machine can always connect
+			;;
+		* ) 
+			CONNECTION_TEST() {
+				[ $REMOTE_NAME ] && {
+					[[ $(REMOTE__QUERY_CONNECTION .sessions.$REMOTE_NAME) =~ false ]] && {
+						return 1
+					}
+				}
+				local REMOTE_ARGS=()
+				REMOTE_ARGS+=($(REMOTE__GET_SSH_ARGS --type ssh --no-tty $REMOTE_NAME))
+				REMOTE_ARGS+=(-o BatchMode=yes)
+				DEBUG "attempting\nssh ${REMOTE_ARGS[@]} \"$CONNECTION_STRING\" \"$COMMAND\""
+				timeout $TIMEOUT_SECONDS ssh ${REMOTE_ARGS[@]} "$CONNECTION_STRING" "$COMMAND" >&2
+			}
+			;;
+	esac
+
+	[ $REMOTE_NAME ] || REMOTE_NAME=explicit
+	STATUS "testing connection $CONNECTION_STRING ($REMOTE_NAME)" \
+		&& CONNECTION_TEST \
+		&& SUCCESS "successfully connected to '$CONNECTION_STRING' ($REMOTE_NAME)" \
+		|| ERROR "connection to '$CONNECTION_STRING ($REMOTE_NAME)' failed" \
+}
