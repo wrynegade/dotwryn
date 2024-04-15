@@ -37,7 +37,6 @@ $DOTWRYN/config/xcompose.conf                     X11/xcompose
 $DOTWRYN/config/xconfig.conf                      X11/xconfig
 $DOTWRYN/config/xinitrc.i3                        ../.xinitrc
 $DOTWRYN/config/xinitrc.i3                        X11/xinitrc
-$DOTWRYN/bin/scwrypts                             ../.local/bin/scwrypts
 $DOTWRYN/bin/vim                                  ../.local/bin/vim
 $DOTWRYN/bin/$(hostnamectl --static)              ../.$(hostnamectl --static)
 
