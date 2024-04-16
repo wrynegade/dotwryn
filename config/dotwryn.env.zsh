@@ -11,7 +11,8 @@ LOAD_ZSH_UTILS() {
 		&& [ $SCWRYPTS_ROOT ] \
 		&& [ -d "$SCWRYPTS_ROOT" ] \
 		&& source "$(scwrypts --root)/zsh/lib/utils/utils.module.zsh" \
-		&& export DOTWRYN_UTILS_LOADED=1
+		&& export DOTWRYN_UTILS_LOADED=1 \
+		;
 }
 [ $DOTWRYN_UTILS_LOADED ] || RELOAD_ZSH_UTILS
 
