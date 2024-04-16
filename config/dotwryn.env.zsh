@@ -5,7 +5,7 @@
 export DOTWRYN="$HOME/.wryn"
 export SOURCE_PACKAGES="$HOME/.local/share/source-packages"
 
-LOAD_ZSH_UTILS() {
+RELOAD_ZSH_UTILS() {
 	local SCWRYPTS_ROOT="$(scwrypts --root 2>/dev/null)"
 	: \
 		&& [ $SCWRYPTS_ROOT ] \
