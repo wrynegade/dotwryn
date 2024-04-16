@@ -16,7 +16,7 @@ SCWRYPTS__LIST_AVAILABLE_SCWRYPTS__remote() {
 
 			[sessions.$(hostnamectl --static)]
 			enabled = true
-			host = localhost
+			host = 'localhost'
 			" | sed 's/^\s\+//; 1d; $d;' > "$REMOTE_CONNECTIONS_FILE"
 	}
 
