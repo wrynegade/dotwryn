@@ -134,7 +134,7 @@ MAIN() {
 	
 	case $CONNECTION_STRING in
 		localhost | $USER@localhost )
-			eval "$REMOTE_COMMAND"
+			eval "cd; $REMOTE_COMMAND"
 			return $?
 			;;
 	esac
