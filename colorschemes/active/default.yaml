@@ -38,7 +38,7 @@ material:
       secondary: .material.foreground.secondary.500
       error:     .material.foreground.error.500
 
-  foreground:
+  foreground:  # default (50-400 = black) (500-900 = white)
     primary:
       50: .ansi.gray.black
       100: .ansi.gray.black

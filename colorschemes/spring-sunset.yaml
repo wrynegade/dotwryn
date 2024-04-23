@@ -1,0 +1,71 @@
+---   # yamllint disable rule:colons
+background: .material.secondary.900
+foreground: .material.secondary.50
+
+alacritty:
+  transparency: 0.85
+
+ansi:
+  blue:
+    regular: '#5ab5e0'
+    bright:  '#b9e5f4'
+
+  magenta:
+    regular: .material.primary.300
+    bright:  .material.primary.100
+
+  cyan:
+    regular: .material.secondary.300
+    bright:  .material.secondary.100
+
+material:
+  base:
+    secondary: .material.secondary.400
+    foreground:
+      secondary: .material.foreground.secondary.400
+
+  primary:  # replaces ANSI yellow
+    50:  '#fdfbe7'
+    100: '#fbf5c4'
+    200: '#f8ef9e'
+    300: '#f5e878'
+    400: '#f3e35d'
+    500: '#f2e044'
+    600: '#f0ce3f'
+    700: '#ecb737'
+    800: '#e9a02f'
+    900: '#e27a22'
+
+  secondary:  # replaces ANSI green
+    50:  '#e8eaf7'
+    100: '#c5c9ea'
+    200: '#9fa6dc'
+    300: '#7983ce'
+    400: '#5c68c4'
+    500: '#404db9'
+    600: '#3a45af'
+    700: '#313ba3'
+    800: '#293097'
+    900: '#0b1e32'
+
+  error:  # replaces ANSI red
+    50:  '#fce5ef'
+    100: '#f9bed7'
+    200: '#f694bc'
+    300: '#f468a1'
+    400: '#f2488b'
+    500: '#f12875'
+    600: '#e02671'
+    700: '#c9236b'
+    800: '#b32066'
+    900: '#8d1b5c'
+
+  foreground:
+    primary:
+      500: .ansi.gray.black
+      600: .ansi.gray.black
+      700: .ansi.gray.black
+      800: .ansi.gray.black
+      900: .ansi.gray.black
+    secondary:
+      400: .ansi.gray.white
