@@ -61,6 +61,14 @@ colors:
     cyan:    '0x$BRIGHT_CYAN'
     white:   '0x$BRIGHT_WHITE'
 " | sed '$d' > "$_COLORSCHEME_FILE__alacritty_yaml"
+
+	local TRANSPARENCY_OVERRIDE=$(cat "$SOURCE_THEME" | YQ -r '.alacritty.transparency' | grep -v '^null$')
+	[ $TRANSPARENCY_OVERRIDE ] && {
+		printf "[window]\nopacity = $TRANSPARENCY_OVERRIDE\n" >> "$_COLORSCHEME_FILE__alacritty_toml"
+		printf "window:\n  opacity: 0.8" >> "$_COLORSCHEME_FILE__alacritty_yaml"
+	}
+
+	return 0
 }
 
 _SET_THEME__alacritty() {

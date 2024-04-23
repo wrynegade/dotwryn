@@ -226,7 +226,8 @@ SET_THEME() {
 			}
 	done
 
-	CHECK_ERRORS --no-usage
+	CHECK_ERRORS --no-usage \
+		&& echo "$THEME_NAME" > "$ACTIVE_THEME_PATH/name.txt"
 }
 
 #####################################################################

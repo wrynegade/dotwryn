@@ -5,8 +5,9 @@ _GENERATE_THEME__polybar() {
 # theme : $THEME_NAME
 [colors]
 background     = #$(_GET_HEX .polybar.background .background)
-background-alt = #$(_GET_HEX .polybar.background-alt .selection.background)
 foreground     = #$(_GET_HEX .polybar.foreground .foreground)
+background-alt = #$(_GET_HEX .polybar.background-alt .selection.background)
+foreground-alt = #$(_GET_HEX .polybar.foreground-alt .selection.foreground)
 primary        = #$(_GET_HEX .polybar.primary    .material.base.primary   .ansi.green.regular)
 secondary      = #$(_GET_HEX .polybar.secondary  .material.base.secondary .ansi.blue.regular)
 alert          = #$(_GET_HEX .polybar.alert      .material.base.error     .ansi.red.regular)

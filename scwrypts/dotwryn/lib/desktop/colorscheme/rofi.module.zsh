@@ -7,9 +7,10 @@ _GENERATE_THEME__rofi() {
  **/
 
 *{
-	background:     #$(_GET_HEX .rofi.background      .background);
-	foreground:     #$(_GET_HEX .rofi.foreground      .foreground);
+	background:     #$(_GET_HEX .rofi.background      .material.secondary.900            .background);
+	foreground:     #$(_GET_HEX .rofi.foreground      .material.foreground.secondary.900 .foreground);
 	background-alt: #$(_GET_HEX .rofi.background-alt  .material.primary.300             .selection.background);
+	foreground-alt: #$(_GET_HEX .rofi.foreground-alt  .material.foreground.primary.300  .selection.foreground);
 	selected:       #$(_GET_HEX .rofi.selected        .material.foreground.primary.300  .selection.foreground);
 	active:         #$(_GET_HEX .rofi.active          .material.base.primary   .ansi.green.regular);
 	urgent:         #$(_GET_HEX .rofi.urgent          .material.base.error     .ansi.red.regular  );

@@ -1,0 +1,14 @@
+#!/bin/zsh
+use desktop/colorscheme --group dotwryn
+#####################################################################
+
+USAGE__description+='
+	output the name of the current system theme
+'
+
+#####################################################################
+
+MAIN() {
+	cat "$ACTIVE_THEME_PATH/name.txt" 2>/dev/null \
+		|| ERROR 'theme name not available'
+}
