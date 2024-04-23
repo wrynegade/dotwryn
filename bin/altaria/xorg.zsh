@@ -30,7 +30,7 @@ XRANDR_SET() {
 
 	local COMPOSITING=enable
 	local SCREEN_BLANK=enable
-	local BACKGROUND=purple.jpg
+	local BACKGROUND=$(scwrypts -n get theme).jpg
 	local SOUND_EFFECT=login
 	local XRANDR_ARGS=()
 
@@ -71,7 +71,7 @@ XRANDR_SET() {
 	sleep 1
 
 	scwrypts desktop screen blank      -- $SCREEN_BLANK
-	scwrypts desktop i3 set background -- $BACKGROUND
+	scwrypts desktop i3 set background -- $BACKGROUND || scwrypts desktop i3 set background -- purple.jpg
 	$DOTWRYN/bin/polybar
 	scwrypts desktop play sound        -- $SOUND_EFFECT
 }
