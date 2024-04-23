@@ -1,0 +1,15 @@
+[font.bold]
+family = "Monaspace Argon"
+
+[font.glyph_offset]
+x = 0
+y = 1
+
+[font.italic]
+family = "Monaspace Radon"
+
+[font.normal]
+family = "Monaspace Neon"
+
+[window]
+opacity = 0.8

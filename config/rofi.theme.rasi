@@ -29,18 +29,19 @@ configuration {
     background-colour:           var(background);
     foreground-colour:           var(foreground);
     alternate-background:        var(background-alt);
+    alternate-foreground:        var(selected);
     normal-background:           var(background);
     normal-foreground:           var(foreground);
     urgent-background:           var(urgent);
     urgent-foreground:           var(background);
     active-background:           var(active);
     active-foreground:           var(background);
-    selected-normal-background:  var(selected);
-    selected-normal-foreground:  var(background);
-    selected-urgent-background:  var(active);
-    selected-urgent-foreground:  var(background);
+    selected-normal-background:  var(background-alt);
+    selected-normal-foreground:  var(selected);
+    selected-urgent-background:  var(background-alt);
+    selected-urgent-foreground:  var(selected);
     selected-active-background:  var(urgent);
-    selected-active-foreground:  var(background);
+    selected-active-foreground:  var(selected);
     alternate-normal-background: var(background);
     alternate-normal-foreground: var(foreground);
     alternate-urgent-background: var(urgent);
@@ -176,7 +177,7 @@ element normal.active {
 }
 element selected.normal {
     background-color:            var(alternate-background);
-    text-color:                  var(foreground-colour);
+    text-color:                  var(alternate-foreground);
 }
 element selected.urgent {
     background-color:            var(selected-urgent-background);
