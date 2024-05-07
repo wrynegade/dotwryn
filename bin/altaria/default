@@ -1,8 +1,29 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
+USE_SMOL=false
+xrandr -q | grep $XRANDR_OUTPUT__smol | grep -v 'disconnected' && {
+	xrandr -q | grep $XRANDR_OUTPUT__smol | grep -qv primary && {
+		USE_SMOL=true
+	}
+}
+
+XRANDR_ARGS=()
+case $USE_SMOL in
+	true )
+		XRANDR_ARGS+=(
+			${XRANDR_ARGS__smol__1080p[@]}       --pos 0x0 --primary
+		)
+		;;
+	false )
+		XRANDR_ARGS+=(
+			${XRANDR_ARGS__office__4k[@]}        --pos 0x0 --primary
+			${XRANDR_ARGS__livingroom__4k[@]}    --pos 0x0
+		)
+		;;
+esac
+
 XRANDR_SET \
 	--screen-blank disable \
-	${XRANDR_ARGS__office__4k[@]}        --pos 0x0 --primary \
-	${XRANDR_ARGS__livingroom__4k[@]}    --pos 0x0 \
+	${XRANDR_ARGS[@]} \
 	;

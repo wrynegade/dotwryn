@@ -1,5 +1,0 @@
-#!/bin/zsh
-__X="$SCWRYPTS_ENV"
-source $HOME/.config/wryn/env.zsh
-
-SCWRYPTS_ENV="$__X" "$DOTWRYN/zsh/plugins/scwrypts/scwrypts" $@

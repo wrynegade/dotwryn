@@ -1,9 +1,0 @@
-#!/bin/zsh
-#####################################################################
-
-alias ls='ls --color=auto --group-directories-first'
-
-[ -f "$HOME/.config/wryn/tty-colorscheme" ] \
-	&& source "$HOME/.config/wryn/tty-colorscheme"
-
-#####################################################################

@@ -1,26 +1,24 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env.zsh"
 case $1 in
+	( next | previous | play-pause ) playerctl $1 ;;
+	( fastforward ) playerctl position 5+ ;;
+	( rewind      ) playerctl position 5- ;;
 
-	#next ) scwrypts desktop media -- next ;;
-	#prev ) scwrypts desktop media -- prev ;;
-	#play ) scwrypts desktop media -- play ;;
+	( volumedown ) scwrypts -n desktop pulseaudio -- sink down ;;
+	( volumeup   ) scwrypts -n desktop pulseaudio -- sink up ;;
+	( volumemute ) scwrypts -n desktop pulseaudio -- sink mute ;;
+	( micmute    ) scwrypts -n desktop pulseaudio -- source mute ;;
 
-	volumeup   ) scwrypts desktop pulseaudio -- sink up ;;
-	volumedown ) scwrypts desktop pulseaudio -- sink down ;;
-	volumemute ) scwrypts desktop pulseaudio -- sink mute ;;
-	micmute    ) scwrypts desktop pulseaudio -- source mute ;;
+	( backlightup   ) scwrypts -n desktop backlight -- up ;;
+	( backlightdown ) scwrypts -n desktop backlight -- down ;;
 
-	backlightup   ) scwrypts desktop backlight -- up ;;
-	backlightdown ) scwrypts desktop backlight -- down ;;
+	( lock ) scwrypts -n desktop lock i3 -- ;;
 
-	lock ) scwrypts desktop lock i3 -- ;;
+	( bgrandomize ) scwrypts desktop set i3 background -- random ;;
 
-	bgrandomize ) scwrypts desktop set i3 background -- random ;;
+	( logout ) scwrypts desktop i3 logout -- ;;
 
-	logout ) scwrypts desktop i3 logout -- ;;
-
-	launch )
+	( launch )
 		local PROGRAM
 		local ARGS=()
 		case $2 in
@@ -40,7 +38,7 @@ case $1 in
 		scwrypts i3 launch or show -- $PROGRAM ${ARGS[@]}
 		;;
 
-	screenshot )
+	( screenshot )
 		command -v deepin-screen-recorder || notify-send "I3 UTILS" "no screenshot application available"
 		deepin-screen-recorder
 		DEEPIN_CONFIG="$HOME/.config/deepin/deepin-screen-recorder/deepin-screen-recorder.conf"

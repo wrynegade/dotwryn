@@ -1,4 +1,4 @@
-#!/bin/zsh
+#####################################################################
 
 PS1__GET_DIRECTORY() {
 	local _DIRECTORY="%B%F{yellow}%6~"
@@ -26,7 +26,7 @@ PS1__GET_GIT_BRANCH() {
 	echo $_GIT_BRANCH
 }
 
-GENERATE_PS1() {
+PS1__GENERATE() {
 	local _INDICATOR="%B%(?.%F{green}.%F{red}) $PS1_INDICATOR_SYMBOL"
 	local _USER="%B%F{magenta}$PS1_USER"
 	local _SEPARATOR="%b%F{red}$PS1_SEPARATOR"
@@ -39,4 +39,7 @@ GENERATE_PS1() {
 }
 
 setopt PROMPT_SUBST
-export PS1="$(GENERATE_PS1)"
+export PS1="$(PS1__GENERATE)"
+
+#####################################################################
+return 0

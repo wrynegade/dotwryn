@@ -33,8 +33,7 @@ CONFIG__SET_DEFAULT_SHELL() {
 #####################################################################
 
 CONFIG__VIM() {
-	CONFIG__ENV vim || return 1
-	CONFIG__RC  vim || return 2
+	CONFIG__RC  vim || return 1
 
 	STATUS 'starting vim setup'
 	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 1
@@ -61,7 +60,6 @@ CONFIG__ENV() {
 	STATUS "setting up $1 configuration ($LOCAL_CONFIG)"
 
 	case $1 in
-		vim ) COMMENT='"' ;;
 		zsh ) COMMENT='#' ;;
 	esac
 
@@ -96,4 +94,3 @@ CONFIG__RC() {
 		|| FAIL 1 "failed to configure ${TYPE}rc" \
 		;
 }
-

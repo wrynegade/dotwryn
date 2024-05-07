@@ -5,6 +5,7 @@ figlet
 fzf
 go
 java
+jq
 lolcat
 ncurses
 node
@@ -13,3 +14,4 @@ python3
 rg
 tmux
 xbuild
+yq

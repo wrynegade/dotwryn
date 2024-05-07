@@ -1,22 +1,15 @@
-source $HOME/.config/wryn/env.vim
-
-if isdirectory(expand("$HOME/.vim/bundle/Vundle.vim"))
-	source $WRYNVIMPATH/vundle.vim
+if empty($DOTWRYN)
+	let $DOTWRYN=expand("$HOME/.wryn")
 endif
 
-source $WRYNVIMPATH/options.vim
-source $WRYNVIMPATH/execute.vim
-source $WRYNVIMPATH/formatting.vim
-source $WRYNVIMPATH/file-execute.vim
-source $WRYNVIMPATH/navigation.vim
-source $WRYNVIMPATH/color.vim
-source $WRYNVIMPATH/utility.vim
+let $VIMRC=expand("$DOTWRYN/vim/rc.vim")
+for vimrcfile in split(trim(system("find " . expand("$DOTWRYN/vim/rc.d") . " -type f | sort -u")), '\n')
+	execute 'source ' . vimrcfile
+endfor
 
-source $WRYNVIMPATH/override/rentdynamics.vim
-source $WRYNVIMPATH/override/directus.vim
-
-" ---------------------------------------------------------------------
-" {{{
+" -------------------------------------------------------------------
+" --- generic bindings (easy reference) -----------------------------
+" -------------------------------------------------------------------
 
 " <SPACE> to execute macro on q
 nnoremap <Space> @q
@@ -27,48 +20,22 @@ nnoremap <Leader>q q:
 " \s previous selection command
 nnoremap <Leader>s :'<,'>
 
-" \m to set buffer to modifiable
-nnoremap <Leader>m :set modifiable<CR>
-
-" (e)dit / (s)ource vimrc
-nnoremap <Leader>ev :tabedit $WRYNVIMRC<CR>
-nnoremap <Leader>sv :source $MYVIMRC<CR>
-
-" Q to replace current line/selection with bash execution
+" Q to replace current line(s) with shell execution
 vnoremap Q !$SHELL<CR>
 nnoremap Q !!$SHELL<CR>
+
+" \j like J, but append current line to the line below
+nnoremap <Leader>j ddpkJ
 
 " move the current line down/up one
 nnoremap - :move +1 <CR>
 nnoremap _ :move -2 <CR>
 
-" \j like J, but append current line to the line below
-nnoremap <Leader>j ddpkJ
-
 " \d insert formatted date below
 nnoremap <Leader>d  :let @d = system("date '+%A, %B %-d, %Y'")<CR>o<C-r>d<BS> <esc>
 
-" \g git fugitive shortcuts
-nnoremap <Leader>gb :Git blame<CR>
-
-" \r = open last REPL (p)ython (n)odejs (c)lisp
-nnoremap <Leader>r  q:?^echom 'quickrepl'<CR><CR>
-nnoremap <Leader>rp q:oechom 'quickrepl' \| call ExecuteCommand('bpython', 'split-pane-vertical')<CR>
-nnoremap <Leader>rn q:oechom 'quickrepl' \| call ExecuteCommand('node', 'split-pane-vertical')<CR>
-nnoremap <Leader>rc q:oechom 'quickrepl' \| call ExecuteCommand('clisp', 'split-pane-horizontal')<CR>
-nnoremap <Leader>rs q:oechom 'quickrepl' \| call ExecuteCommand('zsh -l', 'split-pane-vertical')<CR>
-
-" \t = run last quicktest
-"   t)ype new quicktest
-"   e)dit last quicktest
-nnoremap <Leader>t  q:?^echom 'quicktest'<CR><CR><CR>
-nnoremap <Leader>tt q:oechom 'quicktest' \| call ExecuteCommand('')<ESC>F'i
-nnoremap <Leader>te q:?^echom 'quicktest'<CR>
-
-" ./utility.vim
-nnoremap <Leader><Leader>w  :call Sudowrite()<CR>
-nnoremap <Leader><Leader>x  :call MakeFileExecutable(0)<CR>
-nnoremap <Leader><Leader>xx :call MakeFileExecutable(1)<CR>
+" \m to set buffer to modifiable
+nnoremap <Leader>m :set modifiable<CR>
 
 " (c)opy / (p)aste from xclip
 " TODO: learn how to compile vim with x11 compatibility and delete
@@ -79,13 +46,12 @@ nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
 " enable/disable true color
 nnoremap <f12> :set invtermguicolors<CR>
 
-" --- available / rarely used bindings (personal reference) ---
+" -------------------------------------------------------------------
+" --- available / rarely used bindings (personal reference) ---------
+" -------------------------------------------------------------------
 
 " nnoremap <BS>
 " nnoremap <C-t>
 " nnoremap <C-b>
 " nnoremap z
 " nnoremap ^
-
-" }}}
-" ---------------------------------------------------------------------

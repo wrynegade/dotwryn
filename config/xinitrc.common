@@ -1,10 +1,24 @@
 #!/bin/zsh
-export PATH="$DOTWRYN/bin/$(hostnamectl --static):$PATH"
+for PREFERRED_TERMINAL in \
+	alacritty \
+	kitty \
+	;
+do
+	command -v $PREFERRED_TERMINAL &</dev/null \
+		&& export TERMINAL="$(which $PREFERRED_TERMINAL)" \
+		&& break
+done
 
-command -v kitty >/dev/null 2>&1 \
-	&& export TERMINAL=$(which kitty)
+for PREFERRED_BROWSER in \
+	google-chrome-stable \
+	google-chrome \
+	;
+do
+	command -v $PREFERRED_BROWSER & >/dev/null \
+		&& export BROWSER="$(which $PREFERRED_BROWSER)" \
+		&& break
+done
 
-command -v alacritty >/dev/null 2>&1 \
-	&& export TERMINAL=$(which alacritty)
+for XINITRC in $(find /etc/X11/xinit/xinitrc.d); do source "$XINITRC"; done
 
-for SCRIPT in $(find /etc/x11/xinit/xinitrc.d); do source $SCRIPT; done
+unset PREFERRED_TERMINAL PREFERRED_BROWSER XINITRC

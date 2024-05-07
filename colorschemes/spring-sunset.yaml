@@ -5,6 +5,22 @@ foreground: .material.secondary.50
 alacritty:
   transparency: 0.85
 
+i3:
+  focused:
+    border: .material.primary.500
+    indicator: .material.primary.700
+    text: .material.foreground.primary.500
+
+  inactive:
+    border: .material.secondary.400
+    indicator: .material.secondary.500
+    text: .material.foreground.secondary.400
+
+  unfocused:
+    border: .material.secondary.800
+    indicator: .material.secondary.900
+    text: .material.foreground.secondary.800
+
 ansi:
   blue:
     regular: '#5ab5e0'

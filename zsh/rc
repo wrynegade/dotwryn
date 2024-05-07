@@ -1,51 +1,9 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env.zsh"
-#####################################################################
-INTERNAL_PLUGINS=(
-	"$DOTWRYN/zsh/config" # must load first
-	$(find "$DOTWRYN/zsh" -mindepth 1 -maxdepth 1 -type f \
-		| grep -v '/rc$' \
-		| grep -v '/config$' \
-		| grep -v '/\.[^/]\+$' \
-		)
-)
-
-SET_PREFERRED_EDITOR() {
-	# load preference from environment
-	[[ ${#PREFERRED_EDITOR[@]} -eq 0 ]] && {
-		echo 'unable to find $PREFERRED_EDITOR environment variable'
+for RC_FILE in $(find "${0:a:h}/rc.d/" -type f | sort)
+do
+	source "$RC_FILE" || {
+		echo "something went wrong in '$RC_FILE'; aborting dotwryn load"
 		return 1
 	}
-
-	[[ $EDITOR == "${PREFERRED_EDITOR[-1]}" ]] \
-		&& [[ $VISUAL == "${PREFERENCE[-1]}" ]] \
-		&& return 0
-
-	local AVAILABLE_EDITOR=$EDITOR
-
-	for program in $PREFERRED_EDITOR
-	do
-		which $program >/dev/null 2>&1 \
-			&& AVAILABLE_EDITOR="$program" \
-			&& break
-	done
-
-	export EDITOR="$AVAILABLE_EDITOR"
-	export VISUAL="$AVAILABLE_EDITOR"
-}
-
-#####################################################################
-for p in $INTERNAL_PLUGINS; do source $p; done
-for p in $EXTERNAL_PLUGINS; do [ -f $p ] && source $p; done
-SET_PREFERRED_EDITOR
-WELCOME
-
-echo $PATH | grep -q "^\\(.*:\\|\\)$HOME/.local/bin\\(:.*\\|\\)$" \
-	|| export PATH="$HOME/.local/bin:$PATH"
-#####################################################################
-
-[[ $TERM =~ alacritty ]] \
-	&& [[ $(tmux -L omni.socket list-clients | wc -l) -eq 0 ]] \
-	&& scwrypts tmux omni
-
-true
+done
+return 0

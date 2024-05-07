@@ -8,4 +8,4 @@ set timeoutlen=200
 set showmatch matchtime=0
 set backspace=indent,eol,start
 
-set spellfile=$WRYNVIMPATH/en.utf-8.add spelllang=en
+set spellfile=$DOTWRYN/vim/en.utf-8.add spelllang=en

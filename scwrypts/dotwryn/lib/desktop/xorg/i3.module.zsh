@@ -66,6 +66,17 @@ I3__GENERATE_CUSTOM_CONFIG() {
 			echo "#   - i3 config base  : $DOTWRYN/config/i3.conf"
 			echo "#   - custom values   : $CONFIG_DEFAULT_FILE"
 			echo "#   - override values : $CONFIG_OVERRIDE_FILE"
+
+			case $(GET .statusbar.type) in
+				i3status )
+					echo 'set $refresh_statusbar killall -SIGUSR1 i3status'
+					echo 'bar { status_command i3status }'
+					;;
+				polybar )
+					echo "exec_always --no-startup-id $DOTWRYN/bin/polybar &"
+					echo "exec --no-startup-id i3-msg workspace 1"
+					;;
+			esac
 			} > "$I3_CONFIG.temp" \
 		&& sed "
 				/Legacy Defaults/,\$d
@@ -85,25 +96,25 @@ I3__GENERATE_CUSTOM_CONFIG() {
 
 				s/^\(# color settings\).*$/\1 (theme '$(basename $(readlink -f "$DOTWRYN/colorschemes/active/main.conf") | sed 's/\.conf//')')/
 
-				s/\(^set \$FOCUSED_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .material.secondary.500 .ansi.green.bright)/
-				s/\(^set \$FOCUSED_INDICATOR.*#\).*/\1$(COLOR .material.secondary.700 .ansi.green.regular)/
-				s/\(^set \$FOCUSED_TEXT.*#\).*/\1$(COLOR .material.foreground.secondary.500 .foreground)/
+				s/\(^set \$FOCUSED_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .i3.focused.border .material.secondary.500 .ansi.green.bright)/
+				s/\(^set \$FOCUSED_INDICATOR.*#\).*/\1$(COLOR .i3.focused.indicator .material.secondary.700 .ansi.green.regular)/
+				s/\(^set \$FOCUSED_TEXT.*#\).*/\1$(COLOR .i3.focused.text .material.foreground.secondary.500 .foreground)/
 
-				s/\(^set \$INACTIVE_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .material.primary.500 .ansi.blue.bright)/
-				s/\(^set \$INACTIVE_INDICATOR.*#\).*/\1$(COLOR .material.primary.600 .ansi.blue.regular)/
-				s/\(^set \$INACTIVE_TEXT.*#\).*/\1$(COLOR .material.foreground.primary.500 .foreground)/
+				s/\(^set \$INACTIVE_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .i3.inactive.border .material.primary.500 .ansi.blue.bright)/
+				s/\(^set \$INACTIVE_INDICATOR.*#\).*/\1$(COLOR .i3.inactive.indicator .material.primary.600 .ansi.blue.regular)/
+				s/\(^set \$INACTIVE_TEXT.*#\).*/\1$(COLOR .i3.inactive.text .material.foreground.primary.500 .foreground)/
 
-				s/\(^set \$UNFOCUSED_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .material.primary.700 .ansi.yellow.bright)/
-				s/\(^set \$UNFOCUSED_INDICATOR.*#\).*/\1$(COLOR .material.primary.900 .ansi.yellow.regular)/
-				s/\(^set \$UNFOCUSED_TEXT.*#\).*/\1$(COLOR .material.foreground.primary.700 .foreground)/
+				s/\(^set \$UNFOCUSED_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .i3.unfocused.border .material.primary.700 .ansi.yellow.bright)/
+				s/\(^set \$UNFOCUSED_INDICATOR.*#\).*/\1$(COLOR .i3.unfocused.indicator .material.primary.900 .ansi.yellow.regular)/
+				s/\(^set \$UNFOCUSED_TEXT.*#\).*/\1$(COLOR .i3.unfocused.text .material.foreground.primary.700 .foreground)/
 
-				s/\(^set \$URGENT_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .material.error.500 .ansi.red.bright)/
-				s/\(^set \$URGENT_INDICATOR.*#\).*/\1$(COLOR .material.error.700 .ansi.red.regular)/
-				s/\(^set \$URGENT_TEXT.*#\).*/\1$(COLOR .material.foreground.error.500 .foreground)/
+				s/\(^set \$URGENT_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .i3.urgent.border .material.error.500 .ansi.red.bright)/
+				s/\(^set \$URGENT_INDICATOR.*#\).*/\1$(COLOR .i3.urgent.indicator .material.error.700 .ansi.red.regular)/
+				s/\(^set \$URGENT_TEXT.*#\).*/\1$(COLOR .i3.urgent.text .material.foreground.error.500 .foreground)/
 
-				s/\(^set \$PLACEHOLDER_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .material.primary.300 .ansi.cyan.bright)/
-				s/\(^set \$PLACEHOLDER_INDICATOR.*#\).*/\1$(COLOR .material.primary.100 .ansi.cyan.regular)/
-				s/\(^set \$PLACEHOLDER_TEXT.*#\).*/\1$(COLOR .material.foreground.primary.300 .foreground)/
+				s/\(^set \$PLACEHOLDER_\(BORDER\|BACKGROUND\|CHILD_BORDER\).*#\).*/\1$(COLOR .i3.placeholder.border .material.primary.300 .ansi.cyan.bright)/
+				s/\(^set \$PLACEHOLDER_INDICATOR.*#\).*/\1$(COLOR .i3.placeholder.indicator .material.primary.100 .ansi.cyan.regular)/
+				s/\(^set \$PLACEHOLDER_TEXT.*#\).*/\1$(COLOR .i3.placeholder.text .material.foreground.primary.300 .foreground)/
 			" "$DOTWRYN/config/i3.conf" > "$I3_CONFIG.temp2" \
 		&& grep "^font " "$I3_CONFIG.temp2" >> "$I3_CONFIG.temp" \
 		&& grep "^set " "$I3_CONFIG.temp2" >> "$I3_CONFIG.temp" \

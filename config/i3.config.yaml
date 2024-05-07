@@ -8,18 +8,18 @@ font:
     FontAwesome
 
 application-launcher: >-
-  dmenu_run -c -l 5 -fn 'DejaVuSansMono Nerd Font-25'
+  "rofi -theme $DOTWRYN/config/rofi.theme.rasi -modes drun,run -show run"
+
+# application-launcher: >-
+#   dmenu_run -c -l 5 -fn 'DejaVuSansMono Nerd Font-25'
 
 gaps:
   inner: 0
   outer: 0
 
-i3configs:
-  - |-
-    # for use after any command which should refresh the statusbar
-    set $refresh_statusbar killall -SIGUSR1 i3status
-    bar {
-            status_command i3status
-    }
-  # - exec_always --no-startup-id $DOTWRYN/bin/polybar &
-  - exec --no-startup-id i3-msg workspace 1
+statusbar:
+  # supported values are 'polybar' and 'i3status'
+  type: polybar
+
+# a list of i3conifg excerpts that should be appended to the generated config
+i3configs: []

@@ -1,0 +1,3 @@
+ZSH_PLUGINS+=($(
+	find "$HOME/.local/zsh" -type f 2>/dev/null
+	))

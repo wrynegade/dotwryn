@@ -40,6 +40,15 @@ augroup file_specific_commands
 	autocmd FileType yaml let b:executeBuild       = 'call ExecuteScwrypt(b:scwryptBuild, b:scwryptArgs, "split-pane-vertical", "yaml")'
 	autocmd FileType yaml let b:executeTest        = 'call ExecuteScwrypt(b:scwryptDefault, b:scwryptArgs, "split-pane-vertical", "yaml")'
 
+	autocmd FileType rust let b:executeDefault                       = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo run --quiet\"', 'split-pane-horizontal')"
+	autocmd BufRead,BufNewFile */Cargo.toml let b:executeDefault     = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo run --quiet\"', 'split-pane-horizontal')"
+	autocmd FileType rust let b:executeInteractive                   = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo run --quiet -- ' . input('cargo run -- ') . '\"', 'split-pane-horizontal')"
+	autocmd BufRead,BufNewFile */Cargo.toml let b:executeInteractive = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo run --quiet -- ' . input('cargo run -- ') . '\"', 'split-pane-horizontal')"
+	autocmd FileType rust let b:executeBuild                         = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo build\"', 'split-pane-horizontal')"
+	autocmd BufRead,BufNewFile */Cargo.toml let b:executeBuild       = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo build\"', 'split-pane-horizontal')"
+	autocmd FileType rust let b:executeTest                          = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo test\"', 'split-pane-horizontal')"
+	autocmd BufRead,BufNewFile */Cargo.toml let b:executeTest        = "call ExecuteCommand('zsh -c \"cd %:p:h; cargo test\"', 'split-pane-horizontal')"
+
 	" --- OVERRIDES ---------------------------- "
 
 	autocmd FileType          *.scwrypts let b:scwryptsType = ""

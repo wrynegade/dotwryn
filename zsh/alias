@@ -1,5 +1,7 @@
 #!/bin/zsh
 #####################################################################
+### basic alias #####################################################
+#####################################################################
 
 alias pd='pushd'
 alias qd='popd'
@@ -8,10 +10,23 @@ alias lsd='dirs'
 alias pdo='pwd | xclip'    # [p]aste [d]irectory [o]n clipboard
 alias cdo='cd $(xclip -o)' # [c]hange to [d]irectory [o]n clipboard
 
-alias restart='clear; source ~/.zshrc'
+#####################################################################
+### default command override ########################################
+#####################################################################
 
-alias fix='vim $(git diff --name-only | uniq) -p'
+alias ls='ls --color=auto --group-directories-first'
 
+command -v bat >/dev/null 2>&1 \
+	&& alias cat='bat --style="plain"'
+
+command -v startplasma-x11 >/dev/null 2>&1 \
+	&& alias startk="startx '$DOTWRYN/config/xinitrc.kde'"
+
+command -v i3 >/dev/null 2>&1 \
+	&& alias starti="startx '$DOTWRYN/config/xinitrc.i3'"
+
+#####################################################################
+### fancy alias (not technically an "alias" but makes sense here) ###
 #####################################################################
 
 w() { # fancy(?) version of "alias w='watch -tcn1 '"
@@ -37,20 +52,57 @@ w() { # fancy(?) version of "alias w='watch -tcn1 '"
 	watch ${WATCH_ARGS[@]} "zsh -c 'source ~/.zshrc >/dev/null 2>&1; $(while read e; do printf 'export '; printf '%q ' "$e"; echo; done < <(env) | grep '='); echo \"   $@\n---------------------------------------------------- \$(date +%H:%m:%S)\"; $@'"
 }
 
+erg() {  # [e]dit files with [r]ip[g]rep matches
+	$EDITOR $(rg --color=never --files-with-matches $@)
+}
+
+fix() {  # [fix] merge conflicts
+	local PREFIX="$(git rev-parse --show-toplevel)"
+	[ $PREFIX ] || return 128
+
+	local FILE FILES=()
+	for FILE in $(git diff --name-only 2>/dev/null | sort -u)
+	do
+		echo "diff detected in $(basename -- $(dirname -- "$FILE"))/$(basename -- "$FILE")" >&2
+		FILES+=("$PREFIX/$FILE")
+	done
+
+	[[ ${#FILES[@]} -eq 0 ]] && {
+		echo "no merge conflicts detected"
+		return 0
+	}
+
+	$EDITOR ${FILES[@]}
+}
+
+restart() {  # reload zshrc with some bonus options
+	local _S EXECUTION_MODE=quiet
+	while [[ $# -gt 0 ]]
+	do
+		_S=1
+		case $1 in
+			( -h | --help    ) which restart; return 0 ;;
+			( -v | --verbose ) EXECUTION_MODE=verbose ;;
+			( -l | --login   ) EXECUTION_MODE=login ;;
+		esac
+		shift $_S
+	done
+
+	case $EXECUTION_MODE in
+		login ) 
+			echo "--- fresh start c: ---" >&2
+			zsh -l
+			echo "--- fresh   end :c ---" >&2
+			;;
+		verbose )
+			source "$HOME/.zshrc"
+			;;
+		quiet )
+			clear
+			source "$HOME/.zshrc" 2>/dev/null
+			;;
+	esac
+}
+
 #####################################################################
-
-command -v bat >/dev/null 2>&1 \
-	&& alias cat='bat --style="plain"'
-
-command -v startplasma-x11 >/dev/null 2>&1 \
-	&& alias startk="startx '$DOTWRYN/config/xinitrc.kde'"
-
-command -v i3 >/dev/null 2>&1 \
-	&& alias starti="startx '$DOTWRYN/config/xinitrc.i3'"
-
-#####################################################################
-
-alias erg='EDIT_RIPGREP_FILE_MATCHES'
-EDIT_RIPGREP_FILE_MATCHES() { $EDITOR $(rg --color=never -l $@); }
-
-#####################################################################
+return 0

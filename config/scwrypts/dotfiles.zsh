@@ -14,7 +14,6 @@ $DOTWRYN/bin/i3-utils                             i3/utils
 $DOTWRYN/colorschemes/active/kitty.conf           kitty/theme.conf
 $DOTWRYN/colorschemes/active/alacritty.toml       alacritty/theme.toml
 $DOTWRYN/colorschemes/active/alacritty.yaml       alacritty/theme.yml
-$DOTWRYN/colorschemes/active/getty.sh             wryn/tty-colorscheme
 $DOTWRYN/config/alacritty.toml                    alacritty/alacritty.toml
 $DOTWRYN/config/alacritty.default.toml            alacritty/default.toml
 $DOTWRYN/config/alacritty.yaml                    alacritty/alacritty.yml

@@ -1,17 +1,12 @@
+"
+" escape-to-shell execution wrapper with great functionality
+" and an OK-to-bad API (EXTREMELY helpful)
+"
+
 let escapeTmuxSession = "vim-exec"
 let escapeTmuxPaneID = g:escapeTmuxSession . ":0.0"
 
 let escapeCommandOutputs = ['tmux', 'split-pane-vertical', 'split-pane-horizontal']
-
-function ExecuteScwrypt(scwrypt = '', args = '', output = '', syntax = 'bash')
-	let b:scwryptsPrevArgs = a:args
-	call ExecuteCommand('scwrypts -n ' . a:scwrypt . ' -- ' . a:args, a:output, 'shell', a:syntax)
-	echom 'scwrypts -n ' . a:scwrypt . '--' . a:args
-endfunction
-
-function ExecuteScwryptInteractive(scwrypt = '', args = '', output = '', syntax = 'bash')
-	call ExecuteScwrypt(a:scwrypt, a:args . input('scwrypts ' . a:scwrypt . '--' . a:args), a:output, a:syntax)
-endfunction
 
 function ExecuteCommand(args = '', output = '', flavor = 'shell', syntax = 'bash')
 	let output = a:output
@@ -82,12 +77,4 @@ function GetPrefferredCommandOutput()
 	endfor
 
 	return 'shell-escape'
-endfunction
-
-function EnsureTmuxSession()
-	call system("tmux new -ds " . g:escapeTmuxSession . " -c $HOME >/dev/null 2>&1")
-endfunction
-
-function FindGitRoot()
-	return finddir('.git/..', expand('%:p:h').';')
 endfunction

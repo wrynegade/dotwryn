@@ -32,5 +32,5 @@ return 0
 }
 
 _SET_THEME__getty() {
-	ln -sf "$_COLORSCHEME_FILE__getty" "$HOME/.config/wryn/tty-colorscheme"
+	return 0  # theme is referenced explicitly after generation
 }
