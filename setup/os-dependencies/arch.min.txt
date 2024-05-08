@@ -1,4 +1,3 @@
-aws-cli-v2
 base-devel
 bat
 cmake

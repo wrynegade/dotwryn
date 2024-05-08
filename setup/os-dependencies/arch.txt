@@ -45,6 +45,7 @@ rofi
 rustup
 sudo
 tmux
+ttf-nerd-fonts-symbols
 unipicker
 vi
 vim
