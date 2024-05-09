@@ -24,22 +24,19 @@ export DISCORD__DEFAULT_CHANNEL_ID=
 export DISCORD__DEFAULT_USERNAME=umbreon
 export DISCORD__DEFAULT_WEBHOOK=
 
-# custom i3 configuration settings
-export I3__BORDER_PIXEL_SIZE=3
-export I3__DMENU_FONT_SIZE=18
-export I3__GLOBAL_FONT_SIZE=16
-export I3__MODEL_CONFIG=$DOTWRYN/config/i3.conf # from local
-
 # linear.app project management configuration
 export LINEAR__API_TOKEN=
 
 # s3 bucket name and filesystem targets for media backups
 export MEDIA_SYNC__S3_BUCKET=yage # from local
 export MEDIA_SYNC__TARGETS=(
-	.porn
 	Documents
-	Media
 	Pictures
+	.local/.porn
+	Media/commission
+	Media/music
+	Media/recordings
+	Media/sfx
 )
 
 # redis connection credentials

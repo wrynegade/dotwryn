@@ -4,4 +4,4 @@
 #####################################################################
 
 # session name for remote connection (default 'remote')
-export REMOTE_TMUX_SESSION=wryn # from local
+export REMOTE_TMUX_SESSION=

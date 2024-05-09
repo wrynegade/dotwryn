@@ -6,6 +6,8 @@ function SETUP__CONFIG() {
 	CONFIG__ZSH || return 2
 	CONFIG__VIM || return 3
 
+	SCWRYPTS generate i3 config || return 4
+
 	SUCCESS 'finished application configuration'
 }
 

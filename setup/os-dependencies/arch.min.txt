@@ -11,5 +11,6 @@ lolcat
 ncurses
 python
 ripgrep
+scwrypts
 tmux
 vim

@@ -5,11 +5,14 @@
 SCWRYPTS_SHORTCUT=''     # CTRL + W
 SCWRYPTS_ENV_SHORTCUT='' # CTRL + /
 
-source "$HOME/.wryn/scwrypts/dotwryn/dotwryn.scwrypts.zsh"
-source "$HOME/.wryn/scwrypts/ssh/ssh.scwrypts.zsh"
-
-[ -f "$HOME/Projects/yage/home/code/scwrypts/yagehome.scwrypts.zsh" ] \
-	&& source "$HOME/Projects/yage/home/code/scwrypts/yagehome.scwrypts.zsh"
+for SEARCH_DIR in \
+	"$HOME/.wryn/scwrypts" \
+	"$HOME/Projects/yage/" \
+	;
+do
+	[ -d "$SEARCH_DIR" ] || continue
+	for G in "$SEARCH_DIR/"**/*.scwrypts.zsh; do . "$G"; done
+done
 
 [ -f "$HOME/.config/scwrypts/config.local.zsh" ] \
 	&& source "$HOME/.config/scwrypts/config.local.zsh" 

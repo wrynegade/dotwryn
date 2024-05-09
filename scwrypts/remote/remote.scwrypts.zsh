@@ -2,7 +2,7 @@ SCWRYPTS_GROUPS+=(remote)
 [ $DOTWRYN ] || source "$HOME/.config/wryn/env.zsh"
 
 export SCWRYPTS_TYPE__remote=zsh
-export SCWRYPTS_ROOT__remote="$DOTWRYN/scwrypts/ssh"
+export SCWRYPTS_ROOT__remote="$DOTWRYN/scwrypts/remote"
 export SCWRYPTS_COLOR__remote='\033[0;34m'
 
 DEPENDENCIES+=(yq)

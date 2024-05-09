@@ -43,6 +43,7 @@ python-virtualenv
 ripgrep
 rofi
 rustup
+scwrypts
 sudo
 tmux
 ttf-nerd-fonts-symbols

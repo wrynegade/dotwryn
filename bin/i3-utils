@@ -1,4 +1,12 @@
 #!/bin/zsh
+
+command -v scwrypts &>/dev/null || {
+	[ -f $HOME/.local/bin/scwrypts ] \
+		&& scwrypts() { $HOME/.local/bin/scwrypts $@; } \
+		|| scwrypts() { $HOME/.wryn/zsh/plugins/scwrypts/scwrypts $@; } \
+		;
+}
+
 case $1 in
 	( next | previous | play-pause ) playerctl $1 ;;
 	( fastforward ) playerctl position 5+ ;;

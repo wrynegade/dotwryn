@@ -1,4 +1,5 @@
 #!/bin/zsh
+use bastion --group remote
 use config --group remote
 
 DEPENDENCIES+=(timeout ssh)
@@ -9,6 +10,9 @@ USAGE__options='
 	-s, --connection-string   explicit session host / ssh connection string to test
 	-t, --maximum-timeout     maximum connection timeout before failure (in seconds)
 	-c, --command             testing command; performs echo by default
+
+	--use-bastion   true / false override for bastion preference
+	                (default: session.name.bastion.preferred or "false")
 '
 
 USAGE__description='
@@ -22,45 +26,86 @@ MAIN() {
 	local CONNECTION_STRING REMOTE_NAME
 	local TIMEOUT_SECONDS=3
 	local COMMAND='echo OK &>/dev/null'
+	local USE_BASTION
 	while [[ $# -gt 0 ]]
 	do
+		local _S=1
 		case $1 in
 			-n | --name )
+				((_S+=1))
 				REMOTE_NAME=$2
 				CONNECTION_STRING=$(REMOTE__GET_CONNECTION_STRING $REMOTE_NAME)
-				shift 1
 				;;
 			-s | --connection_string ) 
+				((_S+=1))
 				CONNECTION_STRING="$2"
-				shift 1
 				;;
 			-t | --maximum-timout )
+				((_S+=1))
 				TIMEOUT_SECONDS=$2
 				[[ $TIMEOUT_SECONDS -gt 0 ]] \
 					|| ERROR "invalid timeout seconds '$TIMEOUT_SECONDS'"
-				shift 1
 				;;
 			-c | --command )
+				((_S+=1))
 				COMMAND=$2
-				shift 1
+				;;
+			--use-bastion )
+				((_S+=1))
+				USE_BASTION=$2
+				case $USE_BASTION in
+					true | false ) ;;
+					* ) ERROR "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
+				esac
 				;;
 			* ) ERROR "unrecognized argument '$1'" ;;
 		esac
-		shift 1
+		shift $_S
 	done
 
 	[ $CONNECTION_STRING ] \
 		|| ERROR "unable to determine connection string"
 
+
+	[ $USE_BASTION ] || {
+		USE_BASTION=$(\
+			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+				".sessions.$REMOTE_NAME.bastion.preferred" \
+				'false' \
+				;
+			)
+	}
+
 	CHECK_ERRORS
 
+
 	##########################################
+
+	local BASTION_HOST
+	[[ $USE_BASTION =~ true ]] && {
+		BASTION_HOST=$(\
+			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+				".sessions.$REMOTE_NAME.bastion.session" \
+			)
+	}
+
+	[[ $USE_BASTION =~ true ]] && {
+		[ $BASTION_HOST ] \
+			|| ERROR "cannot connect to $REMOTE_NAME; no configured bastion host" \
+			|| return 1
+	}
 	
 	case $CONNECTION_STRING in
 		localhost | $USER@localhost )
 			CONNECTION_TEST() { return 0; } # current user on local machine can always connect
 			;;
 		* ) 
+			[[ $USE_BASTION =~ true ]] && {
+				DEBUG "MAIN -n $BASTION_HOST -c \"$(GET_PASSTHROUGH_PREFIX) remote test -- -n $REMOTE_NAME -c \"$COMMAND\"\""
+				BASTION_TARGET="$REMOTE_NAME" MAIN -n $BASTION_HOST -c "$(GET_PASSTHROUGH_PREFIX) remote test -- -n $REMOTE_NAME -c \"$COMMAND\""
+				return $?
+			}
+
 			CONNECTION_TEST() {
 				[ $REMOTE_NAME ] && {
 					[[ $(REMOTE__QUERY_CONNECTION .sessions.$REMOTE_NAME) =~ false ]] && {
@@ -68,16 +113,16 @@ MAIN() {
 					}
 				}
 				local REMOTE_ARGS=()
-				REMOTE_ARGS+=($(REMOTE__GET_SSH_ARGS --type ssh --no-tty $REMOTE_NAME))
+				REMOTE_ARGS+=($(REMOTE__GET_SSH_ARGS --type ssh $REMOTE_NAME))
 				REMOTE_ARGS+=(-o BatchMode=yes)
-				DEBUG "attempting\nssh ${REMOTE_ARGS[@]} \"$CONNECTION_STRING\" \"$COMMAND\""
-				timeout $TIMEOUT_SECONDS ssh ${REMOTE_ARGS[@]} "$CONNECTION_STRING" "$COMMAND" >&2
+				DEBUG "attempting\ntimeout $TIMEOUT_SECONDS ssh $REMOTE_ARGS $CONNECTION_STRING "'\'"\"$COMMAND"'\'"\"" >&2
+				timeout --foreground $TIMEOUT_SECONDS ssh ${REMOTE_ARGS[@]} "$CONNECTION_STRING" "$COMMAND" >&2
 			}
 			;;
 	esac
 
 	[ $REMOTE_NAME ] || REMOTE_NAME=explicit
-	STATUS "testing connection $CONNECTION_STRING ($REMOTE_NAME)" \
+	STATUS "testing connection $CONNECTION_STRING ($REMOTE_NAME$([ $BASTION_TARGET ] && echo " -> $BASTION_TARGET"))" \
 		&& CONNECTION_TEST \
 		&& SUCCESS "successfully connected to '$CONNECTION_STRING' ($REMOTE_NAME)" \
 		|| ERROR "connection to '$CONNECTION_STRING ($REMOTE_NAME)' failed" \

@@ -39,3 +39,7 @@ VUNDLE__BUILD__youcompleteme() {
 	# ... build steps from /home/w0ryn/.vim/youcompleteme 
 	./install.py --all
 }
+
+VUNDLE__BUILD__rust.vim() {
+	# ... build steps from /home/w0ryn/.vim/rust.vim 
+}

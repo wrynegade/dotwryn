@@ -92,6 +92,10 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 UPDATE_REPOSITORIES__arch() { yay -Syu; }
 INSTALL_MANAGED__arch() {
 	local TARGET="$1"
+	[[ $TARGET =~ aws-cli-v2 ]] && {
+		STATUS "skipping aws-cli-v2 checks since they are bad right now"
+		return 0
+	}
 
 	STATUS "checking for $TARGET"
 

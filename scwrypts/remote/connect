@@ -1,4 +1,5 @@
 #!/bin/zsh
+use bastion --group remote
 use config --group remote
 #####################################################################
 
@@ -14,6 +15,9 @@ USAGE__options="
 	--no-tty   don't request a tty connection
 
 	--force-local-login   force login through ssh when working with localhost
+
+	--use-bastion   true / false override for bastion preference
+	                (default: session.name.bastion.preferred or 'false')
 "
 
 USAGE__description="
@@ -35,22 +39,33 @@ MAIN() {
 	local LOAD_RC=true
 	local USE_TTY=true
 	local FORCE_LOCAL_LOGIN=false
+	local USE_BASTION
 
 	while [[ $# -gt 0 ]]
 	do
+		local _S=1
 		case $1 in
-			-t | --type    ) CONNECTION_TYPE=$2; shift 1 ;;
-			-c | --command ) REMOTE_COMMAND=$2;  shift 1 ;;
-			-s | --shell   ) LOGIN_SHELL=$2;     shift 1 ;;
+			-t | --type    ) ((_S+=1)); CONNECTION_TYPE=$2 ;;
+			-c | --command ) ((_S+=1)); REMOTE_COMMAND=$2  ;;
+			-s | --shell   ) ((_S+=1)); LOGIN_SHELL=$2     ;;
 
 			--no-rc  ) LOAD_RC=false ;;
 			--no-tty ) USE_TTY=false ;;
+
+			--use-bastion )
+				((_S+=1))
+				USE_BASTION=$2
+				case $USE_BASTION in
+					true | false ) ;;
+					* ) ERROR "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
+				esac
+				;;
 
 			--force-local-login ) FORCE_LOCAL_LOGIN=true ;;
 
 			* ) ERROR "unknown argument '$1'" ;;
 		esac
-		shift 1
+		shift $_S
 	done
 
 	CHECK_ERRORS
@@ -88,8 +103,8 @@ MAIN() {
 	REMOTE_COMMAND=$(\
 		REMOTE__QUERY_CONNECTION_WITH_FALLBACK  \
 			"$REMOTE_COMMAND" \
-			".$REMOTE_NAME.$CONNECTION_TYPE.command" \
-			".$REMOTE_NAME.command" \
+			".sessions.$REMOTE_NAME.$CONNECTION_TYPE.command" \
+			".sessions.$REMOTE_NAME.command" \
 			".default.$CONNECTION_TYPE.command" \
 			".default.command" \
 	)
@@ -113,6 +128,35 @@ MAIN() {
 		esac
 	}
 
+	#####################################################################
+
+	[ $USE_BASTION ] || {
+		USE_BASTION=$(\
+			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+				".sessions.$REMOTE_NAME.bastion.preferred" \
+				'false' \
+				;
+			)
+	}
+
+	local BASTION_HOST
+	[[ $USE_BASTION =~ true ]] && {
+		BASTION_HOST=$(\
+			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+				".sessions.$REMOTE_NAME.bastion.session" \
+			)
+	}
+
+
+	[ $BASTION_HOST ] && {
+		PASSTHROUGH_COMMAND="$(GET_PASSTHROUGH_PREFIX) connect $REMOTE_NAME -- -c $(printf "%q " "$REMOTE_COMMAND")"
+
+		BASTION_TARGET=$REMOTE_NAME REMOTE__TARGET=$BASTION_HOST MAIN --command "$PASSTHROUGH_COMMAND"
+		return $?
+	}
+
+	##########################################
+
 	[ $REMOTE_COMMAND ] && [[ $LOAD_RC =~ true ]] && {
 		REMOTE_COMMAND="$LOGIN_SHELL -l -c 'source ~/.$(basename $LOGIN_SHELL)rc &>/dev/null; $REMOTE_COMMAND'"
 	}
@@ -123,10 +167,11 @@ MAIN() {
 			|| REMOTE_COMMAND="$LOGIN_SHELL"
 	}
 
-	##########################################
+	[ $BASTION_TARGET ] && CONNECTION_TYPE=bastion
 
-	STATUS " 
-	attempting execution on $REMOTE_NAME
+	DEBUG " 
+	attempting execution:
+	  netpath    : $(hostnamectl --static) -> $([ $BASTION_TARGET ] && echo "$BASTION_TARGET -> ")$REMOTE_NAME
 	  type       : $CONNECTION_TYPE
 	  connection : $REMOTE_NAME
 	  command    : \"$REMOTE_COMMAND\"

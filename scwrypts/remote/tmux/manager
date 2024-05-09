@@ -7,6 +7,22 @@
 
 CONNECTIONS_FILE="$HOME/.config/wryn/remote-connections.toml"
 
+OMNI_LOGDIR="$HOME/.local/share/scwrypts/dotwryn"
+OMNI_LOGFILE="$HOME/.local/share/scwrypts/dotwryn/omni.current.txt"
+
+[ ! -d "$OMNI_LOGDIR" ] && mkdir -p "$OMNI_LOGDIR"
+
+[ -f "$OMNI_LOGFILE" ] && {
+	for x in {1..99}
+	do
+		[ ! -f "$OMNI_LOGDIR/omni.$x.txt" ] && break
+	done
+
+	[ ! -f "$OMNI_LOGDIR/omni.$x.txt" ] && mv "$OMNI_LOGFILE" "$OMNI_LOGDIR/omni.$x.txt"
+}
+
+echo "OMNI MANAGER START : $(date)" > "$OMNI_LOGFILE"
+
 OMNI_SOCKET="omni.socket"
 OMNI_TMUX() { tmux -L $OMNI_SOCKET $@; }
 
@@ -30,7 +46,7 @@ GET_UNIQUE_WINDOW_ID() {
 		&& return 0 \
 		;
 
-	unset WINDOW_ID__$REMOTE_NAME &>/dev/null
+	unset WINDOW_ID__$REMOTE_NAME &>>"$OMNI_LOGFILE"
 
 	WINDOW_ID="$1"
 	WINDOW_ID=$(CONFIG_QUERY .sessions.$REMOTE_NAME.id)
@@ -86,11 +102,12 @@ do
 			&& continue
 
 		printf "testing connection $REMOTE_NAME..."
-		scwrypts -n --name test --group remote --type zsh \
+		echo "testing connection $REMOTE_NAME..." &>>"$OMNI_LOGFILE"
+		scwrypts --name test --group remote --type zsh \
 				-- \
 				--name $REMOTE_NAME \
 				--command 'command -v tmux' \
-				&>/dev/null \
+				&>>"$OMNI_LOGFILE" \
 			&& export CAN_CONNECT__$REMOTE_NAME=true \
 			|| export CAN_CONNECT__$REMOTE_NAME=false \
 			;
