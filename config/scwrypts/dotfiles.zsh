@@ -40,22 +40,18 @@ $DOTWRYN/config/xinitrc.i3                        X11/xinitrc
 $DOTWRYN/bin/vim                                  ../.local/bin/vim
 $DOTWRYN/bin/$(hostnamectl --static)              ../.$(hostnamectl --static)
 
-$DOTWRYN/config/scwrypts/environments/scwrypts/local            scwrypts/environments/scwrypts/local
-$DOTWRYN/config/scwrypts/environments/scwrypts/local.altaria    scwrypts/environments/scwrypts/local.altaria
-$DOTWRYN/config/scwrypts/environments/scwrypts/local.blaziken   scwrypts/environments/scwrypts/local.blaziken
-$DOTWRYN/config/scwrypts/environments/scwrypts/local.butterfree scwrypts/environments/scwrypts/local.butterfree
-$DOTWRYN/config/scwrypts/environments/scwrypts/local.gardevoir  scwrypts/environments/scwrypts/local.gardevoir
-$DOTWRYN/config/scwrypts/environments/scwrypts/local.umbreon    scwrypts/environments/scwrypts/local.umbreon
-$DOTWRYN/config/scwrypts/environments/dotwryn/local             scwrypts/environments/dotwryn/local
-$DOTWRYN/config/scwrypts/environments/dotwryn/local.altaria     scwrypts/environments/dotwryn/local.altaria
-$DOTWRYN/config/scwrypts/environments/dotwryn/local.blaziken    scwrypts/environments/dotwryn/local.blaziken
-$DOTWRYN/config/scwrypts/environments/dotwryn/local.butterfree  scwrypts/environments/dotwryn/local.butterfree
-$DOTWRYN/config/scwrypts/environments/dotwryn/local.gardevoir   scwrypts/environments/dotwryn/local.gardevoir
-$DOTWRYN/config/scwrypts/environments/dotwryn/local.umbreon     scwrypts/environments/dotwryn/local.umbreon
-$DOTWRYN/config/scwrypts/environments/remote/local			    scwrypts/environments/remote/local
-$DOTWRYN/config/scwrypts/environments/remote/local.altaria      scwrypts/environments/remote/local.altaria
-$DOTWRYN/config/scwrypts/environments/remote/local.blaziken     scwrypts/environments/remote/local.blaziken
-$DOTWRYN/config/scwrypts/environments/remote/local.butterfree   scwrypts/environments/remote/local.butterfree
-$DOTWRYN/config/scwrypts/environments/remote/local.gardevoir    scwrypts/environments/remote/local.gardevoir
-$DOTWRYN/config/scwrypts/environments/remote/local.umbreon      scwrypts/environments/remote/local.umbreon
+$( () {
+	local SOURCE_CONTROLLED_GROUPS=(dotwryn remote scwrypts)
+	local GROUP_MATCH_STRING="\\($(printf '\|%s' ${SOURCE_CONTROLLED_GROUPS[@]} | sed 's/^\\|//')\\)"
+
+	local _LOCAL='scwrypts/environments'
+	local _DOTWRYN="$DOTWRYN/config/scwrypts/environments"
+
+	find "$HOME/.config/$_LOCAL" -mindepth 1 -maxdepth 1 -name \*.env.yaml \
+		| sed -n "s^.*/\(local\(\.[^.]\+\)\{0,\}\.$GROUP_MATCH_STRING.env.yaml\)$$_DOTWRYN/\1^$_LOCAL/\1p" \
+		| grep -v '\.secret\.' \
+		| sort --unique \
+		| column -ts '^' \
+		;
+} )
 "
