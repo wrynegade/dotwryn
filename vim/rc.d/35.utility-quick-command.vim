@@ -25,7 +25,12 @@
 let g:quick_command_output_format = 'split-pane-horizontal'
 
 function QuickCommand()
-	let l:quick_command = get(b:, 'quick_command', '')
+	let l:quick_command = get(g:, 'quick_command', '')
+
+	if ( l:quick_command == '' )
+		let l:quick_command = get(b:, 'quick_command', '')
+	endif
+
 	if ( l:quick_command == '' )
 		let l:quick_command = input('input quick command : ') | redraw
 	endif
@@ -40,4 +45,26 @@ function QuickCommand()
 	call ExecuteCommand(l:quick_command, g:quick_command_output_format)
 endfunction
 
-nnoremap <Leader>t	:call QuickCommand()<CR>
+function QuickCommandSetGlobal()
+	let l:quick_command = get(b:, 'quick_command', '')
+
+	if ( l:quick_command == '' )
+		let l:quick_command = input('input quick command : ') | redraw
+	endif
+
+	if ( l:quick_command == '' )
+		echohl DiffDelete | echo "no command supplied" | echohl None
+		return
+	endif
+
+	let g:quick_command = l:quick_command
+endfunction
+
+function QuickCommandReset()
+	let b:quick_command = ''
+	let g:quick_command = ''
+endfunction
+
+nnoremap <Leader>t	    :call QuickCommand()<CR>
+nnoremap <Leader>gst    :call QuickCommandSetGlobal()<CR>
+nnoremap <LocalLeader>t :call QuickCommandReset()<CR>
