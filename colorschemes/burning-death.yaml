@@ -1,0 +1,74 @@
+---   # yamllint disable rule:colons
+background: .material.primary.900
+foreground: .material.primary.50
+
+cursor: .material.secondary.200
+
+alacritty:
+  transparency: 0.75
+  background: '#300000'
+
+ansi:
+  blue:
+    regular: '#5ab5e0'
+    bright:  '#b9e5f4'
+
+  magenta:
+    regular: .material.primary.400
+    bright:  .material.primary.200
+
+  cyan:
+    regular: .material.secondary.800
+    bright:  .material.secondary.100
+
+material:
+  base:
+    secondary: .material.secondary.400
+    foreground:
+      secondary: .material.foreground.secondary.400
+
+  primary:  # replaces ANSI yellow
+    50:  '#ffeaec'
+    100: '#ffccce'
+    200: '#f19892'
+    300: '#e77068'
+    400: '#df5041'
+    500: '#c24022'
+    600: '#b43523'
+    700: '#922b1e'
+    800: '#761316'
+    900: '#570406'
+
+  secondary:  # replaces ANSI green
+    50:  '#c3e7fe'
+    100: '#99bafb'
+    200: '#8eadf8'
+    300: '#67a0f1'
+    400: '#3296eb'
+    500: '#3c8ce3'
+    600: '#357ccf'
+    700: '#3c67b4'
+    800: '#34549b'
+    900: '#26416e'
+
+  error:  # replaces ANSI red
+    50:  '#fbe3e9'
+    100: '#f6b8c8'
+    200: '#f08ba4'
+    300: '#e95d80'
+    400: '#e23b66'
+    500: '#dc1a4e'
+    600: '#cc154c'
+    700: '#b71148'
+    800: '#a30a45'
+    900: '#7f033f'
+
+  foreground:
+    primary:
+      500: .ansi.gray.black
+      600: .ansi.gray.black
+      700: .ansi.gray.black
+      800: .ansi.gray.black
+      900: .ansi.gray.black
+    secondary:
+      400: .ansi.gray.white
