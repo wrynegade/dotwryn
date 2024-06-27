@@ -51,7 +51,7 @@ function QuickREPL(repl = '')
 	let b:quick_repl = l:repl
 
 	let l:output = get(g:quickrepl_output_format_overrides_by_repl_command, l:repl, g:quickrepl_output_format_default)
-	let l:repl_args = get(g:quickrepl_repl_command_args, l:repl, '')
+	let l:repl_args = get(g:quickrepl_repl_command_args_by_repl_command, l:repl, '')
 
 	call ExecuteCommand(l:repl . ' ' . l:repl_args, l:output)
 endfunction

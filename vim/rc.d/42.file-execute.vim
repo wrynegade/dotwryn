@@ -63,9 +63,9 @@ augroup file_specific_commands
 	autocmd FileType *.scwrypts let b:scwryptsEnvs       = split(system('scwrypts --list-envs'), '\n')
 	autocmd FileType *.scwrypts let b:scwryptsEnvChoices = split(system('echo SCWRYPTS_ENV=; scwrypts --list-envs | awk "{print \"\"NR\". \"\$0}"'), '\n')
 
-	autocmd FileType *.scwrypts let b:executeDefault     = "call ExecuteScwrypt(b:scwryptsAutoName, ' ', 'split-pane-vertical')"
-	autocmd FileType *.scwrypts let b:executeInteractive = "call ExecuteScwryptInteractive(b:scwryptsAutoName, ' ', 'split-pane-vertical')"
+	autocmd FileType *.scwrypts let b:executeDefault     = "call ExecuteScwrypt(b:scwryptsAutoName, ' ', 'split-pane-horizontal', 'bash', '4')"
+	autocmd FileType *.scwrypts let b:executeInteractive = "call ExecuteScwryptInteractive(b:scwryptsAutoName, ' ', 'split-pane-horizontal')"
 	autocmd FileType *.scwrypts let b:executeBuild       = "let $SCWRYPTS_ENV=b:scwryptsEnvs[inputlist(b:scwryptsEnvChoices) - 1]"
-	autocmd FileType *.scwrypts let b:executeTest        = "call ExecuteScwrypt(b:scwryptsAutoName, b:scwryptsPrevArgs, 'split-pane-vertical')"
+	autocmd FileType *.scwrypts let b:executeTest        = "call ExecuteScwrypt(b:scwryptsAutoName, b:scwryptsPrevArgs, 'split-pane-horizontal', 'bash', '4')"
 augroup end
 " }}}

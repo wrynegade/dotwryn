@@ -25,5 +25,5 @@ nnoremap <S-y> :call ToggleYCM()<CR>
 nnoremap gd :YcmCompleter GoToDefinition<CR>
 
 augroup ycm_hover
-       autocmd FileType rust,typescript,javascript,python nnoremap <silent><buffer> ? <Plug>(YCMHover)
+       autocmd FileType rust,typescript,javascript,python nnoremap <silent><buffer> K <Plug>(YCMHover)
 augroup end
