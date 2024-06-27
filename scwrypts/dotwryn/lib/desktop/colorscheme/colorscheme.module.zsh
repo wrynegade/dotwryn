@@ -17,6 +17,8 @@ DEFAULT_MATERIAL_REFERENCES="$ACTIVE_THEME_PATH/default.yaml"
 
 DEPENDENCIES+=(sed yq)
 
+__CHECK_ENV_VAR DESKTOP__WALLPAPER_PATH --optional
+
 #####################################################################
 
 MAX_LOOKUP_RECURSION=10
@@ -225,6 +227,10 @@ SET_THEME() {
 				|| ERROR 'getty theme loading error (see above)'
 			}
 	done
+
+	local WALLPAPER="$(find "$DESKTOP__WALLPAPER_PATH" -type f -name $THEME_NAME.\* 2>/dev/null | head -n1)"
+	[ "$WALLPAPER" ] && command -v feh &>/dev/null \
+		&& feh --bg-fill "$WALLPAPER"
 
 	CHECK_ERRORS --no-usage \
 		&& echo "$THEME_NAME" > "$ACTIVE_THEME_PATH/name.txt"

@@ -20,7 +20,7 @@ MAIN() {
 	case $1 in
 		up )
 			case $UTIL in
-				xbacklight     ) xbacklight + 10 ;;
+				xbacklight     ) xbacklight -inc 10 ;;
 				gmux_backlight ) gmux_backlight +100 ;;
 
 				enlighten )
@@ -31,7 +31,13 @@ MAIN() {
 			;;
 		down )
 			case $UTIL in
-				xbacklight     ) xbacklight - 10     ;;
+				xbacklight     )
+					[[ $(xbacklight -get) -le 10 ]] \
+						&& xbacklight -set 1 \
+						|| xbacklight -dec 10 \
+						;
+					[[ $(xbacklight -get) -le 0 ]] && xbacklight -set 1
+					;;
 				gmux_backlight ) gmux_backlight -100 ;;
 
 				enlighten )
