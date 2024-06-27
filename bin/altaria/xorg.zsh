@@ -25,6 +25,16 @@ XRANDR_ARGS__smol__1080p=(--output $XRANDR_OUTPUT__smol --mode $XRANDR_RESOLUTIO
 
 #####################################################################
 
+MONITOR_CONFIGURATION=unknown
+
+: \
+	&& xrandr --query | grep -q "^$XRANDR_OUTPUT__office connected" \
+	&& xrandr --query | grep -q "^$XRANDR_OUTPUT__livingroom connected" \
+	&& MONITOR_CONFIGURATION=home \
+	;
+
+###############################################################################
+
 XRANDR_SET() {
 	local ERRORS=0
 

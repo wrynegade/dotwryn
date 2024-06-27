@@ -4,10 +4,11 @@ use system/desktop/notify
 DEPENDENCIES+=(i3-msg xdotool xrandr)
 #####################################################################
 
-USAGE="
+USAGE__description="
 	usage: <path-executable> [client-class] [...options...]
+	"
 
-	options
+USAGE__options="
 	  -c, --client <string>   if different from the executable name, xprop CLIENT_CLASS
 
 	  -s, --scale <value>     (default: 0.8 or 0.5 if screen width >3000px)
@@ -21,7 +22,9 @@ USAGE="
 	  --has-statusbar-icon    (default: false) use if program has a statusbar icon
 
 	  -h, --help              print this message and exit
+	  "
 
+USAGE__description="
 	Makes it easy to bind appications to key shortcuts without having to
 	spin up redundant instances or cycle through the scratchpad queue.
 

@@ -1,6 +1,19 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
+case $MONITOR_CONFIGURATION in
+	home )
+		;;
+	unknown )
+		echo 'unknown state; using default configuration to prevent monitor issues'
+		xrandr --output $(xrandr | grep ' connected' | awk '{print $1;}') --primary
+		scwrypts desktop i3 set background -- $(scwrypts -n get theme).jpg
+		$DOTWRYN/bin/polybar
+		scwrypts desktop play sound        -- login
+		return 0
+		;;
+esac
+
 USE_SMOL=false
 xrandr -q | grep $XRANDR_OUTPUT__smol | grep -v 'disconnected' && {
 	xrandr -q | grep $XRANDR_OUTPUT__smol | grep -qv primary && {
