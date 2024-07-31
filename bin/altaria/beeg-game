@@ -1,6 +1,8 @@
 #!/bin/zsh
 source ${0:a:h}/xorg.zsh
 
+xrandr --output $XRANDR_OUTPUT__smol --off
+
 XRANDR_SET \
 	--compositing  disable \
 	--screen-blank disable \

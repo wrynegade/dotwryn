@@ -9,13 +9,8 @@ XRANDR_RESOLUTION__4k='3840x2160'
 XRANDR_RESOLUTION__2k='2560x1440'
 XRANDR_RESOLUTION__1080p='1920x1080'
 
-XRANDR_OUTPUT__office='DP-0'
 XRANDR_OUTPUT__livingroom='HDMI-0'
 XRANDR_OUTPUT__smol='DP-4'
-
-XRANDR_ARGS__office__4k=(--output $XRANDR_OUTPUT__office --mode $XRANDR_RESOLUTION__4k)
-#XRANDR_ARGS__office__2k=()  # not available on office monitor
-XRANDR_ARGS__office__1080p=(--output $XRANDR_OUTPUT__office --mode $XRANDR_RESOLUTION__1080p)
 
 XRANDR_ARGS__livingroom__4k=(--output $XRANDR_OUTPUT__livingroom --mode $XRANDR_RESOLUTION__4k --rate 119.88)
 XRANDR_ARGS__livingroom__2k=(--output $XRANDR_OUTPUT__livingroom --mode $XRANDR_RESOLUTION__2k)
@@ -28,8 +23,8 @@ XRANDR_ARGS__smol__1080p=(--output $XRANDR_OUTPUT__smol --mode $XRANDR_RESOLUTIO
 MONITOR_CONFIGURATION=unknown
 
 : \
-	&& xrandr --query | grep -q "^$XRANDR_OUTPUT__office connected" \
 	&& xrandr --query | grep -q "^$XRANDR_OUTPUT__livingroom connected" \
+	&& xrandr --query | grep -q "^$XRANDR_OUTPUT__smol connected" \
 	&& MONITOR_CONFIGURATION=home \
 	;
 
@@ -74,7 +69,8 @@ XRANDR_SET() {
 
 	##########################################
 
-	scwrypts desktop xrandr disconnect all
+	# disabling for a moment since the latest X11/NVIDIA drivers are causing some issues after "disconnect all"
+	#scwrypts desktop xrandr disconnect all
 
 	xrandr ${XRANDR_ARGS[@]} 
 
