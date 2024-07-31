@@ -67,4 +67,4 @@ endfunction
 
 nnoremap <Leader>t	    :call QuickCommand()<CR>
 nnoremap <Leader>gst    :call QuickCommandSetGlobal()<CR>
-"nnoremap <LocalLeader>t :call QuickCommandReset()<CR>
+nnoremap <BS>t :call QuickCommandReset()<CR>
