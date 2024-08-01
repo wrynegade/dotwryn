@@ -8,5 +8,5 @@ XRANDR_SET \
 	--screen-blank disable \
 	--background   link-vs-gdizz.jpg \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__livingroom__1080p[@]} --pos 0x0 --primary --rate 119.88 \
+	${XRANDR_ARGS__livingroom__1080p[@]} --pos 0x0 --primary \
 	;

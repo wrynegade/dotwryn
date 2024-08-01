@@ -7,6 +7,6 @@ XRANDR_SET \
 	--compositing  enable \
 	--screen-blank disable \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__smol__2k[@]}          --pos 0x0 --rate 180.00 --primary \
+	${XRANDR_ARGS__smol__1440p[@]}       --pos 0x0 --rate 180.00 --primary \
 	;
 

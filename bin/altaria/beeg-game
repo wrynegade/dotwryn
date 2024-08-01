@@ -8,5 +8,5 @@ XRANDR_SET \
 	--screen-blank disable \
 	--background   roy-art.jpg \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__livingroom__2k[@]}    --pos 0x0 --primary \
+	${XRANDR_ARGS__livingroom__1440p[@]} --pos 0x0 --primary \
 	;
