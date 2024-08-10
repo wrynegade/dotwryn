@@ -20,6 +20,7 @@ $DOTWRYN/config/alacritty.yaml                    alacritty/alacritty.yml
 $DOTWRYN/config/bat.conf                          bat/config
 $DOTWRYN/config/code-activator.conf               code-activator-zsh/settings.zsh
 $DOTWRYN/config/compton.conf                      compton/compton.conf
+$DOTWRYN/config/flameshot.ini                     flameshot/flameshot.ini
 $DOTWRYN/config/git.conf                          git/config
 $DOTWRYN/config/htop.conf                         htop/htoprc
 $DOTWRYN/config/i3status.conf                     i3status/config
@@ -55,3 +56,5 @@ $( () {
 		;
 } )
 "
+
+true

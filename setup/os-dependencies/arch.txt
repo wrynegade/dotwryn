@@ -9,6 +9,7 @@ cmake
 cowsay
 feh
 figlet
+flameshot
 fprintd
 fzf
 go
