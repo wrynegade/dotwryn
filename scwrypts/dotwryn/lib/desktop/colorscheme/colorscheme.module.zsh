@@ -6,6 +6,7 @@ ACTIVE_THEME_PATH="$_COLORSCHEME_DIR/active"
 ACTIVE_THEME_SOURCE="$ACTIVE_THEME_PATH/source.yaml"
 
 use desktop/colorscheme/alacritty --group dotwryn
+use desktop/colorscheme/flameshot --group dotwryn
 use desktop/colorscheme/getty --group dotwryn
 use desktop/colorscheme/kitty --group dotwryn
 use desktop/colorscheme/polybar --group dotwryn
