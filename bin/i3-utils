@@ -47,15 +47,7 @@ case $1 in
 		;;
 
 	( screenshot )
-		command -v deepin-screen-recorder || notify-send "I3 UTILS" "no screenshot application available"
-		deepin-screen-recorder
-		DEEPIN_CONFIG="$HOME/.config/deepin/deepin-screen-recorder/deepin-screen-recorder.conf"
-
-		: \
-			&& echo "fixing stupid settings" \
-			&& mv $DEEPIN_CONFIG $DEEPIN_CONFIG.bak \
-			&& sed '/specifiedSavepath=.*home.*Pictures/d' $DEEPIN_CONFIG.bak > $DEEPIN_CONFIG \
-			|| mv $DEEPIN_CONFIG.bak $DEEPIN_CONFIG.conf \
-			;
+		command -v flameshot || notify-send "I3 UTILS" "screenshot application 'flameshot' not available"
+		flameshot gui
 		;;
 esac
