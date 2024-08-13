@@ -22,7 +22,6 @@ jdk-openjdk
 jq
 lolcat
 lxappearance
-monaspace-font
 mono
 ncurses
 neofetch
@@ -32,6 +31,7 @@ npm
 ntp
 obs-studio
 openssh
+otf-monaspace
 pam-fprint-grosshack
 picom
 playerctl

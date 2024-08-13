@@ -6,7 +6,9 @@ function SETUP__CONFIG() {
 	CONFIG__ZSH || return 2
 	CONFIG__VIM || return 3
 
-	SCWRYPTS generate i3 config || return 4
+	CONFIG__SYSTEM || return 4
+
+	SCWRYPTS generate i3 config || return 5
 
 	SUCCESS 'finished application configuration'
 }
@@ -14,8 +16,8 @@ function SETUP__CONFIG() {
 #####################################################################
 
 CONFIG__ZSH() {
-	CONFIG__ENV zsh || return 1
-	CONFIG__RC  zsh || return 2
+	#CONFIG__ENV zsh || return 1
+	#CONFIG__RC  zsh || return 2
 	CONFIG__SET_DEFAULT_SHELL || return 3
 }
 
@@ -39,6 +41,46 @@ CONFIG__VIM() {
 
 	STATUS 'starting vim setup'
 	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 1
+}
+
+#####################################################################
+
+CONFIG__SYSTEM() {
+	STATUS "configuring system applications"
+	local \
+		SYSTEM_APPLICATION \
+		SOURCE_DIR SOURCE_CONFIG \
+		SYSTEM_DIR SYSTEM_CONFIG \
+		;
+
+	for SOURCE_DIR in $(find "$DOTWRYN_PATH/config/system/" -mindepth 1 -maxdepth 1 -type d)
+	do
+		SYSTEM_APPLICATION="$(echo "$SOURCE_DIR" | sed 's|.*/||')"
+
+		case $SYSTEM_APPLICATION in
+			( ssh | sshd )
+				SYSTEM_DIR=/etc/ssh/${SYSTEM_APPLICATION}_config.d
+				;;
+			( * )
+				SYSTEM_DIR=''
+				;;
+		esac
+
+		[ "$SYSTEM_DIR" ] && sudo [ -d "$SYSTEM_DIR" ] \
+			|| continue
+
+		for SOURCE_CONFIG in $(find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type f)
+		do
+			SYSTEM_CONFIG="$SYSTEM_DIR/$(basename -- "$SOURCE_CONFIG")"
+
+			sudo [ -f "$SYSTEM_CONFIG" ] && {
+				echo "detected existing config '$SYSTEM_CONFIG'; skipping"
+				continue
+			}
+
+			sudo ln -s "$SOURCE_CONFIG" "$SYSTEM_CONFIG"
+		done
+	done
 }
 
 #####################################################################

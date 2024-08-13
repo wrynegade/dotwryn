@@ -36,4 +36,4 @@ INFO "installation complete: $(date)" 2>> "$LOGFILE"
 yN 'keep logfile?' \
 	|| { rm "$LOGFILE" || ERROR "unable to remove '$LOGFILE'" }
 
-SUCCESS "\n.wryn setup complete; have a nice day :)\n"
+SUCCESS "\n.wryn setup complete; have a nice day :)\n "
