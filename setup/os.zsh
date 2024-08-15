@@ -97,17 +97,14 @@ INSTALL_MANAGED__arch() {
 		return 0
 	}
 
-	STATUS "checking for $TARGET"
-
-	yay -Qq | grep -q "^$TARGET$\|^$TARGET-git$" && {
-		SUCCESS "found installation of '$TARGET'"
+	yay -Qq 2>/dev/null | grep -q "^$TARGET$\|^$TARGET-git$" && {
+		SUCCESS "found '$TARGET'"
 	} || {
-		WARNING "'$TARGET' not found"
-
 		STATUS "installing '$TARGET'"
 		yay -Syu --noconfirm $TARGET \
 			&& SUCCESS "successfully installed '$TARGET'" \
-			|| ERROR "failed to install '$TARGET'"
+			|| ERROR "failed to install '$TARGET'" \
+			;
 	}
 }
 

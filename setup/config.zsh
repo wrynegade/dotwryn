@@ -1,6 +1,8 @@
 function SETUP__CONFIG() {
 	STATUS 'starting application configuration'
 
+	GENERATE_INITIAL_LOCAL_CONFIG
+
 	SCWRYPTS system/config/update || return 1
 
 	CONFIG__ZSH || return 2
@@ -11,6 +13,23 @@ function SETUP__CONFIG() {
 	SCWRYPTS generate i3 config || return 5
 
 	SUCCESS 'finished application configuration'
+}
+
+#####################################################################
+
+GENERATE_INITIAL_LOCAL_CONFIG() {
+	local HOSTNAME="$(hostnamectl --static)"
+	[ $HOSTNAME ] || return 0
+
+	mkdir -p "$DOTWRYN_PATH/bin/$HOSTNAME"
+
+	local ENV_DIR="$DOTWRYN_PATH/config/scwrypts/environments"
+	local GROUP
+	for GROUP in $(find "$ENV_DIR" -type f -name \*env.yaml | sed -n 's|.*/local\.\([^.]*\)\.env\.yaml|\1|p')
+	do
+		[ -f "$ENV_DIR/local.$HOSTNAME.$GROUP.env.yaml" ] \
+			|| cp "$ENV_DIR/local.altaria.$GROUP.env.yaml" "$ENV_DIR/local.$HOSTNAME.$GROUP.env.yaml"
+	done
 }
 
 #####################################################################
@@ -40,47 +59,27 @@ CONFIG__VIM() {
 	CONFIG__RC  vim || return 1
 
 	STATUS 'starting vim setup'
-	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 1
+	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 2
+
+	CONFIG__VIM__LINK_SUPERUSER_RC
+
+	return 0
+}
+
+CONFIG__VIM__LINK_SUPERUSER_RC() {
+	sudo [ /root/.vimrc ] && return 0
+
+	echo "let $DOTWRYN=\"$DOTWRYN_PATH\"\nsource \"$DOTWRYN_PATH/vim/rc.vim\"" \
+		| sudo tee /root/.vimrc >/dev/null
+
+	sudo mkdir -p /root/.vim
+	sudo ln -s /home/w0ryn/.vim/bundle /root/.vim/bundle
 }
 
 #####################################################################
 
 CONFIG__SYSTEM() {
-	STATUS "configuring system applications"
-	local \
-		SYSTEM_APPLICATION \
-		SOURCE_DIR SOURCE_CONFIG \
-		SYSTEM_DIR SYSTEM_CONFIG \
-		;
-
-	for SOURCE_DIR in $(find "$DOTWRYN_PATH/config/system/" -mindepth 1 -maxdepth 1 -type d)
-	do
-		SYSTEM_APPLICATION="$(echo "$SOURCE_DIR" | sed 's|.*/||')"
-
-		case $SYSTEM_APPLICATION in
-			( ssh | sshd )
-				SYSTEM_DIR=/etc/ssh/${SYSTEM_APPLICATION}_config.d
-				;;
-			( * )
-				SYSTEM_DIR=''
-				;;
-		esac
-
-		[ "$SYSTEM_DIR" ] && sudo [ -d "$SYSTEM_DIR" ] \
-			|| continue
-
-		for SOURCE_CONFIG in $(find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type f)
-		do
-			SYSTEM_CONFIG="$SYSTEM_DIR/$(basename -- "$SOURCE_CONFIG")"
-
-			sudo [ -f "$SYSTEM_CONFIG" ] && {
-				echo "detected existing config '$SYSTEM_CONFIG'; skipping"
-				continue
-			}
-
-			sudo ln -s "$SOURCE_CONFIG" "$SYSTEM_CONFIG"
-		done
-	done
+	SCWRYPTS dotwryn system setup
 }
 
 #####################################################################
