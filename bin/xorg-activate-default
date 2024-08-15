@@ -1,6 +1,20 @@
 #!/bin/zsh
 LAYOUT="$DOTWRYN/bin/$(hostnamectl --static)/default"
-[ -f $LAYOUT ] && {
-	until xrandr -q >/dev/null 2>&1; do sleep .1; done
-	$LAYOUT
-}
+
+until xrandr -q >/dev/null 2>&1; do sleep .1; done
+
+[ -f "$LAYOUT" ] \
+	&& XRANDR_LAYOUT_MODE=manual \
+	|| XRANDR_LAYOUT_MODE=auto \
+	;
+
+case $XRANDR_LAYOUT_MODE in
+	manual )
+		"$LAYOUT"
+		;;
+	auto )
+		xrandr --auto
+		;;
+esac
+unset XRANDR_LAYOUT_MODE
+true

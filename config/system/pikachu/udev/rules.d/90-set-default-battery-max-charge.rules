@@ -1,0 +1,1 @@
+ACTION=="add", RUN+="/home/w0ryn/.wryn/bin/pikachu/set-battery-max-charge"

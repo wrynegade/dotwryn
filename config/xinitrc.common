@@ -21,4 +21,10 @@ done
 
 for XINITRC in $(find /etc/X11/xinit/xinitrc.d); do source "$XINITRC"; done
 
+[ -f "$HOME/.config/X11/xmodmap" ] \
+	&& xmodmap "$HOME/.config/X11/xmodmap"
+
+[ -f "$HOME/.config/X11/xkeymap" ] \
+	&& xkbcomp "$HOME/.config/X11/xkeymap" ${DISPLAY}
+
 unset PREFERRED_TERMINAL PREFERRED_BROWSER XINITRC

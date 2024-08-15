@@ -1,0 +1,19 @@
+#!/bin/bash
+[[ $EUID -eq 0 ]] || {
+	echo "root access required" >&2
+	exit 1
+}
+
+
+MAX_CHARGE_THRESHOLD=$1
+[ "$MAX_CHARGE_THRESHOLD" ] \
+	|| MAX_CHARGE_THRESHOLD=75
+
+DEVICE_SETTING_FILE=/sys/class/power_supply/BAT1/charge_control_end_threshold
+
+[ "$MAX_CHARGE_THRESHOLD" ] && [[ $MAX_CHARGE_THRESHOLD -ge 40 ]] && [[ $MAX_CHARGE_THRESHOLD -le 100 ]] || {
+	echo -e "Value '$MAX_CHARGE_THRESHOLD' is invalid. If you REALLY want to do this, overwrite the setting yourself\n$DEVICE_SETTING_FILE" >&2
+	exit 2
+}
+
+echo "$MAX_CHARGE_THRESHOLD" > "$DEVICE_SETTING_FILE"

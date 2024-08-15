@@ -65,7 +65,10 @@ MAIN() {
 
 			* ) ERROR "unknown argument '$1'" ;;
 		esac
-		shift $_S
+		[[ $_S -le $# ]] \
+			&& shift $_S \
+			|| ERROR "missing argument for '$1'" \
+			|| shift $#
 	done
 
 	CHECK_ERRORS
@@ -149,7 +152,9 @@ MAIN() {
 
 
 	[ $BASTION_HOST ] && {
-		PASSTHROUGH_COMMAND="$(GET_PASSTHROUGH_PREFIX) connect $REMOTE_NAME -- -c $(printf "%q " "$REMOTE_COMMAND")"
+		DEBUG "REMOTE_COMMAND : $REMOTE_COMMAND"
+		PASSTHROUGH_COMMAND="$(GET_PASSTHROUGH_PREFIX) connect $REMOTE_NAME --"
+		[ "$REMOTE_COMMAND" ] && PASSTHROUGH_COMMAND+=" -c $(printf "%q " "$REMOTE_COMMAND")"
 
 		BASTION_TARGET=$REMOTE_NAME REMOTE__TARGET=$BASTION_HOST MAIN --command "$PASSTHROUGH_COMMAND"
 		return $?

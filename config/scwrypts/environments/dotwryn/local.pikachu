@@ -4,11 +4,11 @@
 #####################################################################
 
 # enlighten BACKLIGHT_DEVICE (see 'man enlighten')
-export DESKTOP__BACKLIGHT_DEVICE=
+export DESKTOP__BACKLIGHT_DEVICE=amdgpu_bl1
 
 # directory containing sound effects
-export DESKTOP__SFX_PATH="$HOME/Media/sfx"
-export DESKTOP__WALLPAPER_PATH="$HOME/Pictures/bg"
+export DESKTOP__SFX_PATH="$HOME/Media/sfx" # from local
+export DESKTOP__WALLPAPER_PATH="$HOME/Pictures/bg" # from local
 
 # home server data
 export WRYN__SERVER_HOSTNAMES=

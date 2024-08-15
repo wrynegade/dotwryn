@@ -60,7 +60,10 @@ MAIN() {
 				;;
 			* ) ERROR "unrecognized argument '$1'" ;;
 		esac
-		shift $_S
+		[[ $_S -le $# ]] \
+			&& shift $_S \
+			|| ERROR "missing argument for '$1'" \
+			|| shift $#
 	done
 
 	[ $CONNECTION_STRING ] \
@@ -108,7 +111,7 @@ MAIN() {
 
 			CONNECTION_TEST() {
 				[ $REMOTE_NAME ] && {
-					[[ $(REMOTE__QUERY_CONNECTION .sessions.$REMOTE_NAME) =~ false ]] && {
+					[[ $(REMOTE__QUERY_CONNECTION .sessions.$REMOTE_NAME.enabled) =~ false ]] && {
 						return 1
 					}
 				}

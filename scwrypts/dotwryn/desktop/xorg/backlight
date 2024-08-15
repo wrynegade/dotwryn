@@ -1,5 +1,8 @@
 #!/bin/zsh
 use desktop/notify --group dotwryn
+
+__CHECK_ENV_VAR DESKTOP__BACKLIGHT_DEVICE --optional
+
 #####################################################################
 
 MAIN() {
@@ -11,10 +14,10 @@ MAIN() {
 
 	[[ $UTIL =~ ^enlighten$ ]] && {
 		CURRENT_PERCENT=$(enlighten | sed 's/.*(//;s/%.*//')
-		[[ $CURRENT_PERCENT -gt 60 ]] && DELTA=20
-		[[ $CURRENT_PERCENT -le 60 ]] && DELTA=10
-		[[ $CURRENT_PERCENT -le 40 ]] && DELTA=5
-		[[ $CURRENT_PERCENT -le 10 ]] && DELTA=1
+		[[ $CURRENT_PERCENT -gt 60 ]] && DELTA=40
+		[[ $CURRENT_PERCENT -le 60 ]] && DELTA=20
+		[[ $CURRENT_PERCENT -le 40 ]] && DELTA=10
+		[[ $CURRENT_PERCENT -le 10 ]] && DELTA=5
 	}
 
 	case $1 in
@@ -25,7 +28,7 @@ MAIN() {
 
 				enlighten )
 					[[ $CURRENT_PERCENT -ge 99 ]] && NOTIFY_SEND 'at maximum brightness' && exit 0
-					enlighten +${DELTA}%
+					BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten +${DELTA}%
 					;;
 			esac
 			;;
@@ -43,7 +46,7 @@ MAIN() {
 				enlighten )
 					[[ $CURRENT_PERCENT -le 1 ]] && NOTIFY_SEND 'at minimum brightness' && exit 0
 					[[ $CURRENT_PERCENT -le 2 ]] && ARGS='=1%' || ARGS="-${DELTA}%"
-					enlighten "$ARGS"
+					BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten "$ARGS"
 					;;
 			esac
 			;;
@@ -52,22 +55,22 @@ MAIN() {
 			case $UTIL in
 				xbacklight     ) xbacklight -set $2 ;;
 				gmux_backlight ) gmux_backlight $2  ;;
-				enlighten      ) enlighten "=$2"    ;;
+				enlighten      ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten "=$2"    ;;
 			esac
 			;;
 		min | minimum )
 			case $UTIL in
-				enlighten ) enlighten '=1%' ;;
+				enlighten ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten '=1%' ;;
 			esac
 			;;
 		max | maximum )
 			case $UTIL in
-				enlighten ) enlighten '=100%' ;;
+				enlighten ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten '=100%' ;;
 			esac
 			;;
 		query | '' )
 			case $UTIL in
-				enlighten ) NOTIFY_SUCCESS "current brightness : $(enlighten)" ;;
+				enlighten ) NOTIFY_SUCCESS "current brightness : $(BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten)" ;;
 			esac
 			;;
 

@@ -1,0 +1,17 @@
+#!/bin/zsh
+#####################################################################
+
+use system --group dotwryn
+
+#####################################################################
+
+USAGE__description='
+	sets up links to things like /etc/*.d/ configurations
+	or systemd services; requires root access
+'
+
+#####################################################################
+
+MAIN() {
+	dotwryn.system.setup
+}
