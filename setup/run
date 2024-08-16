@@ -21,19 +21,22 @@ done
 source ./requirements.zsh || exit 1
 ################################################################################
 
-LOGFILE="$HOME/dotwryn-install.log"
+LOGFILE="${HOME}/dotwryn-install.txt"
 
-STATUS "installation start : $(date)" 2>> "$LOGFILE"
+STATUS "installation start : $(date)" 2>> "${LOGFILE}"
 {
 	SETUP__OS     || FAIL 1 'failed to set up os-dependencies (see above)'
 	SETUP__GIT    || FAIL 2 'failed to set up git (see above)'
 	SETUP__CONFIG || FAIL 3 'failed to set up program configuration (see above)'
-} 2>&1 | tee --append "$LOGFILE"
+} 2>&1 | tee --append "${LOGFILE}"
 
-STATUS "installation complete: $(date)" 2>> "$LOGFILE"
+STATUS "installation complete: $(date)" 2>> "${LOGFILE}"
 
 ################################################################################
-yN 'keep logfile?' \
-	|| { rm "$LOGFILE" || ERROR "unable to remove '$LOGFILE'" }
+
+[[ ${ERRORS} -eq 0 ]] || {
+	yN 'keep logfile?' \
+		|| { rm "${LOGFILE}" || ERROR "unable to remove '${LOGFILE}'" }
+}
 
 SUCCESS "\n.wryn setup complete; have a nice day :)\n "

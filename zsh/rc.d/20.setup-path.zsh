@@ -1,9 +1,9 @@
 () {  # create path entries
 	local PATH_ENTRY
 	for PATH_ENTRY in \
-		"$HOME/.local/bin" \
-		"$(go env GOPATH 2>/dev/null)/bin" \
-		"$HOME/.$(hostnamectl --static)" \
+		"${HOME}/.local/bin" \
+		"${HOME}/.local/share/$(hostnamectl --static)" \
+		"${GOPATH}/bin" \
 		;
 	do
 		echo "$PATH" | sed 's/:/\n/g' | grep -q "^$PATH_ENTRY$" \

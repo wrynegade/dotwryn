@@ -9,3 +9,5 @@ set showmatch matchtime=0
 set backspace=indent,eol,start
 
 set spellfile=$DOTWRYN/vim/en.utf-8.add spelllang=en
+
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo

@@ -231,7 +231,7 @@ SET_THEME() {
 
 	local WALLPAPER="$(find "$DESKTOP__WALLPAPER_PATH" -type f -name $THEME_NAME.\* 2>/dev/null | head -n1)"
 	[ "$WALLPAPER" ] && command -v feh &>/dev/null \
-		&& feh --bg-fill "$WALLPAPER"
+		&& feh --no-fehbg --bg-fill "$WALLPAPER"
 
 	CHECK_ERRORS --no-usage \
 		&& echo "$THEME_NAME" > "$ACTIVE_THEME_PATH/name.txt"

@@ -1,6 +1,6 @@
 #####################################################################
 
-HISTFILE=~/.local/zsh.history
+HISTFILE="${XDG_STATE_HOME}/zsh/history"
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -18,11 +18,12 @@ bindkey -M vicmd v edit-command-line
 # zsh auto/tab-completion engine
 zmodload -i zsh/complist
 autoload -Uz compinit
-compinit
+compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' menu select
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/zcompcache"
 bindkey -M menuselect '^M' .accept-line
 
 #####################################################################

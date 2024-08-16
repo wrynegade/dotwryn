@@ -9,7 +9,7 @@ SCWRYPTS_ENVIRONMENT__SHOW_ENV_HELP=false
 SCWRYPTS_ENVIRONMENT__PREFERRED_EDIT_MODE=quiet
 
 for SEARCH_DIR in \
-	"$HOME/.wryn/scwrypts" \
+	"$DOTWRYN/scwrypts" \
 	"$HOME/Projects/yage/" \
 	;
 do

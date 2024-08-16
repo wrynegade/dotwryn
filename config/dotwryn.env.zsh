@@ -2,9 +2,6 @@
 ### default .wryn configuration settings ############################
 #####################################################################
 
-# installation path for this repository
-export DOTWRYN="$HOME/.wryn"
-
 # order of editor preference
 export PREFERRED_EDITORS=(vim vi nano)
 
@@ -16,6 +13,6 @@ PS1_USER='%m'
 
 # run at each zsh login
 WELCOME () {
-	[[ $TERM =~ tmux ]] && return 0
+	[[ ${TERM} =~ tmux ]] && return 0
 	{ figlet 'Welcome, beautiful'; cowsay -p 'damn u sexy'; } | lolcat
 }

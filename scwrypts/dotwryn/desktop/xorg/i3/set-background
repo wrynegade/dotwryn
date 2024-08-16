@@ -11,13 +11,13 @@ MAIN() {
 
 	case $SELECTION in
 		random )
-			feh --recursive --randomize --bg-fill $WALLPAPER_PATH
+			feh --no-fehbg --recursive --randomize --bg-fill $WALLPAPER_PATH
 			;;
 		* )
 			[ ! -f $DESKTOP__WALLPAPER_PATH/$SELECTION ] \
 				&& FAIL 2 "no such wallpaper '$SELECTION' in wallpaper path"
 
-			feh --bg-fill $DESKTOP__WALLPAPER_PATH/$SELECTION
+			feh --no-fehbg --bg-fill $DESKTOP__WALLPAPER_PATH/$SELECTION
 			;;
 	esac
 }

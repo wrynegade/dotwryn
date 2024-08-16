@@ -1,7 +1,7 @@
 #####################################################################
 
 ZSH_PLUGINS+=($(
-	find "$(readlink -f -- "$HOME/.local/zsh")" -type f 2>/dev/null
+	find "$(readlink -f -- "${XDG_DATA_HOME:-${HOME}/.local/share}/zsh")" -type f 2>/dev/null
 	))
 
 #####################################################################

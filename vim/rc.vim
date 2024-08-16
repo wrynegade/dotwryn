@@ -1,5 +1,11 @@
 if empty($DOTWRYN)
-	let $DOTWRYN=expand("$HOME/.wryn")
+	if !empty(glob(expand("$HOME/.wryn")))
+		let $DOTWRYN=expand("$HOME/.wryn")
+	elseif !empty(glob(expand("$XDG_DATA_HOME/wryn")))
+		let $DOTWRYN=expand("$XDG_DATA_HOME/wryn")
+	else
+		let $DOTWRYN=expand("$HOME/.local/share/wryn")
+	endif
 endif
 
 let $VIMRC=expand("$DOTWRYN/vim/rc.vim")

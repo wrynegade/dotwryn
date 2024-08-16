@@ -31,6 +31,23 @@ USAGE__description="
 
 MAIN() {
 	[[ $TERM =~ tmux ]] && ERROR "\n Cannot run tmux-omni within a tmux session!\n  "
+
+	local BACKGROUND_LAUNCH=false
+
+	local _S
+	while [[ $# -gt 0 ]]
+	do
+		_S=1
+		case $1 in
+			--background ) BACKGROUND_LAUNCH=true ;;
+		esac
+		[[ $_S -le $# ]] \
+			&& shift $_S \
+			|| ERROR "missing argument for '$1'" \
+			|| shift $# \
+			;
+	done
+
 	CHECK_ERRORS
 
 	local OMNI_SOCKET="omni.socket"
@@ -46,6 +63,11 @@ MAIN() {
 			move-window -t 99 \;
 	
 		OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/tmux/manager"
+	}
+
+	[[ $BACKGROUND_LAUNCH =~ true ]] && {
+		SUCCESS "omni server activated"
+		return 0
 	}
 
 	STATUS 'connecting to omni server'

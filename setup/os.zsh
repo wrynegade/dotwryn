@@ -2,11 +2,11 @@
 
 SETUP__OS() {
 	OS__MAKE_REQUIRED_RESOURCES      || return 1
-	[ $CI ] && { STATUS 'detected CI; skipping os setup'; return 0; }
+	[ ${CI} ] && { STATUS 'detected CI; skipping os setup'; return 0; }
 	GETSUDO
 
 	local OS_NAME=$(OS__GET_OS)
-	[ ! $OS_NAME ] && ABORT
+	[ ! ${OS_NAME} ] && ABORT
 
 	OS__INSTALL_SOURCE_DEPENDENCIES  || return 2
 	OS__INSTALL_MANAGED_DEPENDENCIES || return 3
@@ -15,25 +15,25 @@ SETUP__OS() {
 OS__GET_OS() {
 	local OS_NAME=$(lsb_release -is 2>/dev/null | tr '[:upper:]' '[:lower:]')
 
-	[ ! $OS_NAME ] \
+	[ ! ${OS_NAME} ] \
 		&& OS_NAME=$(cat /etc/os-release 2>/dev/null | grep '^ID=' | sed 's/^ID=//')
 
-	[ ! $OS_NAME ] \
+	[ ! ${OS_NAME} ] \
 		&& WARNING 'failed to detect operating system' \
 		&& OS_NAME=$(echo -e "arch\ndebian\nother" | FZF 'select an operating system') \
 		;
 
-	[[ $OS_NAME =~ ^ubuntu$ ]] && OS_NAME=debian
+	[[ ${OS_NAME} =~ ^ubuntu$ ]] && OS_NAME=debian
 
-	[[ $OS_NAME =~ ^[Ee]ndeavour[Oo][Ss]$ ]] && OS_NAME=arch
+	[[ ${OS_NAME} =~ ^[Ee]ndeavour[Oo][Ss]$ ]] && OS_NAME=arch
 
-	echo $OS_NAME
+	echo ${OS_NAME}
 }
 
 #####################################################################
 
 OS__INSTALL_SOURCE_DEPENDENCIES() {
-	case $OS_NAME in
+	case ${OS_NAME} in
 		arch )
 			command -v yay >/dev/null 2>&1 \
 				|| SCWRYPTS packages/install -- 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
@@ -43,7 +43,7 @@ OS__INSTALL_SOURCE_DEPENDENCIES() {
 		* ) ;;
 	esac
 
-	[ $COMPILE_DMENU ] && [[ $COMPILE_DMENU -eq 1 ]] \
+	[ ${COMPILE_DMENU} ] && [[ ${COMPILE_DMENU} -eq 1 ]] \
 		&& SCWRYPTS packages/install -- 'https://github.com/tiyn/dmenu' --local-name 'patched-dmenu'
 
 	return 0
@@ -55,33 +55,33 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 	local ERRORS=0
 
 	STATUS 'checking os dependencies'
-	case $OS_NAME in
+	case ${OS_NAME} in
 		arch )
 			;;
 		debian ) ;;
 		* )
 			OS_NAME='generic'
-			WARNING "no automated installer available for '$OS_NAME'"
+			WARNING "no automated installer available for '${OS_NAME}'"
 			;;
 	esac
 
-	[ $MIN ] && [[ $MIN -eq 1 ]] && [ -f "$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.min.txt" ] \
-		&& DEPENDENCIES="$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.min.txt" \
-		|| DEPENDENCIES="$DOTWRYN_PATH/setup/os-dependencies/$OS_NAME.txt" \
+	[ ${MIN} ] && [[ ${MIN} -eq 1 ]] && [ -f "${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" ] \
+		&& DEPENDENCIES="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" \
+		|| DEPENDENCIES="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.txt" \
 		;
 
-	[ ! $CI ] && {
+	[ ! ${CI} ] && {
 		STATUS 'updating system, repositories, and mirrors'
-		UPDATE_REPOSITORIES__$OS_NAME
+		UPDATE_REPOSITORIES__${OS_NAME}
 	}
 
-	for DEPENDENCY in $(cat "$DEPENDENCIES")
+	for DEPENDENCY in $(cat "${DEPENDENCIES}")
 	do
-		INSTALL_MANAGED__$OS_NAME $DEPENDENCY
+		INSTALL_MANAGED__${OS_NAME} ${DEPENDENCY}
 	done
 
-	[[ $ERRORS -ne 0 ]] && {
-		WARNING "detected $ERRORS errors; double check warnings before proceeding!"
+	[[ ${ERRORS} -ne 0 ]] && {
+		WARNING "detected ${ERRORS} errors; double check warnings before proceeding!"
 		yN 'continue with install?' && return 0 || ABORT
 	}
 
@@ -92,18 +92,18 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 UPDATE_REPOSITORIES__arch() { yay -Syu; }
 INSTALL_MANAGED__arch() {
 	local TARGET="$1"
-	[[ $TARGET =~ aws-cli-v2 ]] && {
+	[[ ${TARGET} =~ aws-cli-v2 ]] && {
 		STATUS "skipping aws-cli-v2 checks since they are bad right now"
 		return 0
 	}
 
-	yay -Qq 2>/dev/null | grep -q "^$TARGET$\|^$TARGET-git$" && {
-		SUCCESS "found '$TARGET'"
+	yay -Qq 2>/dev/null | grep -q "^${TARGET}$\|^${TARGET}-git$" && {
+		SUCCESS "found '${TARGET}'"
 	} || {
-		STATUS "installing '$TARGET'"
-		yay -Syu --noconfirm $TARGET \
-			&& SUCCESS "successfully installed '$TARGET'" \
-			|| ERROR "failed to install '$TARGET'" \
+		STATUS "installing '${TARGET}'"
+		yay -Syu --noconfirm ${TARGET} \
+			&& SUCCESS "successfully installed '${TARGET}'" \
+			|| ERROR "failed to install '${TARGET}'" \
 			;
 	}
 }
@@ -113,7 +113,7 @@ INSTALL_MANAGED__debian() {
 	STATUS "checking / installing '$1'"
 	sudo apt-get install --yes $1 \
 		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install $TARGET" \
+		|| ERROR "failed to install ${TARGET}" \
 		;
 }
 
@@ -128,32 +128,29 @@ INSTALL_MANAGED__generic() {
 OS__MAKE_REQUIRED_RESOURCES() {
 	local ERRORS=0
 	local DIRECTORIES=(
-		"$HOME/.config/wryn"
-		"$HOME/.local/bin"
-		"$HOME/.vim/bundle"
-		"$HOME/.vim/colors"
+		"${XDG_CONFIG_HOME:-${HOME}.config}/wryn"
+		"${HOME}/.local/bin"
 		)
 
 	local FILES=(
-		"$HOME/.vimrc"
-		"$HOME/.zshrc"
+		"${HOME}/.zshrc"
 		)
 
 	STATUS 'making required system resources'
-	for D in $DIRECTORIES
+	for D in ${DIRECTORIES}
 	do
-		[ ! -d $D ] && { mkdir -p $D || ERROR "failed to create directory '$D'"; }
+		[ ! -d ${D} ] && { mkdir -p ${D} || ERROR "failed to create directory '${D}'"; }
 	done
 
-	for F in $FILES
+	for F in ${FILES}
 	do
-		[ ! -f $F ] && { touch $F || ERROR "failed to create file '$F'"; }
+		[ ! -f ${F} ] && { touch ${F} || ERROR "failed to create file '${F}'"; }
 	done
 
-	[[ $ERRORS -eq 0 ]] \
+	[[ ${ERRORS} -eq 0 ]] \
 		&& SUCCESS 'finished creating system resources' \
 		|| ERROR 'failed to create system resources' \
 		;
 
-	return $ERRORS
+	return ${ERRORS}
 }
