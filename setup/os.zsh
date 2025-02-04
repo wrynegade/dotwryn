@@ -125,7 +125,7 @@ INSTALL_MANAGED__debian() {
 	STATUS "checking / installing '$1'"
 	sudo apt-get install --yes $1 \
 		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install ${TARGET}" \
+		|| ERROR "failed to install $1" \
 		;
 }
 
@@ -134,7 +134,7 @@ INSTALL_MANAGED__fedora() {
 	STATUS "checking / installing '$1'"
 	sudo dnf install -y $1 \
 		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install ${TARGET}" \
+		|| ERROR "failed to install $1" \
 		;
 }
 
@@ -143,7 +143,7 @@ INSTALL_MANAGED__macos() {
 	STATUS "checking / installing '$1'"
 	yes | brew install $1 \
 		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install ${TARGET}" \
+		|| ERROR "failed to install $1" \
 		;
 }
 
