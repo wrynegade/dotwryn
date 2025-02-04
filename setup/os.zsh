@@ -18,6 +18,9 @@ OS__GET_OS() {
 	[ ! ${OS_NAME} ] \
 		&& OS_NAME=$(cat /etc/os-release 2>/dev/null | sed -n 's/^ID=//p')
 
+	uname -s | grep -q Darwin \
+		&& OS_NAME=macos
+
 	[ ! ${OS_NAME} ] \
 		&& WARNING 'failed to detect operating system' \
 		&& OS_NAME=$(echo -e "arch\ndebian\nother" | FZF 'select an operating system') \
@@ -43,6 +46,12 @@ OS__INSTALL_SOURCE_DEPENDENCIES() {
 		( fedora ) ;;
 
 		( debian ) ;;
+
+		( macos )
+			command -v brew &>/dev/null \
+				|| /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+			;;
+
 		( * ) ;;
 	esac
 
@@ -59,8 +68,9 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 
 	STATUS 'checking os dependencies'
 	case ${OS_NAME} in
-		( arch | debian | fedora )
+		( arch | fedora | debian | macos )
 			;;
+
 		( * )
 			OS_NAME='generic'
 			WARNING "no automated installer available for '${OS_NAME}'"
@@ -123,6 +133,15 @@ UPDATE_REPOSITORIES__fedora() { sudo dnf update && sudo dnf upgrade; }
 INSTALL_MANAGED__fedora() {
 	STATUS "checking / installing '$1'"
 	sudo dnf install -y $1 \
+		&& SUCCESS "'$1' installed" \
+		|| ERROR "failed to install ${TARGET}" \
+		;
+}
+
+UPDATE_REPOSITORIES__macos() { brew update && brew upgrade; }
+INSTALL_MANAGED__macos() {
+	STATUS "checking / installing '$1'"
+	yes | brew install $1 \
 		&& SUCCESS "'$1' installed" \
 		|| ERROR "failed to install ${TARGET}" \
 		;
