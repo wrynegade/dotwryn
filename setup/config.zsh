@@ -18,7 +18,7 @@ function SETUP__CONFIG() {
 #####################################################################
 
 GENERATE_INITIAL_LOCAL_CONFIG() {
-	local HOSTNAME="$(hostnamectl --static)"
+	local HOSTNAME="$(hostnamectl --static || hostname | sed 's/\.local$//')"
 	[ ${HOSTNAME} ] || return 0
 
 	mkdir -p "${DOTWRYN_PATH}/bin/${HOSTNAME}"
