@@ -34,13 +34,16 @@ OS__GET_OS() {
 
 OS__INSTALL_SOURCE_DEPENDENCIES() {
 	case ${OS_NAME} in
-		arch )
+		( arch )
 			command -v yay >/dev/null 2>&1 \
 				|| SCWRYPTS packages/install -- 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
 				;
 			;;
-		debian ) ;;
-		* ) ;;
+
+		( fedora ) ;;
+
+		( debian ) ;;
+		( * ) ;;
 	esac
 
 	[ ${COMPILE_DMENU} ] && [[ ${COMPILE_DMENU} -eq 1 ]] \
@@ -56,10 +59,9 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 
 	STATUS 'checking os dependencies'
 	case ${OS_NAME} in
-		arch )
+		( arch | debian | fedora )
 			;;
-		debian ) ;;
-		* )
+		( * )
 			OS_NAME='generic'
 			WARNING "no automated installer available for '${OS_NAME}'"
 			;;
@@ -112,6 +114,15 @@ UPDATE_REPOSITORIES__debian() { sudo apt-get update && sudo apt-get upgrade; }
 INSTALL_MANAGED__debian() {
 	STATUS "checking / installing '$1'"
 	sudo apt-get install --yes $1 \
+		&& SUCCESS "'$1' installed" \
+		|| ERROR "failed to install ${TARGET}" \
+		;
+}
+
+UPDATE_REPOSITORIES__fedora() { sudo dnf update && sudo dnf upgrade; }
+INSTALL_MANAGED__fedora() {
+	STATUS "checking / installing '$1'"
+	sudo dnf install -y $1 \
 		&& SUCCESS "'$1' installed" \
 		|| ERROR "failed to install ${TARGET}" \
 		;
