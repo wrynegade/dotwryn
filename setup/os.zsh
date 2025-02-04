@@ -16,7 +16,7 @@ OS__GET_OS() {
 	local OS_NAME=$(lsb_release -is 2>/dev/null | tr '[:upper:]' '[:lower:]')
 
 	[ ! ${OS_NAME} ] \
-		&& OS_NAME=$(cat /etc/os-release 2>/dev/null | grep '^ID=' | sed 's/^ID=//')
+		&& OS_NAME=$(cat /etc/os-release 2>/dev/null | sed -n 's/^ID=//p')
 
 	[ ! ${OS_NAME} ] \
 		&& WARNING 'failed to detect operating system' \
@@ -128,7 +128,7 @@ INSTALL_MANAGED__generic() {
 OS__MAKE_REQUIRED_RESOURCES() {
 	local ERRORS=0
 	local DIRECTORIES=(
-		"${XDG_CONFIG_HOME:-${HOME}.config}/wryn"
+		"${XDG_CONFIG_HOME:-${HOME}/.config}/wryn"
 		"${HOME}/.local/bin"
 		)
 
