@@ -28,7 +28,7 @@ STATUS "installation start : $(date)" 2>> "${LOGFILE}"
 	SETUP__OS     || FAIL 1 'failed to set up os-dependencies (see above)'
 	SETUP__GIT    || FAIL 2 'failed to set up git (see above)'
 	SETUP__CONFIG || FAIL 3 'failed to set up program configuration (see above)'
-} 2>&1 | tee --append "${LOGFILE}"
+} 2>&1 | tee -a "${LOGFILE}"
 
 STATUS "installation complete: $(date)" 2>> "${LOGFILE}"
 
