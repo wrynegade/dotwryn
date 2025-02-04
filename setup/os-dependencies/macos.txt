@@ -16,6 +16,7 @@ gcc
 gettext
 go
 gpatch
+grep
 gsed
 htop
 jq
