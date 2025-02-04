@@ -22,7 +22,7 @@ _REQUIRED_ENV+=()
 
 command -v fzf &>/dev/null || fzf() { head -n1; }
 
-source "$DOTWRYN_PATH ../zsh/plugins/scwrypts/zsh/lib/utils/utils.module.zsh" || exit 3
+source "$DOTWRYN_PATH/zsh/plugins/scwrypts/zsh/lib/utils/utils.module.zsh" || exit 3
 
 unset -f fzf &>/dev/null
 
