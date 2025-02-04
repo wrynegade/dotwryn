@@ -8,6 +8,7 @@ coreutils
 cowsay
 feh
 figlet
+findutils
 flex
 fzf
 gawk
