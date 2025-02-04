@@ -17,7 +17,7 @@ git submodule update --init --remote --recursive >/dev/null 2>&1 || {
 
 #####################################################################
 
-_DEPENDENCIES+=(zsh fzf)
+_DEPENDENCIES+=(zsh)
 _REQUIRED_ENV+=()
 source "$DOTWRYN_PATH/zsh/plugins/scwrypts/zsh/lib/utils/utils.module.zsh" || exit 3
 
