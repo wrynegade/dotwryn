@@ -97,6 +97,17 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 		yN 'continue with install?' && return 0 || ABORT
 	}
 
+	case ${OS_NAME} in
+		( macos )
+			zsh -c 'source ~/.zprofile &>/dev/null; sed --version 2>&1 | grep GNU | grep -qv BSD' || {
+				STATUS "detected BSD sed priority; updating GNU utilities in homebrew"
+				for P in "$(brew --prefix)"/opt/*/libexec/gnubin; do export PATH="$P:$PATH"; done
+
+				echo 'for P in "$(brew --prefix)"/opt/*/libexec/gnubin; do export PATH="$P:$PATH"; done' >> "${HOME}/.zprofile"
+			}
+			;;
+	esac
+
 	SUCCESS 'all dependencies satisfied'
 	return 0
 }
