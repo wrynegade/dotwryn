@@ -35,8 +35,8 @@ GENERATE_INITIAL_LOCAL_CONFIG() {
 #####################################################################
 
 CONFIG__ZSH() {
-	#CONFIG__ENV zsh || return 1
-	#CONFIG__RC  zsh || return 2
+	CONFIG__ENV zsh || return 1
+	CONFIG__RC  zsh || return 2
 	CONFIG__SET_DEFAULT_SHELL || return 3
 }
 
