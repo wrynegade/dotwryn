@@ -5,7 +5,7 @@ use config --group remote
 
 USAGE__options="
 	-c, --command   override configured remote command
-	-s, --shell     override configured remote login shell 
+	-s, --shell     override configured remote login shell
 	-t, --type      one of the following connection types:
 	                 - ssh       (default) simple ssh execution
 	                 - xserver   ssh connection with remote-xserver settings
@@ -30,7 +30,7 @@ USAGE__description="
 
 MAIN() {
 	[ $REMOTE__TARGET ] \
-		|| ERROR 'missing REMOTE__TARGET context; this must be run through scwrypts' \
+		|| echo.error 'missing REMOTE__TARGET context; this must be run through scwrypts' \
 		|| return 1
 
 	local CONNECTION_TYPE=ssh
@@ -45,38 +45,38 @@ MAIN() {
 	do
 		local _S=1
 		case $1 in
-			-t | --type    ) ((_S+=1)); CONNECTION_TYPE=$2 ;;
-			-c | --command ) ((_S+=1)); REMOTE_COMMAND=$2  ;;
-			-s | --shell   ) ((_S+=1)); LOGIN_SHELL=$2     ;;
+			( -t | --type    ) ((_S+=1)); CONNECTION_TYPE=$2 ;;
+			( -c | --command ) ((_S+=1)); REMOTE_COMMAND=$2  ;;
+			( -s | --shell   ) ((_S+=1)); LOGIN_SHELL=$2     ;;
 
-			--no-rc  ) LOAD_RC=false ;;
-			--no-tty ) USE_TTY=false ;;
+			( --no-rc  ) LOAD_RC=false ;;
+			( --no-tty ) USE_TTY=false ;;
 
-			--use-bastion )
+			( --use-bastion )
 				((_S+=1))
 				USE_BASTION=$2
 				case $USE_BASTION in
-					true | false ) ;;
-					* ) ERROR "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
+					( true | false ) ;;
+					( * ) echo.error "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
 				esac
 				;;
 
-			--force-local-login ) FORCE_LOCAL_LOGIN=true ;;
+			( --force-local-login ) FORCE_LOCAL_LOGIN=true ;;
 
-			* ) ERROR "unknown argument '$1'" ;;
+			* ) echo.error "unknown argument '$1'" ;;
 		esac
 		[[ $_S -le $# ]] \
 			&& shift $_S \
-			|| ERROR "missing argument for '$1'" \
+			|| echo.error "missing argument for '$1'" \
 			|| shift $#
 	done
 
-	CHECK_ERRORS
+	utils.check-errors --fail
 
 	##########################################
 
 	GET_SSH_ARGS() {
-		REMOTE__GET_SSH_ARGS \
+		remote.config.get-ssh-args \
 			--type $CONNECTION_TYPE \
 			--use-tty $USE_TTY \
 			$REMOTE_NAME \
@@ -89,14 +89,14 @@ MAIN() {
 
 	##########################################
 
-	local CONNECTION_STRING=$(REMOTE__GET_CONNECTION_STRING $REMOTE_NAME)
+	local CONNECTION_STRING=$(remote.config.get-connection-string $REMOTE_NAME)
 	[ $CONNECTION_STRING ] \
 		|| FAIL 1 'unable to determine connection string'
 
 	##########################################
 
 	LOGIN_SHELL=$(\
-		REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+		remote.config.query-connection-with-fallback \
 			"$LOGIN_SHELL" \
 			".$REMOTE_NAME.shell" \
 			".default.shell" \
@@ -104,7 +104,7 @@ MAIN() {
 	)
 
 	REMOTE_COMMAND=$(\
-		REMOTE__QUERY_CONNECTION_WITH_FALLBACK  \
+		remote.config.query-connection-with-fallback  \
 			"$REMOTE_COMMAND" \
 			".sessions.$REMOTE_NAME.$CONNECTION_TYPE.command" \
 			".sessions.$REMOTE_NAME.command" \
@@ -114,9 +114,9 @@ MAIN() {
 
 	[ $REMOTE_COMMAND ] || {
 		case $CONNECTION_TYPE in
-			tmux )
+			( tmux )
 				local TMUX_SESSION_NAME=$(
-					REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+					remote.config.query-connection-with-fallback \
 						".sessions.$REMOTE_NAME.tmux.session" \
 						".default.tmux.session" \
 						"wryn" \
@@ -135,7 +135,7 @@ MAIN() {
 
 	[ $USE_BASTION ] || {
 		USE_BASTION=$(\
-			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+			remote.config.query-connection-with-fallback \
 				".sessions.$REMOTE_NAME.bastion.preferred" \
 				'false' \
 				;
@@ -145,15 +145,15 @@ MAIN() {
 	local BASTION_HOST
 	[[ $USE_BASTION =~ true ]] && {
 		BASTION_HOST=$(\
-			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+			remote.config.query-connection-with-fallback \
 				".sessions.$REMOTE_NAME.bastion.session" \
 			)
 	}
 
 
 	[ $BASTION_HOST ] && {
-		DEBUG "REMOTE_COMMAND : $REMOTE_COMMAND"
-		PASSTHROUGH_COMMAND="$(GET_PASSTHROUGH_PREFIX) connect $REMOTE_NAME --"
+		echo.debug "REMOTE_COMMAND : $REMOTE_COMMAND"
+		PASSTHROUGH_COMMAND="$(remote.bastion.get-passthrough-prefix) connect $REMOTE_NAME --"
 		[ "$REMOTE_COMMAND" ] && PASSTHROUGH_COMMAND+=" -c $(printf "%q " "$REMOTE_COMMAND")"
 
 		BASTION_TARGET=$REMOTE_NAME REMOTE__TARGET=$BASTION_HOST MAIN --command "$PASSTHROUGH_COMMAND"
@@ -165,7 +165,7 @@ MAIN() {
 	[ $REMOTE_COMMAND ] && [[ $LOAD_RC =~ true ]] && {
 		REMOTE_COMMAND="$LOGIN_SHELL -l -c 'source ~/.$(basename $LOGIN_SHELL)rc &>/dev/null; $REMOTE_COMMAND'"
 	}
-	
+
 	[ ! $REMOTE_COMMAND ] && {
 		[[ $LOAD_RC =~ true ]] \
 			&& REMOTE_COMMAND="$LOGIN_SHELL -l" \
@@ -174,14 +174,14 @@ MAIN() {
 
 	[ $BASTION_TARGET ] && CONNECTION_TYPE=bastion
 
-	DEBUG " 
+	echo.debug "
 	attempting execution:
 	  netpath    : $(hostnamectl --static) -> $([ $BASTION_TARGET ] && echo "$BASTION_TARGET -> ")$REMOTE_NAME
 	  type       : $CONNECTION_TYPE
 	  connection : $REMOTE_NAME
 	  command    : \"$REMOTE_COMMAND\"
 	 "
-	
+
 	case $CONNECTION_STRING in
 		localhost | $USER@localhost )
 			eval "cd; $REMOTE_COMMAND"
@@ -189,6 +189,6 @@ MAIN() {
 			;;
 	esac
 
-	DEBUG "ssh ${SSH_ARGS[@]} $CONNECTION_STRING \"$REMOTE_COMMAND\""
+	echo.debug "ssh ${SSH_ARGS[@]} $CONNECTION_STRING \"$REMOTE_COMMAND\""
 	ssh ${SSH_ARGS[@]} $CONNECTION_STRING "$REMOTE_COMMAND"
 }

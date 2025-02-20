@@ -1,5 +1,10 @@
 #!/bin/zsh
+#####################################################################
+
 DEPENDENCIES+=(tmux scwrypts)
+
+use omni --group remote
+
 #####################################################################
 
 USAGE__description="
@@ -12,7 +17,7 @@ USAGE__description="
 	Switch between connections by using 'M-s' followed by the session ID
 	number (or use any other default default tmux navigation command). Full
 	configuration can be found here:
-	  - $SCWRYPTS_ROOT__remote/omni/tmux.conf
+	  - $(scwrypts.config.group remote root)/omni/tmux.conf
 
 	Shut-down the omni-session by pressing 'M-Q' (Q not q! ALT + SHIFT + Q)
 
@@ -20,7 +25,7 @@ USAGE__description="
 
 	A background process periodically attempts to refresh lost connections.
 	Immediate retry can be forced with 'M-R'.
-	
+
 	Running this command in an existing tmux session will likely result
 	in an infinite loop, so:
 	  - don't run the omni-session in a TMUX session
@@ -30,7 +35,7 @@ USAGE__description="
 #####################################################################
 
 MAIN() {
-	[[ $TERM =~ tmux ]] && ERROR "\n Cannot run tmux-omni within a tmux session!\n  "
+	[[ $TERM =~ tmux ]] && echo.error "\n Cannot run tmux-omni within a tmux session!\n  "
 
 	local BACKGROUND_LAUNCH=false
 
@@ -43,33 +48,34 @@ MAIN() {
 		esac
 		[[ $_S -le $# ]] \
 			&& shift $_S \
-			|| ERROR "missing argument for '$1'" \
+			|| echo.error "missing argument for '$1'" \
 			|| shift $# \
 			;
 	done
 
-	CHECK_ERRORS
+	utils.check-errors --fail
 
-	local OMNI_SOCKET="omni.socket"
-	OMNI_TMUX() { tmux -L $OMNI_SOCKET $@; }
+	local SCWRYPTS_ROOT_REMOTE="$(scwrypts.config.group remote root)"
 
-	OMNI_TMUX list-sessions 2>/dev/null | grep -v omni-manager | grep -qi omni || {
-		STATUS "initializing omni server"
-		OMNI_TMUX kill-session -t=omni-manager >/dev/null 2>&1
-	
-		OMNI_TMUX -f "$SCWRYPTS_ROOT__remote/tmux/tmux.conf" new -d -s omni \
-			"echo searching for first connection...; sleep 30" \; \
-			split-window "sleep 3; TMUX= tmux -L $OMNI_SOCKET a -t=omni-manager" \; \
+	remote.omni.tmux list-sessions 2>/dev/null | grep -v omni-manager | grep -qi omni || {
+		echo.status "initializing omni server"
+		remote.omni.tmux kill-session -t=omni-manager >/dev/null 2>&1
+
+		echo.debug "${SCWRYPTS_ROOT_REMOTE}/tmux/tmux.conf"
+		remote.omni.tmux -f "${SCWRYPTS_ROOT_REMOTE}/tmux/tmux.conf" new -d -s omni \
+			"echo searching for first connection...; sleep 10" \; \
+			split-window "sleep 1; TMUX= tmux -L ${OMNI_SOCKET} a -t=omni-manager" \; \
 			move-window -t 99 \;
-	
-		OMNI_TMUX new -d -s omni-manager "$SCWRYPTS_ROOT__remote/tmux/manager"
+
+
+		remote.omni.tmux new -d -s omni-manager "${SCWRYPTS_ROOT_REMOTE}/tmux/manager"
 	}
 
 	[[ $BACKGROUND_LAUNCH =~ true ]] && {
-		SUCCESS "omni server activated"
+		echo.success "omni server activated"
 		return 0
 	}
 
-	STATUS 'connecting to omni server'
-	OMNI_TMUX a -t=omni
+	echo.status 'connecting to omni server'
+	remote.omni.tmux a -t=omni
 }

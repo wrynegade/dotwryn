@@ -2,5 +2,5 @@
 #####################################################################
 
 MAIN() {
-	EDIT "$REMOTE_CONNECTIONS_FILE"
+	utils.io.edit "$REMOTE_CONNECTIONS_FILE"
 }

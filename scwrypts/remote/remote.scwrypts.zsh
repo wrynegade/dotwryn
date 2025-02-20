@@ -1,14 +1,12 @@
-SCWRYPTS_GROUPS+=(remote)
-[ $DOTWRYN ] || source "$HOME/.config/wryn/env.zsh"
+readonly ${scwryptsgroup}__type=zsh
+readonly ${scwryptsgroup}__color=$(utils.colors.blue)
 
-export SCWRYPTS_TYPE__remote=zsh
-export SCWRYPTS_ROOT__remote="$DOTWRYN/scwrypts/remote"
-export SCWRYPTS_COLOR__remote='\033[0;34m'
+#####################################################################
 
 DEPENDENCIES+=(yq)
-REMOTE_CONNECTIONS_FILE="$HOME/.config/wryn/remote-connections.toml"
+REMOTE_CONNECTIONS_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/wryn/remote-connections.toml"
 
-SCWRYPTS__LIST_AVAILABLE_SCWRYPTS__remote() {
+${scwryptsgroup}.list-available() {
 	[ -f "$REMOTE_CONNECTIONS_FILE" ] || {
 		mkdir -p "$(dirname -- "$REMOTE_CONNECTIONS_FILE")" &>/dev/null
 		echo "
@@ -27,20 +25,25 @@ SCWRYPTS__LIST_AVAILABLE_SCWRYPTS__remote() {
 		echo "tmux/omni"
 		echo "configure"
 		echo "test"
-	} | sed "s|^|$SCWRYPTS_TYPE__remote/|"
+	} | sed "s|^|zsh/|"
 }
 
-SCWRYPTS__GET_RUNSTRING__remote__zsh() {
+${scwryptsgroup}.zsh.get-runstring() {
 	local SCWRYPT_FILENAME
 	case $SCWRYPT_NAME in
-		connect/* ) 
-			SCWRYPT_FILENAME="$SCWRYPTS_ROOT__remote/connect"
+		connect/* )
+			SCWRYPT_FILENAME="$(scwrypts.config.group remote root)/connect"
 			echo "export REMOTE__TARGET=$(echo $SCWRYPT_NAME | sed 's|^.*connect/||')"
 			;;
 		* )
-			SCWRYPT_FILENAME="$SCWRYPTS_ROOT__remote/$SCWRYPT_NAME"
+			SCWRYPT_FILENAME="$(scwrypts.config.group remote root)/$SCWRYPT_NAME"
 			;;
 	esac
 
-	SCWRYPTS__GET_RUNSTRING__zsh__generic "$SCWRYPT_FILENAME"
+	scwrypts.get-runstring.zsh.generic
+}
+
+remote.config.yq() {
+	utils.yq -oy -r $@ "${REMOTE_CONNECTIONS_FILE}" \
+		| grep -v ^null$
 }

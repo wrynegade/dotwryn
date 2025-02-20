@@ -34,9 +34,9 @@ MAIN() {
 			-n | --name )
 				((_S+=1))
 				REMOTE_NAME=$2
-				CONNECTION_STRING=$(REMOTE__GET_CONNECTION_STRING $REMOTE_NAME)
+				CONNECTION_STRING=$(remote.config.get-connection-string $REMOTE_NAME)
 				;;
-			-s | --connection_string ) 
+			-s | --connection_string )
 				((_S+=1))
 				CONNECTION_STRING="$2"
 				;;
@@ -44,7 +44,7 @@ MAIN() {
 				((_S+=1))
 				TIMEOUT_SECONDS=$2
 				[[ $TIMEOUT_SECONDS -gt 0 ]] \
-					|| ERROR "invalid timeout seconds '$TIMEOUT_SECONDS'"
+					|| echo.error "invalid timeout seconds '$TIMEOUT_SECONDS'"
 				;;
 			-c | --command )
 				((_S+=1))
@@ -55,31 +55,31 @@ MAIN() {
 				USE_BASTION=$2
 				case $USE_BASTION in
 					true | false ) ;;
-					* ) ERROR "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
+					* ) echo.error "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
 				esac
 				;;
-			* ) ERROR "unrecognized argument '$1'" ;;
+			* ) echo.error "unrecognized argument '$1'" ;;
 		esac
 		[[ $_S -le $# ]] \
 			&& shift $_S \
-			|| ERROR "missing argument for '$1'" \
+			|| echo.error "missing argument for '$1'" \
 			|| shift $#
 	done
 
 	[ $CONNECTION_STRING ] \
-		|| ERROR "unable to determine connection string"
+		|| echo.error "unable to determine connection string"
 
 
 	[ $USE_BASTION ] || {
 		USE_BASTION=$(\
-			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+			remote.config.query-connection-with-fallback \
 				".sessions.$REMOTE_NAME.bastion.preferred" \
 				'false' \
 				;
 			)
 	}
 
-	CHECK_ERRORS
+	utils.check-errors --fail
 
 
 	##########################################
@@ -87,46 +87,46 @@ MAIN() {
 	local BASTION_HOST
 	[[ $USE_BASTION =~ true ]] && {
 		BASTION_HOST=$(\
-			REMOTE__QUERY_CONNECTION_WITH_FALLBACK \
+			remote.config.query-connection-with-fallback \
 				".sessions.$REMOTE_NAME.bastion.session" \
 			)
 	}
 
 	[[ $USE_BASTION =~ true ]] && {
 		[ $BASTION_HOST ] \
-			|| ERROR "cannot connect to $REMOTE_NAME; no configured bastion host" \
+			|| echo.error "cannot connect to $REMOTE_NAME; no configured bastion host" \
 			|| return 1
 	}
-	
+
 	case $CONNECTION_STRING in
 		localhost | $USER@localhost )
 			CONNECTION_TEST() { return 0; } # current user on local machine can always connect
 			;;
-		* ) 
+		* )
 			[[ $USE_BASTION =~ true ]] && {
-				DEBUG "MAIN -n $BASTION_HOST -c \"$(GET_PASSTHROUGH_PREFIX) remote test -- -n $REMOTE_NAME -c \"$COMMAND\"\""
-				BASTION_TARGET="$REMOTE_NAME" MAIN -n $BASTION_HOST -c "$(GET_PASSTHROUGH_PREFIX) remote test -- -n $REMOTE_NAME -c \"$COMMAND\""
+				echo.debug "MAIN -n $BASTION_HOST -c \"$(remote.bastion.get-passthrough-prefix) remote test -- -n $REMOTE_NAME -c \"$COMMAND\"\""
+				BASTION_TARGET="$REMOTE_NAME" MAIN -n $BASTION_HOST -c "$(remote.bastion.get-passthrough-prefix) remote test -- -n $REMOTE_NAME -c \"$COMMAND\""
 				return $?
 			}
 
 			CONNECTION_TEST() {
 				[ $REMOTE_NAME ] && {
-					[[ $(REMOTE__QUERY_CONNECTION .sessions.$REMOTE_NAME.enabled) =~ false ]] && {
+					[[ $(remote.config.query-connection .sessions.$REMOTE_NAME.enabled) =~ false ]] && {
 						return 1
 					}
 				}
 				local REMOTE_ARGS=()
-				REMOTE_ARGS+=($(REMOTE__GET_SSH_ARGS --type ssh $REMOTE_NAME))
+				REMOTE_ARGS+=($(remote.config.get-ssh-args --type ssh $REMOTE_NAME))
 				REMOTE_ARGS+=(-o BatchMode=yes)
-				DEBUG "attempting\ntimeout $TIMEOUT_SECONDS ssh $REMOTE_ARGS $CONNECTION_STRING "'\'"\"$COMMAND"'\'"\"" >&2
+				echo.debug "attempting\ntimeout $TIMEOUT_SECONDS ssh $REMOTE_ARGS $CONNECTION_STRING "'\'"\"$COMMAND"'\'"\"" >&2
 				timeout --foreground $TIMEOUT_SECONDS ssh ${REMOTE_ARGS[@]} "$CONNECTION_STRING" "$COMMAND" >&2
 			}
 			;;
 	esac
 
 	[ $REMOTE_NAME ] || REMOTE_NAME=explicit
-	STATUS "testing connection $CONNECTION_STRING ($REMOTE_NAME$([ $BASTION_TARGET ] && echo " -> $BASTION_TARGET"))" \
+	echo.status "testing connection $CONNECTION_STRING ($REMOTE_NAME$([ $BASTION_TARGET ] && echo " -> $BASTION_TARGET"))" \
 		&& CONNECTION_TEST \
-		&& SUCCESS "successfully connected to '$CONNECTION_STRING' ($REMOTE_NAME)" \
-		|| ERROR "connection to '$CONNECTION_STRING ($REMOTE_NAME)' failed" \
+		&& echo.success "successfully connected to '$CONNECTION_STRING' ($REMOTE_NAME)" \
+		|| echo.error "connection to '$CONNECTION_STRING ($REMOTE_NAME)' failed" \
 }
