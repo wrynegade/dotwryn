@@ -30,6 +30,17 @@ GENERATE_INITIAL_LOCAL_CONFIG() {
 		[ -f "${ENV_DIR}/local.${HOSTNAME}.${GROUP}.env.yaml" ] \
 			|| cp "${ENV_DIR}/local.altaria.${GROUP}.env.yaml" "${ENV_DIR}/local.${HOSTNAME}.${GROUP}.env.yaml"
 	done
+
+	local LOCAL_OVERRIDE
+	for LOCAL_OVERRIDE in \
+		i3/local.yaml \
+		polybar/local.ini \
+		alacritty/local.toml \
+		;
+	do
+		mkdir -p -- "${DOTWRYN}/config/${HOSTNAME}/user/$(dirname -- "${LOCAL_OVERRIDE}")"
+		touch -- "${DOTWRYN}/config/${HOSTNAME}/user/${LOCAL_OVERRIDE}"
+	done
 }
 
 #####################################################################
@@ -59,7 +70,7 @@ CONFIG__VIM() {
 	CONFIG__RC  vim || return 1
 
 	STATUS 'starting vim setup'
-	SCWRYPTS --name system/vim/vundle/install --group scwrypts --type zsh || return 2
+	SCWRYPTS dotwryn vundle update || return 2
 
 	CONFIG__VIM__LINK_SUPERUSER_RC
 
@@ -69,7 +80,7 @@ CONFIG__VIM() {
 CONFIG__VIM__LINK_SUPERUSER_RC() {
 	sudo [ /root/.vimrc ] && return 0
 
-	echo "let ${DOTWRYN}=\"${DOTWRYN_PATH}\"\nsource \"${DOTWRYN_PATH}/vim/rc.vim\"" \
+	echo "let \$DOTWRYN=\"${DOTWRYN_PATH}\"\nsource \"${DOTWRYN_PATH}/vim/rc.vim\"" \
 		| sudo tee /root/.vimrc >/dev/null
 
 	sudo mkdir -p /root/.vim
@@ -85,7 +96,7 @@ CONFIG__SYSTEM() {
 #####################################################################
 
 CONFIG__ENV() {
-	local DEFAULT_CONFIG="${DOTWRYN_PATH}/config/dotwryn.env.$1"
+	local DEFAULT_CONFIG="${DOTWRYN_PATH}/$1/env.$1"
 	local LOCAL_CONFIG="${HOME}/.config/wryn/env.$1"
 
 	[ -f ${LOCAL_CONFIG} ] && {

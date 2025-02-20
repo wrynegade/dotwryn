@@ -17,7 +17,6 @@ go-yq
 google-chrome
 htop
 i3-wm
-i3lock-color
 jdk-openjdk
 jq
 lolcat
