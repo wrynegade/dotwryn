@@ -1,0 +1,17 @@
+#!/bin/zsh
+source ${0:a:h}/xorg.zsh
+ARGS=($(ALL_OTHER_DISPLAYS_OFF eDP-1))
+
+xrandr ${ARGS[@]} \
+	--output eDP-1 \
+		--primary \
+		--mode 960x600 \
+		--pos 0x0 \
+		--rotate normal \
+		;
+
+pkill compton
+
+scwrypts desktop screen-blank      -- disable
+scwrypts desktop i3 set background -- link-vs-gdizz.jpg
+scwrypts desktop play sfx          -- gamedock

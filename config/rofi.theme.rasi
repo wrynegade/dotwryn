@@ -21,7 +21,7 @@ configuration {
 
 /*****----- Global Properties -----*****/
 
-@import "../colorschemes/active/rofi"
+@import "./colorschemes/active/rofi"
 
 * {
     border-colour:               var(selected);

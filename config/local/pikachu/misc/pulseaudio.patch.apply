@@ -1,0 +1,2 @@
+#!/bin/zsh
+sudo patch -p1 -d /usr/share/alsa-card-profile/mixer/paths/ -i "${0:a:h}/pulseaudio.patch"

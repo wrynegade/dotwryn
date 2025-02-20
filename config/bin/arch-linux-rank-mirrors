@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+
+command -v /usr/bin/rankmirrors &>/dev/null || {
+	echo "missing 'rankmirrors'; trying to install..." >&2
+	yay -S pacman-contrib
+}
+
+command -v /usr/bin/rankmirrors &>/dev/null || {
+	echo "cannot rank mirrors without 'rankmirrors' from pacman-contrib; aborting" >&2
+	return 1
+}
+
+
+echo 'ranking mirrors; this may take a few minutes...' >&2
+{
+	echo "# mirrors ranked on $(date)"
+	curl -s 'https://archlinux.org/mirrorlist/?country=US&country=CA&protocol=https&use_mirror_status=on' \
+		| sed 's/^#Server/Server/; /^#/d'
+} | /usr/bin/rankmirrors -n 7 - > "${HOME}/mirrorlist.ranked"
+
+[ -f ~/mirrorlist.ranked ] || {
+	echo 'failed to rank mirrors :c'
+	return 1
+}
+
+echo "
+finished ranking mirrors!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >&2
+diff --side-by-side --color /etc/pacman.d/mirrorlist "${HOME}/mirrorlist.ranked" >&2
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+updated list is currently at ~/mirrorlist.ranked; please review the new list
+and backup existing list; once you're ready to save them, you can run:
+
+" >&2
+
+echo "sudo mv ~/mirrorlist.ranked /etc/pacman.d/mirrorlist && yay -Syyu"

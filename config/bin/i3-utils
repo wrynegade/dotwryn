@@ -1,0 +1,61 @@
+#!/bin/zsh
+
+[ "${DOTWRYN}" ] || {
+	notify-send 'I3 UTILS' 'cannot determine $DOTWRYN for utility execution'
+	return 1
+}
+
+command -v scwrypts &>/dev/null || {
+	scwrypts() { "${DOTWRYN}/zsh/plugins/scwrypts/scwrypts" $@; }
+}
+
+export CI=true
+export DESKTOP__SFX_PATH="${HOME}/Media/sfx"
+export SCWRYPTS_LOG_LEVEL=0
+
+#####################################################################
+
+case $1 in
+	( next | previous | play-pause ) playerctl $1 ;;
+	( fastforward ) playerctl position 5+ ;;
+	( rewind      ) playerctl position 5- ;;
+
+	( volumedown ) scwrypts media pulseaudio volume -- sink down ;;
+	( volumeup   ) scwrypts media pulseaudio volume -- sink up ;;
+	( volumemute ) scwrypts media pulseaudio volume -- sink mute ;;
+	( micmute    ) scwrypts media pulseaudio volume -- source mute ;;
+
+	( backlightup   ) scwrypts desktop backlight -- up ;;
+	( backlightdown ) scwrypts desktop backlight -- down ;;
+
+	( lock ) scwrypts desktop lock i3 -- ;;
+
+	( bgrandomize ) scwrypts desktop set i3 background -- random ;;
+
+	( logout ) scwrypts desktop i3 logout -- ;;
+
+	( launch )
+		local PROGRAM
+		local ARGS=()
+		case $2 in
+			messages ) PROGRAM=slack ARGS+=(-c Slack --has-statusbar-icon) ;;
+			voice    ) PROGRAM=google-voice-desktop ;;
+			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
+
+			1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
+			discord  ) PROGRAM=discord     ARGS+=(--has-statusbar-icon) ;;
+			obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
+			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
+			scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
+			spotify  ) PROGRAM=spotify     ARGS+=(-c Spotify) ;;
+
+			*        ) PROGRAM=$2 ;;
+		esac
+		scwrypts i3 launch or show -- $PROGRAM ${ARGS[@]}
+		;;
+
+	( screenshot )
+		command -v flameshot || notify-send "I3 UTILS" "screenshot application 'flameshot' not available"
+		flameshot gui
+		;;
+esac

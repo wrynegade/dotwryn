@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+tmux new -d -s apps -n 'foreman' 'htop' \; \
+	split-window -d -t apps:foreman "clear; echo 'Keeping apps fresh...'; while true; do sleep 30; done" \
+	2>/dev/null
+
+${XDG_DATA_HOME}/home/w0ryn/.local/share/project-source-code/yage/dotwryn/code/config/local/pikachu/bin
+for APP in $(find "${0:a:h}" -name apps.\*)
+do
+	echo "looking for $APP"
+	tmux list-windows -t apps: | awk '{print $2;}' | grep -q $APP \
+		|| tmux new-window -dn $APP -t apps: "${0:a:h}/$APP"
+done

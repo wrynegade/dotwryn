@@ -1,0 +1,5 @@
+#!/bin/zsh
+source "${DOTWRYN}/config/xinitrc.common"
+
+export DESKTOP_SESSION=i3wm
+cd; exec i3

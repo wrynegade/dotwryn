@@ -1,0 +1,20 @@
+--- a/analog-output-speaker.conf
++++ b/analog-output-speaker.conf
+@@ -71,12 +71,14 @@
+ 
+ [Element Hardware Master]
+ switch = mute
+-volume = merge
+-override-map.1 = all
+-override-map.2 = all-left,all-right
++volume = ignore
+ 
+ [Element Master]
+ switch = mute
++volume = ignore
++
++[Element PCM]
++switch = mute
+ volume = merge
+ override-map.1 = all
+ override-map.2 = all-left,all-right

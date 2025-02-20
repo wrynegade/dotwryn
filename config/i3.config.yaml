@@ -21,5 +21,5 @@ statusbar:
   # supported values are 'polybar' and 'i3status'
   type: polybar
 
-# a list of i3conifg excerpts that should be appended to the generated config
+# a list of i3config excerpts that should be appended to the generated config
 i3configs: []

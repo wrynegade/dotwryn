@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+xrandr --output HDMI-1-0 --off
+xrandr --output eDP-1 --mode 2560x1600
+
+scwrypts desktop i3 set background -- $(scwrypts -n get theme).jpg
+scwrypts desktop screen blank      -- disable

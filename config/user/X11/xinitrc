@@ -1,0 +1,3 @@
+#!/bin/zsh
+source "${HOME}/.zshrc" &>/dev/null
+source "${DOTWRYN}/config/xinitrc.i3wm"

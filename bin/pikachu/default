@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-xrandr --auto
-
-scwrypts desktop i3 set background -- $(scwrypts -n get theme).jpg

@@ -1,7 +1,5 @@
 #!/bin/zsh
-source "$HOME/.config/wryn/env.zsh"
 source "$DOTWRYN/config/xinitrc.common"
 
 export DESKTOP_SESSION=plasma
-unset  DIRECTUS_CLOUD_SCRIPTS_ENV_SHORTCUT
 exec startplasma-x11
