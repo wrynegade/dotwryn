@@ -11,6 +11,6 @@
 }
 
 : \
-	&& source "${DOTWRYN}/config/dotwryn.env.zsh" \
+	&& source "${DOTWRYN}/zsh/env.zsh" \
 	&& source "${XDG_CONFIG_HOME:-${HOME}/.config}/wryn/env.zsh" \
 	;

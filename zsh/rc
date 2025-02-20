@@ -1,8 +1,8 @@
 #!/bin/zsh
 for RC_FILE in $(find "${0:a:h}/rc.d/" -type f | sort)
 do
-	source "$RC_FILE" || {
-		echo "something went wrong in '$RC_FILE'; aborting dotwryn load"
+	source "${RC_FILE}" || {
+		echo "something went wrong in '${RC_FILE}'; aborting dotwryn load early"
 		return 1
 	}
 done

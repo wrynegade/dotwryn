@@ -1,9 +1,10 @@
 () {  # create path entries
 	local PATH_ENTRY
 	for PATH_ENTRY in \
-		"${HOME}/.local/bin" \
-		"${HOME}/.local/share/$(hostnamectl --static)" \
 		"${GOPATH}/bin" \
+		"${HOME}/.local/bin" \
+		"${DOTWRYN}/config/bin" \
+		"${DOTWRYN}/config/local/$(hostnamectl --static)/bin" \
 		;
 	do
 		echo "$PATH" | sed 's/:/\n/g' | grep -q "^$PATH_ENTRY$" \

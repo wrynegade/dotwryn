@@ -1,7 +1,7 @@
 #####################################################################
 
 ZSH_PLUGINS+=(
-	"$(scwrypts --root 2>/dev/null)/scwrypts.plugin.zsh"
+	"$(scwrypts --root)/scwrypts.plugin.zsh"
 	)
 
 () {  # default environment name lookup
@@ -14,7 +14,7 @@ ZSH_PLUGINS+=(
 		"dev" \
 		;
 	do
-		[ -f "$HOME/.config/scwrypts/environments/scwrypts/$ENVIRONMENT_NAME" ] \
+		[ -f "${XDG_CONFIG_HOME:-${HOME}/.config}/scwrypts/environments/$ENVIRONMENT_NAME.scwrypts.env.yaml" ] \
 			&& export SCWRYPTS_ENV="$ENVIRONMENT_NAME" \
 			&& break
 	done
