@@ -24,6 +24,7 @@ augroup forced_filetype_recognition
 	autocmd BufRead,BufNewFile git.conf        setfiletype gitconfig
 
 	autocmd BufRead,BufNewFile */scwrypts/* execute "set filetype=".&filetype.".scwrypts"
+	autocmd BufRead,BufNewFile *.rs execute "set filetype=rust"
 
 	let g:tex_flavor = "latex"
 augroup end

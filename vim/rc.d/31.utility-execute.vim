@@ -26,6 +26,8 @@ function ExecuteCommand(args = '', output = '', flavor = 'shell', syntax = 'bash
 	elseif output == 'split-pane-vertical'
 		execute "botright vertical terminal " . command
 		let &l:syntax=a:syntax
+	elseif output == 'insert'
+		execute "read! " . command
 	else
 		execute "!" . command
 	endif
@@ -60,7 +62,7 @@ function GetCommandString(args, flavor, output)
 		echom command
 	endif
 
-	if stridx(a:output, 'split-pane') == -1
+	if a:output == ''
 		let command = "clear; ".command
 	endif
 
