@@ -1,7 +1,0 @@
-#!/bin/zsh
-use desktop/pulse-audio --group dotwryn
-#####################################################################
-
-MAIN() {
-	PA__SET_DEFAULT_AUDIO $@
-}

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#####################################################################
+
+USAGE__description='adjust build steps for Vundle.vim plugins'
+
+#####################################################################
+
+MAIN() { utils.io.edit "$(scwrypts.config.group dotwryn root)/office/vim/vundle/build/build.module.zsh"; }

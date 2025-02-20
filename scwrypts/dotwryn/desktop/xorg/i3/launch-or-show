@@ -1,5 +1,5 @@
 #!/bin/zsh
-use system/desktop/notify
+use notify
 
 DEPENDENCIES+=(i3-msg xdotool xrandr)
 #####################################################################
@@ -38,7 +38,7 @@ USAGE__description="
 #####################################################################
 
 MAIN() {
-	DEBUG $@
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
 	local APPLICATION CLIENT_CLASS
 
 	local XFFSET=0.0
@@ -80,12 +80,11 @@ MAIN() {
 
 	[ $APPLICATION ] && {
 		__CHECK_DEPENDENCY $APPLICATION || {
-			ERROR "$APPLICATION is not installed"
-			NOTIFY "ERROR: $APPLICATION not found"
+			notify.error "$APPLICATION not found"
 		}
 	}
 
-	CHECK_ERRORS
+	utils.check-errors --fail
 
 	xrandr | grep primary | awk '{print $4;}' | grep -q '^[0-9x+]\+$' || {
 		xrandr --output $(xrandr | grep ' connected' | awk '{print $1;}' | head -n1) --primary
@@ -94,16 +93,16 @@ MAIN() {
 	local CURRENTLY_ACTIVE=$(xdotool search --onlyvisible --classname $CLIENT_CLASS 2>/dev/null | wc -l)
 
 	local LAUNCH_APP=$ALWAYS_LAUNCH
-	STATUS "looking for window process ids"
+	echo.status "looking for window process ids"
 	xdotool search --class $CLIENT_CLASS || LAUNCH_APP=1
 
 	[[ $LAUNCH_APP -eq 1 ]] && {
-		STATUS 'launching application'
+		echo.status 'launching application'
 		i3-msg "exec --no-startup-id $APPLICATION;"
 		sleep .5
 	}
 
-	STATUS 'getting target window size'
+	echo.status 'getting target window size'
 	WINDOW_SIZE=$(\
 		xrandr \
 			| grep 'connected primary' \
@@ -111,21 +110,21 @@ MAIN() {
 			| awk -v f=$SCALE -v x=$XFFSET -v y=$YFFSET \
 				'{print int($1*f+x)," ",int($2*f+y);}'\
 	)
-	DEBUG "window size: $WINDOW_SIZE"
+	echo.debug "window size: $WINDOW_SIZE"
 
-	STATUS 'moving window to scratchpad'
+	echo.status 'moving window to scratchpad'
 	i3-msg "[class=$CLIENT_CLASS] move scratchpad"
 
 	[[ $RESIZE -eq 1 ]] \
-		&& STATUS 'resizing window' \
+		&& echo.status 'resizing window' \
 		&& i3-msg "[class=$CLIENT_CLASS] resize set $WINDOW_SIZE"
 
 	[[ $CURRENTLY_ACTIVE -lt $MIN_ACTIVE ]] && {
-		STATUS 'pulling window from scratchpad to foreground'
+		echo.status 'pulling window from scratchpad to foreground'
 		i3-msg "[class=$CLIENT_CLASS] scratchpad show"
 	}
 
-	STATUS 'moving window to center of current screen'
+	echo.status 'moving window to center of current screen'
 	[[ $MOVE -eq 1 ]] && i3-msg "[class=$CLIENT_CLASS] move position center"
 
 	return 0

@@ -6,12 +6,42 @@ use system --group dotwryn
 #####################################################################
 
 USAGE__description='
-	sets up links to things like /etc/*.d/ configurations
-	or systemd services; requires root access
+	Set up symlinks to source-controlled config files, configure terminfo,
+	and complete other computer setup/maintenance tasks.
 '
+
+dotwryn.system.zshparse.dry-run.usage
 
 #####################################################################
 
 MAIN() {
-	dotwryn.system.setup
+	local FORWARD_ARGS=()
+	local PARSERS=(dotwryn.system.zshparse.dry-run)
+	eval "$(utils.parse.autosetup)"
+	##########################################
+
+	dotwryn.system.symlinks.setup ${FORWARD_ARGS[@]} \
+		|| ((ERRORS+=1))
+
+	dotwryn.system.terminfo.setup ${FORWARD_ARGS[@]} \
+		|| ((ERRORS+=1))
+
+	##########################################
+
+	case ${DRY_RUN} in
+		( true ) ;;
+		( false )
+			[[ ${ERRORS} -eq 0 ]] \
+				&& echo.success "successfully completed system setup" \
+				|| echo.error   "one or more errors encountered during setup (see above)" \
+				;
+			;;
+	esac
+}
+
+#####################################################################
+
+MAIN.parse() { return 0; }
+MAIN.parse.validate() {
+	[[ DRY_RUN =~ true ]] && FORWARD_ARGS+=(--dry-run)
 }

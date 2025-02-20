@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+use office/vim/vundle --group dotwryn
+#####################################################################
+
+dotwryn.office.vim.vundle.parse.usage
+
+MAIN() { dotwryn.office.vim.vundle.update $@; }

@@ -9,6 +9,6 @@ USAGE__description+='
 #####################################################################
 
 MAIN() {
-	cat "$ACTIVE_THEME_PATH/name.txt" 2>/dev/null \
+	cat "${ACTIVE_THEME_PATH}/name.txt" 2>/dev/null \
 		|| ERROR 'theme name not available'
 }

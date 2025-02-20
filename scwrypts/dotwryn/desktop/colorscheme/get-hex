@@ -3,5 +3,5 @@ use desktop/colorscheme --group dotwryn
 #####################################################################
 
 MAIN() {
-	GET_COLORSCHEME_HEX $@
+	dotwryn.desktop.colorscheme.get-hex $@
 }

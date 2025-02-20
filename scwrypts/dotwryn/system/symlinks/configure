@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+#####################################################################
+
+MAIN() {
+	utils.io.edit "$(scwrypts.config.group dotwryn root)/system/symlinks/get-all.module.zsh"
+}

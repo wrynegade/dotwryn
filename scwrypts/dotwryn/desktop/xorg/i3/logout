@@ -1,13 +1,14 @@
 #!/bin/zsh
-use desktop/notify --group dotwryn
+use notify
 
 DEPENDENCIES+=(i3-nagbar)
 #####################################################################
 
 MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
 	i3-nagbar \
 			-t warning \
 			-m 'Do you really want to exit i3?' \
 			-B 'Yes' "notify-send 'system' 'exiting i3...' -i face-tired; i3-msg exit" \
-		|| NOTIFY_ERROR 'unable to launch i3-nagbar'
+		|| notify.error 'unable to launch i3-nagbar'
 }

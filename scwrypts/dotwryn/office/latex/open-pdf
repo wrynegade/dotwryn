@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+use office/latex
+#####################################################################
+
+MAIN() {
+	local PDF=$(dotwryn.office.latex.get-pdf $@)
+	[ ! $PDF ] && return 1
+
+	OPEN "$PDF"
+}

@@ -14,10 +14,10 @@ CHECK_SESSION() {
 }
 
 UPDATE_ALL() {
-	STATUS "starting '$@'"
+	echo.status "starting '$@'"
 	for SERVER in ${WRYN__SERVER_HOSTNAMES[@]}; do UPDATE $SERVER "$@"; done
 	WAIT_FOR_UPDATES \
-		&& SUCCESS "'$@' finished across all servers" \
+		&& echo.success "'$@' finished across all servers" \
 		|| FAIL 69 'user abort' \
 		;
 }
@@ -60,7 +60,7 @@ MAIN() {
 	tmux new -d -s $SESSION "echo 'updating all systems'; echo '(leave this window open)'; while true; do sleep 30; done"
 
 	yN 'after update, do you want to reboot all machines?' && REBOOT=1 || REBOOT=0
-	REMINDER "
+	echo.reminder "
 		manual action is required; (in another tab) connect to tmux:
 		tmux a -t $SESSION
 
@@ -69,7 +69,7 @@ MAIN() {
 		 "
 
 	[ $CURRENT_SESSION ] && {
-		SUCCESS 'currently in a tmux session; opening new window...'
+		echo.success 'currently in a tmux session; opening new window...'
 		tmux new-window -t $CURRENT_SESSION "unset TMUX; tmux a -t $SESSION"
 	}
 
@@ -85,7 +85,7 @@ MAIN() {
 	tmux kill-session -t $SESSION >/dev/null 2>&1
 	CHECK_SESSION && WARNING "unable to close tmux session '$SESSION'"
 
-	SUCCESS " \nfinished system update accross all servers\n "
+	echo.success " \nfinished system update accross all servers\n "
 
-	[[ $REBOOT -eq 1 ]] && { STATUS 'rebooting host machine'; sleep 3; reboot || sudo reboot; }
+	[[ $REBOOT -eq 1 ]] && { echo.status 'rebooting host machine'; sleep 3; reboot || sudo reboot; }
 }

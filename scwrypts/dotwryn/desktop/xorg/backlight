@@ -1,39 +1,41 @@
 #!/bin/zsh
-use desktop/notify --group dotwryn
+use notify
 
-__CHECK_ENV_VAR DESKTOP__BACKLIGHT_DEVICE --optional
+utils.environment.check DESKTOP__BACKLIGHT_DEVICE --optional
 
 #####################################################################
 
 MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
 	local UTIL
+
 	for UTIL in enlighten gmux_backlight xbacklight
 	do
-		command -v $UTIL >/dev/null 2>&1 && break
+		command -v ${UTIL} >/dev/null 2>&1 && break
 	done
 
-	[[ $UTIL =~ ^enlighten$ ]] && {
-		CURRENT_PERCENT=$(enlighten | sed 's/.*(//;s/%.*//')
-		[[ $CURRENT_PERCENT -gt 60 ]] && DELTA=40
-		[[ $CURRENT_PERCENT -le 60 ]] && DELTA=20
-		[[ $CURRENT_PERCENT -le 40 ]] && DELTA=10
-		[[ $CURRENT_PERCENT -le 10 ]] && DELTA=5
+	[[ ${UTIL} =~ ^enlighten$ ]] && {
+		CURRENT_PERCENT=$(BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten | sed 's/.*(//;s/%.*//')
+		[[ ${CURRENT_PERCENT} -gt 60 ]] && DELTA=40
+		[[ ${CURRENT_PERCENT} -le 60 ]] && DELTA=20
+		[[ ${CURRENT_PERCENT} -le 40 ]] && DELTA=10
+		[[ ${CURRENT_PERCENT} -le 10 ]] && DELTA=5
 	}
 
 	case $1 in
 		up )
-			case $UTIL in
+			case ${UTIL} in
 				xbacklight     ) xbacklight -inc 10 ;;
 				gmux_backlight ) gmux_backlight +100 ;;
 
 				enlighten )
-					[[ $CURRENT_PERCENT -ge 99 ]] && NOTIFY_SEND 'at maximum brightness' && exit 0
-					BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten +${DELTA}%
+					[[ ${CURRENT_PERCENT} -ge 99 ]] && notify.status 'at maximum brightness' && exit 0
+					BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten +${DELTA}%
 					;;
 			esac
 			;;
 		down )
-			case $UTIL in
+			case ${UTIL} in
 				xbacklight     )
 					[[ $(xbacklight -get) -le 10 ]] \
 						&& xbacklight -set 1 \
@@ -44,36 +46,36 @@ MAIN() {
 				gmux_backlight ) gmux_backlight -100 ;;
 
 				enlighten )
-					[[ $CURRENT_PERCENT -le 1 ]] && NOTIFY_SEND 'at minimum brightness' && exit 0
-					[[ $CURRENT_PERCENT -le 2 ]] && ARGS='=1%' || ARGS="-${DELTA}%"
-					BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten "$ARGS"
+					[[ ${CURRENT_PERCENT} -le 1 ]] && notify.status 'at minimum brightness' && exit 0
+					[[ ${CURRENT_PERCENT} -le 2 ]] && ARGS='=1%' || ARGS="-${DELTA}%"
+					BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten "${ARGS}"
 					;;
 			esac
 			;;
 		set )
 			[ ! $2 ] && FAIL 1 'no value provided to set'
-			case $UTIL in
+			case ${UTIL} in
 				xbacklight     ) xbacklight -set $2 ;;
 				gmux_backlight ) gmux_backlight $2  ;;
-				enlighten      ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten "=$2"    ;;
+				enlighten      ) BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten "=$2"    ;;
 			esac
 			;;
 		min | minimum )
-			case $UTIL in
-				enlighten ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten '=1%' ;;
+			case ${UTIL} in
+				enlighten ) BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten '=1%' ;;
 			esac
 			;;
 		max | maximum )
-			case $UTIL in
-				enlighten ) BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten '=100%' ;;
+			case ${UTIL} in
+				enlighten ) BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten '=100%' ;;
 			esac
 			;;
 		query | '' )
-			case $UTIL in
-				enlighten ) NOTIFY_SUCCESS "current brightness : $(BACKLIGHT_DEVICE=$DESKTOP__BACKLIGHT_DEVICE enlighten)" ;;
+			case ${UTIL} in
+				enlighten ) notify.success "current brightness : $(BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten)" ;;
 			esac
 			;;
 
-		* ) NOTIFY_FAIL 1 "operation '$1' not supported" ;;
+		* ) notify.error "operation '$1' not supported"; return 1 ;;
 	esac
 }

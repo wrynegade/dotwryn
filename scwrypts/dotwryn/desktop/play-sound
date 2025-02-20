@@ -1,7 +1,0 @@
-#!/bin/zsh
-use media/audio --group dotwryn
-#####################################################################
-
-MAIN() {
-	MEDIA__PLAY_SFX $@
-}

@@ -3,10 +3,10 @@ use desktop/xorg/i3 --group dotwryn
 
 #####################################################################
 
-I3__GENERATE_CUSTOM_CONFIG__USAGE
+dotwryn.desktop.xorg.i3.generate-config.parse.usage
 
 MAIN() {
-	I3__GENERATE_CUSTOM_CONFIG
+	dotwryn.desktop.xorg.i3.generate-config
 }
 
 #####################################################################

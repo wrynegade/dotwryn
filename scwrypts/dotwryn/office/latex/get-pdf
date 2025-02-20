@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+use office/latex
+#####################################################################
+
+MAIN() {
+	dotwryn.office.latex.get-pdf $@
+}

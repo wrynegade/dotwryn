@@ -8,7 +8,7 @@ USAGE__options+="
 	-l, --list-themes    show available color themes and exit
 
 	--only   only set the theme for a specific terminal/application
-	         ($COLORSCHEME__SUPPORTED_CONFIG_TYPES)
+	         (${COLORSCHEME__SUPPORTED_CONFIG_TYPES})
 "
 
 USAGE__args+='
@@ -48,9 +48,9 @@ MAIN() {
 		|| ERROR 'failed to set theme (see above)' \
 		|| return 1
 
-	[[ $UPDATE_I3_CONFIG =~ true ]] || return 0
+	[[ ${UPDATE_I3_CONFIG} =~ true ]] || return 0
 
-	I3__GENERATE_CUSTOM_CONFIG \
+	dotwryn.desktop.xorg.i3.generate-config \
 		|| ERROR 'failed to update i3 config (see above)' \
 		|| return 1
 }

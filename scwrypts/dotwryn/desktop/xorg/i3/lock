@@ -1,11 +1,13 @@
 #!/bin/zsh
+
+use notify
 use desktop/colorscheme --group dotwryn
-use desktop/notify      --group dotwryn
 
 DEPENDENCIES+=(i3lock)
 #####################################################################
 
 MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
 	local ARGS=(
 		--ignore-empty-password
 		--force-clock
@@ -16,22 +18,22 @@ MAIN() {
 		--verif-text=''
 		--wrong-text=''
 		--blur=11
-		--insidever-color=$(GET_COLORSCHEME_HEX 6)
-		--ringver-color=$(GET_COLORSCHEME_HEX 10)
-		--insidewrong-color=$(GET_COLORSCHEME_HEX 1)
-		--ringwrong-color=$(GET_COLORSCHEME_HEX 9)
-		--inside-color=$(GET_COLORSCHEME_HEX 0)
-		--ring-color=$(GET_COLORSCHEME_HEX 2)
-		--time-color=$(GET_COLORSCHEME_HEX 7)
-		--date-color=$(GET_COLORSCHEME_HEX 15)
-		--keyhl-color=$(GET_COLORSCHEME_HEX 11)
-		--bshl-color=$(GET_COLORSCHEME_HEX 13)
+		--insidever-color=$(dotwryn.desktop.colorscheme.get-hex 6)
+		--ringver-color=$(dotwryn.desktop.colorscheme.get-hex 10)
+		--insidewrong-color=$(dotwryn.desktop.colorscheme.get-hex 1)
+		--ringwrong-color=$(dotwryn.desktop.colorscheme.get-hex 9)
+		--inside-color=$(dotwryn.desktop.colorscheme.get-hex 0)
+		--ring-color=$(dotwryn.desktop.colorscheme.get-hex 2)
+		--time-color=$(dotwryn.desktop.colorscheme.get-hex 7)
+		--date-color=$(dotwryn.desktop.colorscheme.get-hex 15)
+		--keyhl-color=$(dotwryn.desktop.colorscheme.get-hex 11)
+		--bshl-color=$(dotwryn.desktop.colorscheme.get-hex 13)
 		)
 
 	local RADIUS=$(xrandr | grep 'connected primary' | sed 's/.* \([0-9]\+\)x.*/\1/' | awk '{print int($1*0.08)}')
 	[ $RADIUS ] && ARGS+=(--radius=$RADIUS)
 
 	i3lock ${ARGS[@]} \
-	|| NOTIFY_ERROR 'i3lock-color' 'something went wrong; unable to lock' \
+		|| notify.error 'something went wrong; unable to lock' \
 	;
 }
