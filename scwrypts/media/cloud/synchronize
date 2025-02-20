@@ -1,0 +1,58 @@
+#!/usr/bin/env zsh
+#####################################################################
+
+use cloud --group media
+
+#####################################################################
+
+media.cloud.zshparse.actions.usage
+
+USAGE__options+='
+	--target <string>   local/remote target to synchronize (optional)
+'
+
+USAGE__description='
+	synchronize local media with an S3 bucket; *-synchronize actions
+	will perform a pull/push back-to-back in the indicated order
+'
+
+#####################################################################
+
+MAIN() {
+	local \
+		TARGET \
+		ACTION \
+		PARSERS=(
+			media.cloud.zshparse.actions
+			)
+
+	eval "$ZSHPARSEARGS"
+
+	##########################################
+
+	case ${TARGET} in
+		( '' )
+			media.cloud.synchronize --action "${ACTION}"
+			;;
+		( * )
+			media.cloud.synchronize-target --action "${ACTION}" --target "${TARGET}"
+			;;
+	esac
+}
+
+#####################################################################
+
+MAIN.parse() {
+	# local TARGET
+	local PARSED=0
+
+	case $1 in
+		( --target )
+			PARSED=2
+			TARGET="$2"
+			;;
+	esac
+
+	return $PARSED
+}
+

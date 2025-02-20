@@ -1,0 +1,39 @@
+#!/bin/zsh
+#####################################################################
+
+use youtube --group media
+
+#####################################################################
+
+USAGE__description="
+	download videos from youtube
+"
+
+USAGE__args='
+	$@   any number of URLS to download (becomes interactive if omitted)
+'
+
+#####################################################################
+
+MAIN() {
+	local URLS=($@)
+	local ARGS=()
+
+	local DOWNLOAD_ERRORS=0
+
+	[[ $# -eq 0 ]] && {
+		URLS=($(echo '' | utils.fzf.user-input 'download URL'))
+		[[ ${#URLS[@]} -gt 0 ]] || ABORT
+
+		ARGS+=(--interactive)
+	}
+
+	local URL FILENAME
+	for URL in ${URLS[@]}
+	do
+		media.youtube.download ${ARGS[@]} --url "${URL}" \
+			|| ((DOWNLOAD_ERRORS+=1))
+	done
+
+	return ${DOWNLOAD_ERRORS}
+}

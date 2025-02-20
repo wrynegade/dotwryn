@@ -1,0 +1,38 @@
+#!/bin/zsh
+
+use ffmpeg/get-audio-clip-from-video --group media
+use youtube/get-download-path --group media
+
+#####################################################################
+
+
+#####################################################################
+
+MAIN() {
+	local DOWNLOAD_PATH="$(media.youtube.get-download-path)"
+
+	local INPUT_FILENAME="$(
+		cd -- "${DOWNLOAD_PATH}"
+		find . -type f -name \*.mp4 \
+			| sed 's|^./||' \
+			| utils.fzf 'select a video' \
+			| sed 's/\.mp4$//' \
+	)"
+	[ "${INPUT_FILENAME}" ] || ABORT
+
+	local OUTPUT_FILENAME="$(\
+		basename -- "${INPUT_FILENAME}" \
+			| sed 's/\.[^.]*$//' \
+			| utils.fzf.user-input 'what should I call this clip? (.mp3)' \
+			| sed 's/\(\.mp3\)*$//' \
+	)"
+	[ "${OUTPUT_FILENAME}" ] || ABORT
+
+	INPUT_FILENAME="${DOWNLOAD_PATH}/${INPUT_FILENAME}.mp4"
+	OUTPUT_FILENAME="${DOWNLOAD_PATH}/${OUTPUT_FILENAME}.mp3"
+
+	media.ffmpeg.get-audio-clip-from-video \
+		--input-filename  "${INPUT_FILENAME}" \
+		--output-filename "${OUTPUT_FILENAME}" \
+		;
+}
