@@ -4,7 +4,10 @@ bat
 binutils
 bison
 cmake
+containerd.io
 cowsay
+docker-ce
+docker-ce-cli
 feh
 figlet
 file
@@ -14,6 +17,7 @@ fzf
 gcc
 gcc-c++
 gettext
+gnupg2
 go
 htop
 java-latest-openjdk
@@ -32,6 +36,7 @@ python3-devel
 python3-pip
 python3-pylint
 python3-virtualenv
+redis
 ripgrep
 rust
 sed

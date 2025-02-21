@@ -112,6 +112,8 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 	return 0
 }
 
+##########################################
+
 UPDATE_REPOSITORIES__arch() { yay -Syu; }
 INSTALL_MANAGED__arch() {
 	local TARGET="$1"
@@ -131,6 +133,8 @@ INSTALL_MANAGED__arch() {
 	}
 }
 
+##########################################
+
 UPDATE_REPOSITORIES__debian() { sudo apt-get update && sudo apt-get upgrade; }
 INSTALL_MANAGED__debian() {
 	STATUS "checking / installing '$1'"
@@ -140,7 +144,17 @@ INSTALL_MANAGED__debian() {
 		;
 }
 
-UPDATE_REPOSITORIES__fedora() { sudo dnf update && sudo dnf upgrade; }
+##########################################
+
+UPDATE_REPOSITORIES__fedora() {
+	: \
+		&& sudo dnf update \
+		&& sudo dnf upgrade \
+		&& sudo dnf install -y dnf-plugins-core \
+		&& sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo \
+		;
+}
+
 INSTALL_MANAGED__fedora() {
 	STATUS "checking / installing '$1'"
 	sudo dnf install -y $1 \
@@ -148,6 +162,8 @@ INSTALL_MANAGED__fedora() {
 		|| ERROR "failed to install $1" \
 		;
 }
+
+##########################################
 
 UPDATE_REPOSITORIES__macos() { brew update && brew upgrade; }
 INSTALL_MANAGED__macos() {
@@ -157,6 +173,8 @@ INSTALL_MANAGED__macos() {
 		|| ERROR "failed to install $1" \
 		;
 }
+
+##########################################
 
 UPDATE_REPOSITORIES__generic() { return 0; }
 INSTALL_MANAGED__generic() {
