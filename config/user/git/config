@@ -45,6 +45,13 @@
 
 [gpg "ssh"]
 	program = /opt/1Password/op-ssh-sign
+	allowedSignersFile = /home/w0ryn/.ssh/allowed_signers
 
 [commit]
 	gpgsign = true
+
+[tag]
+	gpgsign = true
+
+[format]
+	signoff = true

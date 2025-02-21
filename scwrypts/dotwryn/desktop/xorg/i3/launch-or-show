@@ -55,20 +55,20 @@ MAIN() {
 	while [[ $# -gt 0 ]]
 	do
 		case $1 in
-			-c | --client   ) CLIENT_CLASS="$2"; shift 1 ;;
-			-x | --x-offset ) XFFSET=$2; shift 1 ;;
-			-y | --y-offset ) YFFSET=$2; shift 1 ;;
-			-s | --scale    ) SCALE=$2;  shift 1 ;;
+			( -c | --client   ) CLIENT_CLASS="$2"; shift 1 ;;
+			( -x | --x-offset ) XFFSET=$2; shift 1 ;;
+			( -y | --y-offset ) YFFSET=$2; shift 1 ;;
+			( -s | --scale    ) SCALE=$2;  shift 1 ;;
 
-			-a | --always-launch ) ALWAYS_LAUNCH=1 ;;
-			-n | --no-resize     ) RESIZE=0 ;;
-			-l | --no-center     ) MOVE=0 ;;
+			( -a | --always-launch ) ALWAYS_LAUNCH=1 ;;
+			( -n | --no-resize     ) RESIZE=0 ;;
+			( -l | --no-center     ) MOVE=0 ;;
 
-			--has-statusbar-icon ) MIN_ACTIVE=2 ;;
+			( --has-statusbar-icon ) MIN_ACTIVE=2 ;;
 
-			-h | --help ) USAGE; exit 0 ;;
+			( -h | --help ) USAGE; exit 0 ;;
 
-			* )
+			( * )
 				[ ! $APPLICATION  ] && APPLICATION="$1" \
 					|| ERROR "extra positional argument '$1'"
 		esac
