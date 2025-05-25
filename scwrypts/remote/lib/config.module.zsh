@@ -71,7 +71,8 @@ ${scwryptsmodule}.get-ssh-args() {
 		esac
 	}
 
-	ARGS+=($(remote.config.query-connection .session.$REMOTE_NAME.$TYPE.args))
+	ARGS+=($(remote.config.query-connection .sessions.$REMOTE_NAME.$TYPE.args))
+	echo.debug "REMOTE_NAME : ${REMOTE_NAME}\nARGS : ${ARGS}\nSESSION : .session.$REMOTE_NAME.$TYPE.args"
 
 	[[ $USE_TTY =~ true ]] && ARGS+=(-t)
 

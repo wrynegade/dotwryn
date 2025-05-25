@@ -34,7 +34,7 @@ MAIN() {
 			-n | --name )
 				((_S+=1))
 				REMOTE_NAME=$2
-				CONNECTION_STRING=$(remote.config.get-connection-string $REMOTE_NAME)
+				CONNECTION_STRING=$(remote.config.get-connection-string ${REMOTE_NAME})
 				;;
 			-s | --connection_string )
 				((_S+=1))
@@ -43,8 +43,8 @@ MAIN() {
 			-t | --maximum-timout )
 				((_S+=1))
 				TIMEOUT_SECONDS=$2
-				[[ $TIMEOUT_SECONDS -gt 0 ]] \
-					|| echo.error "invalid timeout seconds '$TIMEOUT_SECONDS'"
+				[[ ${TIMEOUT_SECONDS} -gt 0 ]] \
+					|| echo.error "invalid timeout seconds '${TIMEOUT_SECONDS}'"
 				;;
 			-c | --command )
 				((_S+=1))
@@ -53,7 +53,7 @@ MAIN() {
 			--use-bastion )
 				((_S+=1))
 				USE_BASTION=$2
-				case $USE_BASTION in
+				case ${USE_BASTION} in
 					true | false ) ;;
 					* ) echo.error "invalid setting for '--use-bastion' (must be 'true' or 'false')" ;;
 				esac
@@ -66,14 +66,14 @@ MAIN() {
 			|| shift $#
 	done
 
-	[ $CONNECTION_STRING ] \
+	[ ${CONNECTION_STRING} ] \
 		|| echo.error "unable to determine connection string"
 
 
-	[ $USE_BASTION ] || {
+	[ ${USE_BASTION} ] || {
 		USE_BASTION=$(\
 			remote.config.query-connection-with-fallback \
-				".sessions.$REMOTE_NAME.bastion.preferred" \
+				".sessions.${REMOTE_NAME}.bastion.preferred" \
 				'false' \
 				;
 			)
@@ -85,48 +85,56 @@ MAIN() {
 	##########################################
 
 	local BASTION_HOST
-	[[ $USE_BASTION =~ true ]] && {
+	[[ ${USE_BASTION} =~ true ]] && {
 		BASTION_HOST=$(\
 			remote.config.query-connection-with-fallback \
-				".sessions.$REMOTE_NAME.bastion.session" \
+				".sessions.${REMOTE_NAME}.bastion.session" \
 			)
 	}
 
-	[[ $USE_BASTION =~ true ]] && {
-		[ $BASTION_HOST ] \
-			|| echo.error "cannot connect to $REMOTE_NAME; no configured bastion host" \
+	[[ ${USE_BASTION} =~ true ]] && {
+		[ ${BASTION_HOST} ] \
+			|| echo.error "cannot connect to ${REMOTE_NAME}; no configured bastion host" \
 			|| return 1
 	}
 
-	case $CONNECTION_STRING in
-		localhost | $USER@localhost )
+	case ${CONNECTION_STRING} in
+		( localhost | $USER@localhost )
 			CONNECTION_TEST() { return 0; } # current user on local machine can always connect
 			;;
 		* )
-			[[ $USE_BASTION =~ true ]] && {
-				echo.debug "MAIN -n $BASTION_HOST -c \"$(remote.bastion.get-passthrough-prefix) remote test -- -n $REMOTE_NAME -c \"$COMMAND\"\""
-				BASTION_TARGET="$REMOTE_NAME" MAIN -n $BASTION_HOST -c "$(remote.bastion.get-passthrough-prefix) remote test -- -n $REMOTE_NAME -c \"$COMMAND\""
-				return $?
-			}
-
-			CONNECTION_TEST() {
-				[ $REMOTE_NAME ] && {
-					[[ $(remote.config.query-connection .sessions.$REMOTE_NAME.enabled) =~ false ]] && {
-						return 1
+			case ${USE_BASTION} in
+				( true )
+					CONNECTION_TEST() {
+						echo.debug "MAIN -n ${BASTION_HOST} -c \"$(remote.bastion.get-passthrough-prefix) remote test -- -n ${REMOTE_NAME} -c \"${COMMAND}\"\""
+						BASTION_TARGET="${REMOTE_NAME}" MAIN -n ${BASTION_HOST} -c "$(remote.bastion.get-passthrough-prefix) remote test -- -n ${REMOTE_NAME} -c \"${COMMAND}\""
+						return $?
 					}
-				}
-				local REMOTE_ARGS=()
-				REMOTE_ARGS+=($(remote.config.get-ssh-args --type ssh $REMOTE_NAME))
-				REMOTE_ARGS+=(-o BatchMode=yes)
-				echo.debug "attempting\ntimeout $TIMEOUT_SECONDS ssh $REMOTE_ARGS $CONNECTION_STRING "'\'"\"$COMMAND"'\'"\"" >&2
-				timeout --foreground $TIMEOUT_SECONDS ssh ${REMOTE_ARGS[@]} "$CONNECTION_STRING" "$COMMAND" >&2
-			}
+					;;
+
+				( * )
+					CONNECTION_TEST() {
+						local REMOTE_ARGS=()
+						REMOTE_ARGS+=($(remote.config.get-ssh-args --type ssh ${REMOTE_NAME}))
+						REMOTE_ARGS+=(-o BatchMode=yes)
+						echo.debug "attempting\ntimeout ${TIMEOUT_SECONDS} ssh ${REMOTE_ARGS} ${CONNECTION_STRING} "'\'"\"${COMMAND}"'\'"\"" >&2
+						timeout --foreground ${TIMEOUT_SECONDS} ssh ${REMOTE_ARGS[@]} "${CONNECTION_STRING}" "${COMMAND}" >&2
+					}
+					;;
+			esac
 			;;
 	esac
 
-	[ $REMOTE_NAME ] || REMOTE_NAME=explicit
-	echo.status "testing connection $CONNECTION_STRING ($REMOTE_NAME$([ $BASTION_TARGET ] && echo " -> $BASTION_TARGET"))" \
+	[ ${REMOTE_NAME} ] && {
+		[[ $(remote.config.query-connection .sessions.${REMOTE_NAME}.enabled) =~ false ]] && {
+			echo.error "automatic connection to ${REMOTE_NAME} is disabled"
+			return 1
+		}
+	}
+
+	[ ${REMOTE_NAME} ] || REMOTE_NAME=explicit
+	echo.status "testing connection ${CONNECTION_STRING} (${REMOTE_NAME}$([ ${BASTION_TARGET} ] && echo " -> ${BASTION_TARGET}"))" \
 		&& CONNECTION_TEST \
-		&& echo.success "successfully connected to '$CONNECTION_STRING' ($REMOTE_NAME)" \
-		|| echo.error "connection to '$CONNECTION_STRING ($REMOTE_NAME)' failed" \
+		&& echo.success "successfully connected to '${CONNECTION_STRING}' (${REMOTE_NAME})" \
+		|| echo.error "connection to '${CONNECTION_STRING} (${REMOTE_NAME})' failed" \
 }
