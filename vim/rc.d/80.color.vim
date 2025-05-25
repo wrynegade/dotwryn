@@ -9,6 +9,7 @@ highlight LineNr                                    ctermbg=NONE        guibg=NO
 
 highlight SpellBad    cterm=bold      gui=bold      ctermbg=NONE        guibg=NONE        ctermfg=red         guifg=red
 highlight SpellCap    cterm=undercurl gui=undercurl ctermbg=NONE        guibg=NONE        ctermfg=darkred     guifg=darkred
+highlight comment     cterm=NONE      gui=NONE      ctermbg=NONE        guibg=NONE        ctermfg=grey        guifg=grey
 
 highlight TabLineFill cterm=bold      gui=bold      ctermbg=NONE        guibg=NONE
 highlight TabLine     cterm=NONE      gui=NONE      ctermbg=NONE        guibg=NONE        ctermfg=darkgray    guifg=darkgray
