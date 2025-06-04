@@ -1,12 +1,15 @@
 #!/bin/zsh
-source ${0:a:h}/xorg.zsh
+source ${0:a:h}/xorg.zsh $@
 
-xrandr --output $XRANDR_OUTPUT__smol --off
+#DISABLE+=(livingroom)
+DISABLE+=(bedroom)
+DISABLE+=(smol)
+
+XRANDR_OFF ${DISABLE[@]}
 
 XRANDR_SET \
-	--compositing  disable \
+	--compositing  enable \
 	--screen-blank disable \
-	--background   roy-art.jpg \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__livingroom__1440p[@]} --pos 0x0 --primary \
+	${XRANDR_ARGS__livingroom[@]} --pos 0x0 --primary \
 	;

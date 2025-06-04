@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-cd $HOME/Projects/python/xorg-midi/code
+cd ${XDG_DATA_HOME:-${HOME}/.local/share}/project-source-code/python/xorg-midi/code
 source ../env/bin/activate
 
 ./midi-controller
