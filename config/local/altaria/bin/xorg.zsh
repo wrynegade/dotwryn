@@ -1,20 +1,18 @@
 #!/bin/zsh
 #####################################################################
 
-XRANDR_OUTPUT__livingroom='HDMI-0'
-XRANDR_OUTPUT__bedroom='DP-0'
-XRANDR_OUTPUT__smol='DP-4'
+XRANDR_OUTPUT__splitter='HDMI-0'
+XRANDR_OUTPUT__desk='DP-4'
 
 I3_DEFAULT_THEME_BACKGROUND=$(scwrypts -n get theme).jpg
 
 MONITOR_CONFIGURATION=unknown
 
 : \
-	&& xrandr --query | grep -q "^${XRANDR_OUTPUT__livingroom} connected" \
-	&& xrandr --query | grep -q "^${XRANDR_OUTPUT__bedroom} connected" \
-	&& xrandr --query | grep -q "^${XRANDR_OUTPUT__smol} connected" \
+	&& xrandr --query | grep -q "^${XRANDR_OUTPUT__splitter} connected" \
 	&& MONITOR_CONFIGURATION=home \
 	;
+	#&& xrandr --query | grep -q "^${XRANDR_OUTPUT__desk} connected" \
 
 #####################################################################
 
@@ -24,9 +22,8 @@ case $1 in
 		XRANDR_OFFSET_X=1920
 		XRANDR_OFFSET_Y=1080
 
-		EXTRA_ARGS__livingroom=()
-		EXTRA_ARGS__bedroom=()
-		EXTRA_ARGS__smol=()
+		EXTRA_ARGS__splitter=()
+		EXTRA_ARGS__desk=()
 
 		I3_BACKGROUND=link-vs-gdizz.jpg
 		;;
@@ -36,9 +33,8 @@ case $1 in
 		XRANDR_OFFSET_X=2560
 		XRANDR_OFFSET_Y=1440
 
-		EXTRA_ARGS__livingroom=()
-		EXTRA_ARGS__bedroom=()
-		EXTRA_ARGS__smol=()
+		EXTRA_ARGS__splitter=(--rate 120.00)
+		EXTRA_ARGS__desk=()
 
 		I3_BACKGROUND=roy-art.jpg
 		;;
@@ -48,9 +44,8 @@ case $1 in
 		XRANDR_OFFSET_X=3840
 		XRANDR_OFFSET_Y=2160
 
-		EXTRA_ARGS__livingroom=()
-		EXTRA_ARGS__bedroom=()
-		EXTRA_ARGS__smol=(--rate 239.99)
+		EXTRA_ARGS__splitter=(--rate 120.00)
+		EXTRA_ARGS__desk=(--rate 120.00)
 
 		I3_BACKGROUND=${I3_DEFAULT_THEME_BACKGROUND[@]}
 		;;
@@ -62,9 +57,8 @@ case $1 in
 esac
 
 
-XRANDR_ARGS__livingroom=(--output ${XRANDR_OUTPUT__livingroom[@]} ${XRANDR_MODE[@]} ${EXTRA_ARGS__livingroom[@]})
-XRANDR_ARGS__bedroom=(--output ${XRANDR_OUTPUT__bedroom[@]} ${XRANDR_MODE[@]} ${EXTRA_ARGS__bedroom[@]})
-XRANDR_ARGS__smol=(--output ${XRANDR_OUTPUT__smol[@]} ${XRANDR_MODE[@]} ${EXTRA_ARGS__smol[@]})
+XRANDR_ARGS__splitter=(--output ${XRANDR_OUTPUT__splitter[@]} ${XRANDR_MODE[@]} ${EXTRA_ARGS__splitter[@]})
+XRANDR_ARGS__desk=(--output ${XRANDR_OUTPUT__desk[@]} ${XRANDR_MODE[@]} ${EXTRA_ARGS__desk[@]})
 
 ##########################################
 
@@ -133,5 +127,5 @@ XRANDR_SET() {
 	scwrypts desktop screen blank      -- ${SCREEN_BLANK}
 	scwrypts desktop i3 set background -- ${BACKGROUND} || scwrypts desktop i3 set background -- purple.jpg
 	"${DOTWRYN}/bin/polybar"
-	scwrypts desktop play sound        -- ${SOUND_EFFECT}
+	scwrypts media play sfx            -- ${SOUND_EFFECT}
 }

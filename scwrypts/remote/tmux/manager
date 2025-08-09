@@ -97,7 +97,7 @@ do
 		scwrypts --name test --group remote --type zsh \
 				-- \
 				--name ${REMOTE_NAME} \
-				--command 'command -v tmux' \
+				--command 'source ~/.zprofile &>/dev/null; command -v tmux' \
 				&>>"${OMNI_LOGFILE}" \
 			&& export CAN_CONNECT__${REMOTE_NAME}=true \
 			|| export CAN_CONNECT__${REMOTE_NAME}=false \

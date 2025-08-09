@@ -1,9 +1,9 @@
 #!/bin/zsh
-source ${0:a:h}/xorg.zsh $@
+[ $1 ] && RESOLUTION=$1 || RESOLUTION=4k
+source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
 
-#DISABLE+=(livingroom)
-DISABLE+=(bedroom)
-DISABLE+=(smol)
+#DISABLE+=(splitter)
+DISABLE+=(desk)
 
 XRANDR_OFF ${DISABLE[@]}
 
@@ -11,5 +11,5 @@ XRANDR_SET \
 	--compositing  enable \
 	--screen-blank disable \
 	--sound-effect gamedock \
-	${XRANDR_ARGS__livingroom[@]} --pos 0x0 --primary \
+	${XRANDR_ARGS__splitter[@]} --pos 0x0 --primary \
 	;

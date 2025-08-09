@@ -14,8 +14,13 @@ application-launcher: >-
 #   dmenu_run -c -l 5 -fn 'DejaVuSansMono Nerd Font-25'
 
 gaps:
-  inner: 0
-  outer: 0
+  odd:
+    inner: 8
+    outer: 8
+
+  even:
+    inner: 0
+    outer: 0
 
 statusbar:
   # supported values are 'polybar' and 'i3status'

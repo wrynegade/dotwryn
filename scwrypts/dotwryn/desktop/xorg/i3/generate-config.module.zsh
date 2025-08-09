@@ -62,8 +62,11 @@ ${scwryptsmodule}() {
 				s^\([ 	]\+status_command\) .*$\1 $(GET .bar.status)
 				s^\(set \$refresh_statusbar\) .*$\1 $(GET .bar.refresh)
 
-				s/^\(gaps inner\) .*$/\1 $(GET .gaps.inner)/
-				s/^\(gaps outer\) .*$/\1 $(GET .gaps.outer)/
+				s/^\(workspace \"[13579]\" gaps inner\) .*$/\1 $(GET .gaps.odd.inner)/
+				s/^\(workspace \"[13579]\" gaps outer\) .*$/\1 $(GET .gaps.odd.outer)/
+
+				s/^\(workspace \"[24680]\" gaps inner\) .*$/\1 $(GET .gaps.even.inner)/
+				s/^\(workspace \"[24680]\" gaps outer\) .*$/\1 $(GET .gaps.even.outer)/
 
 				s/^\(# color settings\).*$/\1 (theme '$(basename $(readlink -f "$DOTWRYN/config/colorschemes/active/main.conf") | sed 's/\.conf//')')/
 

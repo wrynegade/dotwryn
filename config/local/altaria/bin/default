@@ -4,22 +4,13 @@ source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
 
 case $MONITOR_CONFIGURATION in
 	( home )
+		xrandr --output DP-4 --off  # I'm trying out using just HDMI for a bit
 		XRANDR_SET \
 			--compositing  enable \
 			--screen-blank disable \
 			--sound-effect login \
 			--background ${I3_DEFAULT_THEME_BACKGROUND} \
-			${XRANDR_ARGS__livingroom[@]} --pos 0x0 \
-			${XRANDR_ARGS__bedroom[@]}    --pos 0x0 \
-			${XRANDR_ARGS__smol[@]}       --pos 0x0 --primary \
-		;;
-	
-	( unknown )  # temporary office setup
-		xrandr --output DP-4 --mode 2560x1440 --pos 0x0 --primary
-		scwrypts desktop i3 set background -- $(scwrypts -n get theme).jpg
-		scwrypts desktop screen blank -- disable
-		"${DOTWRYN}/bin/polybar"
-		return 0
+			${XRANDR_ARGS__splitter[@]} --pos 0x0 --primary \
 		;;
 
 	( unknown )
