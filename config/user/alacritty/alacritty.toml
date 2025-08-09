@@ -1,3 +1,4 @@
+[general]
 import = [
 	"/home/w0ryn/.config/alacritty/default.toml",
 	"/home/w0ryn/.config/alacritty/theme.toml",
