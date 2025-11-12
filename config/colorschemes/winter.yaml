@@ -1,0 +1,86 @@
+---   # yamllint disable rule:colons
+ansi:
+  blue:
+    regular: '#3d8890'
+    bright:  '#1abcdd'
+
+  magenta:
+    regular: '#7b70af'
+    bright:  '#7d72fe'
+
+  cyan:
+    regular: '#50a3b5'
+    bright:  '#86abb3'
+
+i3:
+  focused:
+    border: .material.primary.500
+    indicator: .material.primary.700
+    text: .material.foreground.primary.500
+
+  inactive:
+    border: .material.secondary.400
+    indicator: .material.secondary.500
+    text: .material.foreground.secondary.400
+
+  unfocused:
+    border: .material.secondary.800
+    indicator: .material.secondary.900
+    text: .material.foreground.secondary.800
+
+rofi:
+  background-alt: .material.primary.800
+  foreground-alt: .material.foreground.primary.800
+  selected: .material.foreground.primary.800
+
+polybar:
+  background-alt: .material.primary.800
+
+material:
+  base:
+    secondary: .material.secondary.500
+    foreground:
+      secondary: .material.foreground.secondary.500
+
+  primary:  # replaces ANSI yellow
+    50:  '#e8fffd'
+    100: '#b9fff9'
+    200: '#8bfff4'
+    300: '#5dfff0'
+    400: '#2effec'
+    500: '#00ffe7'
+    600: '#00d1bd'
+    700: '#00a293'
+    800: '#007469'
+    900: '#00463f'
+
+  secondary:  # replaces ANSI green
+    50:  '#f5f1ef'
+    100: '#e2d4cf'
+    200: '#cfb8af'
+    300: '#bc9b8f'
+    400: '#a97f6f'
+    500: '#906556'
+    600: '#704f43'
+    700: '#503830'
+    800: '#30221d'
+    900: '#100906'
+
+
+  error:  # replaces ANSI red
+    50:  '#e8fffd'
+    100: '#f8b9cf'
+    200: '#f48bae'
+    300: '#ef5c8e'
+    400: '#eb2e6e'
+    500: '#d11455'
+    600: '#a31042'
+    700: '#740b2f'
+    800: '#46071c'
+    900: '#170209'
+
+  foreground:
+    secondary:
+      500: .ansi.gray.black
+    error:
+      400: .ansi.gray.white
