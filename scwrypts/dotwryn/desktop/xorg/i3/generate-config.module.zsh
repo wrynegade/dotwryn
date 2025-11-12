@@ -38,6 +38,8 @@ ${scwryptsmodule}() {
 			echo "#   - custom values   : $CONFIG_DEFAULT_FILE"
 			echo "#   - override values : $CONFIG_OVERRIDE_FILE"
 
+			echo "exec_always --no-startup-id ${DOTWRYN}/config/bin/reload-xkeymap"
+
 			case $(GET .statusbar.type) in
 				i3status )
 					echo 'set $refresh_statusbar killall -SIGUSR1 i3status'

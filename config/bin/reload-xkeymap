@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+[ "${DISPLAY}" ] || DISPLAY=":0"
+
+XKEYMAP_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/X11/xkeymap"
+
+[ -f "${XKEYMAP_FILE}" ] || return 0
+
+command -v xkbcomp &>/dev/null || {
+	echo "ERROR : missing 'xkbcomp' so I couldn't load ${XKEYMAP_FILE}"
+	return 1
+}
+
+xkbcomp "${XKEYMAP_FILE}" "${DISPLAY}"

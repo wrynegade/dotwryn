@@ -12,6 +12,11 @@ command -v scwrypts &>/dev/null || {
 export CI=true
 export DESKTOP__SFX_PATH="${HOME}/Media/sfx"
 export SCWRYPTS_LOG_LEVEL=0
+case $(hostnamectl --static) in
+	( pikachu )
+		export DESKTOP__BACKLIGHT_DEVICE=amdgpu_bl1
+		;;
+esac
 
 #####################################################################
 
