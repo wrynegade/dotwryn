@@ -4,13 +4,15 @@ source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
 
 case $MONITOR_CONFIGURATION in
 	( home )
-		xrandr --output DP-4 --off  # I'm trying out using just HDMI for a bit
+		# now I'm trying both again :)
+		#xrandr --output DP-4 --off  # I'm trying out using just HDMI for a bit
 		XRANDR_SET \
 			--compositing  enable \
 			--screen-blank disable \
 			--sound-effect login \
 			--background ${I3_DEFAULT_THEME_BACKGROUND} \
-			${XRANDR_ARGS__splitter[@]} --pos 0x0 --primary \
+			${XRANDR_ARGS__desk[@]}     --pos 0x0 --primary \
+			${XRANDR_ARGS__splitter[@]} --pos 0x0 \
 		;;
 
 	( unknown )

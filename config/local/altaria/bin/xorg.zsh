@@ -4,7 +4,7 @@
 XRANDR_OUTPUT__splitter='HDMI-0'
 XRANDR_OUTPUT__desk='DP-4'
 
-I3_DEFAULT_THEME_BACKGROUND=$(scwrypts -n get theme).jpg
+I3_DEFAULT_THEME_BACKGROUND=$(scwrypts -n get theme).png
 
 MONITOR_CONFIGURATION=unknown
 
@@ -34,7 +34,7 @@ case $1 in
 		XRANDR_OFFSET_Y=1440
 
 		EXTRA_ARGS__splitter=(--rate 120.00)
-		EXTRA_ARGS__desk=()
+		EXTRA_ARGS__desk=(--rate 120.00)
 
 		I3_BACKGROUND=roy-art.jpg
 		;;
