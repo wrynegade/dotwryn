@@ -70,16 +70,16 @@ MAIN() {
 
 			( * )
 				[ ! $APPLICATION  ] && APPLICATION="$1" \
-					|| ERROR "extra positional argument '$1'"
+					|| echo.error "extra positional argument '$1'"
 		esac
 		shift 1
 	done
 
-	[ ! $APPLICATION  ] && ERROR 'path-executable required'
+	[ ! $APPLICATION  ] && echo.error 'path-executable required'
 	[ ! $CLIENT_CLASS ] && CLIENT_CLASS=$APPLICATION
 
 	[ $APPLICATION ] && {
-		__CHECK_DEPENDENCY $APPLICATION || {
+		utils.dependencies.check $APPLICATION || {
 			notify.error "$APPLICATION not found"
 		}
 	}

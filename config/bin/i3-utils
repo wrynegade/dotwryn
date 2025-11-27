@@ -45,14 +45,14 @@ case $1 in
 		case $2 in
 			messages ) PROGRAM=slack ARGS+=(-c Slack --has-statusbar-icon) ;;
 			voice    ) PROGRAM=google-voice-desktop ;;
-			ytmusic  ) PROGRAM=youtubemusic-nativefier ;;
+			ytmusic  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
 
 			1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
 			discord  ) PROGRAM=discord     ARGS+=(--has-statusbar-icon) ;;
 			obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
 			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
 			scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
-			spotify  ) PROGRAM=spotify     ARGS+=(-c Spotify) ;;
+			spotify  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
 
 			*        ) PROGRAM=$2 ;;
 		esac

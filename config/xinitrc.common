@@ -15,6 +15,7 @@ unset PREFERRED_TERMINAL
 #####################################################################
 
 for PREFERRED_BROWSER in \
+	brave \
 	firefox \
 	google-chrome-stable \
 	google-chrome \
