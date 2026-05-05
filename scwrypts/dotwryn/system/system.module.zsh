@@ -4,12 +4,12 @@
 
 
 # symlinks to source-controlled configurations
-use system/symlinks --group dotwryn
+use --group dotwryn system/symlinks
 
 
 # compile source-controlled terminfo files
-use system/terminfo --group dotwryn
+use --group dotwryn system/terminfo
 
 
 # common argument parsing
-use system/zshparse --group dotwryn
+use --group dotwryn system/zshparse

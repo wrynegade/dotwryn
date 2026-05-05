@@ -1,6 +1,6 @@
 #!/bin/zsh
-use bastion --group remote
-use config --group remote
+use --group remote bastion
+use --group remote config
 
 DEPENDENCIES+=(timeout ssh)
 #####################################################################
@@ -24,7 +24,7 @@ USAGE__description='
 
 MAIN() {
 	local CONNECTION_STRING REMOTE_NAME
-	local TIMEOUT_SECONDS=3
+	local TIMEOUT_SECONDS=5
 	local COMMAND='echo OK &>/dev/null'
 	local USE_BASTION
 	while [[ $# -gt 0 ]]

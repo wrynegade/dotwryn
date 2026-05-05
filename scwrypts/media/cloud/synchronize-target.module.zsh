@@ -3,7 +3,7 @@
 REQUIRED_ENV+=(MEDIA_SYNC__S3_BUCKET)
 
 use cloud/aws
-use cloud/zshparse/actions --group media
+use --group media cloud/zshparse/actions
 
 #####################################################################
 

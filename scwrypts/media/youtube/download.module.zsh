@@ -1,8 +1,8 @@
 #####################################################################
 
-use youtube/yt-dlp --group media
-use youtube/get-filename --group media
-use youtube/get-download-path --group media
+use --group media youtube/yt-dlp
+use --group media youtube/get-filename
+use --group media youtube/get-download-path
 
 #####################################################################
 

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-use ffmpeg/get-audio-clip-from-video --group media
-use youtube/get-download-path --group media
+use --group media ffmpeg/get-audio-clip-from-video
+use --group media youtube/get-download-path
 
 #####################################################################
 

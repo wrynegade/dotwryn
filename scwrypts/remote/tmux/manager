@@ -3,7 +3,7 @@
 # must work as a standalone zsh script
 #
 eval "$(scwrypts --config)" \
-	&& use omni --group remote \
+	&& use --group omni \
 	&& utils.check-environment \
 	|| { echo 'scwrypts config error; aborting' >&2; sleep 5; return 1; }
 

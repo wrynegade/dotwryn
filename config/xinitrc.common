@@ -6,8 +6,8 @@ for PREFERRED_TERMINAL in \
 	kitty \
 	;
 do
-	command -v $PREFERRED_TERMINAL &>/dev/null \
-		&& export TERMINAL="$(which $PREFERRED_TERMINAL)" \
+	command -v ${PREFERRED_TERMINAL} &>/dev/null \
+		&& export TERMINAL="$(which ${PREFERRED_TERMINAL})" \
 		&& break
 done
 unset PREFERRED_TERMINAL
@@ -21,22 +21,22 @@ for PREFERRED_BROWSER in \
 	google-chrome \
 	;
 do
-	command -v $PREFERRED_BROWSER &>/dev/null \
-		&& export BROWSER="$(which $PREFERRED_BROWSER)" \
+	command -v ${PREFERRED_BROWSER} &>/dev/null \
+		&& export BROWSER="$(which ${PREFERRED_BROWSER})" \
 		&& break
 done
 unset PREFERRED_BROWSER
 
 #####################################################################
 
-for XINITRC_FILE in $(find /etc/X11/xinit/xinitrc.d | sort); do source "$XINITRC_FILE"; done
+for XINITRC_FILE in $(find /etc/X11/xinit/xinitrc.d | sort); do source "${XINITRC_FILE}"; done
 unset XINITRC_FILE
 
-[ -f "$HOME/.config/X11/xmodmap" ] \
-	&& xmodmap "$HOME/.config/X11/xmodmap"
+[ -f "${XDG_CONFIG_HOME:=${HOME}/.config}/X11/xmodmap" ] \
+	&& xmodmap "${XDG_CONFIG_HOME}/X11/xmodmap"
 
-[ -f "$HOME/.config/X11/xkeymap" ] \
-	&& xkbcomp "$HOME/.config/X11/xkeymap" ${DISPLAY}
+[ -f "${XDG_CONFIG_HOME}/X11/xkeymap" ] \
+	&& xkbcomp "${XDG_CONFIG_HOME}/X11/xkeymap" ${DISPLAY}
 
 #####################################################################
 

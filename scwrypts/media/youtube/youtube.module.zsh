@@ -4,12 +4,12 @@
 
 
 # download a youtube video by URL
-use youtube/download --group media
+use --group media youtube/download
 
 
 # show fully-qualified path to downloads
-use youtube/get-download-path --group media
+use --group media youtube/get-download-path
 
 
 # interact with yt-dlp directly
-use youtube/yt-dlp --group media
+use --group media youtube/yt-dlp

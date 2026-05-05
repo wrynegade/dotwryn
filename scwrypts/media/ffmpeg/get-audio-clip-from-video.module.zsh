@@ -2,7 +2,7 @@
 
 DEPENDENCIES+=(ffmpeg)
 
-use ffmpeg/get-video-length-seconds --group media
+use --group media ffmpeg/get-video-length-seconds
 
 #####################################################################
 

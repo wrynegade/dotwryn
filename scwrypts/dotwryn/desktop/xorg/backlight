@@ -14,12 +14,32 @@ MAIN() {
 		command -v ${UTIL} >/dev/null 2>&1 && break
 	done
 
+	case ${DESKTOP__BACKLIGHT_DEVICE} in
+		( xrandr-fake-brightness ) UTIL=xrandr ;;
+	esac
+
 	[[ ${UTIL} =~ ^enlighten$ ]] && {
 		CURRENT_PERCENT=$(BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten | sed 's/.*(//;s/%.*//')
 		[[ ${CURRENT_PERCENT} -gt 60 ]] && DELTA=40
 		[[ ${CURRENT_PERCENT} -le 60 ]] && DELTA=20
 		[[ ${CURRENT_PERCENT} -le 40 ]] && DELTA=10
 		[[ ${CURRENT_PERCENT} -le 10 ]] && DELTA=5
+	}
+
+	local UP DOWN
+	[[ ${UTIL} =~ ^xrandr$ ]] && {
+		[[ "${XRANDR_TARGET[@]}" ]] \
+			|| XRANDR_TARGET=$(xrandr | grep ' connected' | awk '{print $1;}')
+
+		CURRENT_BRIGHTNESS=$(xrandr --verbose | grep Brightness | awk '{print $2;}' | head -n1)
+
+		[[ ${CURRENT_BRIGHTNESS} -gt 0.80 ]] && { UP=1.00; DOWN=0.80; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.80 ]] && { UP=1.00; DOWN=0.60; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.60 ]] && { UP=0.80; DOWN=0.40; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.40 ]] && { UP=0.60; DOWN=0.20; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.20 ]] && { UP=0.40; DOWN=0.10; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.10 ]] && { UP=0.20; DOWN=0.05; }
+		[[ ${CURRENT_BRIGHTNESS} -le 0.05 ]] && { UP=0.10; DOWN=0.05; }
 	}
 
 	case $1 in
@@ -32,6 +52,8 @@ MAIN() {
 					[[ ${CURRENT_PERCENT} -ge 99 ]] && notify.status 'at maximum brightness' && exit 0
 					BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten +${DELTA}%
 					;;
+
+				( xrandr ) xrandr --output ${XRANDR_TARGET} --brightness ${UP} ;;
 			esac
 			;;
 		down )
@@ -50,6 +72,8 @@ MAIN() {
 					[[ ${CURRENT_PERCENT} -le 2 ]] && ARGS='=1%' || ARGS="-${DELTA}%"
 					BACKLIGHT_DEVICE=${DESKTOP__BACKLIGHT_DEVICE} enlighten "${ARGS}"
 					;;
+
+				( xrandr ) xrandr --output ${XRANDR_TARGET} --brightness ${DOWN} ;;
 			esac
 			;;
 		set )

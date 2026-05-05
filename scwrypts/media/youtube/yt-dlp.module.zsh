@@ -1,6 +1,6 @@
 #####################################################################
 
-use youtube/get-download-path --group media
+use --group media youtube/get-download-path
 
 #####################################################################
 

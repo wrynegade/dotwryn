@@ -2,8 +2,8 @@
 
 REQUIRED_ENV+=(MEDIA_SYNC__TARGETS)
 
-use cloud/synchronize-target --group media
-use cloud/zshparse/actions --group media
+use --group media cloud/synchronize-target
+use --group media cloud/zshparse/actions
 
 #####################################################################
 

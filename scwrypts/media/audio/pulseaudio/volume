@@ -1,7 +1,7 @@
 #!/bin/zsh
 #####################################################################
 
-use audio/pulseaudio/volume --group media
+use --group media audio/pulseaudio/volume
 
 #####################################################################
 

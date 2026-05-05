@@ -1,5 +1,5 @@
 #!/bin/zsh
-use desktop/xorg/xrandr --group dotwryn
+use --group dotwryn desktop/xorg/xrandr
 #####################################################################
 
 MAIN() {

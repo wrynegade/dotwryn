@@ -2,4 +2,4 @@
 # common parsers for cloud media synchronization
 #
 
-use cloud/zshparse/actions --group media
+use --group media cloud/zshparse/actions

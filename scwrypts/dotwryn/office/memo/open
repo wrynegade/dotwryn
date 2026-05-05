@@ -1,14 +1,16 @@
 #!/usr/bin/env zsh
-use office/memo
+use --group dotwryn office/memo
 #####################################################################
 
 MAIN() {
-	local MEMO_NAME=$(MEMO__LIST_ALL | FZF_USER_INPUT 'select/create a memo')
-	[ ! "$MEMO_NAME" ] && user.abort
+	local MEMO_NAME=$(dotwryn.office.memo.list-all | utils.fzf.user-input 'select/create a memo')
+	[ "${MEMO_NAME}" ] || utils.abort
 
-	MEMO_FILE="$MEMO__DIR/$MEMO_NAME.$MEMO__FILETYPE"
+	echo.debug -v MEMO_NAME
 
-	[ ! -f $MEMO_FILE ] && {
+	MEMO_FILE="${MEMO__DIR}/${MEMO_NAME}.${MEMO__FILETYPE}"
+
+	[ ! -f ${MEMO_FILE} ] && {
 		echo.status "creating memo '$MEMO_NAME'"
 		echo "# $MEMO_NAME" > "$MEMO_FILE" \
 			&& echo.success "created memo '$MEMO_NAME'" \
@@ -19,5 +21,5 @@ MAIN() {
 	DATESTRING="## $(date '+%A, %B %-d, %Y')"
 	grep -q "$DATESTRING" "$MEMO_FILE" || echo "$DATESTRING" >> "$MEMO_FILE"
 
-	utils.io.edit "$MEMO_FILE"
+	utils.io.edit "${MEMO_FILE}"
 }

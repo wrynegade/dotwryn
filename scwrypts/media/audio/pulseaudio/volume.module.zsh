@@ -2,7 +2,7 @@
 #####################################################################
 
 use notify
-use audio/play-sfx --group media
+use --group media audio/play-sfx
 
 DEPENDENCIES+=(pactl)
 

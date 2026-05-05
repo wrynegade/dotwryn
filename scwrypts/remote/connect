@@ -1,6 +1,6 @@
 #!/bin/zsh
-use bastion --group remote
-use config --group remote
+use --group remote bastion
+use --group remote config
 #####################################################################
 
 USAGE__options="

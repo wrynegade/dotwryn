@@ -4,11 +4,11 @@
 
 
 # synchronize cloud media with configured targets
-use cloud/synchronize --group media
+use --group media cloud/synchronize
 
 # synchronize cloud media with a specific target
-use cloud/synchronize-target --group media
+use --group media cloud/synchronize-target
 
 
 # common parsers
-use cloud/zshparse --group media
+use --group media cloud/zshparse
