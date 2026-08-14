@@ -38,10 +38,10 @@ ${scwryptsmodule}() {
 
 		local GROUP_MATCH_REGEX="\\($(printf '\|%s' ${SCWRYPTS_GROUP_ENVS[@]} | sed 's/^\\|//')\\)"
 		local LOCAL_MATCH_REGEX='\(\.'${DOTWRYN_HOSTNAME}'\(\..*\+\)*\)\?'
-	
+
 		local LOCAL_DIR="${SCWRYPTS_CONFIG_PATH}/environments"
 		local SOURCE_DIR="${DOTWRYN}/config/scwrypts/environments"
-	
+
 		find "${DOTWRYN}/config/scwrypts/environments" -mindepth 1 -maxdepth 1 -name \*.env.yaml \
 			| sed -n "s^.*/\(local${LOCAL_MATCH_REGEX}\.${GROUP_MATCH_REGEX}.env.yaml\)$${SOURCE_DIR}/\1^${LOCAL_DIR}/\1^p" \
 			| grep -v '\.secret\.' \

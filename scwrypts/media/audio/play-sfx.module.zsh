@@ -10,6 +10,7 @@ REQUIRED_ENV+=(DESKTOP__SFX_PATH)
 
 ${scwryptsmodule}() {
 	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+	local DESCRIPTION='plays a sound effect'
 
 	eval "$(utils.parse.autosetup)"
 
@@ -47,16 +48,16 @@ ${scwryptsmodule}.parse.locals() {
 ${scwryptsmodule}.parse.usage() {
 	USAGE__description='
 		play the indicated sound effect by mapped name or filename
+	'
+
+	USAGE__args='
+		\$1   mapped name or filename
 
 		mapped names :
 		  backlight  notify
 		  login      logout
 		  mute       volume
 		  gamedock   homedock  undock
-	'
-
-	USAGE__args='
-		\$1   mapped name or filename
 	'
 }
 
@@ -67,6 +68,6 @@ ${scwryptsmodule}.parse.validate() {
 		;
 
 	[ -f "${SFX_FILE}" ] \
-		|| notify.error "unable to locate sfx file '$1'" \
+		|| notify.error "unable to locate sfx file '${SFX_FILE}'" \
 		|| return 1
 }

@@ -1,23 +1,10 @@
 #!/bin/zsh
-REQUIRED_ENV+=(DESKTOP__WALLPAPER_PATH)
+#####################################################################
+
+use --group dotwryn desktop/xorg/i3/set-background
+
 #####################################################################
 
 MAIN() {
-	[ ! -d $WALLPAPER_PATH ] \
-		&& FAIL 1 "no such directory for DESKTOP__WALLPAPER_PATH='$DESKTOP__WALLPAPER_PATH'"
-
-	SELECTION="$1"
-	[ ! $SELECTION ] && SELECTION=random
-
-	case $SELECTION in
-		random )
-			feh --no-fehbg --recursive --randomize --bg-fill $WALLPAPER_PATH
-			;;
-		* )
-			[ ! -f $DESKTOP__WALLPAPER_PATH/$SELECTION ] \
-				&& FAIL 2 "no such wallpaper '$SELECTION' in wallpaper path"
-
-			feh --no-fehbg --bg-fill $DESKTOP__WALLPAPER_PATH/$SELECTION
-			;;
-	esac
+	dotwryn.desktop.xorg.i3.set-background "${@}"
 }

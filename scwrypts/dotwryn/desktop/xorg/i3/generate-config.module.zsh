@@ -20,7 +20,7 @@ ${scwryptsmodule}() {
 
 	local CONFIG="$(utils.yq eval-all '. as $item ireduce ({}; . * $item)' "$CONFIG_DEFAULT_FILE" "$CONFIG_OVERRIDE_FILE")"
 	[ $CONFIG ] \
-		|| ERROR "unable to retrieve i3 config yaml (see above)" \
+		|| echo.error "unable to retrieve i3 config yaml (see above)" \
 		|| return 1 \
 		;
 
@@ -100,7 +100,7 @@ ${scwryptsmodule}() {
 		&& rm "$I3_CONFIG.temp2" \
 		&& echo.status "validating config" \
 		&& i3 -C -c "$I3_CONFIG.temp" \
-		|| ERROR "unable to produce config, or produced an invalid config (see above or '$I3_CONFIG.temp')" \
+		|| echo.error "unable to produce config, or produced an invalid config (see above or '$I3_CONFIG.temp')" \
 		|| return 1
 
 	[[ $SAFE =~ true ]] && [ -f "$I3_CONFIG" ] && {
@@ -122,7 +122,7 @@ ${scwryptsmodule}() {
 	: \
 		&& mv "$I3_CONFIG.temp" "$I3_CONFIG" \
 		&& echo.success "successfully generated i3 config" \
-		|| ERROR "something went wrong when moving config (check '$(dirname $I3_CONFIG)')" \
+		|| echo.error "something went wrong when moving config (check '$(dirname $I3_CONFIG)')" \
 		|| return 1 \
 		;
 
@@ -144,7 +144,7 @@ ${scwryptsmodule}.parse() {
 	case $1 in
 		--safe ) SAFE=true ;;
 		--override-file )
-			[ -f "$2" ] || ERROR "no file '$2' can be found"
+			[ -f "$2" ] || echo.error "no file '$2' can be found"
 			CONFIG_OVERRIDE_FILE="$2"
 			;;
 	esac
@@ -161,12 +161,12 @@ ${scwryptsmodule}.parse.usage() {
 		--safe            preserve old config (or fail if old conf does not exist)
 		--override-file   fully qualified path to the override yaml file (default ~/.config/i3/local.yaml)
 	"
-	
+
 	USAGE__description+="
 		Since i3wm does not provide a way to load config values dynamically,
 		I run this script to generate colorscheme values and other per-machine
 		overrides.
-	
+
 		Uses the current, active colorscheme and local overrides specified in
 		~/.config/i3/local.yaml
 	"

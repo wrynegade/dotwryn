@@ -2,7 +2,7 @@ _COLORSCHEME_FILE__quickshell="${DOTWRYN}/config/user/quickshell/colors.json"
 
 _GENERATE_THEME__quickshell() {
 	echo "{
-	\"theme\"         : \"${THEME_NAME}\",
+	\"theme\"         : \"${theme_name}\",
 	\"background\"    : \"#$(_GET_HEX .quickshell.background     .background)\",
 	\"foreground\"    : \"#$(_GET_HEX .quickshell.foreground     .foreground)\",
 	\"backgroundAlt\" : \"#$(_GET_HEX .quickshell.background-alt .selection.background)\",

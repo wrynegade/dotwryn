@@ -20,13 +20,13 @@ ${scwryptsmodule}() {
 	local FILENAME="$(media.youtube.get-filename "${URL}")"
 
 	[ "${FILENAME}" ] \
-		|| ERROR "could not find metadata; cannot proceed with download\n${URL}" \
+		|| echo.error "could not find metadata; cannot proceed with download\n${URL}" \
 		|| return 1
 
 	media.youtube.yt-dlp "${URL}" \
 			--format 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
 		&& echo.success "finished download of ${URL}\n$(media.youtube.get-download-path)/${FILENAME}" \
-		||   ERROR "failed to download '${FILENAME}' (${URL})"
+		||   echo.error "failed to download '${FILENAME}' (${URL})"
 		;
 }
 
@@ -59,5 +59,5 @@ ${scwryptsmodule}.parse.usage() {
 
 ${scwryptsmodule}.parse.validate() {
 	[ "$URL" ] \
-		|| ERROR "must provide download URL"
+		|| echo.error "must provide download URL"
 }

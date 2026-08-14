@@ -28,10 +28,10 @@ ${scwryptsmodule}.validate() {
 	case "${ACTION}" in
 		( push | pull | pull-first-synchronize | push-first-synchronize ) ;;
 		( '' )
-			ERROR 'must specify a media sync action'
+			echo.error 'must specify a media sync action'
 			;;
 		( * )
-			ERROR "invalid media sync action '${ACTION}'"
+			echo.error "invalid media sync action '${ACTION}'"
 			;;
 	esac
 }

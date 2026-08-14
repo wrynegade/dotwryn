@@ -1,16 +1,3 @@
-command -v \
-		echo.error \
-		echo.status \
-		echo.success \
-		echo.success.color \
-		rg \
-		sed \
-		utils.check-errors \
-		utils.colors.green \
-		utils.yN \
-	&>/dev/null || return 0
-
-
 frog() {
 	eval "$(usage.reset)"
 
@@ -136,7 +123,7 @@ frog() {
 	rg -- "${SEARCH_REGEX}" ${FILES_MATCHED[@]}
 
 	echo.status "showing matches from $(utils.colors.green)${#FILES_MATCHED[@]} file(s)$(echo.status.color) in the current directory"
-	utils.yN "replace all matches with '${REPLACE_VALUE}'?" || return 1
+	user.yN "replace all matches with '${REPLACE_VALUE}'?" || return 1
 
 	[[ ${TRIM} =~ true ]] && SEARCH_REGEX='\s\+$'
 

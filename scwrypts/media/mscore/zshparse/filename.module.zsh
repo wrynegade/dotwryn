@@ -29,14 +29,14 @@ ${scwryptsmodule}.validate() {
 			MSCORE_FILENAME="$(cd "${MSCORE__SCORES_PATH}"; find . -type f | grep '\.msc[zx]$' | utils.fzf 'select a score')"
 
 			[ "${MSCORE_FILENAME}" ] && [ -f "${MSCORE__SCORES_PATH}/${MSCORE_FILENAME}" ] \
-				|| ERROR "invalid score '${MSCORE_FILENAME}'"
+				|| echo.error "invalid score '${MSCORE_FILENAME}'"
 
 			MSCORE_FILENAME="${MSCORE__SCORES_PATH}/${MSCORE_FILENAME}"
 			;;
 
 		( * )
 			[ -f "${MSCORE_FILENAME}" ] \
-				|| ERROR "no score '${MSCORE_FILENAME}' exists"
+				|| echo.error "no score '${MSCORE_FILENAME}' exists"
 			;;
 	esac
 
@@ -65,7 +65,7 @@ ${scwryptsmodule}.validate() {
 
 	[ -f "${TEMP_FILE}" ] \
 		&& MSCORE_FILENAME="${TEMP_FILE}" \
-		|| ERROR "failed to extract '${TEMP_FILE}'" \
+		|| echo.error "failed to extract '${TEMP_FILE}'" \
 		|| MSCORE_FILENAME='' \
 		;
 

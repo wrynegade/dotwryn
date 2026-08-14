@@ -3,7 +3,7 @@
 
 DEPENDENCIES+=(tmux scwrypts)
 
-use omni --group remote
+use --group remote omni
 
 #####################################################################
 

@@ -176,7 +176,7 @@ XRANDR_SET() {
 	# disabling for a moment since the latest X11/NVIDIA drivers are causing some issues after "disconnect all"
 	#scwrypts desktop xrandr disconnect all
 
-	xrandr ${XRANDR_ARGS[@]} 
+	xrandr ${XRANDR_ARGS[@]}
 
 	sleep 1
 

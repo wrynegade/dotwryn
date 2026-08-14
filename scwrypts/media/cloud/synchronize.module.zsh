@@ -36,7 +36,7 @@ ${scwryptsmodule}() {
 
 	[[ $FAILED_COUNT -eq 0 ]] \
 		&& echo.success "successfully completed ${ACTION} for ${TARGET_COUNT} / ${TARGET_COUNT} target(s)" \
-		||   ERROR "failed ${ACTION} for ${FAILED_COUNT} / ${TARGET_COUNT} target(s)" \
+		||   echo.error "failed ${ACTION} for ${FAILED_COUNT} / ${TARGET_COUNT} target(s)" \
 		;
 }
 

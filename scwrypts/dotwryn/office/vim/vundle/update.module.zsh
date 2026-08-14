@@ -10,7 +10,7 @@ DEPENDENCIES+=(git)
 ${scwryptsmodule}() {
 	eval "$(utils.parse.autosetup)"
 	##########################################
-	
+
 	local VIM_PLUGIN_DIR="$(config.vim.get-plugin-dir)"
 	[ "${VIM_PLUGIN_DIR}" ] \
 		|| echo.error "cannot determine vim plugin dir (see above)" \

@@ -2,6 +2,7 @@
 
 ZSH_PLUGINS+=(
 	"$(scwrypts --root)/scwrypts.plugin.zsh"
+	"$(scwrypts --root)/zsh/utils/utils.module.zsh"
 	)
 
 () {  # default environment name lookup

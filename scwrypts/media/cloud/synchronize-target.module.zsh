@@ -54,7 +54,7 @@ ${scwryptsmodule}() {
 	echo.status "${ACTION}ing ${TARGET}"
 	cloud.aws s3 sync $A $B \
 		&& echo.success "${TARGET} up-to-date" \
-		|| { ERROR "unable to sync ${TARGET} (see above)"; return 1; }
+		|| { echo.error "unable to sync ${TARGET} (see above)"; return 1; }
 }
 
 #####################################################################
@@ -81,7 +81,7 @@ ${scwryptsmodule}.parse.usage() {
 
 ${scwryptsmodule}.parse.validate() {
 	[ "${TARGET}" ] \
-		|| ERROR 'must specify a target'
+		|| echo.error 'must specify a target'
 
 	TARGET_LOCAL="${HOME}/${TARGET}"
 	TARGET_CLOUD="s3://${MEDIA_SYNC__S3_BUCKET}/${TARGET}"

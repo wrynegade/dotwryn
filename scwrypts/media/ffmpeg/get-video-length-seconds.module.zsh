@@ -8,7 +8,7 @@ ${scwryptsmodule}() {
 	local FILENAME="$1"
 
 	[ "${FILENAME}" ] && [ -f "${FILENAME}" ] \
-		|| ERROR "invalid or missing file '${FILENAME}'" \
+		|| echo.error "invalid or missing file '${FILENAME}'" \
 		|| return 1
 
 	ffprobe \
