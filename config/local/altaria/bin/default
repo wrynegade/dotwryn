@@ -1,6 +1,6 @@
 #!/bin/zsh
-[ $1 ] && RESOLUTION=$1 || RESOLUTION=2k
-source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
+[[ "${1}" ]] && RESOLUTION="${1}" || RESOLUTION=4k
+source "${0:a:h}/xorg.zsh" "${RESOLUTION}" "${@:2}"
 
 case $MONITOR_CONFIGURATION in
 	( home )
@@ -12,7 +12,7 @@ case $MONITOR_CONFIGURATION in
 			--sound-effect login \
 			--background ${I3_DEFAULT_THEME_BACKGROUND} \
 			${XRANDR_ARGS__desk[@]}     --pos 0x0 --primary \
-			${XRANDR_ARGS__splitter[@]} --pos 0x0 \
+			${XRANDR_ARGS__zapdos[@]}   --pos 0x0 \
 		;;
 
 	( unknown )

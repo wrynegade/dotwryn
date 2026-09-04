@@ -25,6 +25,7 @@ call vundle#begin("$VIM_PLUGIN_DIR")
 	Plugin 'rrethy/vim-hexokinase'     " 09.plugin-vim-hexokinase.vim
 	Plugin 'fatih/vim-go'              " 10.plugin-vim-go.vim
 	Plugin 'rust-lang/rust.vim'        " 11.plugin-rust.vim
+	Plugin 'habamax/vim-godot'         " 12.plugin-vim-godot.vim
 " ---------------------------------------------------------------------
 call vundle#end()
 

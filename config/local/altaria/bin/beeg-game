@@ -2,8 +2,9 @@
 [ $1 ] && RESOLUTION=$1 || RESOLUTION=4k
 source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
 
-#DISABLE+=(splitter)
+DISABLE+=(splitter)
 DISABLE+=(desk)
+#DISABLE+=(zapdos)
 
 XRANDR_OFF ${DISABLE[@]}
 

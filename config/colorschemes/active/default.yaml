@@ -1,4 +1,5 @@
----   # yamllint disable rule:colons
+---
+# yamllint disable rule:colons
 ansi:
   red:
     regular: .material.base.error

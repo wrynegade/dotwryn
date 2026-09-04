@@ -2,13 +2,8 @@
 [ $1 ] && RESOLUTION=$1 || RESOLUTION=4k
 source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
 
-DISABLE+=(splitter)
-#DISABLE+=(desk)
-
-XRANDR_OFF ${DISABLE[@]}
-
 XRANDR_SET \
-	--compositing  enable \
+	--compositing  disable \
 	--screen-blank disable \
 	--sound-effect gamedock \
 	${XRANDR_ARGS__desk[@]}     --pos 0x0 --primary \

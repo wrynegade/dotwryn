@@ -1,5 +1,8 @@
 if g:plugins_ok != 1 | finish | endif
 " -------------------------------------------------------------------
+if !has_key( g:, 'ycm_language_server' )
+	  let g:ycm_language_server = []
+endif
 
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_goto_buffer_command = 'new-tab'

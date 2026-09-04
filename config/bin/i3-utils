@@ -44,24 +44,30 @@ case $1 in
 		local PROGRAM
 		local ARGS=()
 		case $2 in
-			messages ) PROGRAM=slack ARGS+=(-c Slack --has-statusbar-icon) ;;
-			voice    ) PROGRAM=google-voice-desktop ;;
-			ytmusic  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
+			( messages ) PROGRAM=slack ARGS+=(-c slack --has-statusbar-icon) ;;
+			( voice    ) PROGRAM=google-voice-desktop ;;
+			( ytmusic  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
+			( signal   ) PROGRAM=signal ;;
 
-			1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
-			discord  ) PROGRAM=discord     ARGS+=(--has-statusbar-icon) ;;
-			obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
-			pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
-			scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
-			spotify  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
+			( 1pass    ) PROGRAM=1password   ARGS+=(-c 1Password) ;;
+			( discord  ) PROGRAM=fluxer      ARGS+=(-c Fluxer) ;;
+			( obs      ) PROGRAM=obs         ARGS+=(-c '^obs' -n -l --has-statusbar-icon) ;;
+			( pavuctrl ) PROGRAM=pavucontrol ARGS+=(-s 0.5 -c '^Pavucontrol') ;;
+			( scrcpy   ) PROGRAM=scrcpy      ARGS+=(-n -l) ;;
+			( spotify  ) PROGRAM=youtube-music-desktop-app ARGS+=(-c '"YouTube Music Desktop App"' --has-statusbar-icon) ;;
 
-			*        ) PROGRAM=$2 ;;
+			( * ) PROGRAM=$2 ;;
 		esac
 		scwrypts i3 launch or show -- $PROGRAM ${ARGS[@]}
 		;;
 
 	( screenshot )
 		command -v flameshot || notify-send "I3 UTILS" "screenshot application 'flameshot' not available"
-		flameshot gui
+
+		# v13 and below
+		#flameshot gui
+
+		# v14 complicated af
+		flameshot screen --edit --number "$(xdotool getmouselocation | sed 's/^.*screen:\([0-9]\+\) .*$/\1/')"
 		;;
 esac

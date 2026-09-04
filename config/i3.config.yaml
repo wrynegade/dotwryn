@@ -1,4 +1,5 @@
----  # used by scwrypts i3 generate config (override at ~/.config/i3/local.yaml)
+---
+# used by scwrypts i3 generate config (override at ~/.config/i3/local.yaml)
 font:
   size: 14
   family: >-

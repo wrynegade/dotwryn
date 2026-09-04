@@ -56,9 +56,10 @@ augroup filetype_specific_formatting
 	autocmd FileType go         call FormatFileType(4, v:false, 'manual', 99, v:false)
 	autocmd FileType json       call FormatFileType(2, v:false, 'indent', 99, v:false)
 	autocmd FileType smarty     call FormatFileType(2, v:true,  'indent', 99, v:false)
+	autocmd FileType gdscript   call FormatFileType(8, v:false, 'indent', 99, v:false)
 augroup end
 
-let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh', 'sql']
+let g:markdown_fenced_languages = ['javascript', 'json', 'python', 'bash', 'yaml', 'shell=zsh', 'sql', 'gdscript']
 " }}}
 
 syntax on

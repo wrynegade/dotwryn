@@ -1,0 +1,13 @@
+#!/bin/zsh
+[ $1 ] && RESOLUTION=$1 || RESOLUTION=4k
+source ${0:a:h}/xorg.zsh ${RESOLUTION} ${@:2}
+
+[[ "${XRANDR_OUTPUT__server_rack}" ]] || {
+	echo "sorry; can't find server rack screen"
+	exit 1
+}
+
+case "$(xrandr | grep "^${XRANDR_OUTPUT__server_rack} connected [0-9]")" in
+	( *connected* ) xrandr --output "${XRANDR_OUTPUT__server_rack}" --off  ;;
+	( *           ) xrandr --output "${XRANDR_OUTPUT__server_rack}" --auto ;;
+esac

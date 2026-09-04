@@ -1,0 +1,56 @@
+#!/usr/bin/env zsh
+#
+# getting Godot + External vim working requires a little work...
+#
+# so this script shadows godot, and handles the spin-up of everything needed!
+#
+# After starting `godot`, connect to the `godot` tmux session (and DON'T close the vim over there)
+#
+
+GODOT_EXECUTABLE=/usr/bin/godot
+TMUX_SESSION=godot
+
+echo.helper() {
+	notify-send 'godot' "${@:2}"
+	echo "${@}\\033[0m" >&2
+}
+
+echo.info()    { echo.helper "\\033[1;32m" "INFO    : ${@}" >&2; }
+echo.error()   { echo.helper "\\033[1;31m" "ERROR   : ${@}" >&2; return 1 }
+echo.warning() { echo.helper "\\033[1;33m" "WARNING : ${@}" >&2; }
+
+tmux.has-session () {
+	tmux has-session -t "${TMUX_SESSION}" &>/dev/null
+}
+
+tmux.has-session && {
+	echo.error "tmux session '${TMUX_SESSION}' already exists; refusing to start godot"
+	exit 1
+}
+
+tmux new-session -d -s "${TMUX_SESSION}" -n vim \
+	'sleep 3; while tmux list-windows -t godot -F "#{window_name}" | grep -q lsp-proxy; do vim; echo "vim closed, restarting..."; sleep 1; done'
+
+tmux new-window -t "${TMUX_SESSION}" -n lsp-proxy \
+	'while true; do ~/.wryn/config/bin/godot-lsp-proxy.py; echo "proxy died, restarting in 2s..."; sleep 2; done'
+
+tmux select-window -t "${TMUX_SESSION}:0"
+
+echo.info "godot editor session running on tmux '${TMUX_SESSION}'; connect with tmux.godot"
+
+"${GODOT_EXECUTABLE}" "$@"
+GODOT_STATUS=$?
+
+# godot relaunches itself when opening a project; so we wait for all godot instances to fully exit
+sleep 3
+while pgrep -x godot &>/dev/null; do sleep 3; done
+
+tmux kill-window -t "${TMUX_SESSION}:lsp-proxy"
+tmux send-keys -t "${TMUX_SESSION}" Escape ':qa' Enter
+sleep 3
+
+tmux.has-session && {
+	echo.warning "tmux session '${TMUX_SESSION}' still exists; please connect, save, and close for next connection"
+}
+
+exit ${GODOT_STATUS}

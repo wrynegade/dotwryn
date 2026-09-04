@@ -1,5 +1,12 @@
 #!/bin/zsh
 source "${DOTWRYN}/config/xinitrc.common"
 
-export DESKTOP_SESSION=i3wm
-cd; exec i3
+export DESKTOP_SESSION=i3
+export XDG_CURRENT_DESKTOP=i3
+
+dbus-update-activation-environment --systemd DISPLAY XAUTHORTIY XDG_CURRENT_DESKTOP
+systemctl --user import-environment DISPLAY XAUTHORTIY XDG_CURRENT_DESKTOP
+
+systemctl --user start i3-session.target
+cd; i3
+systemctl --user stop i3-session.target
