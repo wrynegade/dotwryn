@@ -3,8 +3,6 @@ function SETUP__CONFIG() {
 
 	GENERATE_INITIAL_LOCAL_CONFIG
 
-	SCWRYPTS system/config/update || return 1
-
 	CONFIG__ZSH || return 2
 	CONFIG__VIM || return 3
 
@@ -18,7 +16,7 @@ function SETUP__CONFIG() {
 #####################################################################
 
 GENERATE_INITIAL_LOCAL_CONFIG() {
-	local HOSTNAME="$(hostnamectl --static || hostname | sed 's/\.local$//')"
+	local HOSTNAME="$(hostnamectl --static 2>/dev/null || hostname | sed 's/\.local$//' 2>/dev/null)"
 	[ ${HOSTNAME} ] || return 0
 
 	mkdir -p "${DOTWRYN_PATH}/bin/${HOSTNAME}"
@@ -38,8 +36,8 @@ GENERATE_INITIAL_LOCAL_CONFIG() {
 		alacritty/local.toml \
 		;
 	do
-		mkdir -p -- "${DOTWRYN}/config/${HOSTNAME}/user/$(dirname -- "${LOCAL_OVERRIDE}")"
-		touch -- "${DOTWRYN}/config/${HOSTNAME}/user/${LOCAL_OVERRIDE}"
+		mkdir -p -- "${DOTWRYN_PATH}/config/${HOSTNAME}/user/$(dirname -- "${LOCAL_OVERRIDE}")"
+		touch -- "${DOTWRYN_PATH}/config/${HOSTNAME}/user/${LOCAL_OVERRIDE}"
 	done
 }
 

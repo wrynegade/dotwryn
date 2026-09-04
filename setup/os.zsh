@@ -99,12 +99,12 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 
 	case ${OS_NAME} in
 		( macos )
-			zsh -c 'source ~/.zprofile &>/dev/null; sed --version 2>&1 | grep GNU | grep -qv BSD' || {
-				STATUS "detected BSD sed priority; updating GNU utilities in homebrew"
-				for P in "$(brew --prefix)"/opt/*/libexec/gnubin; do export PATH="$P:$PATH"; done
+			local P
+			for P in "$(brew --prefix)"/opt/*/libexec/gnubin(N); do export PATH="${P}:${PATH}"; done
 
-				echo 'for P in "$(brew --prefix)"/opt/*/libexec/gnubin; do export PATH="$P:$PATH"; done' >> "${HOME}/.zprofile"
-			}
+			local gnubin_line='for P in "$(brew --prefix)"/opt/*/libexec/gnubin(N); do export PATH="${P}:${PATH}"; done'
+			grep -qF "${gnubin_line}" "${HOME}/.zprofile" 2>/dev/null \
+				|| echo "${gnubin_line}" >> "${HOME}/.zprofile"
 			;;
 	esac
 

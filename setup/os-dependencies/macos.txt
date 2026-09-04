@@ -26,7 +26,6 @@ libtool
 lolcat
 mono
 ncurses
-neofetch
 node
 npm
 openjdk
