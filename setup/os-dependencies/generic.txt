@@ -5,6 +5,7 @@ figlet
 fzf
 go
 java
+jo
 jq
 lolcat
 ncurses

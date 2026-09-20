@@ -1,0 +1,12 @@
+bsdextrautils
+build-essential
+cmake
+cowsay
+figlet
+fzf
+jo
+jq
+ncurses-dev
+ripgrep
+tmux
+uuid-runtime

@@ -6,7 +6,7 @@ readonly ${scwryptsgroup}__color=$(utils.colors.red)
 [ "${DOTWRYN}" ] \
 	|| export DOTWRYN=$(git -C "${0:a:h}" rev-parse --show-toplevel 2>/dev/null)
 
-export DOTWRYN_HOSTNAME=$(hostnamectl --static)
+export DOTWRYN_HOSTNAME=$(hostnamectl --static 2>/dev/null || hostname 2>/dev/null | sed 's/\.local$//')
 
 [ "${XDG_CONFIG_HOME}" ] \
 	|| export XDG_CONFIG_HOME="${HOME}/.config"

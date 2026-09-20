@@ -1,45 +1,90 @@
 #####################################################################
 
-SETUP__OS() {
-	OS__MAKE_REQUIRED_RESOURCES      || return 1
-	[ ${CI} ] && { STATUS 'detected CI; skipping os setup'; return 0; }
-	GETSUDO
+setup.os() {
+	setup.os._.make-required-resources || return 1
+	[[ "${CI}" == true ]] && { echo.status 'detected CI; skipping os setup'; return 0; }
+	utils.io.getsudo
 
-	local OS_NAME=$(OS__GET_OS)
-	[ ! ${OS_NAME} ] && ABORT
+	local OS_NAME="$(setup.os._.get-os)"
+	[ ! "${OS_NAME}" ] && utils.abort
 
-	OS__INSTALL_SOURCE_DEPENDENCIES  || return 2
-	OS__INSTALL_MANAGED_DEPENDENCIES || return 3
+	setup.os._.install-source-dependencies  || return 2
+	setup.os._.install-managed-dependencies || return 3
 }
 
-OS__GET_OS() {
-	local OS_NAME=$(lsb_release -is 2>/dev/null | tr '[:upper:]' '[:lower:]')
+setup.os._.get-os() {
+	local OS_NAME="$(lsb_release -is 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 
-	[ ! ${OS_NAME} ] \
-		&& OS_NAME=$(cat /etc/os-release 2>/dev/null | sed -n 's/^ID=//p')
+	[ ! "${OS_NAME}" ] \
+		&& OS_NAME="$(sed -n 's/^ID=//p' /etc/os-release 2>/dev/null)"
 
 	uname -s | grep -q Darwin \
 		&& OS_NAME=macos
 
-	[ ! ${OS_NAME} ] \
-		&& WARNING 'failed to detect operating system' \
-		&& OS_NAME=$(echo -e "arch\ndebian\nother" | FZF 'select an operating system') \
+	[ ! "${OS_NAME}" ] \
+		&& echo.warning 'failed to detect operating system' \
+		&& OS_NAME="$(echo -e "arch\ndebian\nother" | utils.fzf 'select an operating system')" \
 		;
 
-	[[ ${OS_NAME} =~ ^ubuntu$ ]] && OS_NAME=debian
+	[[ "${OS_NAME}" =~ ^ubuntu$ ]] && OS_NAME=debian
 
-	[[ ${OS_NAME} =~ ^[Ee]ndeavour[Oo][Ss]$ ]] && OS_NAME=arch
+	[[ "${OS_NAME}" =~ ^[Ee]ndeavour[Oo][Ss]$ ]] && OS_NAME=arch
 
-	echo ${OS_NAME}
+	echo "${OS_NAME}"
 }
 
 #####################################################################
 
-OS__INSTALL_SOURCE_DEPENDENCIES() {
-	case ${OS_NAME} in
+setup.os._.install-from-source() {  # clone + build/install a git-hosted package (AUR PKGBUILD or Makefile)
+	local target_url="${1}"
+	local name="${2:-$(echo "${target_url}" | sed 's/.*\///; s/\.git$//')}"
+	local install_dir="${HOME}/.local/share/source-packages"
+	mkdir -p "${install_dir}"
+
+	if [ -d "${install_dir}/${name}" ]
+	then
+		echo.status "updating '${name}'"
+		( cd "${install_dir}/${name}" && git pull origin "$(git rev-parse --abbrev-ref HEAD)" ) \
+			&& echo.success "successfully updated '${name}'" \
+			|| { echo.error "failed to update '${name}'"; return 1; }
+	else
+		echo.status "downloading '${name}'"
+		git clone "${target_url}" "${install_dir}/${name}" \
+			&& echo.success "successfully downloaded '${name}'" \
+			|| { echo.error "failed to download '${name}'"; return 2; }
+	fi
+
+	cd "${install_dir}/${name}"
+	if [ -f ./PKGBUILD ]
+	then
+		echo.status "installing '${name}'"
+		yes | makepkg -si \
+			&& echo.success "successfully installed '${name}'" \
+			|| { echo.error "failed to install '${name}'"; return 3; }
+	elif [ -f ./Makefile ]
+	then
+		echo.status "building '${name}'"
+		make \
+			&& echo.success "finished building '${name}'" \
+			|| { echo.error "build failed for '${name}'"; return 4; }
+
+		echo.status "installing '${name}'"
+		utils.io.getsudo
+		sudo make install \
+			&& echo.success "successfully installed '${name}'" \
+			|| { echo.error "failed to install '${name}'"; return 5; }
+	else
+		echo.warning 'could not detect supported installation method'
+		echo.reminder "complete manual installation in the directory below:"
+		echo.reminder "${install_dir}/${name}"
+	fi
+}
+
+setup.os._.install-source-dependencies() {
+	case "${OS_NAME}" in
 		( arch )
 			command -v yay >/dev/null 2>&1 \
-				|| SCWRYPTS packages/install -- 'https://aur.archlinux.org/yay.git' --local-name 'yay' \
+				|| setup.os._.install-from-source 'https://aur.archlinux.org/yay.git' 'yay' \
 				;
 			;;
 
@@ -48,59 +93,80 @@ OS__INSTALL_SOURCE_DEPENDENCIES() {
 		( debian ) ;;
 
 		( macos )
-			command -v brew &>/dev/null \
-				|| /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+			xcode-select -p &>/dev/null || {  # brew requires the xcode command line tools
+				echo.status 'installing xcode command line tools'
+				touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+				local clt_package="$(softwareupdate -l | grep '\*.*Command Line' | tail -n1 | sed 's/^[^C]*\(C.*\)/\1/')"
+				sudo softwareupdate -i "${clt_package}" --verbose \
+					&& echo.success 'successfully installed xcode command line tools' \
+					|| echo.error 'failed to install xcode command line tools' \
+					;
+				rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+			}
+
+			command -v brew &>/dev/null || {
+				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+				eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv 2>/dev/null)"
+			}
 			;;
 
 		( * ) ;;
 	esac
 
-	[ ${COMPILE_DMENU} ] && [[ ${COMPILE_DMENU} -eq 1 ]] \
-		&& SCWRYPTS packages/install -- 'https://github.com/tiyn/dmenu' --local-name 'patched-dmenu'
+	[[ "${OS_NAME}" != macos ]] && [[ "${COMPILE_DMENU}" == true ]] \
+		&& setup.os._.install-from-source 'https://github.com/tiyn/dmenu' 'patched-dmenu'
 
 	return 0
 }
 
 #####################################################################
 
-OS__INSTALL_MANAGED_DEPENDENCIES() {
+setup.os._.install-managed-dependencies() {
 	local ERRORS=0
 
-	STATUS 'checking os dependencies'
-	case ${OS_NAME} in
+	echo.status 'checking os dependencies'
+	case "${OS_NAME}" in
 		( arch | fedora | debian | macos )
 			;;
 
 		( * )
 			OS_NAME='generic'
-			WARNING "no automated installer available for '${OS_NAME}'"
+			echo.warning "no automated installer available for '${OS_NAME}'"
 			;;
 	esac
 
-	[ ${MIN} ] && [[ ${MIN} -eq 1 ]] && [ -f "${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" ] \
-		&& DEPENDENCIES="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" \
-		|| DEPENDENCIES="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.txt" \
+	local dependencies_file
+	[[ "${MIN}" == true ]] && [ -f "${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" ] \
+		&& dependencies_file="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.min.txt" \
+		|| dependencies_file="${DOTWRYN_PATH}/setup/os-dependencies/${OS_NAME}.txt" \
 		;
 
-	[ ! ${CI} ] && {
-		STATUS 'updating system, repositories, and mirrors'
-		UPDATE_REPOSITORIES__${OS_NAME}
+	[[ "${CI}" != true ]] && {
+		echo.status 'updating system, repositories, and mirrors'
+		"setup.os._.update-repositories.${OS_NAME}"
 	}
 
-	for DEPENDENCY in $(cat "${DEPENDENCIES}")
+	local dependency
+	for dependency in $(cat "${dependencies_file}")
 	do
-		INSTALL_MANAGED__${OS_NAME} ${DEPENDENCY}
+		"setup.os._.install-managed.${OS_NAME}" "${dependency}"
 	done
+	unset dependency
 
-	[[ ${ERRORS} -ne 0 ]] && {
-		WARNING "detected ${ERRORS} errors; double check warnings before proceeding!"
-		yN 'continue with install?' && return 0 || ABORT
+	[[ "${ERRORS}" -ne 0 ]] && {
+		echo.warning "detected ${ERRORS} errors; double check warnings before proceeding!"
+		utils.yN 'continue with install?' && return 0 || utils.abort
 	}
 
-	case ${OS_NAME} in
+	case "${OS_NAME}" in
 		( macos )
-			local P
-			for P in "$(brew --prefix)"/opt/*/libexec/gnubin(N); do export PATH="${P}:${PATH}"; done
+			local shellenv_line='eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv 2>/dev/null)"'
+			grep -qF "${shellenv_line}" "${HOME}/.zprofile" 2>/dev/null \
+				|| echo "${shellenv_line}" >> "${HOME}/.zprofile"
+
+			local gnubin_path
+			for gnubin_path in "$(brew --prefix)"/opt/*/libexec/gnubin(N); do export PATH="${gnubin_path}:${PATH}"; done
+			unset gnubin_path
 
 			local gnubin_line='for P in "$(brew --prefix)"/opt/*/libexec/gnubin(N); do export PATH="${P}:${PATH}"; done'
 			grep -qF "${gnubin_line}" "${HOME}/.zprofile" 2>/dev/null \
@@ -108,108 +174,120 @@ OS__INSTALL_MANAGED_DEPENDENCIES() {
 			;;
 	esac
 
-	SUCCESS 'all dependencies satisfied'
+	echo.success 'all dependencies satisfied'
 	return 0
 }
 
 ##########################################
 
-UPDATE_REPOSITORIES__arch() { yay -Syu; }
-INSTALL_MANAGED__arch() {
-	local TARGET="$1"
-	[[ ${TARGET} =~ aws-cli-v2 ]] && {
-		STATUS "skipping aws-cli-v2 checks since they are bad right now"
+setup.os._.update-repositories.arch() { yay -Syu; }
+setup.os._.install-managed.arch() {
+	local target="${1}"
+	[[ "${target}" =~ aws-cli-v2 ]] && {
+		echo.status "skipping aws-cli-v2 checks since they are bad right now"
 		return 0
 	}
 
-	yay -Qq 2>/dev/null | grep -q "^${TARGET}$\|^${TARGET}-git$" && {
-		SUCCESS "found '${TARGET}'"
+	yay -Qq 2>/dev/null | grep -q "^${target}$\|^${target}-git$" && {
+		echo.success "found '${target}'"
 	} || {
-		STATUS "installing '${TARGET}'"
-		yay -Syu --noconfirm ${TARGET} \
-			&& SUCCESS "successfully installed '${TARGET}'" \
-			|| ERROR "failed to install '${TARGET}'" \
+		echo.status "installing '${target}'"
+		yay -Syu --noconfirm "${target}" \
+			&& echo.success "successfully installed '${target}'" \
+			|| echo.error "failed to install '${target}'" \
 			;
 	}
 }
 
 ##########################################
 
-UPDATE_REPOSITORIES__debian() { sudo apt-get update && sudo apt-get upgrade; }
-INSTALL_MANAGED__debian() {
-	STATUS "checking / installing '$1'"
-	sudo apt-get install --yes $1 \
-		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install $1" \
+setup.os._.update-repositories.debian() { sudo apt-get update && sudo apt-get upgrade; }
+setup.os._.install-managed.debian() {
+	local target="${1}"
+	echo.status "checking / installing '${target}'"
+	sudo apt-get install --yes "${target}" \
+		&& echo.success "'${target}' installed" \
+		|| echo.error "failed to install ${target}" \
 		;
 }
 
 ##########################################
 
-UPDATE_REPOSITORIES__fedora() {
+setup.os._.update-repositories.fedora() {
 	: \
 		&& sudo dnf update \
 		&& sudo dnf upgrade \
 		&& sudo dnf install -y dnf-plugins-core \
-		&& sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo \
+		&& sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo \
 		;
 }
 
-INSTALL_MANAGED__fedora() {
-	STATUS "checking / installing '$1'"
-	sudo dnf install -y $1 \
-		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install $1" \
-		;
-}
-
-##########################################
-
-UPDATE_REPOSITORIES__macos() { brew update && brew upgrade; }
-INSTALL_MANAGED__macos() {
-	STATUS "checking / installing '$1'"
-	yes | brew install $1 \
-		&& SUCCESS "'$1' installed" \
-		|| ERROR "failed to install $1" \
+setup.os._.install-managed.fedora() {
+	local target="${1}"
+	echo.status "checking / installing '${target}'"
+	sudo dnf install -y "${target}" \
+		&& echo.success "'${target}' installed" \
+		|| echo.error "failed to install ${target}" \
 		;
 }
 
 ##########################################
 
-UPDATE_REPOSITORIES__generic() { return 0; }
-INSTALL_MANAGED__generic() {
-	command -v $1 >/dev/null 2>&1 \
-		|| ERROR "could not find '$1'; it's up to you to install this one!"
+setup.os._.update-repositories.macos() { brew update && brew upgrade; }
+setup.os._.install-managed.macos() {
+	local target="${1}"
+	brew list --versions "${target}" &>/dev/null && {
+		echo.success "found '${target}'"
+	} || {
+		echo.status "installing '${target}'"
+		yes | brew install "${target}" \
+			&& echo.success "'${target}' installed" \
+			|| echo.error "failed to install ${target}" \
+			;
+	}
+}
+
+##########################################
+
+setup.os._.update-repositories.generic() { return 0; }
+setup.os._.install-managed.generic() {
+	local target="${1}"
+	command -v "${target}" >/dev/null 2>&1 \
+		|| echo.error "could not find '${target}'; it's up to you to install this one!"
 }
 
 #####################################################################
 
-OS__MAKE_REQUIRED_RESOURCES() {
+setup.os._.make-required-resources() {
 	local ERRORS=0
-	local DIRECTORIES=(
+	local directories=(
 		"${XDG_CONFIG_HOME:-${HOME}/.config}/wryn"
 		"${HOME}/.local/bin"
 		)
 
-	local FILES=(
+	local files=(
 		"${HOME}/.zshrc"
 		)
 
-	STATUS 'making required system resources'
-	for D in ${DIRECTORIES}
+	echo.status 'making required system resources'
+	local directory
+	for directory in "${directories[@]}"
 	do
-		[ ! -d ${D} ] && { mkdir -p ${D} || ERROR "failed to create directory '${D}'"; }
+		[ ! -d "${directory}" ] && { mkdir -p "${directory}" || echo.error "failed to create directory '${directory}'"; }
 	done
+	unset directory
 
-	for F in ${FILES}
+	local file
+	for file in "${files[@]}"
 	do
-		[ ! -f ${F} ] && { touch ${F} || ERROR "failed to create file '${F}'"; }
+		[ ! -f "${file}" ] && { touch "${file}" || echo.error "failed to create file '${file}'"; }
 	done
+	unset file
 
-	[[ ${ERRORS} -eq 0 ]] \
-		&& SUCCESS 'finished creating system resources' \
-		|| ERROR 'failed to create system resources' \
+	[[ "${ERRORS}" -eq 0 ]] \
+		&& echo.success 'finished creating system resources' \
+		|| echo.error 'failed to create system resources' \
 		;
 
-	return ${ERRORS}
+	return "${ERRORS}"
 }

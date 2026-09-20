@@ -2,6 +2,6 @@
 use office/vim/vundle --group dotwryn
 #####################################################################
 
-dotwryn.office.vim.vundle.parse.usage
+dotwryn.office.vim.vundle.update.parse.usage
 
 MAIN() { dotwryn.office.vim.vundle.update $@; }

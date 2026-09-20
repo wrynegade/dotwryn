@@ -21,12 +21,13 @@ gnupg2
 go
 htop
 java-latest-openjdk
+jo
 jq
 libtool
 lolcat
 mono-complete
 ncurses
-neofetch
+fastfetch
 nodejs
 npm
 openssh

@@ -1,0 +1,14 @@
+bat
+cmake
+cowsay
+figlet
+fzf
+htop
+jo
+jq
+lolcat
+ncurses
+python
+ripgrep
+tmux
+vim

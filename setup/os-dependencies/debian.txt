@@ -1,4 +1,5 @@
 awscli
+bsdextrautils
 build-essential
 cmake
 cowsay
@@ -6,6 +7,8 @@ default-jdk
 figlet
 fzf
 golang
+jo
+jq
 lolcat
 mono-devel
 ncurses-dev
@@ -14,3 +17,4 @@ npm
 python3-dev
 ripgrep
 tmux
+uuid-runtime

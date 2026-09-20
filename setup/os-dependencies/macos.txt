@@ -6,6 +6,7 @@ bison
 cmake
 coreutils
 cowsay
+fastfetch
 feh
 figlet
 findutils
@@ -21,6 +22,7 @@ grep
 gsed
 htop
 iproute2mac
+jo
 jq
 libtool
 lolcat
@@ -34,6 +36,7 @@ pkg-config
 pylint
 python
 python-setuptools
+redis
 ripgrep
 rust
 tmux

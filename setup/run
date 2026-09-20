@@ -1,19 +1,25 @@
 #!/bin/zsh
 cd "${0:a:h}"
-OVERWRITE_EXISTING=0
-while [[ $# -gt 0 ]]
+
+FORCE_ROOT=false
+CI=false
+OVERWRITE_EXISTING=false
+COMPILE_DMENU=true
+MIN=false
+
+while [[ "${#}" -gt 0 ]]
 do
-	case $1 in
-		--force-root ) FORCE_ROOT=1 ;;
-		        --ci ) export CI=1  ;;
+	case "${1}" in
+		( --force-root ) FORCE_ROOT=true ;;
+		( --ci         ) export CI=true  ;;
 
-		--overwrite ) OVERWRITE_EXISTING=1 ;;
+		( --overwrite ) OVERWRITE_EXISTING=true ;;
 
-		--no-compile-dmenu ) COMPILE_DMENU=0 ;;
+		( --no-compile-dmenu ) COMPILE_DMENU=false ;;
 
-		--min )
-			MIN=1
-			COMPILE_DMENU=0
+		( --min )
+			MIN=true
+			COMPILE_DMENU=false
 			;;
 	esac
 	shift 1
@@ -21,22 +27,22 @@ done
 source ./requirements.zsh || exit 1
 ################################################################################
 
-LOGFILE="${HOME}/dotwryn-install.txt"
+logfile="${HOME}/dotwryn-install.txt"
 
-STATUS "installation start : $(date)" 2>> "${LOGFILE}"
+echo.status "installation start : $(date)" 2>> "${logfile}"
 {
-	SETUP__OS     || FAIL 1 'failed to set up os-dependencies (see above)'
-	SETUP__GIT    || FAIL 2 'failed to set up git (see above)'
-	SETUP__CONFIG || FAIL 3 'failed to set up program configuration (see above)'
-} 2>&1 | tee -a "${LOGFILE}"
+	setup.os     || utils.fail 1 'failed to set up os-dependencies (see above)'
+	setup.git    || utils.fail 2 'failed to set up git (see above)'
+	setup.config || utils.fail 3 'failed to set up program configuration (see above)'
+} 2>&1 | tee -a "${logfile}"
 
-STATUS "installation complete: $(date)" 2>> "${LOGFILE}"
+echo.status "installation complete: $(date)" 2>> "${logfile}"
 
 ################################################################################
 
-[[ ${ERRORS} -eq 0 ]] || {
-	yN 'keep logfile?' \
-		|| { rm "${LOGFILE}" || ERROR "unable to remove '${LOGFILE}'" }
+[[ "${ERRORS}" -eq 0 ]] || {
+	utils.yN 'keep logfile?' \
+		|| { rm "${logfile}" || echo.error "unable to remove '${logfile}'" }
 }
 
-SUCCESS "\n.wryn setup complete; have a nice day :)\n "
+echo.success "\n.wryn setup complete; have a nice day :)\n "

@@ -18,12 +18,13 @@ google-chrome
 htop
 i3-wm
 jdk-openjdk
+jo
 jq
 lolcat
 lxappearance
 mono
 ncurses
-neofetch
+fastfetch
 nodejs
 noto-fonts-emoji
 npm

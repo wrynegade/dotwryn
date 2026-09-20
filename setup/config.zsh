@@ -1,161 +1,170 @@
-function SETUP__CONFIG() {
-	STATUS 'starting application configuration'
+setup.config() {
+	echo.status 'starting application configuration'
 
-	GENERATE_INITIAL_LOCAL_CONFIG
+	setup.config._.generate-initial-local-config
 
-	CONFIG__ZSH || return 2
-	CONFIG__VIM || return 3
+	setup.config._.zsh || return 2
+	setup.config._.vim || return 3
 
-	CONFIG__SYSTEM || return 4
+	setup.config._.system || return 4
 
 	SCWRYPTS generate i3 config || return 5
 
-	SUCCESS 'finished application configuration'
+	echo.success 'finished application configuration'
 }
 
 #####################################################################
 
-GENERATE_INITIAL_LOCAL_CONFIG() {
-	local HOSTNAME="$(hostnamectl --static 2>/dev/null || hostname | sed 's/\.local$//' 2>/dev/null)"
-	[ ${HOSTNAME} ] || return 0
+setup.config._.generate-initial-local-config() {
+	local local_hostname="$(hostnamectl --static 2>/dev/null || hostname 2>/dev/null | sed 's/\.local$//')"
+	[ "${local_hostname}" ] || return 0
 
-	mkdir -p "${DOTWRYN_PATH}/bin/${HOSTNAME}"
+	mkdir -p "${DOTWRYN_PATH}/bin/${local_hostname}"
 
-	local ENV_DIR="${DOTWRYN_PATH}/config/scwrypts/environments"
-	local GROUP
-	for GROUP in $(find "${ENV_DIR}" -type f -name \*env.yaml | sed -n 's|.*/local\.\([^.]*\)\.env\.yaml|\1|p')
+	local env_dir="${DOTWRYN_PATH}/config/scwrypts/environments"
+	local group
+	for group in $(find "${env_dir}" -type f -name \*env.yaml | sed -n 's|.*/local\.\([^.]*\)\.env\.yaml|\1|p')
 	do
-		[ -f "${ENV_DIR}/local.${HOSTNAME}.${GROUP}.env.yaml" ] \
-			|| cp "${ENV_DIR}/local.altaria.${GROUP}.env.yaml" "${ENV_DIR}/local.${HOSTNAME}.${GROUP}.env.yaml"
-	done
+		[ -f "${env_dir}/local.${local_hostname}.${group}.env.yaml" ] && continue
 
-	local LOCAL_OVERRIDE
-	for LOCAL_OVERRIDE in \
+		if [ -f "${env_dir}/local.altaria.${group}.env.yaml" ]
+		then
+			cp "${env_dir}/local.altaria.${group}.env.yaml" "${env_dir}/local.${local_hostname}.${group}.env.yaml"
+		else
+			cp "${env_dir}/local.${group}.env.yaml" "${env_dir}/local.${local_hostname}.${group}.env.yaml"
+		fi
+	done
+	unset group
+
+	local local_override
+	for local_override in \
 		i3/local.yaml \
 		polybar/local.ini \
 		alacritty/local.toml \
 		;
 	do
-		mkdir -p -- "${DOTWRYN_PATH}/config/${HOSTNAME}/user/$(dirname -- "${LOCAL_OVERRIDE}")"
-		touch -- "${DOTWRYN_PATH}/config/${HOSTNAME}/user/${LOCAL_OVERRIDE}"
+		mkdir -p -- "${DOTWRYN_PATH}/config/${local_hostname}/user/$(dirname -- "${local_override}")"
+		touch -- "${DOTWRYN_PATH}/config/${local_hostname}/user/${local_override}"
 	done
+	unset local_override
 }
 
 #####################################################################
 
-CONFIG__ZSH() {
-	CONFIG__ENV zsh || return 1
-	CONFIG__RC  zsh || return 2
-	CONFIG__SET_DEFAULT_SHELL || return 3
+setup.config._.zsh() {
+	setup.config._.env zsh || return 1
+	setup.config._.rc  zsh || return 2
+	setup.config._.set-default-shell || return 3
 }
 
-CONFIG__SET_DEFAULT_SHELL() {
-	local DEFAULT_SHELL=$(awk -F: -v user="${USER}" '$1 == user {print $NF}' /etc/passwd)
-	[[ ${DEFAULT_SHELL} =~ zsh ]] && return 0
+setup.config._.set-default-shell() {
+	local default_shell="$(awk -F: -v user="${USER}" '$1 == user {print $NF}' /etc/passwd)"
+	[[ "${default_shell}" =~ zsh ]] && return 0
 
-	[ ${FORCE_ROOT} ] && return 0
+	[[ "${FORCE_ROOT}" == true ]] && return 0
 
-	STATUS 'setting zsh as default shell'
-	sudo chsh -s $(which zsh) $(whoami) 2>&1 \
-		&& SUCCESS "set zsh as default shell for '${USER}'" \
-		|| FAIL 1 'failed to set zsh as default shell' \
+	echo.status 'setting zsh as default shell'
+	sudo chsh -s "$(which zsh)" "$(whoami)" 2>&1 \
+		&& echo.success "set zsh as default shell for '${USER}'" \
+		|| utils.fail 1 'failed to set zsh as default shell' \
 		;
 }
 
 #####################################################################
 
-CONFIG__VIM() {
-	CONFIG__RC  vim || return 1
+setup.config._.vim() {
+	setup.config._.rc vim || return 1
 
-	STATUS 'starting vim setup'
+	echo.status 'starting vim setup'
 	SCWRYPTS dotwryn vundle update || return 2
 
-	CONFIG__VIM__LINK_SUPERUSER_RC
+	setup.config._.vim.link-superuser-rc
 
 	return 0
 }
 
-CONFIG__VIM__LINK_SUPERUSER_RC() {
-	sudo [ /root/.vimrc ] && return 0
+setup.config._.vim.link-superuser-rc() {
+	sudo [ -f /root/.vimrc ] && return 0
 
 	echo "let \$DOTWRYN=\"${DOTWRYN_PATH}\"\nsource \"${DOTWRYN_PATH}/vim/rc.vim\"" \
 		| sudo tee /root/.vimrc >/dev/null
 
 	sudo mkdir -p /root/.vim
-	sudo ln -s /home/w0ryn/.vim/bundle /root/.vim/bundle
+	sudo ln -s "${HOME}/.vim/bundle" /root/.vim/bundle
 }
 
 #####################################################################
 
-CONFIG__SYSTEM() {
+setup.config._.system() {
 	SCWRYPTS dotwryn system setup
 }
 
 #####################################################################
 
-CONFIG__ENV() {
-	local DEFAULT_CONFIG="${DOTWRYN_PATH}/$1/env.$1"
-	local LOCAL_CONFIG="${HOME}/.config/wryn/env.$1"
+setup.config._.env() {
+	local config_type="${1}"
+	local default_config="${DOTWRYN_PATH}/${config_type}/env.${config_type}"
+	local local_config="${HOME}/.config/wryn/env.${config_type}"
 
-	[ -f ${LOCAL_CONFIG} ] && {
-		case ${OVERWRITE_EXISTING} in
-			0 ) return 0 ;;
-			1 )
-				WARNING "local $1 configuration exists (${LOCAL_CONFIG})"
-				yN 'overwrite this configuration?' || return 0
+	[ -f "${local_config}" ] && {
+		case "${OVERWRITE_EXISTING}" in
+			( false ) return 0 ;;
+			( true )
+				echo.warning "local ${config_type} configuration exists (${local_config})"
+				utils.yN 'overwrite this configuration?' || return 0
 
-				mv "${LOCAL_CONFIG}" "${LOCAL_CONFIG}.bak" >/dev/null 2>&1 \
-					&& INFO "created backup of local configuration (${LOCAL_CONFIG}.bak)"
+				mv "${local_config}" "${local_config}.bak" >/dev/null 2>&1 \
+					&& echo.status "created backup of local configuration (${local_config}.bak)"
+				;;
 		esac
 	}
 
-	STATUS "setting up $1 configuration (${LOCAL_CONFIG})"
+	echo.status "setting up ${config_type} configuration (${local_config})"
 
-	case $1 in
-		zsh ) COMMENT='#' ;;
+	local comment
+	case "${config_type}" in
+		( zsh ) comment='#' ;;
 	esac
 
 	{
-		echo "source ${DEFAULT_CONFIG}"
-		echo -e "\\n${COMMENT}\n${COMMENT} .wryn configuration overrides\n${COMMENT}\n"
-		sed "s/^[^${COMMENT}].*/${COMMENT}&/" ${DEFAULT_CONFIG}
-	} > ${LOCAL_CONFIG} \
-		&& SUCCESS "created $1 configuration" \
-		|| FAIL 1 "unable to create $1 configuration" \
+		echo "source ${default_config}"
+		echo -e "\\n${comment}\n${comment} .wryn configuration overrides\n${comment}\n"
+		sed "s/^[^${comment}].*/${comment}&/" "${default_config}"
+	} > "${local_config}" \
+		&& echo.success "created ${config_type} configuration" \
+		|| utils.fail 1 "unable to create ${config_type} configuration" \
 		;
 
-	EDITOR=vim VISUAL=vim EDIT "${LOCAL_CONFIG}"
+	EDITOR=vim VISUAL=vim utils.io.edit "${local_config}"
 }
 
 
-CONFIG__RC() {
-	local TYPE="$1"
-	local RC
-	case ${TYPE} in
-		vim )
-			RC="${XDG_CONFIG_HOME:-${HOME}/.config}/vim/vimrc"
-			mkdir -p -- "$(dirname -- "${RC}")"
+setup.config._.rc() {
+	local config_type="${1}"
+	local rc
+	case "${config_type}" in
+		( vim )
+			rc="${XDG_CONFIG_HOME:-${HOME}/.config}/vim/vimrc"
+			mkdir -p -- "$(dirname -- "${rc}")"
 			[ -f "${HOME}/.vimrc" ] \
 				&& cat "${HOME}/.vimrc" >> "${XDG_CONFIG_HOME:-${HOME}/.config}/vim/vimrc" \
 				&& rm "${HOME}/.vimrc" \
 				;
 			;;
-		* ) RC="${HOME}/.${TYPE}rc";
-			;;
+		( * ) rc="${HOME}/.${config_type}rc" ;;
 	esac
 
-	local SOURCE_LINE
-	case ${TYPE} in
-		zsh ) SOURCE_LINE="source ${DOTWRYN_PATH}/zsh/rc" ;;
-		vim ) SOURCE_LINE="source ${DOTWRYN_PATH}/vim/rc.vim" ;;
+	local source_line
+	case "${config_type}" in
+		( zsh ) source_line="source ${DOTWRYN_PATH}/zsh/rc" ;;
+		( vim ) source_line="source ${DOTWRYN_PATH}/vim/rc.vim" ;;
 	esac
 
+	grep -q "^${source_line}$" "${rc}" \
+		|| echo "${source_line}" >> "${rc}"
 
-	grep -q "^${SOURCE_LINE}$" "${RC}" \
-		|| echo "${SOURCE_LINE}" >> ${RC}
-
-	grep -q "^${SOURCE_LINE}$" "${RC}" \
-		&& SUCCESS "${TYPE}rc is configured correctly" \
-		|| FAIL 1 "failed to configure ${TYPE}rc" \
+	grep -q "^${source_line}$" "${rc}" \
+		&& echo.success "${config_type}rc is configured correctly" \
+		|| utils.fail 1 "failed to configure ${config_type}rc" \
 		;
 }

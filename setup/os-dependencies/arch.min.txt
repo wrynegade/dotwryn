@@ -6,6 +6,7 @@ figlet
 fzf
 go-yq
 htop
+jo
 jq
 lolcat
 ncurses
