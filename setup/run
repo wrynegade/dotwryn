@@ -1,48 +1,191 @@
-#!/bin/zsh
-cd "${0:a:h}"
+#!/usr/bin/env zsh
+DOTWRYN_SETUP__SETUP_DIR="${0:a:h}"
+#####################################################################
 
-FORCE_ROOT=false
-CI=false
-OVERWRITE_EXISTING=false
-COMPILE_DMENU=true
-MIN=false
+DOTWRYN_SETUP__FORCE_ROOT=false
+DOTWRYN_SETUP__OVERWRITE_EXISTING=false
+DOTWRYN_SETUP__USE_LOGFILE=true
+DOTWRYN_SETUP__STRICT=false
+DOTWRYN_SETUP__INSTALLATION_PROFILE=default
+DOTWRYN_SETUP__EXCLUDE=()
+DOTWRYN_SETUP__STEPS=(filesystem packages config)
 
-while [[ "${#}" -gt 0 ]]
-do
-	case "${1}" in
-		( --force-root ) FORCE_ROOT=true ;;
-		( --ci         ) export CI=true  ;;
 
-		( --overwrite ) OVERWRITE_EXISTING=true ;;
+setup.run._.usage() {
+	local run_file="${DOTWRYN_SETUP__SETUP_DIR}/run"
+	local line flags description
 
-		( --no-compile-dmenu ) COMPILE_DMENU=false ;;
+	local found_function=false
+	while read -r line
+	do
+		case "${found_function}" in
+			( false ) [[ "${line}" == '() {' ]] && found_function=true ;;
+			( true  )
+				[[ "${line}" =~ '^[[:space:]]*#[[:space:]]?(.*)$' ]] || break
+				echo "${match[1]}"
+				;;
+		esac
+	done < "${run_file}"
 
-		( --min )
-			MIN=true
-			COMPILE_DMENU=false
-			;;
-	esac
-	shift 1
-done
-source ./requirements.zsh || exit 1
-################################################################################
+	echo
+	echo 'options:'
 
-logfile="${HOME}/dotwryn-install.txt"
+	while read -r line
+	do
+		[[ "${line}" =~ '^[[:space:]]*\([[:space:]]*(-[^)]*)\)[^#]*#[[:space:]]*(.*)$' ]] || continue
 
-echo.status "installation start : $(date)" 2>> "${logfile}"
-{
-	setup.os     || utils.fail 1 'failed to set up os-dependencies (see above)'
-	setup.git    || utils.fail 2 'failed to set up git (see above)'
-	setup.config || utils.fail 3 'failed to set up program configuration (see above)'
-} 2>&1 | tee -a "${logfile}"
+		flags="${(j: :)${(z)match[1]}}"
+		flags="${flags// | /, }"
+		description="${match[2]}"
 
-echo.status "installation complete: $(date)" 2>> "${logfile}"
+		[[ "${description}" =~ '^(<[^>]*>)[[:space:]]+(.*)$' ]] \
+			&& flags="${flags} ${match[1]}" \
+			&& description="${match[2]}"
 
-################################################################################
+		printf '  %-38s %s\n' "${flags}" "${description}"
+	done < "${run_file}"
 
-[[ "${ERRORS}" -eq 0 ]] || {
-	utils.yN 'keep logfile?' \
-		|| { rm "${logfile}" || echo.error "unable to remove '${logfile}'" }
+	echo
+	echo "steps: ${(j:, :)DOTWRYN_SETUP__STEPS}"
+	echo
 }
 
-echo.success "\n.wryn setup complete; have a nice day :)\n "
+#####################################################################
+
+() {
+	# set up this machine from the .wryn dotfiles repository
+	#
+	# usage: setup/run [...options...]
+	local -a skip_steps only_steps
+
+	setup.run._.error() { echo "ERROR::${*}" >&2; return 1; }
+
+	local _s
+	while [[ "${#}" -gt 0 ]]
+	do
+		_s=1
+		case "${1}" in
+			( -h | --help )  # display this message and exit
+				setup.run._.usage
+				return 0
+				;;
+
+			( -p | --installation-profile ) _s=2  # <profile> only install dependencies belonging to <profile>
+				DOTWRYN_SETUP__INSTALLATION_PROFILE="${2}"
+				;;
+
+			( --min )  # shorthand for '--installation-profile min'
+				DOTWRYN_SETUP__INSTALLATION_PROFILE=min
+				;;
+
+			( --skip ) _s=2  # <step> don't run <step>; repeatable, incompatible with --only
+				skip_steps+=("${2}")
+				;;
+
+			( --only ) _s=2  # <step> only run <step>; repeatable, incompatible with --skip
+				only_steps+=("${2}")
+				;;
+
+			( --exclude ) _s=2  # <dependencies> comma-separated dependencies to neither install nor verify; repeatable
+				DOTWRYN_SETUP__EXCLUDE+=("${(s:,:)2}")
+				;;
+
+			( --overwrite )  # replace existing local configuration
+				DOTWRYN_SETUP__OVERWRITE_EXISTING=true
+				;;
+
+			( --force-root )  # allow setup to run as root
+				DOTWRYN_SETUP__FORCE_ROOT=true
+				;;
+
+			( --ci )  # automation mode; never prompts (pair with '--skip packages' to also skip installs)
+				export CI=true
+				;;
+
+			( --no-logfile )  # don't write a logfile for this run
+				DOTWRYN_SETUP__USE_LOGFILE=false
+				;;
+
+			( --strict )  # treat unresolved dependencies as a failure instead of prompting
+				DOTWRYN_SETUP__STRICT=true
+				;;
+
+			( * )
+				setup.run._.error "unknown option '${1}'; try '--help'"
+				return 2
+				;;
+		esac
+		shift "${_s}"
+	done
+	unset _s
+
+	#####################################################################
+
+	[[ "${#skip_steps[@]}" -eq 0 ]] || [[ "${#only_steps[@]}" -eq 0 ]] \
+		|| setup.run._.error "'--skip' and '--only' cannot be used together" \
+		|| return 2
+
+	local named_step
+	for named_step in "${skip_steps[@]}" "${only_steps[@]}"
+	do
+		(( ${DOTWRYN_SETUP__STEPS[(Ie)${named_step}]} )) \
+			|| setup.run._.error "no such setup step '${named_step}' (steps: ${(j:, :)DOTWRYN_SETUP__STEPS})" \
+			|| return 2
+	done
+	unset named_step
+
+	local -a steps
+	local step
+	for step in "${DOTWRYN_SETUP__STEPS[@]}"
+	do
+		case "${#only_steps[@]}" in
+			( 0 ) (( ${skip_steps[(Ie)${step}]} )) && continue ;;
+			( * ) (( ${only_steps[(Ie)${step}]} )) || continue ;;
+		esac
+		steps+=("${step}")
+	done
+
+	[[ "${#steps[@]}" -gt 0 ]] \
+		|| setup.run._.error 'every setup step was excluded; nothing to do' \
+		|| return 2
+
+	unset -f setup.run._.error
+
+	#####################################################################
+
+	source "${DOTWRYN_SETUP__SETUP_DIR}/prepare-zsh-utilities.zsh" || return 1
+
+	local -a installation_profiles
+	installation_profiles=("${(f)$(setup.packages.list-installation-profiles)}")
+	(( ${installation_profiles[(Ie)${DOTWRYN_SETUP__INSTALLATION_PROFILE}]} )) \
+		|| echo.error "no such installation profile '${DOTWRYN_SETUP__INSTALLATION_PROFILE}' (available: ${(j:, :)installation_profiles})" \
+		|| return 2
+
+	#####################################################################
+
+	local ERRORS=0
+	local logfile
+	case "${DOTWRYN_SETUP__USE_LOGFILE}" in
+		( true  ) logfile="${DOTWRYN_SETUP__STATE_DIR}/setup.$(date +%Y-%m-%dT%H%M%S).log" ;;
+		( false ) logfile=/dev/null ;;
+	esac
+
+	echo.status "installation start : $(date)" 2>> "${logfile}"
+	echo.status "setup steps        : ${(j:, :)steps}"
+
+	for step in "${steps[@]}"
+	do
+		setup.${step} > >(tee -a "${logfile}") 2>&1 \
+			|| echo.error "failed during ${step} setup (see above)" \
+			|| return ${ERRORS}
+	done
+
+	echo.status "installation complete: $(date)" 2>> "${logfile}"
+
+	[[ "${logfile}" == /dev/null ]] \
+		|| echo.reminder "logfile can be found at:\n\t${logfile}"
+
+	#####################################################################
+
+	echo.success "\n.wryn setup complete; have a nice day :)\n "
+} "${@}"

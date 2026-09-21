@@ -1,41 +1,42 @@
 #####################################################################
 
-setup.git() {
+setup.filesystem.git() {
 	local sources_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/project-source-code"
 
-	SOURCE_DIR="${DOTWRYN_PATH}" \
+	SOURCE_DIR="${DOTWRYN_SETUP__DOTWRYN}" \
 	TARGET_DIR="${sources_dir}/yage/dotwryn" \
 	REMOTE_UPSTREAMS=(
 		'git@github.com:wrynegade/dotwryn.git'
 		'git@yage.io:wrynegade/dotwryn.git'
 		'git@bitbucket.org:wrynegade/dotwryn.git'
-		) setup.git._.remotes '.wryn'
+		) setup.filesystem.git._.remotes '.wryn'
 
-	SOURCE_DIR="${DOTWRYN_PATH}/zsh/plugins/code-activator" \
+	SOURCE_DIR="${DOTWRYN_SETUP__DOTWRYN}/zsh/plugins/code-activator" \
 	TARGET_DIR="${sources_dir}/zsh/code-activator" \
 	REMOTE_UPSTREAMS=(
 		'git@yage.io:zsh/code-activator.git'
 		'git@github.com:wrynegade/code-activator.git'
-		) setup.git._.remotes 'zsh-plugins/code-activator'
+		) setup.filesystem.git._.remotes 'zsh-plugins/code-activator'
 
-	SOURCE_DIR="${DOTWRYN_PATH}/zsh/plugins/scwrypts" \
+	SOURCE_DIR="${DOTWRYN_SETUP__DOTWRYN}/zsh/plugins/scwrypts" \
 	TARGET_DIR="${sources_dir}/zsh/scwrypts" \
 	REMOTE_UPSTREAMS=(
 		'git@yage.io:zsh/scwrypts'
 		'git@github.com:wrynegade/scwrypts'
-		) setup.git._.remotes 'zsh-plugins/scwrypts'
+		) setup.filesystem.git._.remotes 'zsh-plugins/scwrypts'
 
 	return 0
 }
 
-setup.git._.remotes() {
+setup.filesystem.git._.remotes() {
 	: \
-		&& [ "${SOURCE_DIR}" ] \
-		&& [ "${TARGET_DIR}" ] \
-		&& [[ ${#REMOTE_UPSTREAMS[@]} -gt 0 ]] \
-		|| return 1
+		&& [[ "${SOURCE_DIR}" ]] \
+		&& [[ "${TARGET_DIR}" ]] \
+		&& [[ "${#REMOTE_UPSTREAMS[@]}" -gt 0 ]] \
+		|| return 1 \
+	;
 
-	[ "$1" ] && echo.status "updating remotes for '$1'"
+	[[ "${1}" ]] && echo.status "updating remotes for '${1}'"
 
 	git -C "${SOURCE_DIR}" remote rm upstream 2>/dev/null
 	git -C "${SOURCE_DIR}" remote add upstream "${REMOTE_UPSTREAMS[1]}"
@@ -62,19 +63,19 @@ setup.git._.remotes() {
 	done
 	unset remote_upstream
 
-	SOURCE_DIR="${SOURCE_DIR}" TARGET_DIR="${TARGET_DIR}" setup.git._.link-to-projects \
+	SOURCE_DIR="${SOURCE_DIR}" TARGET_DIR="${TARGET_DIR}" setup.filesystem.git._.link-to-projects \
 		|| echo.warning "failed to link '${TARGET_DIR}'"
 
 	return 0
 }
 
-setup.git._.link-to-projects() {
-	[ "${TARGET_DIR}" ] && [ "${SOURCE_DIR}" ] \
+setup.filesystem.git._.link-to-projects() {
+	[[ "${TARGET_DIR}" ]] && [[ "${SOURCE_DIR}" ]] \
 		|| return 1
 
 	{
-		mkdir -p "${TARGET_DIR}"
-		rm "${TARGET_DIR}/code"
-		ln -s "${SOURCE_DIR}" "${TARGET_DIR}/code"
+		mkdir -p -- "${TARGET_DIR}"
+		rm -- "${TARGET_DIR}/code"
+		ln -s -- "${SOURCE_DIR}" "${TARGET_DIR}/code"
 	} &>/dev/null
 }
