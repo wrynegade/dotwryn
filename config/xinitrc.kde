@@ -1,5 +1,0 @@
-#!/bin/zsh
-source "$DOTWRYN/config/xinitrc.common"
-
-export DESKTOP_SESSION=plasma
-exec startplasma-x11

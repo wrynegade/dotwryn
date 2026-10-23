@@ -1,0 +1,72 @@
+#!/usr/bin/env zsh
+use notify
+use scwrypts/get-realpath
+
+DEPENDENCIES+=(hyprctl)
+REQUIRED_ENV+=(DESKTOP__WALLPAPER_PATH)
+#####################################################################
+
+USAGE__usage+=' [wallpaper]'
+
+USAGE__args+='
+	$1   one of:
+	       random   : any wallpaper (default)
+	       theme    : the wallpaper named after the active colorscheme (e.g. main.jpg)
+	                  (optional \$2 : use this theme name instead)
+	       <file>   : a wallpaper file within DESKTOP__WALLPAPER_PATH
+	'
+
+USAGE__description='
+	Hyprland port of "desktop/xorg/i3/set-background"; sets the wallpaper
+	on every monitor through hyprpaper
+	'
+
+#####################################################################
+
+MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+
+	# env values are literal (e.g. '$HOME/Pictures/bg'); resolve before use
+	local wallpaper_path="$(scwrypts.get-realpath "${DESKTOP__WALLPAPER_PATH}")"
+
+	[[ -d "${wallpaper_path}" ]] \
+		|| echo.error "no such directory for DESKTOP__WALLPAPER_PATH='${DESKTOP__WALLPAPER_PATH}'" \
+		|| return 1
+
+	local selection="${1:-random}"
+	local wallpaper
+
+	case "${selection}" in
+		( random )
+			wallpaper="$(find "${wallpaper_path}" -type f | shuf -n1)"
+			;;
+		( theme )
+			# optional $2 : theme name (default: the active theme)
+			local theme_name="${2:-$(cat -- "${DOTWRYN}/config/colorschemes/active/name.txt" 2>/dev/null)}"
+			wallpaper="$(find "${wallpaper_path}" -type f -name "${theme_name}.*" | head -n1)"
+			[[ "${wallpaper}" ]] \
+				|| echo.error "no wallpaper for theme '${theme_name}' in wallpaper path" \
+				|| return 2
+			;;
+		( * )
+			wallpaper="${wallpaper_path}/${selection}"
+			[[ -f "${wallpaper}" ]] \
+				|| echo.error "no such wallpaper '${selection}' in wallpaper path" \
+				|| return 2
+			;;
+	esac
+
+	[[ "${wallpaper}" ]] \
+		|| echo.error "no wallpapers found in '${wallpaper_path}'" \
+		|| return 3
+
+	pgrep -x hyprpaper &>/dev/null || {
+		hyprctl dispatch 'hl.dsp.exec_cmd("hyprpaper")' >/dev/null
+		sleep 1
+	}
+
+	# empty monitor : fallback for any monitor without a specific wallpaper
+	hyprctl hyprpaper wallpaper ", ${wallpaper}, cover" >/dev/null \
+		|| notify.error "unable to set wallpaper '${wallpaper}'" \
+		;
+}

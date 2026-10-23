@@ -1,5 +1,8 @@
 #!/bin/zsh
-source "${DOTWRYN}/config/xinitrc.common"
+# KDE plasma session; TTY alias is 'starti'; also default 'startx' target
+export XDG_SESSION_TYPE=x11
+source "${DOTWRYN}/config/desktop/server/common.zsh"
+#####################################################################
 
 export DESKTOP_SESSION=i3
 export XDG_CURRENT_DESKTOP=i3

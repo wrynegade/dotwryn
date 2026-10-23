@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+use notify
+
+DEPENDENCIES+=(qs)
+#####################################################################
+
+USAGE__description='
+	Hyprland port of "desktop/xorg/i3/logout"; asks for confirmation
+	(quickshell LogoutPrompt) before exiting hyprland
+	'
+
+#####################################################################
+
+MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+
+	qs ipc call logout show \
+		|| notify.error 'unable to show logout prompt (is quickshell running?)' \
+		;
+}

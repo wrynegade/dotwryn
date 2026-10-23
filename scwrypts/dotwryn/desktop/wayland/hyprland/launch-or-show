@@ -1,0 +1,163 @@
+#!/usr/bin/env zsh
+use notify
+use desktop/wayland/hyprland --group dotwryn
+
+DEPENDENCIES+=(jq)
+#####################################################################
+
+USAGE__usage+=' <path-executable> [...options...]'
+
+USAGE__options="
+	  -c, --client <string>   if different from the executable name, the window class (regex)
+
+	  -s, --scale <value>     (default: 0.8 or 0.5 if screen width >3000px)
+	  -x, --x-offset <value>  (default: 0.0)
+	  -y, --y-offset <value>  (default: 0.0)
+
+	  -a, --always-launch     invoke executable even if a window of client-class exists
+	  -n, --no-resize         don't resize the window (ignores -sxy flags)
+	  -l, --no-center         leave the window wherever it was last positioned
+
+	  --has-statusbar-icon    (accepted for i3 compatibility; no effect)
+	"
+
+USAGE__description="
+	Hyprland port of 'desktop/xorg/i3/launch-or-show'.
+
+	Makes it easy to bind appications to key shortcuts without having to
+	spin up redundant instances. Each application gets its own special
+	workspace (hyprland's scratchpad), named after the executable:
+	  1) starts the application if it is not running
+	  2) moves all instances of the application to its special workspace
+	  3) (toggle) hides the special workspace if it is showing
+	  4) (toggle) shows the special workspace (resized and centered) if it is hidden
+	"
+
+#####################################################################
+
+MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+
+	local application client_class
+	local x_offset=0.0 y_offset=0.0 scale
+	local always_launch=false resize=true center=true
+
+	local _s _p=0
+	while [[ "${#}" -gt 0 ]]
+	do
+		_s=1
+		case "${1}" in
+			( -c | --client   ) _s=2; client_class="${2}" ;;
+			( -x | --x-offset ) _s=2; x_offset="${2}"     ;;
+			( -y | --y-offset ) _s=2; y_offset="${2}"     ;;
+			( -s | --scale    ) _s=2; scale="${2}"        ;;
+
+			( -a | --always-launch ) always_launch=true ;;
+			( -n | --no-resize     ) resize=false       ;;
+			( -l | --no-center     ) center=false       ;;
+
+			( --has-statusbar-icon ) ;;
+
+			( -h | --help ) USAGE; return 0 ;;
+
+			( * )
+				case "$((_p+=1))" in
+					( 1 ) application="${1}" ;;
+					( * ) echo.error "extra positional argument '${1}'" ;;
+				esac
+				;;
+		esac
+		shift "${_s}" || echo.error "missing value for argument '${1}'" || shift "${#}"
+	done
+	unset _s _p
+
+	[[ "${application}" ]] || echo.error 'path-executable required'
+	[[ "${client_class}" ]] || client_class="${application}"
+
+	[[ "${application}" ]] && {
+		utils.dependencies.check "${application}" \
+			|| notify.error "${application} not found"
+	}
+
+	utils.check-errors --fail
+
+	##########################################
+
+	local special_workspace="special:${application:t}"
+
+	local monitor="$(hyprctl -j monitors | jq -c '.[] | select(.focused)')"
+	[[ "${scale}" ]] || {
+		[[ "$(jq -r '.width' <<< "${monitor}")" -gt 3000 ]] \
+			&& scale=0.5 \
+			|| scale=0.8 \
+			;
+	}
+
+	##########################################
+
+	local addresses=($(dotwryn.desktop.wayland.hyprland.get-window-addresses "${client_class}"))
+
+	[[ "${always_launch}" == true ]] || [[ "${#addresses[@]}" -eq 0 ]] && {
+		echo.status 'launching application'
+		hyprctl dispatch "hl.dsp.exec_cmd(\"${application}\")" >/dev/null
+
+		echo.status 'waiting for application window'
+		local wait_count
+		for wait_count in {1..50}
+		do
+			[[ "$(dotwryn.desktop.wayland.hyprland.get-window-addresses "${client_class}" | wc -l)" -gt "${#addresses[@]}" ]] && break
+			sleep 0.1
+		done
+		addresses=($(dotwryn.desktop.wayland.hyprland.get-window-addresses "${client_class}"))
+	}
+
+	[[ "${#addresses[@]}" -gt 0 ]] \
+		|| notify.error "no '${client_class}' window found for ${application}" \
+		|| return 1
+
+	##########################################
+
+	echo.status 'moving windows to special workspace'
+	local address lua=()
+	for address in "${addresses[@]}"
+	do
+		lua+=(
+			"hl.dispatch(hl.dsp.window.float({ window = \"address:${address}\", action = \"enable\" }))"
+			"hl.dispatch(hl.dsp.window.move({ window = \"address:${address}\", workspace = \"${special_workspace}\", follow = false }))"
+		)
+	done
+
+	local shown_special="$(jq -r '.specialWorkspace.name' <<< "${monitor}")"
+	[[ "${shown_special}" == "${special_workspace}" ]] && {
+		echo.status 'hiding special workspace'
+		lua+=("hl.dispatch(hl.dsp.workspace.toggle_special(\"${application:t}\"))")
+		dotwryn.desktop.wayland.hyprland.eval "${lua[@]}"
+		return $?
+	}
+
+	echo.status 'showing special workspace'
+	lua+=("hl.dispatch(hl.dsp.workspace.toggle_special(\"${application:t}\"))")
+
+	[[ "${resize}" == true ]] && {
+		local window_size=($(jq -r \
+			--argjson f "${scale}" --argjson x "${x_offset}" --argjson y "${y_offset}" \
+			'"\((.width / .scale * $f + $x) | floor) \((.height / .scale * $f + $y) | floor)"' \
+			<<< "${monitor}"
+		))
+		echo.debug "window size: ${window_size[*]}"
+
+		for address in "${addresses[@]}"
+		do
+			lua+=("hl.dispatch(hl.dsp.window.resize({ window = \"address:${address}\", x = ${window_size[1]}, y = ${window_size[2]} }))")
+		done
+	}
+
+	[[ "${center}" == true ]] && {
+		for address in "${addresses[@]}"
+		do
+			lua+=("hl.dispatch(hl.dsp.window.center({ window = \"address:${address}\" }))")
+		done
+	}
+
+	dotwryn.desktop.wayland.hyprland.eval "${lua[@]}"
+}

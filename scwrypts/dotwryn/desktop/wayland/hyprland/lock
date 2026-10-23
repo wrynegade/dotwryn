@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+use notify
+
+DEPENDENCIES+=(hyprlock)
+#####################################################################
+
+USAGE__description='
+	Hyprland port of "desktop/xorg/i3/lock"; locks the session with hyprlock
+	(themed by ~/.config/hypr/hyprlock.conf and the active colorscheme)
+	'
+
+#####################################################################
+
+MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+
+	pgrep -x hyprlock &>/dev/null && return 0
+
+	hyprlock \
+		|| notify.error 'something went wrong; unable to lock' \
+		;
+}

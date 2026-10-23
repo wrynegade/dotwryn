@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+use notify
+
+DEPENDENCIES+=(flameshot hyprctl jq)
+#####################################################################
+
+USAGE__description='
+	Hyprland equivalent of the i3 flameshot screenshot; freezes the
+	focused monitor in flameshot to select / annotate / copy / save
+	'
+
+#####################################################################
+
+MAIN() {
+	local SCWRYPTS_NOTIFICATION_ENGINES=(echo notify.desktop)
+
+	# flameshot screens are numbered from 0 in output order (hyprland ids are not)
+	local screen_number
+	screen_number="$(hyprctl monitors -j | jq -r 'sort_by(.id) | to_entries[] | select(.value.focused) | .key')"
+	[ "${screen_number}" ] \
+		|| { notify.error 'unable to determine focused monitor'; return 1; }
+
+	flameshot screen --edit --number "${screen_number}" \
+		|| notify.error 'unable to take screenshot' \
+		;
+}

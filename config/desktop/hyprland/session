@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# hyprland session; TTY alias is 'starth'
+export XDG_SESSION_TYPE=wayland
+source "${DOTWRYN}/config/desktop/server/common.zsh"
+#####################################################################
+
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_DESKTOP=Hyprland
+export DESKTOP_SESSION=hyprland
+
+#####################################################################
+
+systemctl --user start hyprland-session.target
+cd; start-hyprland
+systemctl --user stop hyprland-session.target

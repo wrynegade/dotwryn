@@ -1,32 +1,3 @@
-#!/bin/zsh
-#####################################################################
-
-for PREFERRED_TERMINAL in \
-	alacritty \
-	kitty \
-	;
-do
-	command -v ${PREFERRED_TERMINAL} &>/dev/null \
-		&& export TERMINAL="$(which ${PREFERRED_TERMINAL})" \
-		&& break
-done
-unset PREFERRED_TERMINAL
-
-#####################################################################
-
-for PREFERRED_BROWSER in \
-	brave \
-	firefox \
-	google-chrome-stable \
-	google-chrome \
-	;
-do
-	command -v ${PREFERRED_BROWSER} &>/dev/null \
-		&& export BROWSER="$(which ${PREFERRED_BROWSER})" \
-		&& break
-done
-unset PREFERRED_BROWSER
-
 #####################################################################
 
 for XINITRC_FILE in $(find /etc/X11/xinit/xinitrc.d | sort); do source "${XINITRC_FILE}"; done
@@ -47,7 +18,7 @@ for BACKGROUND_APPLICATION in \
 	"${DOTWRYN}/config/local/$(hostnamectl --static)/bin/default" \
 	;
 do
-	command -v ${BACKGROUND_APPLCATION} && exec ${BACKGROUND_APPLICATION} &
+	command -v ${BACKGROUND_APPLICATION} && exec ${BACKGROUND_APPLICATION} &
 done
 
 #####################################################################

@@ -1,0 +1,8 @@
+#!/bin/zsh
+# KDE plasma session; TTY alias is 'startk'
+export XDG_SESSION_TYPE=x11
+source "$DOTWRYN/config/desktop/server/common.zsh"
+#####################################################################
+
+export DESKTOP_SESSION=plasma
+exec startplasma-x11

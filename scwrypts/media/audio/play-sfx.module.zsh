@@ -28,21 +28,14 @@ ${scwryptsmodule}.parse() {
 	[[ ${POSITIONAL_ARGS} -eq 0 ]] || return 0
 
 	((POSITIONAL_ARGS+=1))
-	case $1 in
-		( backlight ) SFX_FILE="${DESKTOP__SFX_PATH}/yaru-audio-volume-change.oga" ;;
-		( gamedock  ) SFX_FILE="${DESKTOP__SFX_PATH}/gamedock.oga"                 ;;
-		( homedock  ) SFX_FILE="${DESKTOP__SFX_PATH}/homedock.oga"                 ;;
-		( login     ) SFX_FILE="${DESKTOP__SFX_PATH}/yaru-desktop-login.oga"       ;;
-		( logout    ) SFX_FILE="${DESKTOP__SFX_PATH}/smooth-desktop-login.oga"     ;;
-		( mute      ) SFX_FILE="${DESKTOP__SFX_PATH}/smooth-dialog-warning.oga"    ;;
-		( notify    ) SFX_FILE="${DESKTOP__SFX_PATH}/yaru-complete.oga"            ;;
-		( undock    ) SFX_FILE="${DESKTOP__SFX_PATH}/yaru-desktop-login.oga"       ;;
-		( volume    ) SFX_FILE="${DESKTOP__SFX_PATH}/yaru-message.oga"             ;;
 
-		( * )
-			SFX_FILE="$1"
-			;;
-	esac
+	# mapped names live in $DOTWRYN/config/sfx.map (shared with the hyprland quickshell)
+	local mapped_file="$(awk -v name="${1}" '!/^#/ && $1 == name { print $2; exit }' "${DOTWRYN}/config/sfx.map" 2>/dev/null)"
+
+	[[ "${mapped_file}" ]] \
+		&& SFX_FILE="${DESKTOP__SFX_PATH}/${mapped_file}" \
+		|| SFX_FILE="${1}" \
+		;
 
 	return 1
 }

@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+DEPENDENCIES+=(gsettings)
+#####################################################################
+
+USAGE__description='
+	On X11, GTK reads its theme from ~/.config/gtk-3.0/settings.ini (written by
+	lxappearance). Wayland GTK apps read gsettings instead, so copy the values
+	across; settings.ini stays the single source of truth for both sessions.
+	'
+
+#####################################################################
+
+MAIN() {
+	local settings_file="${XDG_CONFIG_HOME:-${HOME}/.config}/gtk-3.0/settings.ini"
+
+	[[ -f "${settings_file}" ]] \
+		|| echo.error "no gtk settings found at '${settings_file}'" \
+		|| return 1
+
+	local ini_key gsettings_key value
+	for ini_key gsettings_key in \
+		gtk-theme-name        gtk-theme    \
+		gtk-icon-theme-name   icon-theme   \
+		gtk-font-name         font-name    \
+		gtk-cursor-theme-name cursor-theme \
+		;
+	do
+		value="$(sed -n "s/^${ini_key}=//p" "${settings_file}" | tail -n1)"
+		[[ "${value}" ]] || continue
+
+		gsettings set org.gnome.desktop.interface "${gsettings_key}" "${value}" \
+			&& echo.status "${gsettings_key} : ${value}" \
+			|| echo.error "unable to set ${gsettings_key}" \
+			;
+	done
+
+	# libadwaita / portal-aware apps (electron, gtk4) follow color-scheme rather than the theme name
+	local theme="$(gsettings get org.gnome.desktop.interface gtk-theme)"
+	case "${theme:l}" in
+		( *dark* ) gsettings set org.gnome.desktop.interface color-scheme prefer-dark ;;
+		( * )      gsettings set org.gnome.desktop.interface color-scheme default     ;;
+	esac
+
+	[[ "${ERRORS}" -eq 0 ]]
+}

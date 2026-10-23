@@ -1,0 +1,17 @@
+# sound effect names -> files in DESKTOP__SFX_PATH
+#
+# shared by:
+#   - scwrypts 'media audio/play-sfx'   (i3, login/dock scripts, automation)
+#   - quickshell VolumeOsd.qml          (hyprland volume / mute feedback)
+#
+# <name>    <file>
+backlight   yaru-audio-volume-change.oga
+gamedock    gamedock.oga
+homedock    homedock.oga
+login       yaru-desktop-login.oga
+logout      smooth-desktop-login.oga
+mute        smooth-dialog-warning.oga
+notify      yaru-complete.oga
+undock      yaru-desktop-login.oga
+volume      yaru-message.oga
+volume-max  smooth-dialog-warning.oga
