@@ -54,6 +54,7 @@ ${scwryptsmodule}() {
 	#   ---------------------------------------------- | -------------------------------------------------
 	echo "
 		${DOTWRYN}/config/scwrypts/config.zsh            ${XDG_CONFIG_HOME}/scwrypts/config.zsh
+		${DOTWRYN}/config/colorschemes/active/hyprtoolkit.conf  ${XDG_CONFIG_HOME}/hypr/hyprtoolkit.conf
 	"
 
 }

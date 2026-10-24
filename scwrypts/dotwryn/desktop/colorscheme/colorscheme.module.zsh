@@ -8,8 +8,11 @@ ACTIVE_THEME_SOURCE="${ACTIVE_THEME_PATH}/source.yaml"
 use --group dotwryn desktop/colorscheme/alacritty
 use --group dotwryn desktop/colorscheme/flameshot
 use --group dotwryn desktop/colorscheme/getty
+use --group dotwryn desktop/colorscheme/gtk
+use --group dotwryn desktop/colorscheme/hyprland
 use --group dotwryn desktop/colorscheme/kitty
 use --group dotwryn desktop/colorscheme/polybar
+use --group dotwryn desktop/colorscheme/quickshell
 use --group dotwryn desktop/colorscheme/rofi
 
 COLORSCHEME__SUPPORTED_CONFIG_TYPES=($(typeset -f + | sed -n 's/^_GENERATE_THEME__//p'))
@@ -232,8 +235,13 @@ SET_THEME() {
 	[ "${WALLPAPER}" ] && command -v feh &>/dev/null \
 		&& feh --no-fehbg --bg-fill "${WALLPAPER}"
 
-	utils.check-errors --no-usage \
+	utils.check-errors --no-usage || return 1
+
+	# --only regenerates one config type; the active theme (and its name) is unchanged
+	[[ ${UPDATE_ACTIVE_THEME} =~ true ]] \
 		&& echo "${THEME_NAME}" > "${ACTIVE_THEME_PATH}/name.txt"
+
+	return 0
 }
 
 #####################################################################

@@ -1,4 +1,5 @@
----   # yamllint disable rule:colons
+---
+# yamllint disable rule:colons
 background: .material.secondary.900
 foreground: .material.secondary.50
 
@@ -20,6 +21,17 @@ i3:
     border: .material.secondary.800
     indicator: .material.secondary.900
     text: .material.foreground.secondary.800
+
+gtk:
+  accent:
+    color: .material.primary.200
+    bg:    .material.primary.500
+    fg:    .material.foreground.primary.500
+
+hyprland:
+  hyprlock:
+    accent:     .material.primary.500
+    accent-alt: .material.secondary.800
 
 ansi:
   blue:
@@ -85,3 +97,5 @@ material:
       900: .ansi.gray.black
     secondary:
       400: .ansi.gray.white
+    error:
+      500: .ansi.gray.black

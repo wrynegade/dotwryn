@@ -1,4 +1,5 @@
----   # yamllint disable rule:colons
+---
+# yamllint disable rule:colons
 ansi:
   blue:
     regular: '#3d8890'
@@ -34,6 +35,24 @@ rofi:
   selected: .material.foreground.primary.800
 
 polybar:
+  background-alt: .material.primary.800
+
+gtk:
+  accent:
+    color: .material.primary.200
+    bg:    .material.primary.500
+    fg:    .material.foreground.primary.500
+
+hyprland:
+  hyprlock:
+    accent:     .material.primary.500
+    accent-alt: .material.secondary.800
+
+  hyprtoolkit:
+    accent:      .material.primary.800
+    bright-text: .material.foreground.primary.800
+
+quickshell:
   background-alt: .material.primary.800
 
 material:
@@ -80,6 +99,8 @@ material:
     900: '#170209'
 
   foreground:
+    primary:
+      500: .ansi.gray.black
     secondary:
       500: .ansi.gray.black
     error:

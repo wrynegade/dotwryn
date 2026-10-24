@@ -1,4 +1,5 @@
----   # yamllint disable rule:colons
+---
+# yamllint disable rule:colons
 background: .material.primary.900
 foreground: .material.primary.50
 
@@ -71,4 +72,4 @@ material:
       800: .ansi.gray.black
       900: .ansi.gray.black
     secondary:
-      400: .ansi.gray.white
+      400: .ansi.gray.black

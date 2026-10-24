@@ -2,59 +2,64 @@
  * theme : halloween
  */
 
-@define-color accent_color          #ff6f00;
-@define-color accent_bg_color       #ffc106;
-@define-color accent_fg_color       #000505;
+@define-color view_bg_color          #000505;
+@define-color view_fg_color          #d0f0f0;
 
-@define-color destructive_color     #00f900;
-@define-color destructive_bg_color  #00f900;
-@define-color destructive_fg_color  #d0f0f0;
+@define-color window_bg_color        mix(@view_bg_color, #ff6f00, 0.10);
+@define-color window_fg_color        @view_fg_color;
 
-@define-color success_color         #ffe082;
-@define-color success_bg_color      #ff6f00;
-@define-color success_fg_color      #d0f0f0;
-
-@define-color warning_color         #bb94e6;
-@define-color warning_bg_color      #8b41d5;
-@define-color warning_fg_color      #000505;
-
-@define-color error_color           #00f900;
-@define-color error_bg_color        #00f900;
-@define-color error_fg_color        #d0f0f0;
-
-@define-color window_bg_color       #ff6f00;
-@define-color window_fg_color       #d0f0f0;
-
-@define-color view_bg_color         #000505;
-@define-color view_fg_color         #d0f0f0;
-
-@define-color headerbar_bg_color    #5c00be;
-@define-color headerbar_fg_color    #d0f0f0;
-@define-color headerbar_border_color #d0f0f0;
+@define-color headerbar_bg_color     mix(@view_bg_color, #8b41d5, 0.25);
+@define-color headerbar_fg_color     @view_fg_color;
+@define-color headerbar_border_color @view_fg_color;
 @define-color headerbar_backdrop_color @window_bg_color;
-@define-color headerbar_shade_color rgba(0, 0, 0, 0.36);
+@define-color headerbar_shade_color  rgba(0, 0, 0, 0.36);
 @define-color headerbar_darker_shade_color rgba(0, 0, 0, 0.9);
 
-@define-color sidebar_bg_color      @window_bg_color;
-@define-color sidebar_fg_color      @window_fg_color;
-@define-color sidebar_backdrop_color @window_bg_color;
-@define-color sidebar_shade_color   rgba(0, 0, 0, 0.25);
+@define-color sidebar_bg_color       mix(@view_bg_color, @window_bg_color, 0.6);
+@define-color sidebar_fg_color       @view_fg_color;
+@define-color sidebar_backdrop_color @view_bg_color;
+@define-color sidebar_shade_color    rgba(0, 0, 0, 0.25);
 @define-color secondary_sidebar_bg_color @view_bg_color;
 @define-color secondary_sidebar_fg_color @view_fg_color;
 
-@define-color card_bg_color         alpha(@window_fg_color, 0.05);
-@define-color card_fg_color         @window_fg_color;
-@define-color card_shade_color      rgba(0, 0, 0, 0.36);
+@define-color card_bg_color          alpha(@view_fg_color, 0.05);
+@define-color card_fg_color          @view_fg_color;
+@define-color card_shade_color       rgba(0, 0, 0, 0.36);
 
-@define-color dialog_bg_color       @window_bg_color;
-@define-color dialog_fg_color       @window_fg_color;
+@define-color dialog_bg_color        mix(@view_bg_color, @headerbar_bg_color, 0.6);
+@define-color dialog_fg_color        @view_fg_color;
 
-@define-color popover_bg_color      @window_bg_color;
-@define-color popover_fg_color      @window_fg_color;
-@define-color popover_shade_color   rgba(0, 0, 0, 0.25);
+@define-color popover_bg_color       mix(@view_bg_color, @headerbar_bg_color, 0.6);
+@define-color popover_fg_color       @view_fg_color;
+@define-color popover_shade_color    rgba(0, 0, 0, 0.25);
 
-@define-color thumbnail_bg_color    @window_bg_color;
-@define-color thumbnail_fg_color    @window_fg_color;
+@define-color thumbnail_bg_color     @window_bg_color;
+@define-color thumbnail_fg_color     @view_fg_color;
 
-@define-color shade_color           rgba(0, 0, 0, 0.36);
+@define-color shade_color            rgba(0, 0, 0, 0.36);
 @define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
+
+@define-color accent_color           #ffe082;
+@define-color accent_bg_color        #ff6f00;
+@define-color accent_fg_color        #000505;
+
+@define-color destructive_color      #a3ff90;
+@define-color destructive_bg_color   #00f900;
+@define-color destructive_fg_color   #000505;
+
+@define-color success_color          #ffe082;
+@define-color success_bg_color       #ff6f00;
+@define-color success_fg_color       #000505;
+
+@define-color warning_color          #bb94e6;
+@define-color warning_bg_color       #8b41d5;
+@define-color warning_fg_color       #d0f0f0;
+
+@define-color error_color            #a3ff90;
+@define-color error_bg_color         #00f900;
+@define-color error_fg_color         #000505;
+:root {
+	--accent-color:    @accent_color;
+	--accent-bg-color: @accent_bg_color;
+	--accent-fg-color: @accent_fg_color;
+}

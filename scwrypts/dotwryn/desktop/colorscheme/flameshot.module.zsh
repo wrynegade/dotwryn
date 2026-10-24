@@ -1,7 +1,7 @@
 _COLORSCHEME_FILE__flameshot="${DOTWRYN}/config/user/flameshot/flameshot.ini"
 
 _GENERATE_THEME__flameshot() {
-	local C1="#$(_GET_HEX .flameshot.color1 .material.primary.200            .ansi.reg.bright )"
+	local C1="#$(_GET_HEX .flameshot.color1 .material.primary.200            .ansi.red.bright )"
 	local C2="#$(_GET_HEX .flameshot.color2 .material.primary.500            .ansi.red.regular)"
 	local C3="#$(_GET_HEX .flameshot.color3 .material.primary.800            .ansi.green.bright )"
 	local C4="#$(_GET_HEX .flameshot.color4 .material.secondary.200          .ansi.green.regular)"
