@@ -99,20 +99,35 @@ dependency xdotool
 # linux extended
 dependency_args=("${INSTALLED_BY__extended[@]}" --only-on yay,dnf,apt-get)
 
-dependency brave                  --yay brave-bin
+dependency brave           --yay brave-bin
 dependency flameshot
-dependency google-chrome          --yay google-chrome-stable
-dependency i3                     --yay i3-wm                             --apt-get i3-wm
+dependency google-chrome   --yay google-chrome-stable
+dependency i3              --yay i3-wm                             --apt-get i3-wm
 dependency lxappearance
-dependency node                   --yay nodejs               --dnf nodejs --apt-get nodejs
+dependency node            --yay nodejs               --dnf nodejs --apt-get nodejs
 dependency npm
 dependency obs-studio
-dependency otf-monaspace --no-executable
 dependency picom
 dependency playerctl
 dependency polybar
 dependency rofi
-dependency ttf-nerd-fonts-symbols --no-executable
+
+dependency --no-executable otf-monaspace
+dependency --no-executable ttf-nerd-fonts-symbols
+
+#######################
+
+# arch linux extended
+dependency_args=("${INSTALLED_BY__extended[@]}" --only-on yay)
+
+# hyprland stack (not available through default dnf/apt-get repositories at the moment)
+dependency grim
+dependency hyprlock
+dependency hyprpaper
+dependency qs              --yay quickshell
+dependency start-hyprland  --yay hyprland
+dependency wl-copy         --yay wl-clipboard
+dependency xdg-desktop-portal-hyprland --no-executable
 
 ##########################################
 

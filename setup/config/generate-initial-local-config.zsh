@@ -18,6 +18,7 @@ setup.config.generate-initial-local-config() {
 
 	local local_override
 	for local_override in \
+		hypr/local.lua \
 		i3/local.yaml \
 		polybar/local.ini \
 		alacritty/local.toml \
