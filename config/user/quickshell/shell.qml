@@ -19,4 +19,6 @@ ShellRoot {
 	VolumeOsd {}
 
 	LogoutPrompt {}
+
+	DisplayPicker {}
 }

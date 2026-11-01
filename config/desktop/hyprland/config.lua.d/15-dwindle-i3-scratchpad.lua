@@ -16,7 +16,7 @@ local SCRATCHPAD_FILTERS = {
 	games    = { "^steam$", "^dolphin%-emu$", "^Visualboyadvance%-m$", "^steam_app_" },
 }
 
-local matches_filter = function(class, filter)
+local function matches_filter(class, filter)
 	if filter == nil then
 		for name, _ in pairs(SCRATCHPAD_FILTERS) do
 			if matches_filter(class, name) then return false end

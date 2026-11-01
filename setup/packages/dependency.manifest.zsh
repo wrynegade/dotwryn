@@ -48,6 +48,8 @@ dependency rg         --yay ripgrep       --dnf ripgrep         --apt-get ripgre
 dependency sed                                                                            --brew gsed
 dependency tmux
 dependency vim                            --dnf vim-enhanced
+dependency waypipe
+dependency wl-copy    --yay wl-clipboard  --dnf wl-clipboard    --apt-get wl-clipboard    --brew wl-clipboard
 dependency xauth      --yay xorg-xauth    --dnf xorg-x11-xauth  --apt-get xauth
 dependency yamllint
 dependency yq         --yay go-yq --not-on apt-get
@@ -122,11 +124,11 @@ dependency_args=("${INSTALLED_BY__extended[@]}" --only-on yay)
 
 # hyprland stack (not available through default dnf/apt-get repositories at the moment)
 dependency grim
+dependency hypridle
 dependency hyprlock
 dependency hyprpaper
 dependency qs              --yay quickshell
 dependency start-hyprland  --yay hyprland
-dependency wl-copy         --yay wl-clipboard
 dependency xdg-desktop-portal-hyprland --no-executable
 
 ##########################################
@@ -135,6 +137,7 @@ dependency xdg-desktop-portal-hyprland --no-executable
 dependency_args=("${INSTALLED_BY__all[@]}" --only-on yay)
 
 dependency arch-install-scripts --no-executable
+dependency dotool
 dependency python-rtmidi --no-executable
 
 dependency scwrypts

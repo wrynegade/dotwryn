@@ -10,3 +10,11 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("/usr/lib/xfce-polkit/xfce-polkit")
 	hl.exec_cmd("command -v apps && apps")  -- host-local background apps ($DOTWRYN/config/local/<hostname>/bin/apps)
 end)
+
+if dotwryn.monitor_layouts["default"] ~= nil then
+	dotwryn.set_monitor_layout("default")
+end
+
+if dotwryn.emergency_monitor ~= nil then
+	hl.bind(dotwryn.emergency_monitor.key, dotwryn_toggle_emergency_monitor)
+end

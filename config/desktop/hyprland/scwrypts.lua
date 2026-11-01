@@ -54,6 +54,12 @@ local hyprland = {
 	end,
 }
 
+local media = {
+	play_sfx = function(...)
+		return hl.dsp.exec_cmd(scwrypts_desktop({ 'play-sfx' }, { ... }))
+	end,
+}
+
 local wayland = {
 	sync_gtk_settings = function(...)
 		return hl.dsp.exec_cmd(scwrypts({ 'sync-gtk-settings' }, { ... }))
@@ -73,6 +79,7 @@ return {
 	scwrypts_desktop = scwrypts_desktop,
 
 	hyprland = hyprland,
+	media    = media,
 	wayland  = wayland,
 	tmux     = tmux,
 }

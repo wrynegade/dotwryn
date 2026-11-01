@@ -22,13 +22,16 @@ local to_pixels = function(value)
 	return math.floor(math.min(monitor.width, monitor.height) / scale * percent / 100)
 end
 
+local labels = {} -- reattach labels from ./80-workspaces.lua
+for _, workspace in ipairs(dotwryn.workspaces) do labels[workspace.name] = workspace.label end
+
 local gaps_rules = {}
 local set_gaps = function(workspace, inner, outer)
 	if gaps_rules[workspace] ~= nil then gaps_rules[workspace].rule:set_enabled(false) end
 	gaps_rules[workspace] = {
 		inner = inner,
 		outer = outer,
-		rule  = hl.workspace_rule({ workspace = workspace, gaps_in = inner, gaps_out = outer }),
+		rule  = hl.workspace_rule({ workspace = workspace, gaps_in = inner, gaps_out = outer, default_name = labels[workspace] }),
 	}
 end
 

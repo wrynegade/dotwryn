@@ -112,15 +112,16 @@ MAIN() {
 			".default.command" \
 	)
 
+	local TMUX_SESSION_NAME=$(
+		remote.config.query-connection-with-fallback \
+			".sessions.$REMOTE_NAME.tmux.session" \
+			".default.tmux.session" \
+			"wryn" \
+		)
+
 	[ $REMOTE_COMMAND ] || {
 		case $CONNECTION_TYPE in
 			( tmux )
-				local TMUX_SESSION_NAME=$(
-					remote.config.query-connection-with-fallback \
-						".sessions.$REMOTE_NAME.tmux.session" \
-						".default.tmux.session" \
-						"wryn" \
-					)
 				local TMUX_ARGS=()
 
 				locale charmap 2>/dev/null | grep -qi 'UTF-8' \
@@ -189,6 +190,57 @@ MAIN() {
 			;;
 	esac
 
-	echo.debug "ssh ${SSH_ARGS[@]} $CONNECTION_STRING \"$REMOTE_COMMAND\""
-	ssh ${SSH_ARGS[@]} $CONNECTION_STRING "$REMOTE_COMMAND"
+	##########################################
+
+	local host_display_server=none
+
+	[[ "${DISPLAY}"         ]] && host_display_server=x11
+	[[ "${WAYLAND_DISPLAY}" ]] && host_display_server=wayland
+
+	local ssh_command=(ssh)
+
+	case "${host_display_server}" in
+		( none | x11 ) ;;
+		( wayland )
+			local wayland_errors=0
+			local waypipe_display="wayland-waypipe-${TMUX_SESSION_NAME}"
+
+			command -v waypipe &>/dev/null || {
+				echo.warning "waypipe unavailable on host '$(hostnamectl --static)'"
+				((wayland_errors+=1))
+			}
+
+			# waypipe only unlinks its display socket on a clean exit; a dropped
+			# connection leaves it behind and every later bind fails EADDRINUSE
+			local remote_waypipe_check="
+				command -v waypipe || exit 1
+				socket=\"\${XDG_RUNTIME_DIR}/${waypipe_display}\"
+				[ -S \"\${socket}\" ] || exit 0
+				ss -xlH | grep -qF \" \${socket} \" || rm -- \"\${socket}\"
+				exit 0
+			"
+
+			ssh "${(@)SSH_ARGS:#-t}" "${CONNECTION_STRING}" "${remote_waypipe_check}" &>/dev/null || {
+				echo.warning "waypipe unavailable on host '${REMOTE_NAME}'"
+				((wayland_errors+=1))
+			}
+
+			case "${wayland_errors}" in
+				( 0 ) ssh_command=(waypipe --display "${waypipe_display}" ssh) ;;
+				( * )
+					echo.reminder '
+						clipboard WILL NOT REACH the driver on this connection
+
+						fix by installing the following packages on each host:
+						  - wl-clipboard
+						  - waypipe
+						'
+					[[ -t 0 ]] && read -t 5 -k 1 -s
+					;;
+			esac
+			;;
+	esac
+
+	echo.debug "${ssh_command[@]} ${SSH_ARGS[@]} $CONNECTION_STRING \"$REMOTE_COMMAND\""
+	"${ssh_command[@]}" ${SSH_ARGS[@]} $CONNECTION_STRING "$REMOTE_COMMAND"
 }

@@ -23,3 +23,9 @@ hl.window_rule({
 	match     = { class = "^steam_app_.*$" },
 	workspace = "100",  -- 🎮
 })
+
+hl.window_rule({
+	name         = "idle-inhibit-fullscreen",
+	match        = { class = ".*" },
+	idle_inhibit = "fullscreen",
+})

@@ -43,11 +43,13 @@ nnoremap <Leader>d  :let @d = system("date '+%A, %B %-d, %Y'")<CR>o<C-r>d<BS> <e
 " \m to set buffer to modifiable
 nnoremap <Leader>m :set modifiable<CR>
 
-" (c)opy / (p)aste from xclip
-" TODO: learn how to compile vim with x11 compatibility and delete
-vnoremap <Leader>c :w !xclip<CR><CR>
-nnoremap <Leader>v o<esc>!!xclip -o<CR>
-nnoremap <Leader>sc :'<,'>w !xclip<CR><CR>
+" (c)opy / (p)aste from the system clipboard
+" wayland (local or through waypipe) uses wl-clipboard; otherwise falls back to xclip
+let g:clipboard_copy  = empty($WAYLAND_DISPLAY) ? 'xclip -selection clipboard'    : 'wl-copy'
+let g:clipboard_paste = empty($WAYLAND_DISPLAY) ? 'xclip -selection clipboard -o' : 'wl-paste -n'
+execute 'vnoremap <Leader>c :w !'      . g:clipboard_copy  . '<CR><CR>'
+execute 'nnoremap <Leader>v o<esc>!!'  . g:clipboard_paste . '<CR>'
+execute "nnoremap <Leader>sc :'<,'>w !" . g:clipboard_copy  . '<CR><CR>'
 
 " enable/disable true color
 nnoremap <f12> :set invtermguicolors<CR>

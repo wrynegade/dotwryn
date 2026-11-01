@@ -9,7 +9,7 @@ local dofile_if_exists = function(path)
 	local file = io.open(path, "r")
 	if file == nil then return end
 	file:close()
-	dofile(path)
+	assert(loadfile(path))(dotwryn)
 end
 
 ------------------------------------------

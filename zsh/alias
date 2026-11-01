@@ -7,8 +7,8 @@ alias pd='pushd'
 alias qd='popd'
 alias lsd='dirs'
 
-alias pdo='pwd | xclip'    # [p]aste [d]irectory [o]n clipboard
-alias cdo='cd $(xclip -o)' # [c]hange to [d]irectory [o]n clipboard
+alias pdo='pwd | { [[ "${WAYLAND_DISPLAY}" ]] && wl-copy || xclip -selection clipboard; }'  # [p]aste [d]irectory [o]n clipboard
+alias cdo='cd "$([[ "${WAYLAND_DISPLAY}" ]] && wl-paste -n || xclip -selection clipboard -o)"'  # [c]hange to [d]irectory [o]n clipboard
 
 #####################################################################
 ### default command override ########################################
