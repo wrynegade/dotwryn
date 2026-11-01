@@ -43,5 +43,5 @@ MAIN() {
 
 MAIN.parse() { return 0; }
 MAIN.parse.validate() {
-	[[ DRY_RUN =~ true ]] && FORWARD_ARGS+=(--dry-run)
+	[[ ${DRY_RUN} =~ true ]] && FORWARD_ARGS+=(--dry-run)
 }

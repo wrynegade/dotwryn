@@ -129,7 +129,7 @@ ${scwryptsmodule}.parse() {
 
 		( -l | --list-themes ) parsed=1
 			dotwryn.config colorscheme.themes
-			EARLY_ESCAPE_CODE=0
+			EARLY_ESCAPE_CODE=-1
 			;;
 
 		( --only ) parsed=2

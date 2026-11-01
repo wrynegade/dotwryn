@@ -17,11 +17,19 @@ ${scwryptsmodule}() {
 	do
 		((SYMLINK_COUNT+=1))
 		SOURCE_CONFIG="$(scwrypts.get-realpath "$(echo ${SYMLINK} | awk '{print $1;}')")"
-		TARGET_CONFIG="$(scwrypts.get-realpath "$(echo ${SYMLINK} | awk '{print $2;}')")"
+		TARGET_CONFIG="$(echo ${SYMLINK} | awk '{print $2;}' | envsubst)"
+
+		[[ "${TARGET_CONFIG}" ]] \
+			&& TARGET_CONFIG="$(readlink --canonicalize-missing -- "$(dirname -- "${TARGET_CONFIG}")")/$(basename -- "${TARGET_CONFIG}")"
 
 		[ "${SOURCE_CONFIG}" ] && [ "${TARGET_CONFIG}" ] \
 			|| echo.error "bad symlink entry : ${SYMLINK}" \
 			|| continue
+
+		[ -L "${TARGET_CONFIG}" ] && [[ "$(readlink --canonicalize -- "${TARGET_CONFIG}")" == "${SOURCE_CONFIG}" ]] && {
+			echo.debug "already linked '$(echo "${TARGET_CONFIG}" | sed "s|${HOME}/||")'"
+			continue
+		}
 
 		case "${TARGET_CONFIG}" in
 			( /etc/* )
@@ -60,7 +68,7 @@ ${scwryptsmodule}() {
 			&& [ ! -f "${SOURCE_CONFIG}" ] && [ ! -d "${SOURCE_CONFIG}" ] \
 			&& [ ! -f "${TARGET_CONFIG}" ] && [ ! -d "${TARGET_CONFIG}" ] \
 			&& echo.status "${SOURCE_CONFIG} is a new file" \
-			&& mkdir -p -- "$(basename -- "${SOURCE_CONFIG}")" \
+			&& mkdir -p -- "$(dirname -- "${SOURCE_CONFIG}")" \
 			&& touch "${SOURCE_CONFIG}" \
 			;
 
@@ -68,7 +76,7 @@ ${scwryptsmodule}() {
 			&& [ ! -f "${SOURCE_CONFIG}" ] && [ ! -d "${SOURCE_CONFIG}" ] \
 			&& [ -f "${TARGET_CONFIG}" ] \
 			&& echo.status "${SOURCE_CONFIG} is not tracked yet; copying from ${TARGET_CONFIG}" \
-			&& mkdir -p -- "$(basename -- "${SOURCE_CONFIG}")" \
+			&& mkdir -p -- "$(dirname -- "${SOURCE_CONFIG}")" \
 			&& cp -- "${TARGET_CONFIG}" "${SOURCE_CONFIG}" \
 			;
 
