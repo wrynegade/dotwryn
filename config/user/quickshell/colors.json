@@ -1,19 +1,19 @@
 {
-	"theme"         : "halloween",
+	"theme"         : "winter",
 	"background"    : "#000505",
 	"foreground"    : "#d0f0f0",
-	"backgroundAlt" : "#8b41d5",
-	"foregroundAlt" : "#d0f0f0",
-	"primary"       : "#8b41d5",
-	"secondary"     : "#ff6f00",
-	"alert"         : "#00f900",
+	"backgroundAlt" : "#007469",
+	"foregroundAlt" : "#000505",
+	"primary"       : "#00ffe7",
+	"secondary"     : "#906556",
+	"alert"         : "#d11455",
 	"disabled"      : "#424253",
 
 	"secondaryGradient" : [
-		"#ffa000",
-		"#ffb300",
-		"#ffc106",
-		"#ffca28",
-		"#ffd54f"
+		"#503830",
+		"#704f43",
+		"#906556",
+		"#a97f6f",
+		"#bc9b8f"
 	]
 }
