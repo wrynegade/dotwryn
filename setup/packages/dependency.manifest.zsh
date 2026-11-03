@@ -93,6 +93,7 @@ dependency pip     --yay python-pip --dnf python3-pip --apt-get python3-pip
 dependency sudo
 dependency uuidgen --yay util-linux --dnf util-linux  --apt-get uuid-runtime
 dependency which
+dependency wireless-regdb --no-executable
 dependency xclip
 dependency xdotool
 
