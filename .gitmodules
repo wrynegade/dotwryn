@@ -10,5 +10,5 @@
 	update = rebase
 [submodule "scwrypts"]
 	path = zsh/plugins/scwrypts
-	url = https://yage.io/wrynegade/scwrypts.git
+	url = https://yage.io/zsh/scwrypts.git
 	branch = main
